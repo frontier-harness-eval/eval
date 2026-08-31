@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center">Runta Eval</h1>
+<h1 align="center">Runta FrontierHarness</h1>
 
 <p align="center">
   <strong>One model. Twelve harnesses. Thirty real agentic tasks.</strong>

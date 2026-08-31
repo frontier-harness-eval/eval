@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 const scatter = JSON.parse(await readFile(new URL("../results/scatter-data.json", import.meta.url), "utf8"));
 const width = 1200;
 const height = 630;
-const plot = { x: 92, y: 168, width: 1020, height: 340 };
+const plot = { x: 92, y: 52, width: 1020, height: 466 };
 const labels = {"pi-responses":"Pi","oh-my-pi":"Oh My Pi","claude-code":"Claude Code",codex:"Codex",opencode:"OpenCode",hermes:"Hermes","kimi-code":"Kimi Code",exo:"Exo Harness","dsh-standard":"DSH Standard","dsh-ptc":"DSH PTC","dsh-minimal":"DSH Minimal","dsh-creator":"DSH Creator"};
 const colors = {"pi-responses":"#262626","oh-my-pi":"#B35C00","claude-code":"#B9482C",codex:"#5142E8",opencode:"#7047C7",hermes:"#168A7D","kimi-code":"#187763",exo:"#59616B","dsh-standard":"#1267C4","dsh-ptc":"#357CC5","dsh-minimal":"#14589C","dsh-creator":"#3979B8"};
 const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
@@ -57,17 +57,13 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${
     text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
     .grid line{stroke:#E4E5E7;stroke-width:1}.grid text{fill:#777B82;font-size:12px}
-    .point-label{font-size:13px;font-weight:600}.eyebrow{font-size:11px;font-weight:700;letter-spacing:2.2px}
+    .point-label{font-size:14px;font-weight:600}
   </style>
-  <text x="52" y="58" fill="#FF6418" class="eyebrow">FRONTIERHARNESS</text>
-  <text x="52" y="103" fill="#17191D" font-size="31" font-weight="650" letter-spacing="-0.7">Same model. Different harness. Very different outcome.</text>
-  <text x="52" y="132" fill="#6B7078" font-size="14">Kimi K3 · 30 agentic tasks · 12 harnesses · 360 evaluations</text>
   <g class="grid mono">${gridX}${gridY}</g>
   <polyline points="${frontier}" fill="none" stroke="#FF6418" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
   ${points}
-  <text x="${plot.x+plot.width/2}" y="585" fill="#656A72" text-anchor="middle" font-size="13">Median cost per pass (failures included)</text>
-  <text x="25" y="${plot.y+plot.height/2}" fill="#656A72" text-anchor="middle" font-size="13" transform="rotate(-90 25 ${plot.y+plot.height/2})">Pass rate</text>
-  <text x="1148" y="590" fill="#FF6418" text-anchor="end" font-size="12" font-weight="650">eval.runta.com ↗</text>
+  <text x="${plot.x+plot.width/2}" y="596" fill="#656A72" text-anchor="middle" font-size="14">Median cost per pass (failures included)</text>
+  <text x="25" y="${plot.y+plot.height/2}" fill="#656A72" text-anchor="middle" font-size="14" transform="rotate(-90 25 ${plot.y+plot.height/2})">Pass rate</text>
 </svg>`;
 
 await mkdir(new URL("../assets/", import.meta.url), { recursive: true });

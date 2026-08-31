@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://eval.runta.com">
-    <img src="assets/frontier-harness-light.svg" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
+    <img src="assets/frontier-harness-light.png" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
   </a>
 </p>
 
@@ -22,7 +22,7 @@
   <a href="https://eval.runta.com"><strong>Explore the live results →</strong></a>
 </p>
 
----
+<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
 
 ## Same model. Different harness. Very different outcome.
 
@@ -82,7 +82,7 @@ jq '.harnesses[] | {name, successful, effective_cost_per_pass}' results/eval-dat
 
 Every task directory contains the exact public instruction and task metadata used by the benchmark.
 
----
+<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
 
 <div align="center">
 

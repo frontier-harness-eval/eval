@@ -72,35 +72,31 @@ We ran the same **Kimi K3** model through 12 coding-agent harnesses on the same 
 
 The repository intentionally contains **results and task definitions only**. Internal infrastructure, credentials, runtime identifiers, private evidence, solutions, and deployment configuration are not included.
 
-## Benchmark design
+## Methodology
+
+### Tested harnesses
+
+| Harness | Version | Harness | Version |
+|---|---:|---|---:|
+| Codex | `0.148.0` | DSH Creator | `0.1.0-rc.8` |
+| Claude Code | `2.1.237` | DSH Minimal | `0.1.0-rc.8` |
+| Pi | `0.84.2` | DSH PTC | `0.1.0-rc.8` |
+| DSH Standard | `0.1.0-rc.8` | Oh My Pi | `17.4.0` |
+| Kimi Code | `0.37.2` | Exo Harness | `0.1.0` |
+| OpenCode | `1.18.19` | Hermes | `0.20.4` |
+
+---
+
+- Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
+- Kimi K3 is served by [Fireworks](https://fireworks.ai/).
+
+### Benchmark scope
 
 - **30 tasks:** 21 Terminal-Bench tasks and 9 DeepSWE tasks
-- **12 harnesses:** Claude Code, Codex, four DSH modes, Exo Harness, Hermes, Kimi Code, Oh My Pi, OpenCode, and Pi
-- **One model:** Kimi K3, served by Fireworks
-- **360 cells:** one canonical result for every task × harness pair
+- **12 harness configurations:** one canonical result for every task and harness pair
+- **360 evaluations:** complete task-by-harness coverage
 - **Deterministic scoring:** verifier-based pass/fail outcomes
 - **Comparable cost:** first-turn cache reads repriced consistently across harnesses
-
-### Identical starting state on Runta
-
-For each task, a Runta Agent Runtime is prepared once with every harness and the environment defined in `task.toml`, then captured as a golden checkpoint. Every harness run starts from a fresh restore of that checkpoint with identical vCPU, memory size, disk size, disk contents, and restored memory state.
-
-### Harness versions
-
-| Harness | Version |
-|---|---:|
-| Claude Code | `2.1.237` |
-| Codex | `0.148.0` |
-| DSH Creator | `0.1.0-rc.8` |
-| DSH Minimal | `0.1.0-rc.8` |
-| DSH PTC | `0.1.0-rc.8` |
-| DSH Standard | `0.1.0-rc.8` |
-| Exo Harness | `0.1.0` |
-| Hermes | `0.20.4` |
-| Kimi Code | `0.37.2` |
-| Oh My Pi | `17.4.0` |
-| OpenCode | `1.18.19` |
-| Pi | `0.84.2` |
 
 See [`benchmark.json`](benchmark.json) for the public benchmark definition and [`results/eval-data.json`](results/eval-data.json) for the complete normalized result set.
 

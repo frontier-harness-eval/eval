@@ -7,12 +7,6 @@ const plot = { x: 92, y: 52, width: 1020, height: 466 };
 const labels = {"pi-responses":"Pi","oh-my-pi":"Oh My Pi","claude-code":"Claude Code",codex:"Codex",opencode:"OpenCode",hermes:"Hermes","kimi-code":"Kimi Code",exo:"Exo Harness","dsh-standard":"DSH Standard","dsh-ptc":"DSH PTC","dsh-minimal":"DSH Minimal","dsh-creator":"DSH Creator"};
 const colors = {"pi-responses":"#262626","oh-my-pi":"#B35C00","claude-code":"#B9482C",codex:"#5142E8",opencode:"#7047C7",hermes:"#168A7D","kimi-code":"#187763",exo:"#59616B","dsh-standard":"#1267C4","dsh-ptc":"#357CC5","dsh-minimal":"#14589C","dsh-creator":"#3979B8"};
 const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
-const defaultPlacement = {dx:13,dy:4,anchor:"start"};
-const placement = {
-  "dsh-ptc":{dx:13,dy:-10,anchor:"start"},
-  "dsh-minimal":{dx:13,dy:-10,anchor:"start"},
-  hermes:{dx:-13,dy:4,anchor:"end"},
-};
 const points = evaluation.harnesses.map(item=>({name:item.name,successful:item.successful,cost:item.effective_cost_per_pass}));
 const totalTasks = evaluation.overview.checkpoint_tasks;
 const xMin = Math.min(...points.map(point => point.cost));
@@ -25,6 +19,55 @@ const frontierPoints = points.filter(point=>!points.some(candidate=>candidate.co
 const px = percent => plot.x + percent / 100 * plot.width;
 const py = percent => plot.y + (100 - percent) / 100 * plot.height;
 const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+const fontSize = 13;
+const markerRadius = 9;
+const textWidth = text => [...text].reduce((width,char)=>width+(char===" "?3.6:7.15),0);
+const overlaps = (a,b,padding=0)=>a.left<b.right+padding&&a.right>b.left-padding&&a.top<b.bottom+padding&&a.bottom>b.top-padding;
+const markerRects = new Map(points.map(point=>{
+  const x=px(xPercent(point.cost));
+  const y=py(yPercent(point.successful));
+  return [point.name,{left:x-markerRadius,right:x+markerRadius,top:y-markerRadius,bottom:y+markerRadius}];
+}));
+const candidates = [
+  {side:"right",vertical:"center",dx:13,dy:4,anchor:"start"},
+  {side:"right",vertical:"below",dx:13,dy:23,anchor:"start"},
+  {side:"right",vertical:"above",dx:13,dy:-13,anchor:"start"},
+  {side:"left",vertical:"center",dx:-13,dy:4,anchor:"end"},
+  {side:"left",vertical:"below",dx:-13,dy:23,anchor:"end"},
+  {side:"left",vertical:"above",dx:-13,dy:-13,anchor:"end"},
+];
+const leftFirstCandidates = [candidates[3],candidates[1],candidates[2],candidates[0],candidates[4],candidates[5]];
+
+function labelRect(point,candidate){
+  const x=px(xPercent(point.cost));
+  const y=py(yPercent(point.successful));
+  const width=textWidth(labels[point.name]??point.name);
+  const anchorX=x+candidate.dx;
+  const baseline=y+candidate.dy;
+  return {
+    left:candidate.anchor==="start"?anchorX:anchorX-width,
+    right:candidate.anchor==="start"?anchorX+width:anchorX,
+    top:baseline-fontSize*.82,
+    bottom:baseline+fontSize*.25,
+  };
+}
+
+const placedLabels=[];
+const placements=new Map();
+for(const point of points){
+  let selected=null;
+  const pointCandidates=point.name==="kimi-code"||point.name==="hermes"?leftFirstCandidates:candidates;
+  for(const candidate of pointCandidates){
+    const rect=labelRect(point,candidate);
+    const hitsLabel=placedLabels.some(placed=>overlaps(rect,placed.rect,4));
+    const hitsPoint=[...markerRects].some(([name,marker])=>name!==point.name&&overlaps(rect,marker,3));
+    const outside=rect.left<8||rect.right>width-8||rect.top<8||rect.bottom>plot.y+plot.height;
+    if(!hitsLabel&&!hitsPoint&&!outside){selected={candidate,rect};break}
+  }
+  if(!selected)throw new Error(`No collision-free label position for ${point.name}`);
+  placements.set(point.name,selected.candidate);
+  placedLabels.push({name:point.name,rect:selected.rect});
+}
 
 function marker(shape, x, y, color) {
   const common = `fill="${color}" stroke="#FFFFFF" stroke-width="1.5"`;
@@ -50,8 +93,8 @@ const frontier = frontierPoints.map(point => `${px(xPercent(point.cost))},${py(y
 const pointMarkup = points.map(item => {
   const x = px(xPercent(item.cost));
   const y = py(yPercent(item.successful));
-  const p = placement[item.name] ?? defaultPlacement;
-  return `<g>${marker(shapes[item.name],x,y,colors[item.name])}<text class="point-label" x="${x+p.dx}" y="${y+p.dy}" fill="${colors[item.name]}" text-anchor="${p.anchor}">${esc(labels[item.name] ?? item.name)}</text></g>`;
+  const p = placements.get(item.name);
+  return `<g>${marker(shapes[item.name],x,y,colors[item.name])}<text class="point-label" data-placement="${p.side}-${p.vertical}" x="${x+p.dx}" y="${y+p.dy}" fill="${colors[item.name]}" text-anchor="${p.anchor}">${esc(labels[item.name] ?? item.name)}</text></g>`;
 }).join("");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">

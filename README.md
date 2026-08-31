@@ -1,9 +1,3 @@
-<p align="center">
-  <a href="https://eval.runta.com">
-    <img src="assets/frontier-harness-light.png" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
-  </a>
-</p>
-
 <h1 align="center">FrontierHarness</h1>
 
 <p align="center">
@@ -11,15 +5,20 @@
 </p>
 
 <p align="center">
-  <a href="https://eval.runta.com"><img alt="Interactive leaderboard" src="https://img.shields.io/badge/interactive-leaderboard-ff6e1a?style=flat-square" /></a>
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
   <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
-  <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-222?style=flat-square" />
-  <img alt="12 harnesses" src="https://img.shields.io/badge/harnesses-12-222?style=flat-square" />
 </p>
 
 <p align="center">
   <a href="https://eval.runta.com"><strong>Explore the live results →</strong></a>
+</p>
+
+<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
+
+<p align="center">
+  <a href="https://eval.runta.com">
+    <img src="assets/frontier-harness-light.png" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
+  </a>
 </p>
 
 <p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>

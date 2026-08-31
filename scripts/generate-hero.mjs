@@ -52,7 +52,7 @@ const points = scatter.points.map(item => {
 }).join("");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect width="1200" height="630" fill="#FAFAF8"/>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
   <style>
     text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}

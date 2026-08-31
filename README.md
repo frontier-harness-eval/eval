@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://eval.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
+  <a href="https://harness.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
   <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
   <img alt="12 harnesses" src="https://img.shields.io/badge/harnesses-12-1267c4?style=flat-square" />
@@ -21,13 +21,13 @@
 </p>
 
 <p align="center">
-  <a href="https://eval.runta.com"><strong>Explore the live results →</strong></a>
+  <a href="https://harness.runta.com"><strong>Explore the live results →</strong></a>
 </p>
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 <div align="center">
-  <a href="https://eval.runta.com">
+  <a href="https://harness.runta.com">
     <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
   </a>
 </div>
@@ -53,7 +53,7 @@ We ran the same **Kimi K3** model through 12 coding-agent harnesses on the same 
 | Hermes | 15 / 30 | $0.1746 | 6m 58s |
 | OpenCode | 15 / 30 | **$0.0615** | 6m 27s |
 
-> The leaderboard is only the start. Failed runs, total cost per pass, cache behavior, and task-level results are available in the [interactive report](https://eval.runta.com).
+> The leaderboard is only the start. Failed runs, total cost per pass, cache behavior, and task-level results are available in the [interactive report](https://harness.runta.com).
 
 ## What is in this repository
 
@@ -102,6 +102,6 @@ Runta gives agents secure execution, governed access, secret protection, and the
 
 ### [Start free trial →](https://dashboard.runta.com)
 
-[Explore Runta](https://runta.com) · [Talk to the Runta team](https://dashboard.runta.com/request-demo) · [View the live eval](https://eval.runta.com)
+[Explore Runta](https://runta.com) · [Talk to the Runta team](https://dashboard.runta.com/request-demo) · [View the live eval](https://harness.runta.com)
 
 </div>

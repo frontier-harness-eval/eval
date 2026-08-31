@@ -34,5 +34,5 @@
     "pi-responses"
   ],
   "results": "results/eval-data.json",
-  "interactive_report": "https://eval.runta.com"
+  "interactive_report": "https://harness.runta.com"
 }

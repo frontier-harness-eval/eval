@@ -1,10 +1,10 @@
 <p align="center">
   <a href="https://eval.runta.com">
-    <img src="https://eval.runta.com/runta-logo.png" width="72" alt="Runta" />
+    <img src="assets/frontier-harness-light.svg" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
   </a>
 </p>
 
-<h1 align="center">Runta FrontierHarness</h1>
+<h1 align="center">FrontierHarness</h1>
 
 <p align="center">
   <strong>One model. Twelve harnesses. Thirty real agentic tasks.</strong>

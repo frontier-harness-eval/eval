@@ -5,23 +5,34 @@
 </p>
 
 <p align="center">
+  <a href="https://eval.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
+  <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
+  <img alt="12 harnesses" src="https://img.shields.io/badge/harnesses-12-1267c4?style=flat-square" />
+  <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-168a7d?style=flat-square" />
   <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
+</p>
+
+<p align="center">
+  <img alt="Public data" src="https://img.shields.io/badge/data-public-168a7d?style=flat-square" />
+  <img alt="Reproducible results" src="https://img.shields.io/badge/results-reproducible-1267c4?style=flat-square" />
+  <a href="https://github.com/runta-dev/frontier-harness/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/runta-dev/frontier-harness?style=flat-square" /></a>
+  <a href="https://github.com/runta-dev/frontier-harness/commits/main"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/runta-dev/frontier-harness?style=flat-square" /></a>
 </p>
 
 <p align="center">
   <a href="https://eval.runta.com"><strong>Explore the live results →</strong></a>
 </p>
 
-<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
+<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-<p align="center">
+<div align="center">
   <a href="https://eval.runta.com">
-    <img src="assets/frontier-harness-light.png" width="1200" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
+    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
   </a>
-</p>
+</div>
 
-<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
+<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 ## Same model. Different harness. Very different outcome.
 
@@ -81,7 +92,7 @@ jq '.harnesses[] | {name, successful, effective_cost_per_pass}' results/eval-dat
 
 Every task directory contains the exact public instruction and task metadata used by the benchmark.
 
-<p align="center"><img src="assets/divider.svg" width="1200" height="1" alt="" /></p>
+<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 <div align="center">
 

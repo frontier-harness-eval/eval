@@ -82,6 +82,10 @@ The repository intentionally contains **results and task definitions only**. Int
 - **Deterministic scoring:** verifier-based pass/fail outcomes
 - **Comparable cost:** first-turn cache reads repriced consistently across harnesses
 
+### Identical starting state on Runta
+
+For each task, a Runta Agent Runtime is prepared once with every harness and the environment defined in `task.toml`, then captured as a golden checkpoint. Every harness run starts from a fresh restore of that checkpoint with identical vCPU, memory size, disk size, disk contents, and restored memory state.
+
 See [`benchmark.json`](benchmark.json) for the public benchmark definition and [`results/eval-data.json`](results/eval-data.json) for the complete normalized result set.
 
 ## Use the data

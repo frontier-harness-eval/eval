@@ -1,0 +1,38 @@
+{
+  "name": "Runta Eval v6",
+  "status": "frozen",
+  "model": "Kimi K3",
+  "model_provider": "Fireworks",
+  "task_count": 30,
+  "harness_count": 12,
+  "evaluation_count": 360,
+  "canonical_selection": "first valid attempt 1",
+  "excluded_labels": ["warm", "smoke"],
+  "task_sources": {
+    "terminal_bench": {
+      "dataset": "terminal-bench/terminal-bench-2-1",
+      "count": 21
+    },
+    "deep_swe": {
+      "repository": "datacurve-ai/deep-swe",
+      "version": "v1.1",
+      "count": 9
+    }
+  },
+  "harnesses": [
+    "claude-code",
+    "codex",
+    "dsh-creator",
+    "dsh-minimal",
+    "dsh-ptc",
+    "dsh-standard",
+    "exo",
+    "hermes",
+    "kimi-code",
+    "oh-my-pi",
+    "opencode",
+    "pi-responses"
+  ],
+  "results": "results/eval-data.json",
+  "interactive_report": "https://eval.runta.com"
+}

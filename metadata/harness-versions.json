@@ -1,0 +1,58 @@
+{
+  "captured_at": "2026-08-22",
+  "format_version": 1,
+  "harnesses": {
+    "claude-code": {
+      "version": "2.1.237",
+      "version_source": "harbor agent_info.version"
+    },
+    "codex": {
+      "version": "0.148.0",
+      "version_source": "pinned adapter config and harbor agent_info.version"
+    },
+    "dsh-creator": {
+      "version": "0.1.0-rc.8",
+      "version_source": "pinned adapter and harbor agent_info.version"
+    },
+    "dsh-minimal": {
+      "version": "0.1.0-rc.8",
+      "version_source": "pinned adapter and harbor agent_info.version"
+    },
+    "dsh-ptc": {
+      "version": "0.1.0-rc.8",
+      "version_source": "pinned adapter and harbor agent_info.version"
+    },
+    "dsh-standard": {
+      "version": "0.1.0-rc.8",
+      "version_source": "pinned adapter and harbor agent_info.version"
+    },
+    "exo": {
+      "executable_sha256": "b1121dd29af80ae62780f737e0a70d6caf0fff3417a50efbfa4aa0ea46deb14c",
+      "source_revision": "960656626097b3a4ef56f3e4aff3c25573c1623d",
+      "version": "0.1.0",
+      "version_source": "workspace Cargo.toml, source checkout, and executable fingerprint verified across retained runtimes"
+    },
+    "hermes": {
+      "source_revision": "044acf2bf700b8452e903f035406091146eb0245",
+      "version": "0.20.4",
+      "version_source": "importlib.metadata and installed git checkout"
+    },
+    "kimi-code": {
+      "version": "0.37.2",
+      "version_source": "harbor agent_info.version"
+    },
+    "oh-my-pi": {
+      "version": "17.4.0",
+      "version_source": "harbor agent_info.version (omp/17.4.0)"
+    },
+    "opencode": {
+      "version": "1.18.19",
+      "version_source": "harbor agent_info.version"
+    },
+    "pi-responses": {
+      "version": "0.84.2",
+      "version_source": "harbor agent_info.version"
+    }
+  },
+  "model": "k3"
+}

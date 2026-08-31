@@ -64,8 +64,7 @@ We ran the same **Kimi K3** model through 12 coding-agent harnesses on the same 
 │   ├── difficulty.json         # Difficulty assignments and source methodology
 │   └── harness-versions.json   # Harness versions used for the run
 ├── results/
-│   ├── eval-data.json          # Normalized aggregate and task-level results
-│   └── scatter-data.json       # Pareto chart coordinates and frontier data
+│   └── eval-data.json          # Normalized aggregate and task-level results
 └── tasks/<task>/
     ├── instruction.md          # Prompt shown to every harness
     └── task.toml               # Public task metadata and environment definition
@@ -85,6 +84,23 @@ The repository intentionally contains **results and task definitions only**. Int
 ### Identical starting state on Runta
 
 For each task, a Runta Agent Runtime is prepared once with every harness and the environment defined in `task.toml`, then captured as a golden checkpoint. Every harness run starts from a fresh restore of that checkpoint with identical vCPU, memory size, disk size, disk contents, and restored memory state.
+
+### Harness versions
+
+| Harness | Version |
+|---|---:|
+| Claude Code | `2.1.237` |
+| Codex | `0.148.0` |
+| DSH Creator | `0.1.0-rc.8` |
+| DSH Minimal | `0.1.0-rc.8` |
+| DSH PTC | `0.1.0-rc.8` |
+| DSH Standard | `0.1.0-rc.8` |
+| Exo Harness | `0.1.0` |
+| Hermes | `0.20.4` |
+| Kimi Code | `0.37.2` |
+| Oh My Pi | `17.4.0` |
+| OpenCode | `1.18.19` |
+| Pi | `0.84.2` |
 
 See [`benchmark.json`](benchmark.json) for the public benchmark definition and [`results/eval-data.json`](results/eval-data.json) for the complete normalized result set.
 

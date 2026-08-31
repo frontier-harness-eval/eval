@@ -85,7 +85,7 @@ The repository intentionally contains **results and task definitions only**. Int
 | Kimi Code | `0.37.2` | Exo Harness | `0.1.0` |
 | OpenCode | `1.18.19` | Hermes | `0.20.4` |
 
----
+<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 - Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
 - Kimi K3 is served by [Fireworks](https://fireworks.ai/).

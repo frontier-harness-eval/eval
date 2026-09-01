@@ -1,4 +1,4 @@
-<h1 align="center">FrontierHarness</h1>
+<h1 align="center">FrontierHarness Eval</h1>
 
 <p align="center">
   <strong>One model. Nine harnesses. Twelve configurations. Thirty real tasks.</strong>
@@ -29,7 +29,7 @@
 
 <div align="center">
   <a href="https://harness.runta.com">
-    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness benchmark: pass rate versus median cost per pass across nine harnesses and twelve configurations" />
+    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per pass across nine harnesses and twelve configurations" />
   </a>
 </div>
 

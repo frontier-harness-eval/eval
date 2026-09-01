@@ -1,7 +1,7 @@
 <h1 align="center">FrontierHarness</h1>
 
 <p align="center">
-  <strong>One model. Nine harnesses. Twelve configurations. Thirty real agentic tasks.</strong>
+  <strong>One model. Nine harnesses. Twelve configurations. Thirty real tasks.</strong>
 </p>
 
 <p align="center">
@@ -88,6 +88,7 @@ The repository intentionally contains **results and task definitions only**. Int
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
+- Limitation: This evaluation focuses on coding tasks and may not generalize to other agent workloads.
 - Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
 - Kimi K3 is served by [Fireworks](https://fireworks.ai/).
 

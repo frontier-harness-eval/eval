@@ -1,14 +1,15 @@
 <h1 align="center">FrontierHarness</h1>
 
 <p align="center">
-  <strong>One model. Twelve harnesses. Thirty real agentic tasks.</strong>
+  <strong>One model. Nine harnesses. Twelve configurations. Thirty real agentic tasks.</strong>
 </p>
 
 <p align="center">
   <a href="https://harness.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
   <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
-  <img alt="12 harnesses" src="https://img.shields.io/badge/harnesses-12-1267c4?style=flat-square" />
+  <img alt="9 harnesses" src="https://img.shields.io/badge/harnesses-9-1267c4?style=flat-square" />
+  <img alt="12 configurations" src="https://img.shields.io/badge/configurations-12-3979b8?style=flat-square" />
   <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-168a7d?style=flat-square" />
   <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
 </p>
@@ -28,7 +29,7 @@
 
 <div align="center">
   <a href="https://harness.runta.com">
-    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness benchmark: pass rate versus median cost per pass across twelve harnesses" />
+    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness benchmark: pass rate versus median cost per pass across nine harnesses and twelve configurations" />
   </a>
 </div>
 
@@ -36,9 +37,9 @@
 
 ## Same model. Different harness. Very different outcome.
 
-We ran the same **Kimi K3** model through 12 coding-agent harnesses on the same 30-task benchmark. The harness alone changed task success, cost, cache behavior, and time.
+We ran the same **Kimi K3** model through 9 coding-agent harnesses across 12 configurations on the same 30-task benchmark. The harness alone changed task success, cost, cache behavior, and time.
 
-| Harness | Tasks passed | Median cost per successful task | Median time per successful task |
+| Harness configuration | Tasks passed | Median cost per successful task | Median time per successful task |
 |---|---:|---:|---:|
 | **Codex** | **20 / 30** | $0.1243 | 6m 43s |
 | DSH Creator | 19 / 30 | $0.1194 | 6m 44s |
@@ -74,9 +75,9 @@ The repository intentionally contains **results and task definitions only**. Int
 
 ## Methodology
 
-### Tested harnesses
+### Tested harness configurations
 
-| Harness | Version | Harness | Version |
+| Configuration | Version | Configuration | Version |
 |---|---:|---|---:|
 | Codex | `0.148.0` | DSH Creator | `0.1.0-rc.8` |
 | Claude Code | `2.1.237` | DSH Minimal | `0.1.0-rc.8` |
@@ -93,7 +94,8 @@ The repository intentionally contains **results and task definitions only**. Int
 ### Benchmark scope
 
 - **30 tasks:** 21 Terminal-Bench tasks and 9 DeepSWE tasks
-- **12 harness configurations:** one canonical result for every task and harness pair
+- **9 harnesses:** Claude Code, Codex, DeepSeek Harness, Exo Harness, Hermes, Kimi Code, Oh My Pi, OpenCode, and Pi
+- **12 configurations:** one canonical result for every task and harness-configuration pair
 - **360 evaluations:** complete task-by-harness coverage
 - **Deterministic scoring:** verifier-based pass/fail outcomes
 - **Comparable cost:** first-turn cache reads repriced consistently across harnesses

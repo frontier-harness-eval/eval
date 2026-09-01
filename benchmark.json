@@ -4,7 +4,8 @@
   "model": "Kimi K3",
   "model_provider": "Fireworks",
   "task_count": 30,
-  "harness_count": 12,
+  "harness_count": 9,
+  "configuration_count": 12,
   "evaluation_count": 360,
   "canonical_selection": "first valid attempt 1",
   "excluded_labels": ["warm", "smoke"],
@@ -19,7 +20,7 @@
       "count": 9
     }
   },
-  "harnesses": [
+  "harness_configurations": [
     "claude-code",
     "codex",
     "dsh-creator",

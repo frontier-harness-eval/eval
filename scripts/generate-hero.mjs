@@ -1,10 +1,9 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const evaluation = JSON.parse(await readFile(new URL("../results/eval-data.json", import.meta.url), "utf8"));
-const runtaLogo = (await readFile(new URL("../assets/runta-logo.png", import.meta.url))).toString("base64");
 const width = 1200;
 const height = 630;
-const plot = { x: 68, y: 132, width: 1110, height: 405 };
+const plot = { x: 68, y: 32, width: 1110, height: 530 };
 const labels = {"pi-responses":"Pi","oh-my-pi":"Oh My Pi","claude-code":"Claude Code",codex:"Codex",opencode:"OpenCode",hermes:"Hermes","kimi-code":"Kimi Code",exo:"Exo Harness","dsh-standard":"DSH Standard","dsh-ptc":"DSH PTC","dsh-minimal":"DSH Minimal","dsh-creator":"DSH Creator"};
 const colors = {"pi-responses":"#f0f0f0","oh-my-pi":"#f2a777","claude-code":"#f0a57f",codex:"#9385ff",opencode:"#a978e7",hermes:"#a3a3a3","kimi-code":"#83d7c5",exo:"#d3d3d3","dsh-standard":"#75b8ed","dsh-ptc":"#75b8ed","dsh-minimal":"#75b8ed","dsh-creator":"#70b6ee"};
 const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
@@ -20,7 +19,6 @@ const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt
 const formatCost = cost => `$${cost.toFixed(2)}`;
 const formatRate = rate => `${rate.toFixed(1)}%`;
 const pointMetric = point => `${formatRate(point.passRate)} · ${formatCost(point.cost)}`;
-const costRange = Math.max(...points.map(point=>point.cost))/Math.min(...points.map(point=>point.cost));
 const frontier = points.filter(point=>!points.some(candidate=>candidate.cost<=point.cost&&candidate.passRate>=point.passRate&&(candidate.cost<point.cost||candidate.passRate>point.passRate))).sort((a,b)=>a.cost-b.cost);
 
 const harnessCount = evaluation.overview.harnesses;
@@ -104,16 +102,12 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${he
     .grid line{stroke:#323232;stroke-width:1;stroke-dasharray:3 3}.grid text{fill:#ececec;font-family:"SFMono-Regular",Menlo,monospace;font-size:12px}
     .point-name{font-size:13.5px;font-weight:400}.point-value{fill:#c9c9c9;font-size:11.5px}
   </style>
-  <text x="32" y="72" fill="#f5f5f5" font-size="46" font-weight="800" letter-spacing="-.5">SIMILAR PASS RATE. <tspan fill="#ff7a12">${costRange.toFixed(1)}x</tspan> COST DIFFERENCES.</text>
   <g class="grid axis">${gridX}${gridY}</g>
   <path d="M ${plot.x} ${plot.y} V ${plot.y+plot.height} H ${plot.x+plot.width}" fill="none" stroke="#eeeeee" stroke-width="1.25"/>
   <polyline points="${frontierLine}" fill="none" stroke="#ff7a12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   ${pointMarkup}
   <text x="${plot.x+plot.width/2}" y="610" fill="#ececec" text-anchor="middle" class="mono" font-size="13.5">Median cost per task (log scale)</text>
   <text x="25" y="${plot.y+plot.height/2}" fill="#ececec" text-anchor="middle" class="mono" font-size="13" transform="rotate(-90 25 ${plot.y+plot.height/2})">Pass rate</text>
-  <image href="data:image/png;base64,${runtaLogo}" x="32" y="584" width="26" height="26"/>
-  <text x="62" y="597" fill="#ff7a12" font-size="16" font-weight="700" dominant-baseline="middle" textLength="174" lengthAdjust="spacingAndGlyphs">FrontierHarness Eval</text>
-  <text x="237" y="597" fill="#a3a3a3" class="mono" font-size="11" dominant-baseline="middle">v1.0</text>
 </svg>`;
 
 await mkdir(new URL("../assets/",import.meta.url),{recursive:true});

@@ -1,10 +1,6 @@
 <h1 align="center">FrontierHarness Eval</h1>
 
 <p align="center">
-  <strong>One model. Nine harnesses. Twelve configurations. Thirty real tasks.</strong>
-</p>
-
-<p align="center">
   <a href="https://harness.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
   <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
@@ -12,13 +8,6 @@
   <img alt="12 configurations" src="https://img.shields.io/badge/configurations-12-3979b8?style=flat-square" />
   <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-168a7d?style=flat-square" />
   <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
-</p>
-
-<p align="center">
-  <img alt="Public data" src="https://img.shields.io/badge/data-public-168a7d?style=flat-square" />
-  <img alt="Reproducible results" src="https://img.shields.io/badge/results-reproducible-1267c4?style=flat-square" />
-  <a href="https://github.com/runta-dev/frontier-harness/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/runta-dev/frontier-harness?style=flat-square" /></a>
-  <a href="https://github.com/runta-dev/frontier-harness/commits/main"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/runta-dev/frontier-harness?style=flat-square" /></a>
 </p>
 
 <p align="center">

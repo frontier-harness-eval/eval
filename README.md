@@ -112,14 +112,4 @@ Every task directory contains the exact public instruction and task metadata use
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-<div align="center">
-
-## Build and run your agents on Runta
-
-Runta gives agents secure execution, governed access, secret protection, and the infrastructure to run real workloads at scale.
-
-### [Start free trial →](https://dashboard.runta.com)
-
-[Explore Runta](https://runta.com) · [Talk to the Runta team](https://dashboard.runta.com/request-demo) · [View the live eval](https://frontierharness.org)
-
-</div>
+<p align="center"><sub>Sponsored by <a href="https://runta.com">Runta</a></sub></p>

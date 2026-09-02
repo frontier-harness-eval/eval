@@ -29,7 +29,7 @@
 
 <div align="center">
   <a href="https://harness.runta.com">
-    <img src="assets/frontier-harness-light.png" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per pass across nine harnesses and twelve configurations" />
+    <img src="assets/frontier-harness-light.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
   </a>
 </div>
 
@@ -54,7 +54,7 @@ We ran the same **Kimi K3** model through 9 coding-agent harnesses across 12 con
 | Hermes | 15 / 30 | $0.1746 | 6m 58s |
 | OpenCode | 15 / 30 | **$0.0615** | 6m 27s |
 
-> The leaderboard is only the start. Failed runs, total cost per pass, cache behavior, and task-level results are available in the [interactive report](https://harness.runta.com).
+> The leaderboard is only the start. Failed runs, total cost per task, cache behavior, and task-level results are available in the [interactive report](https://harness.runta.com).
 
 ## What is in this repository
 
@@ -88,7 +88,7 @@ The repository intentionally contains **results and task definitions only**. Int
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-- Limitation: This evaluation focuses on coding tasks and may not generalize to other agent workloads.
+- FrontierHarness v1.0 focuses on software engineering contexts and terminal-based tasks. It may not generalize to other areas of knowledge work.
 - Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
 - Kimi K3 is served by [Fireworks](https://fireworks.ai/).
 

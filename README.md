@@ -38,20 +38,20 @@ We ran the same **Kimi K3** model through nine coding-agent harnesses—12 confi
 
 ### Full results
 
-| Harness configuration | Tasks passed | Median cost per successful task | Median time per successful task |
-|---|---:|---:|---:|
-| **Codex** | **20 / 30** | $0.1243 | 6m 43s |
-| DSH Creator | 19 / 30 | $0.1194 | 6m 44s |
-| Claude Code | 19 / 30 | $0.2880 | 9m 38s |
-| Pi | 18 / 30 | $0.0709 | 7m 33s |
-| DSH Standard | 18 / 30 | $0.1201 | 6m 17s |
-| DSH PTC | 18 / 30 | $0.1370 | 7m 44s |
-| Kimi Code | 17 / 30 | $0.1818 | 7m 56s |
-| DSH Minimal | 17 / 30 | $0.1214 | **5m 41s** |
-| Oh My Pi | 17 / 30 | $0.1354 | 6m 46s |
-| Exo Harness | 16 / 30 | $0.0748 | 6m 17s |
-| Hermes | 15 / 30 | $0.1746 | 6m 58s |
-| OpenCode | 15 / 30 | **$0.0615** | 6m 27s |
+| Harness (configuration) | Pass rate | Median cost per pass | Cache, median cell | Median time |
+| --- | --- | --- | --- | --- |
+| **Codex** | **66.7%** | $3.47 | 88.0% | 6m 43s |
+| DSH Creator | 63.3% | $3.28 | 84.3% | 6m 44s |
+| Claude Code | 63.3% | $18.34 | 67.8% | 9m 38s |
+| Pi | 60.0% | $2.43 | 79.4% | 7m 33s |
+| DSH PTC | 60.0% | $4.58 | 87.2% | 7m 44s |
+| DSH Standard | 60.0% | $3.46 | 86.5% | 6m 17s |
+| Oh My Pi | 56.7% | $4.75 | 82.2% | 6m 46s |
+| Kimi Code | 56.7% | $3.65 | 88.0% | 7m 56s |
+| DSH Minimal | 56.7% | $4.72 | 84.6% | 5m 41s |
+| Exo Harness | 53.3% | **$1.05** | 70.3% | 6m 17s |
+| OpenCode | 50.0% | $3.24 | 78.4% | 6m 27s |
+| Hermes | 50.0% | $2.90 | 85.9% | 6m 58s |
 
 The [interactive report](https://harness.runta.com) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
 

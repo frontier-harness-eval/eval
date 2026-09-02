@@ -112,4 +112,6 @@ Every task directory contains the exact public instruction and task metadata use
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-<p align="center"><sub>Sponsored by <a href="https://runta.com">Runta</a></sub></p>
+<p align="center">
+  <a href="https://runta.com"><img src="assets/runta-sponsor.svg" width="330" alt="Sponsored by Runta" /></a>
+</p>

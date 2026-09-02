@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const evaluation = JSON.parse(await readFile(new URL("../results/eval-data.json", import.meta.url), "utf8"));
+const runtaLogo = (await readFile(new URL("../assets/runta-logo.png", import.meta.url))).toString("base64");
 const width = 1200;
 const height = 630;
 const plot = { x: 68, y: 132, width: 1110, height: 405 };
@@ -9,8 +10,8 @@ const colors = {"pi-responses":"#f0f0f0","oh-my-pi":"#f2a777","claude-code":"#f0
 const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
 const totalTasks = evaluation.overview.checkpoint_tasks;
 const points = evaluation.harnesses.map(item => ({name:item.name,cost:item.effective_cost_per_pass,passRate:item.successful/totalTasks*100,successful:item.successful}));
-const xDomain = { min: 1, max: 30 };
-const yDomain = { min: 45, max: 70 };
+const xDomain = { min: 1, max: 22 };
+const yDomain = { min: 49, max: 68 };
 const xPercent = cost => Math.log(cost/xDomain.min)/Math.log(xDomain.max/xDomain.min)*100;
 const yPercent = rate => (rate-yDomain.min)/(yDomain.max-yDomain.min)*100;
 const px = percent => plot.x + percent/100*plot.width;
@@ -90,7 +91,7 @@ function marker(shape,x,y,color,size=9) {
 }
 
 const xTicks=[1,2,5,10,20];
-const yTicks=[45,50,55,60,65,70];
+const yTicks=[50,55,60,65];
 const gridX=xTicks.map(value=>{const x=px(xPercent(value));return `<line x1="${x}" y1="${plot.y}" x2="${x}" y2="${plot.y+plot.height}"/><text x="${x}" y="${plot.y+plot.height+24}" text-anchor="middle">$${value}</text>`}).join("");
 const gridY=yTicks.map(value=>{const y=py(yPercent(value));return `<line x1="${plot.x}" y1="${y}" x2="${plot.x+plot.width}" y2="${y}"/><text x="${plot.x-14}" y="${y+4}" text-anchor="end">${value}%</text>`}).join("");
 const frontierLine=frontier.map(point=>`${px(xPercent(point.cost))},${py(yPercent(point.passRate))}`).join(" ");
@@ -110,6 +111,9 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${he
   ${pointMarkup}
   <text x="${plot.x+plot.width/2}" y="610" fill="#ececec" text-anchor="middle" class="mono" font-size="13.5">Median cost per task (log scale)</text>
   <text x="25" y="${plot.y+plot.height/2}" fill="#ececec" text-anchor="middle" class="mono" font-size="13" transform="rotate(-90 25 ${plot.y+plot.height/2})">Pass rate</text>
+  <image href="data:image/png;base64,${runtaLogo}" x="32" y="584" width="26" height="26"/>
+  <text x="62" y="597" fill="#ff7a12" font-size="16" font-weight="700" dominant-baseline="middle" textLength="174" lengthAdjust="spacingAndGlyphs">FrontierHarness Eval</text>
+  <text x="237" y="597" fill="#a3a3a3" class="mono" font-size="11" dominant-baseline="middle">v1.0</text>
 </svg>`;
 
 await mkdir(new URL("../assets/",import.meta.url),{recursive:true});

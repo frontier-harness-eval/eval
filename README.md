@@ -26,7 +26,7 @@
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-## Different harnesses, different outcomes
+## Similar pass rate. 17.5x cost differences.
 
 We ran the same **Kimi K3** model through nine coding-agent harnesses—12 configurations in total—on the same 30 software-engineering tasks. With the model, tasks, and runtime held constant, changing the harness changed pass rate, cost, cache behavior, and speed.
 

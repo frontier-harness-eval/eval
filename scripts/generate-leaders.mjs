@@ -1,6 +1,10 @@
 import { readFile, writeFile } from "node:fs/promises";
 
 const evaluation = JSON.parse(await readFile(new URL("../results/eval-data.json", import.meta.url), "utf8"));
+const iconData = Object.fromEntries(await Promise.all(["codex","pi","exo","deepseek"].map(async name => {
+  const source = await readFile(new URL(`../assets/harness-icons/${name}.svg`, import.meta.url));
+  return [name, `data:image/svg+xml;base64,${source.toString("base64")}`];
+})));
 const rows = evaluation.harnesses;
 const total = evaluation.overview.checkpoint_tasks;
 const byName = name => rows.find(row => row.name === name);
@@ -18,12 +22,7 @@ const cards = [
   {title:"Speed Leader",name:"DSH Minimal",metric:`${duration(speed)} median runtime · ${rate(speed)} pass rate`,kind:"dsh"},
 ];
 
-const icon = (kind,x,y) => {
-  if (kind === "codex") return `<rect x="${x}" y="${y}" width="32" height="32" rx="7" fill="#fff"/><rect x="${x+3}" y="${y+3}" width="26" height="26" rx="6" fill="#766bff"/><text x="${x+16}" y="${y+21}" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="700">›_</text>`;
-  if (kind === "pi") return `<g transform="translate(${x} ${y})" fill="#f5f5f5"><path d="M0 0h24v16h-8v8H8v8H0V0Zm8 8v8h8V8H8Z"/><path d="M24 16h8v16h-8V16Z"/></g>`;
-  if (kind === "exo") return `<circle cx="${x+16}" cy="${y+16}" r="16" fill="#292929"/><path d="M${x+9} ${y+9}l7 5 7-5-5 7 5 7-7-5-7 5 5-7-5-7Z" fill="#f2f2f2"/>`;
-  return `<path d="M${x+1} ${y+17}c6 9 19 11 28 2-5 1-8-1-10-4 5 1 9-1 12-6-5 3-9 2-12-1-4 6-10 7-18 9Z" fill="#4d6bfe"/><circle cx="${x+24}" cy="${y+9}" r="2" fill="#4d6bfe"/>`;
-};
+const icon = (kind,x,y) => `<image href="${iconData[kind === "dsh" ? "deepseek" : kind]}" x="${x}" y="${y}" width="32" height="32"/>`;
 
 const card = (item,index) => {
   const x = index%2*600;

@@ -112,6 +112,10 @@ Every task directory contains the exact public instruction and task metadata use
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
+## Sponsor
+
+Runta provided the isolated runtimes and Golden Checkpoint restores used across all 360 evaluations.
+
 <p align="center">
   <a href="https://runta.com"><img src="assets/runta-sponsor.svg" width="330" alt="Sponsored by Runta" /></a>
 </p>

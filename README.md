@@ -1,7 +1,7 @@
 <h1 align="center">FrontierHarness Eval</h1>
 
 <p align="center">
-  <a href="https://harness.runta.com"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
+  <a href="https://frontierharness.org"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
   <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
   <img alt="9 harnesses" src="https://img.shields.io/badge/harnesses-9-1267c4?style=flat-square" />
@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://harness.runta.com"><strong>Explore the live results →</strong></a>
+  <a href="https://frontierharness.org"><strong>Explore the live results →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://runta.com/blog/introducing-frontierharness-eval/"><strong>Read the blog →</strong></a>
 </p>
@@ -19,7 +19,7 @@
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 <div align="center">
-  <a href="https://harness.runta.com">
+  <a href="https://frontierharness.org">
     <img src="assets/frontier-harness-chart.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
   </a>
 </div>
@@ -31,7 +31,7 @@
 We ran the same **Kimi K3** model through nine coding-agent harnesses—12 configurations in total—on the same 30 software-engineering tasks. With the model, tasks, and runtime held constant, changing the harness changed pass rate, cost, cache behavior, and speed.
 
 <div align="center">
-  <a href="https://harness.runta.com">
+  <a href="https://frontierharness.org">
     <img src="assets/frontier-harness-leaders.svg" width="100%" alt="FrontierHarness Eval leaders: Codex for quality, Pi for balance, Exo Harness for cost, and DSH Minimal for speed" />
   </a>
 </div>
@@ -53,7 +53,7 @@ We ran the same **Kimi K3** model through nine coding-agent harnesses—12 confi
 | OpenCode | 50.0% | $3.24 | 78.4% | 6m 27s |
 | Hermes | 50.0% | $2.90 | 85.9% | 6m 58s |
 
-The [interactive report](https://harness.runta.com) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
+The [interactive report](https://frontierharness.org) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
 
 ## What is in this repository
 
@@ -120,6 +120,6 @@ Runta gives agents secure execution, governed access, secret protection, and the
 
 ### [Start free trial →](https://dashboard.runta.com)
 
-[Explore Runta](https://runta.com) · [Talk to the Runta team](https://dashboard.runta.com/request-demo) · [View the live eval](https://harness.runta.com)
+[Explore Runta](https://runta.com) · [Talk to the Runta team](https://dashboard.runta.com/request-demo) · [View the live eval](https://frontierharness.org)
 
 </div>

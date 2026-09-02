@@ -12,6 +12,8 @@
 
 <p align="center">
   <a href="https://harness.runta.com"><strong>Explore the live results →</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://runta.com/blog/introducing-frontierharness-eval/"><strong>Read the blog →</strong></a>
 </p>
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>

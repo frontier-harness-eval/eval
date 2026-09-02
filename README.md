@@ -18,7 +18,7 @@
 
 <div align="center">
   <a href="https://harness.runta.com">
-    <img src="assets/frontier-harness-light.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
+    <img src="assets/frontier-harness-chart.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
   </a>
 </div>
 

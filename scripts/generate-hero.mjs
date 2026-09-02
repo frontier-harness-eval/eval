@@ -111,7 +111,7 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${he
 </svg>`;
 
 await mkdir(new URL("../assets/",import.meta.url),{recursive:true});
-await writeFile(new URL("../assets/frontier-harness-light.svg",import.meta.url),svg);
+await writeFile(new URL("../assets/frontier-harness-chart.svg",import.meta.url),svg);
 
 const svgBody=svg.slice(svg.indexOf(">")+1,svg.lastIndexOf("</svg>"));
 const platformFrame=({pixelWidth,pixelHeight,viewY,viewHeight,label})=>`<svg xmlns="http://www.w3.org/2000/svg" width="${pixelWidth}" height="${pixelHeight}" viewBox="0 ${viewY} 1200 ${viewHeight}" role="img" aria-label="${label}" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">

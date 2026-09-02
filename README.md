@@ -26,9 +26,17 @@
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-## Same model. Different harness. Very different outcome.
+## Different harnesses, different outcomes
 
-We ran the same **Kimi K3** model through 9 coding-agent harnesses across 12 configurations on the same 30-task benchmark. The harness alone changed task success, cost, cache behavior, and time.
+We ran the same **Kimi K3** model through nine coding-agent harnesses—12 configurations in total—on the same 30 software-engineering tasks. With the model, tasks, and runtime held constant, changing the harness changed pass rate, cost, cache behavior, and speed.
+
+<div align="center">
+  <a href="https://harness.runta.com">
+    <img src="assets/frontier-harness-leaders.svg" width="100%" alt="FrontierHarness Eval leaders: Codex for quality, Pi for balance, Exo Harness for cost, and DSH Minimal for speed" />
+  </a>
+</div>
+
+### Full results
 
 | Harness configuration | Tasks passed | Median cost per successful task | Median time per successful task |
 |---|---:|---:|---:|
@@ -45,7 +53,7 @@ We ran the same **Kimi K3** model through 9 coding-agent harnesses across 12 con
 | Hermes | 15 / 30 | $0.1746 | 6m 58s |
 | OpenCode | 15 / 30 | **$0.0615** | 6m 27s |
 
-> The leaderboard is only the start. Failed runs, total cost per task, cache behavior, and task-level results are available in the [interactive report](https://harness.runta.com).
+The [interactive report](https://harness.runta.com) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
 
 ## What is in this repository
 

@@ -130,11 +130,14 @@ ${comparison}
 | Model | \`${candidate.model ?? "unspecified"}\` |
 | Provider | ${candidate.provider ? `\`${candidate.provider}\`` : "unspecified"} |
 | Harness repo | ${manifest?.harness_repo ? `\`${manifest.harness_repo}\`` : "see manifest"} |
-| Harness commit | \`${manifest?.harness_commit ?? "unknown"}\` |
+| Harness commit | \`${manifest?.harness_commit || "unknown"}\` |
+| Harness version | \`${run.harness_version || manifest?.harness_version || "unknown"}\` |
 | Runtime | ${manifest ? `${manifest.cpus} vCPU, ${manifest.memory_mib} MiB` : "see manifest"} |
 | Harbor | \`${manifest?.harbor_version ?? "unknown"}\` |
 | Pier | \`${manifest?.pier_version ?? "unknown"}\` |
+| Terminal-Bench source | \`${manifest?.terminal_bench_dataset ?? "unknown"}\` |
 | DeepSWE corpus | \`${manifest?.deep_swe_commit ?? "unknown"}\` |
+| MCode bundle | \`${manifest?.mcode_bundle_sha256 ?? "unknown"}\` |
 | Started | ${run.started_at ?? "unknown"} |
 
 Every trial is a fresh restore of the same golden checkpoint, so all runs share an identical cold start with the same vCPU, memory, disk contents, and memory state. No formal task was executed before the checkpoint was frozen.

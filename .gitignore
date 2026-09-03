@@ -1,4 +1,6 @@
 .DS_Store
+__pycache__/
+*.py[cod]
 
 # Local output from skills/frontierharness-eval
 runs/

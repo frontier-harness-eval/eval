@@ -72,6 +72,7 @@ The [interactive report](https://frontierharness.org) includes failed runs, tota
 │   └── task.toml               # Public task metadata and environment definition
 └── skills/frontierharness-eval/  # Agent-neutral skill, usable by hand
     ├── SKILL.md                # Evaluation workflow for a third-party harness
+    ├── PROMPT.md               # Copy-paste prompt that points an agent at the skill
     ├── reference.md            # Command reference, runner templates, troubleshooting
     └── scripts/                # Provisioning, trial runner, scoring, chart, report
 ```
@@ -82,7 +83,7 @@ The repository intentionally contains **results, task definitions, and the evalu
 
 The workflow that produced the table above ships with this repository, so a harness that is not in it can be scored on the same tasks, runtime, and cost accounting, then placed directly next to the twelve baseline configurations.
 
-[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run. Nothing in it is tied to a particular agent — the steps are plain Bash and Node, so you can equally run them by hand. Run everything from the repository root:
+[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run. Nothing in it is tied to a particular agent — the steps are plain Bash and Node, so you can equally run them by hand. If you would rather hand the run to an agent than read the commands below, [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md) is a copy-paste prompt with five blanks to fill in. Run everything from the repository root:
 
 ```bash
 export RUNTA_TOKEN=rt_...          # Runta dashboard -> Settings -> Runta API Keys

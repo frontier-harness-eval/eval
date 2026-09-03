@@ -62,6 +62,7 @@ The [interactive report](https://frontierharness.org) includes failed runs, tota
 ```text
 .
 ├── benchmark.json              # Public benchmark definition
+├── cli/index.mjs               # `npx frontierharness-eval`: workspace + skill installer
 ├── metadata/
 │   ├── difficulty.json         # Difficulty assignments and source methodology
 │   └── harness-versions.json   # Harness versions used for the run
@@ -83,13 +84,37 @@ The repository intentionally contains **results, task definitions, and the evalu
 
 The workflow that produced the table above ships with this repository, so a harness that is not in it can be scored on the same tasks, runtime, and cost accounting, then placed directly next to the twelve baseline configurations.
 
-[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run. Nothing in it is tied to a particular agent — the steps are plain Bash and Node, so you can equally run them by hand. If you would rather hand the run to an agent than read the commands below, [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md) is a copy-paste prompt with five blanks to fill in. Run everything from the repository root:
+[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run. Nothing in it is tied to a particular agent — the steps are plain Bash and Node, so you can equally run them by hand. If you would rather hand the run to an agent than read the commands below, [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md) is a copy-paste prompt with five blanks to fill in.
+
+### Get the skill
+
+```bash
+npx frontierharness-eval
+```
+
+One command, no clone. It creates a `frontierharness-eval/` workspace holding the benchmark data every step reads — `benchmark.json`, `results/eval-data.json`, `tasks/` — and installs the skill into the directories Cursor, Claude Code, and Codex read skills from, so opening that folder in your agent and asking it to evaluate your harness is enough. Add `--global` to install the skill for every project, `--agent cursor` to pick one agent, or run it inside a clone of this repository, where it skips the data and just installs the skill.
+
+The same command wraps the rest of the workflow, so you can drive a run from anywhere:
+
+```bash
+npx frontierharness-eval doctor    # node >= 18, jq, runta CLI and auth, provider key
+npx frontierharness-eval prompt --harness my-harness --smoke   # the agent prompt, two-task version
+npx frontierharness-eval provision --help                      # the scripts below, from the workspace
+```
+
+### Run it yourself
+
+`provision`, `run`, `normalize`, `chart` and `report` are the skill's own scripts, so the steps below are the same work whether you invoke them as `npx frontierharness-eval provision …` from anywhere or as `$FH/provision-golden-checkpoint.sh …` from the repository root.
+
+If you hand the run to an agent, you can skip this section: the skill walks through the same setup, asks for the provider key once, and stores it as a Runta secret stub, so it never enters the runtime or the checkpoint. To drive the scripts yourself, set up the shell first:
 
 ```bash
 export RUNTA_TOKEN=rt_...          # Runta dashboard -> Settings -> Runta API Keys
 export FIREWORKS_API_KEY=...       # or the key for whichever provider you pick, below
 FH=skills/frontierharness-eval/scripts
 ```
+
+The provider key only has to be exported the first time. Provisioning turns it into a Runta secret and the API never hands the value back, so a later re-cut of the checkpoint reuses the stored secret.
 
 **The model is not a variable, but the provider is.** Every published configuration runs **Kimi K3**, so that the harness is the only thing that differs, and your run has to match to be comparable. Which provider serves it is up to you — pass `--provider` to both scripts and the model route and key name follow from it:
 

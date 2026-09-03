@@ -15,13 +15,15 @@ Confirm all of these before touching a runtime:
 
 ```bash
 runta --version                 # brew install runta-dev/tap/runta  (or npm i -g @runta/runta-cli)
-echo "${RUNTA_TOKEN:?set RUNTA_TOKEN from Settings -> Runta API Keys}" | cut -c1-3
+runta checkpoint ls             # any API call proves the CLI is authenticated
 jq --version && node --version  # jq for trial parsing, node >= 18 for the report scripts
 ```
 
-Run every command below from the repository root, so `results/eval-data.json`,
-`benchmark.json`, and `tasks/` resolve. This repo has its own `scripts/` directory, so
-address the skill's scripts through an explicit variable rather than a bare `scripts/`:
+Run every command below from the repository root — or from the workspace that
+`npx frontierharness-eval` creates, which has the same layout — so
+`results/eval-data.json`, `benchmark.json`, and `tasks/` resolve. This repo has its own
+`scripts/` directory, so address the skill's scripts through an explicit variable rather
+than a bare `scripts/`:
 
 ```bash
 FH=skills/frontierharness-eval/scripts
@@ -68,8 +70,12 @@ per-step notes below because the fidelity rules live there.
 
 ### 1-3. Clean runtime, repo, and golden checkpoint
 
+Authenticate the CLI with `runta login`, or set `RUNTA_TOKEN` if you prefer an
+explicit token. The provider key only has to be exported the first time: it is stored as
+a tenant secret, and the API never hands the value back, so a later re-cut of the
+checkpoint reuses the stored secret instead of demanding the plaintext again.
+
 ```bash
-export RUNTA_TOKEN=rt_...
 export FIREWORKS_API_KEY=...   # or the key for whichever --provider you pick
 
 $FH/provision-golden-checkpoint.sh \

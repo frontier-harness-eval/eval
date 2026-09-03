@@ -108,13 +108,20 @@ if [ -z "$MODEL" ] || [ -z "$SECRET_NAME" ]; then
 fi
 warn_unless_kimi_k3 "$MODEL"
 
-: "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
-command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }
-command -v jq >/dev/null || { echo "jq not found" >&2; exit 1; }
+require_runta_auth || exit 1
 # Checked before anything is created, so a missing key does not leave a runtime behind.
+# A key already on the tenant is enough to proceed: the stub appears in a runtime from
+# the secret's existence alone, so re-cutting a checkpoint does not need the plaintext a
+# second time. Storing it again is still preferred when the value is at hand, since that
+# is the only way to rotate it.
+STORE_SECRET=1
 if [ -z "${!SECRET_NAME:-}" ]; then
-  echo "environment variable $SECRET_NAME is empty; export your $PROVIDER key first" >&2
-  exit 1
+  if runta_secret_exists "$SECRET_NAME"; then
+    STORE_SECRET=0
+  else
+    echo "environment variable $SECRET_NAME is empty and no $SECRET_NAME secret is stored on the tenant; export your $PROVIDER key first" >&2
+    exit 1
+  fi
 fi
 
 step() { printf '\n=== %s\n' "$1" >&2; }
@@ -123,8 +130,12 @@ rexec() { runta exec "$RUNTIME" -- sh -lc "$1"; }
 step "1/9 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB, disk ${DISK_GIB} GiB)"
 runta run --name "$RUNTIME" --cpus "$CPUS" --memory "$MEMORY" --disk-size-gib "$DISK_GIB"
 
-step "2/9 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
-runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
+if [ "$STORE_SECRET" -eq 1 ]; then
+  step "2/9 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
+  runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
+else
+  step "2/9 reusing the $SECRET_NAME secret already on the tenant ($PROVIDER)"
+fi
 # The real value stays in the egress proxy; the runtime only ever sees the stub.
 rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
   || echo "warning: $SECRET_NAME is not exposed as a stub inside the runtime" >&2

@@ -36,6 +36,27 @@ resolve_provider() {
   esac
 }
 
+# The scripts need a Runta CLI that can reach the API, which RUNTA_TOKEN is only one way
+# to supply: `runta login` leaves a credential in ~/.config/runta/config.toml, and the
+# --token flag falls back to it. Probing the API accepts either and rejects a token that
+# is set but stale, which the old RUNTA_TOKEN-is-non-empty check let through.
+require_runta_auth() {
+  command -v runta >/dev/null || { echo "runta CLI not found" >&2; return 1; }
+  command -v jq >/dev/null || { echo "jq not found" >&2; return 1; }
+  if ! runta checkpoint ls >/dev/null 2>&1; then
+    echo "runta CLI cannot reach the API: set RUNTA_TOKEN or run 'runta login'" >&2
+    return 1
+  fi
+}
+
+# True when the tenant already holds a secret by this name. The API returns only
+# cache_ttl_secs, display_name, and id, never a stored value, so an existing secret can
+# be reused but not read back.
+runta_secret_exists() {
+  runta secret list --json 2>/dev/null \
+    | jq -e --arg name "$1" '[.secrets[].display_name] | index($name)' >/dev/null
+}
+
 # The model must still be Kimi K3 whatever the provider. Case-insensitive because
 # providers disagree on capitalisation, e.g. Together serves it as Kimi-K3.
 warn_unless_kimi_k3() {

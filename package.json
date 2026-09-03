@@ -1,0 +1,37 @@
+{
+  "name": "frontierharness-eval",
+  "version": "1.0.0",
+  "description": "Benchmark your own coding-agent harness against FrontierHarness Eval: sets up the benchmark workspace and installs the agent skill that drives the run.",
+  "type": "module",
+  "bin": {
+    "frontierharness-eval": "cli/index.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "cli",
+    "skills",
+    "tasks",
+    "results",
+    "metadata",
+    "benchmark.json"
+  ],
+  "keywords": [
+    "benchmark",
+    "coding-agent",
+    "harness",
+    "terminal-bench",
+    "deepswe",
+    "agent-skill",
+    "evaluation"
+  ],
+  "homepage": "https://frontierharness.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontier-harness-eval/eval.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frontier-harness-eval/eval/issues"
+  }
+}

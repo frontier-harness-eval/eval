@@ -85,9 +85,7 @@ if [ -z "$MODEL" ]; then
 fi
 warn_unless_kimi_k3 "$MODEL"
 
-: "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
-command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }
-command -v jq >/dev/null || { echo "jq not found" >&2; exit 1; }
+require_runta_auth || exit 1
 
 # The task list is either a directory of task definitions or a plain list file. A
 # directory is the normal case: every tasks/<task>/task.toml already carries its

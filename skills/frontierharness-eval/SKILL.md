@@ -126,7 +126,6 @@ $FH/run-trials.sh \
   --harness my-harness \
   --provider fireworks \
   --run-id 2026-09-02-myharness \
-  --tasks tasks.txt \
   --out runs
 ```
 
@@ -134,7 +133,13 @@ Pass the same `--provider` here as at provisioning time. The checkpoint has that
 provider's key name baked in as a stub, so a mismatch leaves the harness without a
 credential.
 
-`tasks.txt` holds one task id per line, prefixed by suite:
+With no `--tasks`, the script runs every task defined in this repo's `tasks/` directory,
+reading the suite-prefixed id out of each `tasks/<task>/task.toml`. That is the published
+30-task set, and it is the same directory `--prepull-tasks` warmed at provisioning time,
+so the set that runs is exactly the set that was prepared — there is no second list to
+drift out of sync.
+
+To run a subset, point `--tasks` at a file holding one suite-prefixed id per line:
 
 ```
 terminal-bench/regex-log
@@ -142,11 +147,7 @@ terminal-bench/build-cython-ext
 datacurve/anko-typed-variable-bindings
 ```
 
-To reproduce the published 30-task set exactly:
-
-```bash
-jq -r '.harnesses[0].task_details[].id' results/eval-data.json > tasks.txt
-```
+A subset is not comparable to the published leaderboard; say so in the report.
 
 Per task the script restores the checkpoint, runs the harness through Harbor
 (`terminal-bench/*`) or Pier (`datacurve/*`), copies `/work/jobs/<task>` out, writes a

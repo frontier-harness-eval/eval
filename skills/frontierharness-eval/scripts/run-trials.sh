@@ -13,7 +13,7 @@ CHECKPOINT=""
 HARNESS=""
 MODEL=""
 RUN_ID=""
-TASKS=""
+TASKS="tasks"
 OUT="runs"
 CMD_TEMPLATE=""
 TIMEOUT=5400
@@ -22,11 +22,13 @@ SECRET_HOST=""
 
 usage() {
   cat <<EOF
-Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID --tasks FILE
-                     [--provider NAME] [--model ID] [--out DIR] [--cmd TEMPLATE]
-                     [--timeout SEC]
+Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID
+                     [--tasks PATH] [--provider NAME] [--model ID] [--out DIR]
+                     [--cmd TEMPLATE] [--timeout SEC]
 
-  --tasks FILE    One task id per line: terminal-bench/<id> or datacurve/<id>
+  --tasks PATH    Either a directory of <task>/task.toml definitions, or a file with
+                  one task id per line: terminal-bench/<id> or datacurve/<id>.
+                  Defaults to the repo's tasks/ directory, i.e. the full published set.
   --provider NAME Kimi K3 provider, must match the golden checkpoint's provider.
                   Default fireworks. One of: $PROVIDER_LIST
   --model ID      Override the model route. Must still be Kimi K3; the benchmark does
@@ -62,7 +64,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-for required in CHECKPOINT HARNESS RUN_ID TASKS; do
+for required in CHECKPOINT HARNESS RUN_ID; do
   if [ -z "${!required}" ]; then
     echo "missing --$(echo "$required" | tr 'A-Z_' 'a-z-')" >&2
     usage >&2
@@ -86,7 +88,28 @@ warn_unless_kimi_k3 "$MODEL"
 : "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
 command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }
 command -v jq >/dev/null || { echo "jq not found" >&2; exit 1; }
-[ -r "$TASKS" ] || { echo "cannot read task list: $TASKS" >&2; exit 1; }
+
+# The task list is either a directory of task definitions or a plain list file. A
+# directory is the normal case: every tasks/<task>/task.toml already carries its
+# suite-prefixed id in [task] name, so the set that runs is exactly the set that is
+# defined, with no second list to keep in sync.
+TASK_LIST=$(mktemp)
+trap 'rm -f "$TASK_LIST"' EXIT
+
+if [ -d "$TASKS" ]; then
+  for toml in "$TASKS"/*/task.toml; do
+    [ -r "$toml" ] || continue
+    awk -F'"' '/^\[/ { in_task = ($0 == "[task]") }
+               in_task && /^name *=/ { print $2; exit }' "$toml"
+  done | sort -u > "$TASK_LIST"
+  [ -s "$TASK_LIST" ] && echo "running $(wc -l < "$TASK_LIST" | tr -d ' ') tasks from $TASKS/" >&2
+elif [ -r "$TASKS" ]; then
+  cat "$TASKS" > "$TASK_LIST"
+else
+  echo "cannot read task list: $TASKS (expected a task directory or a list file)" >&2
+  exit 1
+fi
+[ -s "$TASK_LIST" ] || { echo "no tasks found in $TASKS" >&2; exit 1; }
 
 RUN_DIR="$OUT/$RUN_ID"
 mkdir -p "$RUN_DIR/trials"
@@ -102,7 +125,12 @@ jq -n --arg run_id "$RUN_ID" --arg checkpoint "$CHECKPOINT" --arg harness "$HARN
 default_cmd() {
   case "$1" in
     terminal-bench)
-      echo "harbor run -d terminal-bench/terminal-bench@4.0.0 --task-id {task} -a {harness} -m {model} --jobs-dir {jobs}" ;;
+      # terminal-bench@2.0 is the legacy-registry name that actually holds the benchmark's
+      # 21 terminal-bench tasks. terminal-bench/terminal-bench@4.0.0 is a different corpus
+      # of 66 tasks that shares none of these ids, so it silently evaluates nothing.
+      # Harbor 0.22 selects tasks with -i, not the removed --task-id, and the compose
+      # overlay gives the container the egress CA its verifier needs to fetch uv.
+      echo "harbor run -d terminal-bench@2.0 -i {task} -a {harness} -m {model} --jobs-dir {jobs} --extra-docker-compose /work/runta-ca-overlay.yaml -y" ;;
     datacurve)
       echo "pier run -p /work/deep-swe/tasks/{task} --agent {harness} --model {model} --output-dir {jobs}" ;;
     *)
@@ -242,7 +270,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
     > "$trial_dir/trial.json"
 
   printf '=== [%s] %s in %ss (exit %s)\n' "$entry" "$status" "$duration" "$exit_code" >&2
-done < "$TASKS"
+done < "$TASK_LIST"
 
 echo >&2
 echo "$passed/$total passed. Evidence in $RUN_DIR/trials/" >&2

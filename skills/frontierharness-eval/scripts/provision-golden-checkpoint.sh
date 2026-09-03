@@ -120,16 +120,16 @@ fi
 step() { printf '\n=== %s\n' "$1" >&2; }
 rexec() { runta exec "$RUNTIME" -- sh -lc "$1"; }
 
-step "1/8 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB, disk ${DISK_GIB} GiB)"
+step "1/9 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB, disk ${DISK_GIB} GiB)"
 runta run --name "$RUNTIME" --cpus "$CPUS" --memory "$MEMORY" --disk-size-gib "$DISK_GIB"
 
-step "2/8 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
+step "2/9 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
 runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
 # The real value stays in the egress proxy; the runtime only ever sees the stub.
 rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
   || echo "warning: $SECRET_NAME is not exposed as a stub inside the runtime" >&2
 
-step "3/8 installing base tooling"
+step "3/9 installing base tooling"
 rexec 'set -eu
   export DEBIAN_FRONTEND=noninteractive
   if command -v apt-get >/dev/null; then
@@ -139,7 +139,7 @@ rexec 'set -eu
   command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
   mkdir -p /work/jobs /work/evidence'
 
-step "4/8 cloning $REPO at $COMMIT"
+step "4/9 cloning $REPO at $COMMIT"
 rexec "set -eu
   export PATH=\"\$HOME/.local/bin:\$PATH\"
   rm -rf /work/harness
@@ -148,7 +148,7 @@ rexec "set -eu
   git checkout --quiet '$COMMIT'
   git rev-parse HEAD"
 
-step "5/8 installing Harbor, Pier, and the deep-swe corpus"
+step "5/9 installing Harbor, Pier, and the deep-swe corpus"
 rexec "set -eu
   export PATH=\"\$HOME/.local/bin:\$PATH\"
   uv tool install --quiet 'harbor[modal]' || uv tool install --quiet harbor
@@ -160,7 +160,7 @@ rexec "set -eu
   harbor --version && pier --version"
 
 if [ -n "$INSTALL_SCRIPT" ]; then
-  step "6/8 running harness install script"
+  step "6/9 running harness install script"
   [ -f "$INSTALL_SCRIPT" ] || { echo "install script not found: $INSTALL_SCRIPT" >&2; exit 1; }
   runta cp "$INSTALL_SCRIPT" "$RUNTIME:/work/install-harness.sh"
   rexec 'set -eu
@@ -168,10 +168,34 @@ if [ -n "$INSTALL_SCRIPT" ]; then
     chmod +x /work/install-harness.sh
     cd /work/harness && /work/install-harness.sh'
 else
-  step "6/8 skipping harness install (no --install-script)"
+  step "6/9 skipping harness install (no --install-script)"
 fi
 
-step "7/8 warming caches"
+step "7/9 installing the egress CA overlay"
+# Runta terminates TLS on egress. The runtime host trusts the proxy CA but task
+# containers do not, so every HTTPS download inside a task fails cert validation. That
+# breaks verifiers before they run: terminal-bench test.sh curls uv from astral.sh, gets
+# a cert error, and writes reward 0 no matter what the agent did. Handing the container
+# the same trust the host already has keeps a failed download from scoring as a failed
+# task. Harbor names the task service "main".
+rexec 'set -eu
+  cat > /work/runta-ca-overlay.yaml <<OVERLAY
+services:
+  main:
+    volumes:
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/runta-ca-bundle.crt:ro
+      - /usr/local/share/ca-certificates/runta-egress.crt:/usr/local/share/ca-certificates/runta-egress.crt:ro
+    environment:
+      CURL_CA_BUNDLE: /etc/ssl/certs/runta-ca-bundle.crt
+      SSL_CERT_FILE: /etc/ssl/certs/runta-ca-bundle.crt
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/runta-ca-bundle.crt
+      PIP_CERT: /etc/ssl/certs/runta-ca-bundle.crt
+      GIT_SSL_CAINFO: /etc/ssl/certs/runta-ca-bundle.crt
+      NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/runta-egress.crt
+      UV_NATIVE_TLS: "1"
+OVERLAY'
+
+step "8/9 warming caches"
 # Pre-pull the images the formal tasks need. Pulling an image is environment prep;
 # executing a formal task before the checkpoint would be warm-cache bias.
 if [ -n "$PREPULL_TASKS" ] && [ -d "$PREPULL_TASKS" ]; then
@@ -187,10 +211,11 @@ fi
 rexec 'set -eu
   export PATH="$HOME/.local/bin:$PATH"
   harbor run -d terminal-bench-sample@2.0 -a oracle -l 1 --jobs-dir /work/warmup \
+    --extra-docker-compose /work/runta-ca-overlay.yaml -y \
     >/work/evidence/warmup.log 2>&1 || echo "warmup run failed; see /work/evidence/warmup.log" >&2
   rm -rf /work/warmup'
 
-step "8/8 writing manifest and creating golden checkpoint $CHECKPOINT"
+step "9/9 writing manifest and creating golden checkpoint $CHECKPOINT"
 rexec "set -eu
   export PATH=\"\$HOME/.local/bin:\$PATH\"
   cd /work/harness
@@ -236,5 +261,5 @@ Provider:                $PROVIDER ($MODEL)
 
 Next:
   $(dirname "$0")/run-trials.sh --checkpoint $CHECKPOINT --harness $HARNESS \\
-    --provider $PROVIDER --run-id \$(date +%Y-%m-%d)-$HARNESS --tasks tasks.txt --out runs
+    --provider $PROVIDER --run-id \$(date +%Y-%m-%d)-$HARNESS --out runs
 EOF

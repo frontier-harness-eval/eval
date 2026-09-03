@@ -10,7 +10,7 @@ Command reference, runner templates, and troubleshooting for `frontierharness-ev
 | Run a command inside it | `runta exec demo -- sh -lc 'harbor --version'` |
 | Copy files in or out | `runta cp local.txt demo:/work/` · `runta cp demo:/work/jobs ./jobs` |
 | Store a provider key | `runta secret set OPENAI_API_KEY --value-env OPENAI_API_KEY` |
-| Restrict network | `runta egress set demo --mode allowlist --allow api.moonshot.cn` |
+| Restrict network | `runta egress set demo --mode allowlist --allow api.fireworks.ai` |
 | Freeze a golden checkpoint | `runta checkpoint create demo fh-golden-v1` |
 | Restore a fresh runtime | `runta checkpoint restore fh-golden-v1 fh-trial-01` |
 | List checkpoints | `runta checkpoint ls` |
@@ -21,6 +21,33 @@ a new runtime; it never mutates the checkpoint. Full docs: <https://runta.com/do
 
 Use `--` before the remote command in `runta exec` whenever arguments could be parsed as
 CLI options, and wrap multi-step commands in `sh -lc '...'`.
+
+## Model
+
+The benchmark is fixed to **Kimi K3 served by Fireworks**, matching `benchmark.json`
+(`"model": "Kimi K3"`, `"model_provider": "Fireworks"`). Both scripts default to it and
+warn if it is overridden.
+
+| Field | Value |
+| --- | --- |
+| Runner model id | `fireworks_ai/accounts/fireworks/models/kimi-k3` |
+| Fireworks model path | `accounts/fireworks/models/kimi-k3` |
+| Credential | `FIREWORKS_API_KEY`, stored as a Runta secret stub |
+| Egress host | `api.fireworks.ai` |
+
+The `fireworks_ai/` prefix is the LiteLLM provider route, which is what Harbor, Pier,
+and `mini-swe-agent` expect. A harness that calls Fireworks directly through an
+OpenAI-compatible client wants the bare model path against
+`https://api.fireworks.ai/inference/v1` instead.
+
+Do not substitute the `kimi-k3-fast` or `kimi-k3-us` routers. They are the same weights
+but priced at a premium (+50% and +10%), which would inflate every cost metric relative
+to the published baselines.
+
+Standard serverless pricing is $3.00 per million input tokens, $0.30 per million cached
+input tokens, and $15.00 per million output tokens. Cached reads being 10x cheaper than
+fresh input is why cache hit rate moves cost so much between harnesses, and why the
+published baselines reprice first-turn cache reads before comparing.
 
 ## Runner templates
 
@@ -148,7 +175,7 @@ egress policy allows the provider host and that the key is a stub inside the run
 
 ```bash
 runta egress describe fh-build
-runta exec fh-build -- sh -lc 'test "$LLM_API_KEY" = runta-secret-stub && echo stubbed'
+runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub && echo stubbed'
 ```
 
 **Every task fails identically at turn zero** — almost always harness configuration, not

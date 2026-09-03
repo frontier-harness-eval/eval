@@ -29,8 +29,19 @@ FH=.cursor/skills/frontierharness-eval/scripts
 ```
 
 Collect from the user before starting: harness name and version, the GitHub repo and
-commit for the harness under evaluation, the model and provider, and the task subset.
-Do not guess the model — cost and pass rate are meaningless across different models.
+commit for the harness under evaluation, and the task subset.
+
+**The model is not a variable.** FrontierHarness holds it constant at **Kimi K3 served
+by [Fireworks](https://fireworks.ai/)** so the harness is the only thing that differs.
+The scripts default to it and warn if overridden:
+
+```
+fireworks_ai/accounts/fireworks/models/kimi-k3
+```
+
+So the credential to collect is a Fireworks API key, exported as `FIREWORKS_API_KEY`.
+Only change the model if the user explicitly wants a non-comparable run, and say so in
+the report.
 
 ## Workflow
 
@@ -52,16 +63,15 @@ per-step notes below because the fidelity rules live there.
 
 ```bash
 export RUNTA_TOKEN=rt_...
-export LLM_API_KEY=...   # provider key for the model under test
+export FIREWORKS_API_KEY=...   # Kimi K3 is served by Fireworks
 
+# --model and --secret-name default to Kimi K3 and FIREWORKS_API_KEY; leave them alone.
 $FH/provision-golden-checkpoint.sh \
   --runtime fh-build \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
   --repo https://github.com/acme/my-harness \
   --commit 9f2c1ab \
-  --model moonshot/kimi-k3 \
-  --secret-name LLM_API_KEY \
   --cpus 4 --memory 8192 \
   --prepull-tasks tasks \
   --install-script ./install-my-harness.sh
@@ -78,7 +88,7 @@ What the script does, and why each part matters:
 - **Credential as a secret stub.** The provider key is stored with `runta secret set`
   and injected by the egress proxy, so the real key never lands inside the runtime or
   inside a checkpoint. Verify with
-  `runta exec fh-build -- sh -lc 'test "$LLM_API_KEY" = runta-secret-stub'`.
+  `runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub'`.
 - **Cache warming on sample tasks only.** Docker images for the formal tasks are
   pre-pulled, but the only task ever *executed* before the checkpoint is
   `terminal-bench-sample@2.0` with Harbor's `oracle` agent. Never execute a formal task
@@ -104,7 +114,6 @@ runtime across tasks.
 $FH/run-trials.sh \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
-  --model moonshot/kimi-k3 \
   --run-id 2026-09-02-myharness \
   --tasks tasks.txt \
   --out runs
@@ -138,7 +147,7 @@ than scoring it as a failure:
 # Re-running an existing --run-id only replaces the tasks listed, leaving the rest.
 echo "terminal-bench/<task>" > retry.txt
 $FH/run-trials.sh --checkpoint fh-golden-myharness-v1 --harness my-harness \
-  --model moonshot/kimi-k3 --run-id 2026-09-02-myharness --tasks retry.txt --out runs
+  --run-id 2026-09-02-myharness --tasks retry.txt --out runs
 
 # If it fails on infrastructure again, mark it so it is excluded rather than scored.
 trial=runs/2026-09-02-myharness/trials/terminal-bench-<task>/trial.json
@@ -190,7 +199,7 @@ explicitly in the report which ones were relaxed.
 
 | Rule | Why |
 | --- | --- |
-| Same model and provider across every harness compared | Harness effects and model effects are otherwise inseparable |
+| Kimi K3 via Fireworks, the same as every published configuration | Harness effects and model effects are otherwise inseparable |
 | One golden checkpoint per task set, every trial a fresh restore | Identical cold start, identical disk and memory state |
 | Identical vCPU, memory, and disk across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |

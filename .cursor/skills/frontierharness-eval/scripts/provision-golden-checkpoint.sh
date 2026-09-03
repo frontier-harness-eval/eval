@@ -3,13 +3,18 @@
 # harness under evaluation, then freeze the result as a golden checkpoint.
 set -euo pipefail
 
+# FrontierHarness holds the model constant at Kimi K3 served by Fireworks so that the
+# harness is the only thing that varies. Overriding these breaks comparability.
+DEFAULT_MODEL="fireworks_ai/accounts/fireworks/models/kimi-k3"
+DEFAULT_SECRET_NAME="FIREWORKS_API_KEY"
+
 RUNTIME=""
 CHECKPOINT=""
 HARNESS=""
 REPO=""
 COMMIT=""
-MODEL=""
-SECRET_NAME=""
+MODEL="$DEFAULT_MODEL"
+SECRET_NAME="$DEFAULT_SECRET_NAME"
 INSTALL_SCRIPT=""
 PREPULL_TASKS=""
 CPUS=4
@@ -18,9 +23,9 @@ DEEP_SWE_REF="main"
 KEEP_RUNTIME=0
 
 usage() {
-  cat <<'EOF'
+  cat <<EOF
 Usage: provision-golden-checkpoint.sh --runtime NAME --checkpoint NAME --harness NAME
-                                      --repo URL --commit SHA --model ID [options]
+                                      --repo URL --commit SHA [options]
 
 Required:
   --runtime NAME        Name for the build runtime (deleted unless --keep-runtime)
@@ -28,10 +33,13 @@ Required:
   --harness NAME        Harness identifier used in reports, e.g. my-harness
   --repo URL            GitHub repo of the harness under evaluation
   --commit SHA          Commit to pin the harness to
-  --model ID            Model identifier passed to the runner, e.g. moonshot/kimi-k3
 
 Options:
-  --secret-name NAME    Env var holding the provider key; stored as a Runta secret stub
+  --model ID            Model passed to the runner. The benchmark is fixed to Kimi K3,
+                        so this defaults to and should stay at:
+                          $DEFAULT_MODEL
+  --secret-name NAME    Env var holding the provider key, stored as a Runta secret stub
+                        (default $DEFAULT_SECRET_NAME)
   --install-script PATH Local script uploaded and run inside /work/harness to build it
   --prepull-tasks DIR   Directory of <task>/task.toml files whose images are pre-pulled
   --cpus N              vCPUs (default 4)
@@ -61,13 +69,18 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-for required in RUNTIME CHECKPOINT HARNESS REPO COMMIT MODEL; do
+for required in RUNTIME CHECKPOINT HARNESS REPO COMMIT; do
   if [ -z "${!required}" ]; then
     echo "missing --$(echo "$required" | tr 'A-Z_' 'a-z-')" >&2
     usage >&2
     exit 2
   fi
 done
+
+case "$MODEL" in
+  *kimi-k3*|*kimi_k3*|*[Kk]imi?K3*) ;;
+  *) echo "warning: --model $MODEL is not Kimi K3. The published FrontierHarness results all use Kimi K3, so this score will not be comparable to them." >&2 ;;
+esac
 
 : "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
 command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }

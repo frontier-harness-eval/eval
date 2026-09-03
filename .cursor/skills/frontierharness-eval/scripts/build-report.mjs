@@ -196,8 +196,8 @@ console.log(`wrote ${join(reportDir, "REPORT.md")}`);
 console.log(`wrote ${join(reportDir, "index.html")}`);
 console.log(`share: gh gist create ${join(reportDir, "REPORT.md")} ${join(reportDir, "chart.svg")} --public`);
 
-// "moonshot/kimi-k3" and "Kimi K3" are the same model, so compare on a key that drops
-// the provider prefix, case, and separators.
+// "fireworks_ai/accounts/fireworks/models/kimi-k3" and "Kimi K3" are the same model, so
+// compare on a key that drops the provider route, case, and separators.
 function modelKey(value) {
   return String(value).toLowerCase().split("/").pop().replace(/[^a-z0-9]/g, "");
 }

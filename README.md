@@ -85,10 +85,12 @@ The workflow that produced the table above ships with this repository, so a harn
 In Cursor, ask for the `frontierharness-eval` skill and it will drive the whole run. The scripts are plain Bash and Node, so they also work standalone. Run everything from the repository root:
 
 ```bash
-export RUNTA_TOKEN=rt_...            # Runta dashboard -> Settings -> Runta API Keys
-export LLM_API_KEY=...               # provider key for the model under test
+export RUNTA_TOKEN=rt_...          # Runta dashboard -> Settings -> Runta API Keys
+export FIREWORKS_API_KEY=...       # Kimi K3 is served by Fireworks
 FH=.cursor/skills/frontierharness-eval/scripts
 ```
+
+**The model is not a variable.** Every published configuration runs **Kimi K3** so that the harness is the only thing that differs, and your run has to match to be comparable. The scripts default to `fireworks_ai/accounts/fireworks/models/kimi-k3` and warn if you override it, so there is nothing to pass.
 
 **1. Freeze a golden checkpoint.** Creates a clean Runta runtime, clones your harness at a pinned commit, installs [Harbor](https://www.tbench.ai/) for Terminal-Bench tasks and [Pier](https://deepswe.datacurve.ai/run) for DeepSWE tasks, pre-pulls the task images, and captures the whole stack as one checkpoint. Your provider key is stored as a Runta secret stub, so it never enters the runtime or the checkpoint.
 
@@ -97,7 +99,6 @@ $FH/provision-golden-checkpoint.sh \
   --runtime fh-build --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
   --repo https://github.com/acme/my-harness --commit 9f2c1ab \
-  --model moonshot/kimi-k3 --secret-name LLM_API_KEY \
   --cpus 4 --memory 8192 --prepull-tasks tasks \
   --install-script ./install-my-harness.sh
 ```
@@ -108,7 +109,7 @@ $FH/provision-golden-checkpoint.sh \
 jq -r '.harnesses[0].task_details[].id' results/eval-data.json > tasks.txt   # the published 30 tasks
 $FH/run-trials.sh \
   --checkpoint fh-golden-myharness-v1 --harness my-harness \
-  --model moonshot/kimi-k3 --run-id 2026-09-02-myharness \
+  --run-id 2026-09-02-myharness \
   --tasks tasks.txt --out runs
 ```
 
@@ -131,7 +132,7 @@ gh gist create runs/2026-09-02-myharness/report/REPORT.md \
 
 A score only belongs next to the published numbers if the run holds these invariants. The report states any that were relaxed.
 
-- **Same model and provider** as the harnesses you compare against, otherwise harness effects and model effects are inseparable.
+- **Kimi K3 via Fireworks**, the same model every published configuration used, otherwise harness effects and model effects are inseparable.
 - **One golden checkpoint, one fresh restore per task**, with identical vCPU, memory, and disk on every restore.
 - **No formal task executed before the checkpoint is frozen.** Pre-pulling images is environment prep; running a task early is warm-cache bias. The provisioning script only ever warms on `terminal-bench-sample`.
 - **Infrastructure failures marked `infra_invalid`**, not scored as task failures.

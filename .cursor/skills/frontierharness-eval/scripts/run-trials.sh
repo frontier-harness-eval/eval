@@ -3,9 +3,12 @@
 # collecting trajectories and verifier logs as evidence.
 set -euo pipefail
 
+# The benchmark is fixed to Kimi K3 served by Fireworks; see provision-golden-checkpoint.sh.
+DEFAULT_MODEL="fireworks_ai/accounts/fireworks/models/kimi-k3"
+
 CHECKPOINT=""
 HARNESS=""
-MODEL=""
+MODEL="$DEFAULT_MODEL"
 RUN_ID=""
 TASKS=""
 OUT="runs"
@@ -13,11 +16,14 @@ CMD_TEMPLATE=""
 TIMEOUT=5400
 
 usage() {
-  cat <<'EOF'
-Usage: run-trials.sh --checkpoint NAME --harness NAME --model ID --run-id ID
-                     --tasks FILE [--out DIR] [--cmd TEMPLATE] [--timeout SEC]
+  cat <<EOF
+Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID --tasks FILE
+                     [--model ID] [--out DIR] [--cmd TEMPLATE] [--timeout SEC]
 
   --tasks FILE   One task id per line: terminal-bench/<id> or datacurve/<id>
+  --model ID     Model passed to the runner. The benchmark is fixed to Kimi K3, so this
+                 defaults to and should stay at:
+                   $DEFAULT_MODEL
   --out DIR      Root output directory (default runs)
   --cmd TEMPLATE Override the runner command. Placeholders: {task} {suite} {harness}
                  {model} {jobs}. Default templates are per suite, see reference.md.
@@ -42,13 +48,18 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-for required in CHECKPOINT HARNESS MODEL RUN_ID TASKS; do
+for required in CHECKPOINT HARNESS RUN_ID TASKS; do
   if [ -z "${!required}" ]; then
     echo "missing --$(echo "$required" | tr 'A-Z_' 'a-z-')" >&2
     usage >&2
     exit 2
   fi
 done
+
+case "$MODEL" in
+  *kimi-k3*|*kimi_k3*|*[Kk]imi?K3*) ;;
+  *) echo "warning: --model $MODEL is not Kimi K3. The published FrontierHarness results all use Kimi K3, so this score will not be comparable to them." >&2 ;;
+esac
 
 : "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
 command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }

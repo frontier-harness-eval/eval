@@ -27,8 +27,10 @@ address the skill's scripts through an explicit variable rather than a bare `scr
 FH=skills/frontierharness-eval/scripts
 ```
 
-Collect from the user before starting: harness name and version, the GitHub repo and
-commit for the harness under evaluation, and the task subset.
+Collect from the user before starting: harness name and version, the task subset, and
+the GitHub repo and commit when the harness is installed from source. Runner-built-in
+harnesses can instead pin their package and runner versions; see the MiniMax Code
+profile below for a concrete example.
 
 **The model is not a variable; the provider is.** FrontierHarness holds the model
 constant at **Kimi K3** so the harness is the only thing that differs. Which provider
@@ -56,7 +58,7 @@ Copy this checklist into your working notes and keep it updated:
 
 ```
 - [ ] 1. Clean runtime created
-- [ ] 2. Harness repo cloned at a pinned commit
+- [ ] 2. Harness source commit or package version pinned
 - [ ] 3. Benchmark stack installed and frozen as a golden checkpoint
 - [ ] 4. Trials run from fresh restores, trajectories saved
 - [ ] 5. Comparison diagram generated
@@ -90,6 +92,8 @@ What the script does, and why each part matters:
   pre-installed and nothing competes with the harness under test.
 - **Repo pinned by commit.** The harness is cloned to `/work/harness` at `--commit`.
   A branch name is not reproducible; always pin a SHA.
+- **Built-in harnesses pinned by version.** If the runner owns the adapter, omit
+  `--repo` and `--commit`, then pass `--harness-version` and `--harbor-version`.
 - **Benchmark stack.** Installs `uv`, `harbor` for Terminal-Bench, `pier` plus the
   `deep-swe` task corpus for DeepSWE, and `runta-sdk[harbor]`.
 - **Credential as a secret stub.** The provider key named by `--secret-name` (defaulted
@@ -156,7 +160,8 @@ If a trial dies on infrastructure rather than the task, mark it and rerun it rat
 than scoring it as a failure:
 
 ```bash
-# Re-running an existing --run-id only replaces the tasks listed, leaving the rest.
+# Re-running an existing --run-id with the same configuration only replaces the tasks
+# listed, leaving the rest. Use a new run ID when checkpoint/provider/model changes.
 echo "terminal-bench/<task>" > retry.txt
 $FH/run-trials.sh --checkpoint fh-golden-myharness-v1 --harness my-harness \
   --run-id 2026-09-02-myharness --tasks retry.txt --out runs
@@ -242,5 +247,6 @@ values.
 ## Additional resources
 
 - Command reference, runner templates, and troubleshooting: [reference.md](reference.md)
+- MiniMax Code through Harbor: [minimax-code.md](minimax-code.md)
 - Published results and task definitions: `results/eval-data.json`, `tasks/<task>/task.toml`
 - Source evaluation: <https://frontierharness.org/>

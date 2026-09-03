@@ -83,13 +83,14 @@ so a provider swap can shift cache hit rate even at identical prices.
 
 ## Runner templates
 
-`run-trials.sh` picks a template from the task id prefix. Override with `--cmd`.
-Placeholders: `{task}`, `{suite}`, `{harness}`, `{model}`, `{jobs}`.
+`run-trials.sh` picks a template from the task id prefix. Override both suites with
+`--cmd`, or use `--terminal-cmd` and `--datacurve-cmd` independently. Placeholders:
+`{task}`, `{suite}`, `{harness}`, `{model}`, `{jobs}`.
 
 **Terminal-Bench through Harbor** (`terminal-bench/*`):
 
 ```
-harbor run -d terminal-bench/terminal-bench@4.0.0 --task-id {task} -a {harness} -m {model} --jobs-dir {jobs}
+harbor run -d terminal-bench/terminal-bench-2-1@sha256:7d7bdc1cbedad549fc1140404bd4dc45e5fd0ea7c4186773687d177ad3a0699a --include-task-name {suite}/{task} -a {harness} -m {model} --jobs-dir {jobs}
 ```
 
 **DeepSWE through Pier** (`datacurve/*`):
@@ -175,6 +176,7 @@ these fields, so any custom runner can produce them directly:
   "turns": 3,
   "cache_hit_rate_normalized": 0.521,
   "exit_code": 0,
+  "exception_info": null,
   "runtime": "fh-2026-09-02-terminal-bench-regex-log",
   "checkpoint": "fh-golden-myharness-v1"
 }
@@ -183,9 +185,9 @@ these fields, so any custom runner can produce them directly:
 `status` is one of `success`, `failure`, `timeout`, or `infra_invalid`. Only
 `infra_invalid` is excluded from scoring.
 
-Reward extraction scans the collected job directory for the first non-null
-`resolved`, `is_resolved`, `reward`, or `passed` field. If a runner reports success
-differently, the extracted value will be wrong — spot-check the first trial:
+Reward extraction accepts scalar verifier rewards plus `resolved`, `is_resolved`, or
+`passed`, and rejects results with a non-null `exception_info`. If a runner reports
+success differently, the extracted value will be wrong — spot-check the first trial:
 
 ```bash
 jq . runs/<run-id>/trials/<task>/trial.json

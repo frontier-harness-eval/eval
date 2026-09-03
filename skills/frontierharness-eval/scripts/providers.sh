@@ -7,30 +7,47 @@
 
 PROVIDER_LIST="fireworks moonshot openrouter together custom"
 
-# Sets PROVIDER_MODEL, PROVIDER_SECRET, and PROVIDER_HOST. Returns 1 on unknown input.
+# Sets the generic connection plus the MiniMax Code translation fields. Keeping these
+# together prevents a provider addition from silently working in the generic runner but
+# not in the MCode profile. Returns 1 on unknown input.
 resolve_provider() {
   case "$1" in
     fireworks)
       PROVIDER_MODEL="fireworks_ai/accounts/fireworks/models/kimi-k3"
       PROVIDER_SECRET="FIREWORKS_API_KEY"
-      PROVIDER_HOST="api.fireworks.ai" ;;
+      PROVIDER_HOST="api.fireworks.ai"
+      PROVIDER_MCODE_PREFIX="openai/"
+      PROVIDER_MCODE_STRIP="fireworks_ai/"
+      PROVIDER_MCODE_CONNECTION='OPENAI_API_KEY="$FIREWORKS_API_KEY" OPENAI_BASE_URL="https://api.fireworks.ai/inference/v1"' ;;
     moonshot)
       PROVIDER_MODEL="moonshot/kimi-k3"
       PROVIDER_SECRET="MOONSHOT_API_KEY"
-      PROVIDER_HOST="api.moonshot.ai" ;;
+      PROVIDER_HOST="api.moonshot.ai"
+      PROVIDER_MCODE_PREFIX="openai/"
+      PROVIDER_MCODE_STRIP="moonshot/"
+      PROVIDER_MCODE_CONNECTION='OPENAI_API_KEY="$MOONSHOT_API_KEY" OPENAI_BASE_URL="https://api.moonshot.ai/v1"' ;;
     openrouter)
       PROVIDER_MODEL="openrouter/moonshotai/kimi-k3"
       PROVIDER_SECRET="OPENROUTER_API_KEY"
-      PROVIDER_HOST="openrouter.ai" ;;
+      PROVIDER_HOST="openrouter.ai"
+      PROVIDER_MCODE_PREFIX=""
+      PROVIDER_MCODE_STRIP=""
+      PROVIDER_MCODE_CONNECTION="" ;;
     together)
       PROVIDER_MODEL="together_ai/moonshotai/Kimi-K3"
       PROVIDER_SECRET="TOGETHER_API_KEY"
-      PROVIDER_HOST="api.together.xyz" ;;
+      PROVIDER_HOST="api.together.xyz"
+      PROVIDER_MCODE_PREFIX="together/"
+      PROVIDER_MCODE_STRIP="together_ai/"
+      PROVIDER_MCODE_CONNECTION="" ;;
     custom)
       # Anything else: --model and --secret-name must be supplied explicitly.
       PROVIDER_MODEL=""
       PROVIDER_SECRET=""
-      PROVIDER_HOST="" ;;
+      PROVIDER_HOST=""
+      PROVIDER_MCODE_PREFIX=""
+      PROVIDER_MCODE_STRIP=""
+      PROVIDER_MCODE_CONNECTION="" ;;
     *)
       return 1 ;;
   esac

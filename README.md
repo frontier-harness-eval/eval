@@ -153,6 +153,18 @@ Cost is compared on `effective_cost_per_pass`, which is total cost across all ta
 
 Metric definitions and the trial record contract are in [`SKILL.md`](skills/frontierharness-eval/SKILL.md). Runner templates, the alternative Harbor-with-Runta-provider topology, and troubleshooting are in [`reference.md`](skills/frontierharness-eval/reference.md).
 
+MiniMax Code is available through Harbor's built-in `mcode` adapter. Its profile pins
+Harbor, Node, `@minimax-ai/code`, and both task sources; runs all 30 published task IDs
+through Harbor; and handles offline agent setup plus provider-specific connection
+mapping:
+
+```bash
+$FH/run-minimax-code.sh --provider fireworks --print-command
+```
+
+See the [MiniMax Code profile](skills/frontierharness-eval/minimax-code.md) for the
+golden-checkpoint, smoke-test, and full-run commands.
+
 ## Methodology
 
 ### Tested harness configurations

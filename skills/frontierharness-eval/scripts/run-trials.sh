@@ -130,7 +130,10 @@ default_cmd() {
       # of 66 tasks that shares none of these ids, so it silently evaluates nothing.
       # Harbor 0.22 selects tasks with -i, not the removed --task-id, and the compose
       # overlay gives the container the egress CA its verifier needs to fetch uv.
-      echo "harbor run -d terminal-bench@2.0 -i {task} -a {harness} -m {model} --jobs-dir {jobs} --extra-docker-compose /work/runta-ca-overlay.yaml -y" ;;
+      # -r 2 retries agent-level exceptions. A well-behaved adapter raises only when its
+      # harness crashed, never when the agent merely failed the task, so retries buy back
+      # trials lost to flaky infrastructure without ever masking a real wrong answer.
+      echo "harbor run -d terminal-bench@2.0 -i {task} -a {harness} -m {model} --jobs-dir {jobs} --extra-docker-compose /work/runta-ca-overlay.yaml -r 2 -y" ;;
     datacurve)
       echo "pier run -p /work/deep-swe/tasks/{task} --agent {harness} --model {model} --output-dir {jobs}" ;;
     *)
@@ -243,6 +246,11 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   turns=$(extract "$trial_dir/jobs" '[.. | objects | (.n_steps?, .num_turns?, .steps?)] | map(select(type == "number")) | .[0]')
   cache=$(extract "$trial_dir/jobs" '[.. | objects | (.cache_hit_rate?, .cache_read_ratio?)] | map(select(type == "number")) | .[0]')
 
+  # A trial whose retries were all exhausted by harness crashes never measured the
+  # harness, so it must not enter the denominator as a failure. Harbor records the
+  # surviving crash in exception_info.
+  exception=$(extract "$trial_dir/jobs" '[.. | objects | .exception_info? | select(. != null)] | .[0] | tostring')
+
   case "$reward" in
     true|1|1.0) success=true ;;
     *) success=false ;;
@@ -253,6 +261,9 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   elif [ "$success" = true ]; then
     status=success
     passed=$((passed + 1))
+  elif [ -n "$exception" ]; then
+    status=infra_invalid
+    success=false
   else
     status=failure
   fi
@@ -262,10 +273,12 @@ while IFS= read -r entry || [ -n "$entry" ]; do
     --arg runtime "$runtime" --arg checkpoint "$CHECKPOINT" \
     --argjson success "$success" --argjson duration "$duration" --argjson exit_code "$exit_code" \
     --argjson cost "${cost:-null}" --argjson turns "${turns:-null}" --argjson cache "${cache:-null}" \
+    --arg exception "$exception" \
     '{id:$id, title:$task, suite:$suite, status:$status, success:$success,
       duration_seconds:$duration, cost_first_cold_usd:$cost, turns:$turns,
       cache_hit_rate_normalized:$cache, exit_code:$exit_code,
       runtime:$runtime, checkpoint:$checkpoint,
+      harness_exception:(if $exception == "" then null else $exception end),
       included_in_efficiency:$success}' \
     > "$trial_dir/trial.json"
 

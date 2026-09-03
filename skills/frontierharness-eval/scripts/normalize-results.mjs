@@ -41,6 +41,7 @@ const candidate = {
   name: args.name ?? run.harness,
   label: args.label ?? run.harness,
   model: run.model,
+  provider: run.provider ?? null,
   checkpoint: run.checkpoint,
   run_id: run.run_id,
   candidate: true,

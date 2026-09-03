@@ -30,17 +30,25 @@ FH=skills/frontierharness-eval/scripts
 Collect from the user before starting: harness name and version, the GitHub repo and
 commit for the harness under evaluation, and the task subset.
 
-**The model is not a variable.** FrontierHarness holds it constant at **Kimi K3 served
-by [Fireworks](https://fireworks.ai/)** so the harness is the only thing that differs.
-The scripts default to it and warn if overridden:
+**The model is not a variable; the provider is.** FrontierHarness holds the model
+constant at **Kimi K3** so the harness is the only thing that differs. Which provider
+serves it is up to the user, selected with `--provider`. The scripts warn if the model
+is not Kimi K3, and refuse an unknown provider name.
 
-```
-fireworks_ai/accounts/fireworks/models/kimi-k3
-```
+| `--provider` | Model route | Key to collect |
+| --- | --- | --- |
+| `fireworks` (default, used by the published baselines) | `fireworks_ai/accounts/fireworks/models/kimi-k3` | `FIREWORKS_API_KEY` |
+| `moonshot` | `moonshot/kimi-k3` | `MOONSHOT_API_KEY` |
+| `openrouter` | `openrouter/moonshotai/kimi-k3` | `OPENROUTER_API_KEY` |
+| `together` | `together_ai/moonshotai/Kimi-K3` | `TOGETHER_API_KEY` |
+| `custom` | supply `--model` | supply `--secret-name` |
 
-So the credential to collect is a Fireworks API key, exported as `FIREWORKS_API_KEY`.
-Only change the model if the user explicitly wants a non-comparable run, and say so in
-the report.
+Ask which provider the user has a key for, and use `--provider fireworks` if they have
+no preference. A different provider keeps the pass rate comparable, since the model is
+identical; it only puts the cost column at risk, so check that the provider's input,
+cached-input, and output prices match the ones in `reference.md`. The report raises this
+caveat automatically. Only change the *model* if the user explicitly wants a
+non-comparable run, and say so in the report.
 
 ## Workflow
 
@@ -62,13 +70,13 @@ per-step notes below because the fidelity rules live there.
 
 ```bash
 export RUNTA_TOKEN=rt_...
-export FIREWORKS_API_KEY=...   # Kimi K3 is served by Fireworks
+export FIREWORKS_API_KEY=...   # or the key for whichever --provider you pick
 
-# --model and --secret-name default to Kimi K3 and FIREWORKS_API_KEY; leave them alone.
 $FH/provision-golden-checkpoint.sh \
   --runtime fh-build \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
+  --provider fireworks \
   --repo https://github.com/acme/my-harness \
   --commit 9f2c1ab \
   --cpus 4 --memory 8192 \
@@ -84,9 +92,9 @@ What the script does, and why each part matters:
   A branch name is not reproducible; always pin a SHA.
 - **Benchmark stack.** Installs `uv`, `harbor` for Terminal-Bench, `pier` plus the
   `deep-swe` task corpus for DeepSWE, and `runta-sdk[harbor]`.
-- **Credential as a secret stub.** The provider key is stored with `runta secret set`
-  and injected by the egress proxy, so the real key never lands inside the runtime or
-  inside a checkpoint. Verify with
+- **Credential as a secret stub.** The provider key named by `--secret-name` (defaulted
+  from `--provider`) is stored with `runta secret set` and injected by the egress proxy,
+  so the real key never lands inside the runtime or inside a checkpoint. Verify with
   `runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub'`.
 - **Cache warming on sample tasks only.** Docker images for the formal tasks are
   pre-pulled, but the only task ever *executed* before the checkpoint is
@@ -113,10 +121,15 @@ runtime across tasks.
 $FH/run-trials.sh \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
+  --provider fireworks \
   --run-id 2026-09-02-myharness \
   --tasks tasks.txt \
   --out runs
 ```
+
+Pass the same `--provider` here as at provisioning time. The checkpoint has that
+provider's key name baked in as a stub, so a mismatch leaves the harness without a
+credential.
 
 `tasks.txt` holds one task id per line, prefixed by suite:
 
@@ -198,7 +211,8 @@ explicitly in the report which ones were relaxed.
 
 | Rule | Why |
 | --- | --- |
-| Kimi K3 via Fireworks, the same as every published configuration | Harness effects and model effects are otherwise inseparable |
+| Kimi K3, the same model as every published configuration, from any provider serving it | Harness effects and model effects are otherwise inseparable |
+| Provider token prices matching the baselines, or a stated caveat | Pass rate survives a provider swap; the cost column does not |
 | One golden checkpoint per task set, every trial a fresh restore | Identical cold start, identical disk and memory state |
 | Identical vCPU, memory, and disk across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |

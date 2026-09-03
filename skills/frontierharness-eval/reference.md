@@ -22,32 +22,64 @@ a new runtime; it never mutates the checkpoint. Full docs: <https://runta.com/do
 Use `--` before the remote command in `runta exec` whenever arguments could be parsed as
 CLI options, and wrap multi-step commands in `sh -lc '...'`.
 
-## Model
+## Model and providers
 
-The benchmark is fixed to **Kimi K3 served by Fireworks**, matching `benchmark.json`
-(`"model": "Kimi K3"`, `"model_provider": "Fireworks"`). Both scripts default to it and
-warn if it is overridden.
+The benchmark fixes the **model** at **Kimi K3**, matching `benchmark.json`
+(`"model": "Kimi K3"`). Both scripts warn if the model is anything else. The
+**provider** is a choice: the published baselines used Fireworks
+(`"model_provider": "Fireworks"`), but the same weights from another provider give a
+comparable pass rate. Select one with `--provider`; the presets live in
+`scripts/providers.sh`.
 
-| Field | Value |
-| --- | --- |
-| Runner model id | `fireworks_ai/accounts/fireworks/models/kimi-k3` |
-| Fireworks model path | `accounts/fireworks/models/kimi-k3` |
-| Credential | `FIREWORKS_API_KEY`, stored as a Runta secret stub |
-| Egress host | `api.fireworks.ai` |
+| `--provider` | Model route | Credential | Egress host |
+| --- | --- | --- | --- |
+| `fireworks` (default) | `fireworks_ai/accounts/fireworks/models/kimi-k3` | `FIREWORKS_API_KEY` | `api.fireworks.ai` |
+| `moonshot` | `moonshot/kimi-k3` | `MOONSHOT_API_KEY` | `api.moonshot.ai` |
+| `openrouter` | `openrouter/moonshotai/kimi-k3` | `OPENROUTER_API_KEY` | `openrouter.ai` |
+| `together` | `together_ai/moonshotai/Kimi-K3` | `TOGETHER_API_KEY` | `api.together.xyz` |
+| `custom` | `--model` (required) | `--secret-name` (required) | set egress yourself |
 
-The `fireworks_ai/` prefix is the LiteLLM provider route, which is what Harbor, Pier,
-and `mini-swe-agent` expect. A harness that calls Fireworks directly through an
-OpenAI-compatible client wants the bare model path against
-`https://api.fireworks.ai/inference/v1` instead.
+The provider prefix is the LiteLLM provider route, which is what Harbor, Pier, and
+`mini-swe-agent` expect. A harness that calls the provider directly through an
+OpenAI-compatible client wants the bare model id against that provider's base URL
+instead: `accounts/fireworks/models/kimi-k3` at `https://api.fireworks.ai/inference/v1`,
+`kimi-k3` at `https://api.moonshot.ai/v1`, and so on. Moonshot's China platform is
+`https://api.moonshot.cn/v1` with a separate key; keys are not interchangeable across
+its regional platforms.
 
-Do not substitute the `kimi-k3-fast` or `kimi-k3-us` routers. They are the same weights
-but priced at a premium (+50% and +10%), which would inflate every cost metric relative
-to the published baselines.
+Use `custom` for a gateway, a regional endpoint, or a provider not listed here, and keep
+the model id recognisably Kimi K3 or the scripts will warn:
 
-Standard serverless pricing is $3.00 per million input tokens, $0.30 per million cached
-input tokens, and $15.00 per million output tokens. Cached reads being 10x cheaper than
-fresh input is why cache hit rate moves cost so much between harnesses, and why the
-published baselines reprice first-turn cache reads before comparing.
+```bash
+--provider custom \
+  --model openai/kimi-k3 \
+  --secret-name MY_GATEWAY_API_KEY
+```
+
+Whichever provider you pick, set egress to its host so trials stay air-gapped apart from
+the model call:
+
+```bash
+runta egress set fh-build --mode allowlist --allow api.moonshot.ai
+```
+
+### Cost comparability
+
+Pass rate survives a provider swap because the model is identical. Cost only survives if
+the token prices do. Moonshot's list price is $3.00 per million input tokens, $0.30 per
+million cached input tokens, and $15.00 per million output tokens, and Fireworks
+standard serverless, OpenRouter, and Together all matched those three numbers at the
+time of writing. Verify against the provider's own pricing page before comparing a cost
+number, since these move; `build-report.mjs` flags any non-baseline provider as a caveat
+rather than assuming parity.
+
+Two Fireworks routers are traps: `kimi-k3-fast` and `kimi-k3-us` are the same weights at
+a premium (+50% and +10%), which inflates every cost metric relative to the baselines.
+
+Cached reads being 10x cheaper than fresh input is why cache hit rate moves cost so much
+between harnesses, and why the published baselines reprice first-turn cache reads before
+comparing. Providers also differ in cache *behaviour* — minimum prefix length and TTL —
+so a provider swap can shift cache hit rate even at identical prices.
 
 ## Runner templates
 

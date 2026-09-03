@@ -3,12 +3,15 @@
 # collecting trajectories and verifier logs as evidence.
 set -euo pipefail
 
-# The benchmark is fixed to Kimi K3 served by Fireworks; see provision-golden-checkpoint.sh.
-DEFAULT_MODEL="fireworks_ai/accounts/fireworks/models/kimi-k3"
+# shellcheck source=providers.sh
+. "$(cd "$(dirname "$0")" && pwd)/providers.sh"
+
+# The benchmark is fixed to Kimi K3; the provider is free. See providers.sh.
+PROVIDER="fireworks"
 
 CHECKPOINT=""
 HARNESS=""
-MODEL="$DEFAULT_MODEL"
+MODEL=""
 RUN_ID=""
 TASKS=""
 OUT="runs"
@@ -18,16 +21,18 @@ TIMEOUT=5400
 usage() {
   cat <<EOF
 Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID --tasks FILE
-                     [--model ID] [--out DIR] [--cmd TEMPLATE] [--timeout SEC]
+                     [--provider NAME] [--model ID] [--out DIR] [--cmd TEMPLATE]
+                     [--timeout SEC]
 
-  --tasks FILE   One task id per line: terminal-bench/<id> or datacurve/<id>
-  --model ID     Model passed to the runner. The benchmark is fixed to Kimi K3, so this
-                 defaults to and should stay at:
-                   $DEFAULT_MODEL
-  --out DIR      Root output directory (default runs)
-  --cmd TEMPLATE Override the runner command. Placeholders: {task} {suite} {harness}
-                 {model} {jobs}. Default templates are per suite, see reference.md.
-  --timeout SEC  Per-task timeout in seconds (default 5400, matching task.toml)
+  --tasks FILE    One task id per line: terminal-bench/<id> or datacurve/<id>
+  --provider NAME Kimi K3 provider, must match the golden checkpoint's provider.
+                  Default fireworks. One of: $PROVIDER_LIST
+  --model ID      Override the model route. Must still be Kimi K3; the benchmark does
+                  not vary the model. Required with --provider custom.
+  --out DIR       Root output directory (default runs)
+  --cmd TEMPLATE  Override the runner command. Placeholders: {task} {suite} {harness}
+                  {model} {jobs}. Default templates are per suite, see reference.md.
+  --timeout SEC   Per-task timeout in seconds (default 5400, matching task.toml)
 
 Re-running an existing --run-id only re-runs the listed tasks and leaves the rest.
 EOF
@@ -37,6 +42,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --checkpoint) CHECKPOINT=$2; shift 2 ;;
     --harness) HARNESS=$2; shift 2 ;;
+    --provider) PROVIDER=$2; shift 2 ;;
     --model) MODEL=$2; shift 2 ;;
     --run-id) RUN_ID=$2; shift 2 ;;
     --tasks) TASKS=$2; shift 2 ;;
@@ -56,10 +62,16 @@ for required in CHECKPOINT HARNESS RUN_ID TASKS; do
   fi
 done
 
-case "$MODEL" in
-  *kimi-k3*|*kimi_k3*|*[Kk]imi?K3*) ;;
-  *) echo "warning: --model $MODEL is not Kimi K3. The published FrontierHarness results all use Kimi K3, so this score will not be comparable to them." >&2 ;;
-esac
+if ! resolve_provider "$PROVIDER"; then
+  echo "unknown --provider $PROVIDER; expected one of: $PROVIDER_LIST" >&2
+  exit 2
+fi
+MODEL=${MODEL:-$PROVIDER_MODEL}
+if [ -z "$MODEL" ]; then
+  echo "--provider custom needs --model" >&2
+  exit 2
+fi
+warn_unless_kimi_k3 "$MODEL"
 
 : "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
 command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }
@@ -70,8 +82,10 @@ RUN_DIR="$OUT/$RUN_ID"
 mkdir -p "$RUN_DIR/trials"
 
 jq -n --arg run_id "$RUN_ID" --arg checkpoint "$CHECKPOINT" --arg harness "$HARNESS" \
-      --arg model "$MODEL" --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-  '{run_id:$run_id, checkpoint:$checkpoint, harness:$harness, model:$model, started_at:$started}' \
+      --arg model "$MODEL" --arg provider "$PROVIDER" \
+      --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  '{run_id:$run_id, checkpoint:$checkpoint, harness:$harness, model:$model,
+    provider:$provider, started_at:$started}' \
   > "$RUN_DIR/run.json"
 
 # Harbor drives Terminal-Bench tasks; Pier drives DeepSWE tasks in air-gapped mode.

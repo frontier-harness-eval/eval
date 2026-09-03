@@ -3,18 +3,20 @@
 # harness under evaluation, then freeze the result as a golden checkpoint.
 set -euo pipefail
 
-# FrontierHarness holds the model constant at Kimi K3 served by Fireworks so that the
-# harness is the only thing that varies. Overriding these breaks comparability.
-DEFAULT_MODEL="fireworks_ai/accounts/fireworks/models/kimi-k3"
-DEFAULT_SECRET_NAME="FIREWORKS_API_KEY"
+# shellcheck source=providers.sh
+. "$(cd "$(dirname "$0")" && pwd)/providers.sh"
+
+# FrontierHarness holds the model constant at Kimi K3 so the harness is the only thing
+# that varies. The provider is free; the published baselines used Fireworks.
+PROVIDER="fireworks"
 
 RUNTIME=""
 CHECKPOINT=""
 HARNESS=""
 REPO=""
 COMMIT=""
-MODEL="$DEFAULT_MODEL"
-SECRET_NAME="$DEFAULT_SECRET_NAME"
+MODEL=""
+SECRET_NAME=""
 INSTALL_SCRIPT=""
 PREPULL_TASKS=""
 CPUS=4
@@ -35,11 +37,13 @@ Required:
   --commit SHA          Commit to pin the harness to
 
 Options:
-  --model ID            Model passed to the runner. The benchmark is fixed to Kimi K3,
-                        so this defaults to and should stay at:
-                          $DEFAULT_MODEL
-  --secret-name NAME    Env var holding the provider key, stored as a Runta secret stub
-                        (default $DEFAULT_SECRET_NAME)
+  --provider NAME       Kimi K3 provider (default fireworks, as used by the published
+                        baselines). One of: $PROVIDER_LIST
+                        Each preset picks the model route and key name for you.
+  --model ID            Override the model route. Must still be Kimi K3; the benchmark
+                        does not vary the model. Required with --provider custom.
+  --secret-name NAME    Env var holding the provider key, stored as a Runta secret stub.
+                        Defaults to the provider preset, required with custom.
   --install-script PATH Local script uploaded and run inside /work/harness to build it
   --prepull-tasks DIR   Directory of <task>/task.toml files whose images are pre-pulled
   --cpus N              vCPUs (default 4)
@@ -56,6 +60,7 @@ while [ $# -gt 0 ]; do
     --harness) HARNESS=$2; shift 2 ;;
     --repo) REPO=$2; shift 2 ;;
     --commit) COMMIT=$2; shift 2 ;;
+    --provider) PROVIDER=$2; shift 2 ;;
     --model) MODEL=$2; shift 2 ;;
     --secret-name) SECRET_NAME=$2; shift 2 ;;
     --install-script) INSTALL_SCRIPT=$2; shift 2 ;;
@@ -77,14 +82,28 @@ for required in RUNTIME CHECKPOINT HARNESS REPO COMMIT; do
   fi
 done
 
-case "$MODEL" in
-  *kimi-k3*|*kimi_k3*|*[Kk]imi?K3*) ;;
-  *) echo "warning: --model $MODEL is not Kimi K3. The published FrontierHarness results all use Kimi K3, so this score will not be comparable to them." >&2 ;;
-esac
+if ! resolve_provider "$PROVIDER"; then
+  echo "unknown --provider $PROVIDER; expected one of: $PROVIDER_LIST" >&2
+  exit 2
+fi
+# Explicit flags win over the provider preset.
+MODEL=${MODEL:-$PROVIDER_MODEL}
+SECRET_NAME=${SECRET_NAME:-$PROVIDER_SECRET}
+
+if [ -z "$MODEL" ] || [ -z "$SECRET_NAME" ]; then
+  echo "--provider custom needs both --model and --secret-name" >&2
+  exit 2
+fi
+warn_unless_kimi_k3 "$MODEL"
 
 : "${RUNTA_TOKEN:?RUNTA_TOKEN is not set}"
 command -v runta >/dev/null || { echo "runta CLI not found" >&2; exit 1; }
 command -v jq >/dev/null || { echo "jq not found" >&2; exit 1; }
+# Checked before anything is created, so a missing key does not leave a runtime behind.
+if [ -z "${!SECRET_NAME:-}" ]; then
+  echo "environment variable $SECRET_NAME is empty; export your $PROVIDER key first" >&2
+  exit 1
+fi
 
 step() { printf '\n=== %s\n' "$1" >&2; }
 rexec() { runta exec "$RUNTIME" -- sh -lc "$1"; }
@@ -92,19 +111,11 @@ rexec() { runta exec "$RUNTIME" -- sh -lc "$1"; }
 step "1/8 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB)"
 runta run --name "$RUNTIME" --cpus "$CPUS" --memory "$MEMORY"
 
-if [ -n "$SECRET_NAME" ]; then
-  step "2/8 storing $SECRET_NAME as a Runta secret stub"
-  if [ -z "${!SECRET_NAME:-}" ]; then
-    echo "environment variable $SECRET_NAME is empty; export the provider key first" >&2
-    exit 1
-  fi
-  runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
-  # The real value stays in the egress proxy; the runtime only ever sees the stub.
-  rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
-    || echo "warning: $SECRET_NAME is not exposed as a stub inside the runtime" >&2
-else
-  step "2/8 skipping secret setup (no --secret-name)"
-fi
+step "2/8 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
+runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
+# The real value stays in the egress proxy; the runtime only ever sees the stub.
+rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
+  || echo "warning: $SECRET_NAME is not exposed as a stub inside the runtime" >&2
 
 step "3/8 installing base tooling"
 rexec 'set -eu
@@ -178,6 +189,8 @@ rexec "set -eu
   \"harness_commit\": \"\$(git rev-parse HEAD)\",
   \"harness_describe\": \"\$(git describe --tags --always 2>/dev/null || echo unknown)\",
   \"model\": \"$MODEL\",
+  \"provider\": \"$PROVIDER\",
+  \"provider_host\": \"$PROVIDER_HOST\",
   \"checkpoint\": \"$CHECKPOINT\",
   \"cpus\": $CPUS,
   \"memory_mib\": $MEMORY,
@@ -201,8 +214,9 @@ cat >&2 <<EOF
 
 Golden checkpoint ready: $CHECKPOINT
 Manifest saved to:       ./manifest-${CHECKPOINT}.json
+Provider:                $PROVIDER ($MODEL)
 
 Next:
-  scripts/run-trials.sh --checkpoint $CHECKPOINT --harness $HARNESS \\
-    --model $MODEL --run-id \$(date +%Y-%m-%d)-$HARNESS --tasks tasks.txt --out runs
+  $(dirname "$0")/run-trials.sh --checkpoint $CHECKPOINT --harness $HARNESS \\
+    --provider $PROVIDER --run-id \$(date +%Y-%m-%d)-$HARNESS --tasks tasks.txt --out runs
 EOF

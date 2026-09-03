@@ -1,5 +1,5 @@
 {
-  "name": "frontierharness-eval",
+  "name": "@frontierharness/eval",
   "version": "1.0.0",
   "description": "Benchmark your own coding-agent harness against FrontierHarness Eval: sets up the benchmark workspace and installs the agent skill that drives the run.",
   "type": "module",
@@ -8,6 +8,9 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "cli",

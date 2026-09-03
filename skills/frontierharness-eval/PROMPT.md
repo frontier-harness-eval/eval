@@ -5,11 +5,11 @@ the other half: a prompt you paste into any coding agent that can read files and
 shell commands, so it drives the run for you instead of you translating `SKILL.md` into
 commands by hand.
 
-Run `npx frontierharness-eval` (or clone this repository) to get a workspace holding the
+Run `npx @frontierharness/eval` (or clone this repository) to get a workspace holding the
 skill and the benchmark data, open it as the agent's workspace, and work from its root —
 every path in the skill is relative to it.
 
-`npx frontierharness-eval prompt --harness … --repo … --commit … --provider …` prints the
+`npx @frontierharness/eval prompt --harness … --repo … --commit … --provider …` prints the
 prompt below with those blanks already filled in.
 
 ## Fill in five things
@@ -87,7 +87,7 @@ A full sweep is 30 tasks, each with its own restore and its own model spend. If 
 never run the skill before, replace step 5 with this and get a complete report end to
 end for a fraction of the cost:
 
-(`npx frontierharness-eval prompt --smoke` prints the prompt with this substitution
+(`npx @frontierharness/eval prompt --smoke` prints the prompt with this substitution
 already applied.)
 
 ```text

@@ -20,7 +20,7 @@ jq --version && node --version  # jq for trial parsing, node >= 18 for the repor
 ```
 
 Run every command below from the repository root — or from the workspace that
-`npx frontierharness-eval` creates, which has the same layout — so
+`npx @frontierharness/eval` creates, which has the same layout — so
 `results/eval-data.json`, `benchmark.json`, and `tasks/` resolve. This repo has its own
 `scripts/` directory, so address the skill's scripts through an explicit variable rather
 than a bare `scripts/`:

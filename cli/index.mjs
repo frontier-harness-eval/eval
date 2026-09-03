@@ -32,7 +32,7 @@ const AGENTS = {
   codex: { skills: join(".agents", "skills"), markers: [".agents", ".codex"] },
 };
 
-// SKILL.md step -> script, so `npx frontierharness-eval run` is the documented
+// SKILL.md step -> script, so `npx @frontierharness/eval run` is the documented
 // $FH/run-trials.sh with the workspace as its working directory.
 const SCRIPTS = {
   provision: "provision-golden-checkpoint.sh",
@@ -48,7 +48,7 @@ await main(process.argv.slice(2)).catch(error => die(process.env.DEBUG ? error :
 
 async function main(argv) {
   const [first, ...rest] = argv;
-  // Bare flags such as `npx frontierharness-eval --global` still mean install.
+  // Bare flags such as `npx @frontierharness/eval --global` still mean install.
   const command = !first || first.startsWith("-") ? "install" : first;
   const args = command === first ? rest : argv;
 
@@ -110,12 +110,12 @@ Next:
   ${cd ? `cd ${cd}` : "# already in the workspace"}
   export RUNTA_TOKEN=rt_...        # Runta dashboard -> Settings -> Runta API Keys
   export FIREWORKS_API_KEY=...     # or the key for whichever --provider you use
-  npx frontierharness-eval doctor  # check prerequisites before spending anything
+  npx @frontierharness/eval doctor  # check prerequisites before spending anything
 
 Then either open the workspace in your agent and paste the driving prompt:
-  npx frontierharness-eval prompt --harness my-harness --repo https://github.com/acme/my-harness --commit 9f2c1ab
+  npx @frontierharness/eval prompt --harness my-harness --repo https://github.com/acme/my-harness --commit 9f2c1ab
 or run the steps yourself:
-  npx frontierharness-eval provision --help`);
+  npx @frontierharness/eval provision --help`);
 }
 
 async function materialize(workspace, flags) {
@@ -197,7 +197,7 @@ async function doctor(argv) {
   const node = Number(process.versions.node.split(".")[0]);
   const results = [
     { label: "node >= 18", ok: node >= 18, detail: process.version, hint: "install Node 18 or newer" },
-    { label: "workspace", ok: isWorkspace(workspace), detail: tilde(workspace), hint: "run: npx frontierharness-eval" },
+    { label: "workspace", ok: isWorkspace(workspace), detail: tilde(workspace), hint: "run: npx @frontierharness/eval" },
     await checkCommand("runta CLI", "runta", ["--version"], "brew install runta-dev/tap/runta"),
     await checkCommand("jq", "jq", ["--version"], "brew install jq"),
     // The same probe require_runta_auth() uses: RUNTA_TOKEN and `runta login` both
@@ -306,12 +306,12 @@ function forward(command, argv) {
   const { flags } = parseFlags(argv);
   const workspace = resolveWorkspace(flags);
   if (!isWorkspace(workspace)) {
-    die(`no workspace at ${tilde(workspace)}; run: npx frontierharness-eval`);
+    die(`no workspace at ${tilde(workspace)}; run: npx @frontierharness/eval`);
   }
 
   const script = SCRIPTS[command];
   const path = join(workspace, SCRIPTS_DIR, script);
-  if (!existsSync(path)) die(`${script} is missing from ${tilde(workspace)}; re-run: npx frontierharness-eval --force`);
+  if (!existsSync(path)) die(`${script} is missing from ${tilde(workspace)}; re-run: npx @frontierharness/eval --force`);
 
   // Scripts are invoked through their interpreter so a lost executable bit or a
   // noexec mount cannot break the run.
@@ -376,7 +376,7 @@ function usage() {
 function usageText() {
   return `FrontierHarness Eval — benchmark your harness on the published tasks and runtime.
 
-Usage: npx frontierharness-eval [command] [options]
+Usage: npx @frontierharness/eval [command] [options]
 
 Commands:
   install (default)  Create the benchmark workspace and install the skill for your agents
@@ -403,9 +403,9 @@ Prompt options:
 
 provision, run, normalize, chart and report forward every other flag to the skill's own
 scripts with the workspace as the working directory, so SKILL.md applies verbatim:
-  npx frontierharness-eval provision --runtime fh-build --checkpoint fh-golden-v1 \\
+  npx @frontierharness/eval provision --runtime fh-build --checkpoint fh-golden-v1 \\
     --harness my-harness --repo https://github.com/acme/my-harness --commit 9f2c1ab
-  npx frontierharness-eval run --checkpoint fh-golden-v1 --harness my-harness \\
+  npx @frontierharness/eval run --checkpoint fh-golden-v1 --harness my-harness \\
     --run-id 2026-09-02-myharness --out runs
 
 Docs: https://frontierharness.org`;

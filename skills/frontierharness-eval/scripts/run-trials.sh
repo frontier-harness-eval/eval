@@ -17,6 +17,8 @@ TASKS=""
 OUT="runs"
 CMD_TEMPLATE=""
 TIMEOUT=5400
+SECRET_NAME=""
+SECRET_HOST=""
 
 usage() {
   cat <<EOF
@@ -33,6 +35,10 @@ Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID --tasks FILE
   --cmd TEMPLATE  Override the runner command. Placeholders: {task} {suite} {harness}
                   {model} {jobs}. Default templates are per suite, see reference.md.
   --timeout SEC   Per-task timeout in seconds (default 5400, matching task.toml)
+  --secret-name NAME  Provider key to inject on egress. Defaults to the provider preset.
+  --secret-host HOST  Host the key is injected for. Defaults to the provider preset.
+                  Credential injection rules are per-runtime and are not carried by a
+                  checkpoint, so each restored trial runtime needs the rule reapplied.
 
 Re-running an existing --run-id only re-runs the listed tasks and leaves the rest.
 EOF
@@ -49,6 +55,8 @@ while [ $# -gt 0 ]; do
     --out) OUT=$2; shift 2 ;;
     --cmd) CMD_TEMPLATE=$2; shift 2 ;;
     --timeout) TIMEOUT=$2; shift 2 ;;
+    --secret-name) SECRET_NAME=$2; shift 2 ;;
+    --secret-host) SECRET_HOST=$2; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "unknown option: $1" >&2; usage >&2; exit 2 ;;
   esac
@@ -67,6 +75,8 @@ if ! resolve_provider "$PROVIDER"; then
   exit 2
 fi
 MODEL=${MODEL:-$PROVIDER_MODEL}
+SECRET_NAME=${SECRET_NAME:-$PROVIDER_SECRET}
+SECRET_HOST=${SECRET_HOST:-$PROVIDER_HOST}
 if [ -z "$MODEL" ]; then
   echo "--provider custom needs --model" >&2
   exit 2
@@ -150,6 +160,36 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       '{id:$id, title:$t, status:"infra_invalid", success:false, error:"checkpoint restore failed"}' \
       > "$trial_dir/trial.json"
     continue
+  fi
+
+  # `checkpoint restore` returns as soon as the restore is accepted, while the runtime is
+  # still provisioning. Until it finishes, exec fails with a 504 and secret rules with
+  # FAILED_PRECONDITION, so wait for a usable runtime rather than scoring the race.
+  ready=0
+  for _ in $(seq 1 60); do
+    if runta exec "$runtime" -- sh -lc 'exit 0' >>"$trial_dir/restore.log" 2>&1; then
+      ready=1
+      break
+    fi
+    sleep 5
+  done
+  if [ "$ready" -ne 1 ]; then
+    echo "restored runtime never became ready for $entry" >&2
+    jq -n --arg id "$entry" --arg t "$task" --arg rt "$runtime" \
+      '{id:$id, title:$t, status:"infra_invalid", success:false,
+        error:"restored runtime never became ready", runtime:$rt}' \
+      > "$trial_dir/trial.json"
+    runta rm "$runtime" >/dev/null 2>&1 || true
+    continue
+  fi
+
+  # Injection rules live on the runtime, not in the checkpoint, so without this the
+  # harness sends the stub placeholder to the provider and every turn fails on auth.
+  if [ -n "$SECRET_NAME" ] && [ -n "$SECRET_HOST" ]; then
+    runta secret rule set "$runtime" --secret "$SECRET_NAME" --host "$SECRET_HOST" \
+      --header Authorization --template 'Bearer ${secret}' \
+      >>"$trial_dir/restore.log" 2>&1 \
+      || echo "warning: could not set the credential rule on $runtime" >&2
   fi
 
   jobs_dir="/work/jobs/$slug"

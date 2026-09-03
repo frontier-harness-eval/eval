@@ -79,7 +79,7 @@ $FH/provision-golden-checkpoint.sh \
   --provider fireworks \
   --repo https://github.com/acme/my-harness \
   --commit 9f2c1ab \
-  --cpus 4 --memory 8192 \
+  --cpus 4 --memory 8192 --disk-size-gib 100 \
   --prepull-tasks tasks \
   --install-script ./install-my-harness.sh
 ```
@@ -87,7 +87,10 @@ $FH/provision-golden-checkpoint.sh \
 What the script does, and why each part matters:
 
 - **Clean runtime.** `runta run` with no `--agent` preset, so no vendor harness is
-  pre-installed and nothing competes with the harness under test.
+  pre-installed and nothing competes with the harness under test. Disk defaults to
+  100 GiB, which is what the eval environment needs: building a harness from source
+  plus the pre-pulled task images overflows the 16 GiB Runtime Image default. Keep it
+  at 100 GiB so every trial restores with the same capacity as the baselines.
 - **Repo pinned by commit.** The harness is cloned to `/work/harness` at `--commit`.
   A branch name is not reproducible; always pin a SHA.
 - **Benchmark stack.** Installs `uv`, `harbor` for Terminal-Bench, `pier` plus the
@@ -214,7 +217,7 @@ explicitly in the report which ones were relaxed.
 | Kimi K3, the same model as every published configuration, from any provider serving it | Harness effects and model effects are otherwise inseparable |
 | Provider token prices matching the baselines, or a stated caveat | Pass rate survives a provider swap; the cost column does not |
 | One golden checkpoint per task set, every trial a fresh restore | Identical cold start, identical disk and memory state |
-| Identical vCPU, memory, and disk across all restores | Compute differences show up as time and pass-rate differences |
+| Identical vCPU, memory, and disk (100 GiB) across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |
 | Canonical result is the first valid attempt | Matches `benchmark.json` `canonical_selection` |
 | Infra failures marked `infra_invalid`, not `failure` | A crashed runtime is not a harness failure |

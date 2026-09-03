@@ -21,6 +21,7 @@ INSTALL_SCRIPT=""
 PREPULL_TASKS=""
 CPUS=4
 MEMORY=8192
+DISK_GIB=100
 DEEP_SWE_REF="main"
 KEEP_RUNTIME=0
 
@@ -48,6 +49,9 @@ Options:
   --prepull-tasks DIR   Directory of <task>/task.toml files whose images are pre-pulled
   --cpus N              vCPUs (default 4)
   --memory MIB          Memory in MiB (default 8192)
+  --disk-size-gib GIB   Writable overlay capacity (default 100). The eval environment
+                        needs this much: a harness built from source plus the pre-pulled
+                        task images overflows the 16 GiB Runtime Image default.
   --deep-swe-ref REF    Git ref for the deep-swe corpus (default main)
   --keep-runtime        Do not delete the build runtime after checkpointing
 EOF
@@ -67,6 +71,7 @@ while [ $# -gt 0 ]; do
     --prepull-tasks) PREPULL_TASKS=$2; shift 2 ;;
     --cpus) CPUS=$2; shift 2 ;;
     --memory) MEMORY=$2; shift 2 ;;
+    --disk-size-gib) DISK_GIB=$2; shift 2 ;;
     --deep-swe-ref) DEEP_SWE_REF=$2; shift 2 ;;
     --keep-runtime) KEEP_RUNTIME=1; shift ;;
     -h|--help) usage; exit 0 ;;
@@ -81,6 +86,13 @@ for required in RUNTIME CHECKPOINT HARNESS REPO COMMIT; do
     exit 2
   fi
 done
+
+case "$DISK_GIB" in
+  ''|*[!0-9]*) echo "--disk-size-gib must be a whole number of GiB" >&2; exit 2 ;;
+esac
+if [ "$DISK_GIB" -lt 100 ]; then
+  echo "warning: disk ${DISK_GIB} GiB is below the 100 GiB the eval environment needs" >&2
+fi
 
 if ! resolve_provider "$PROVIDER"; then
   echo "unknown --provider $PROVIDER; expected one of: $PROVIDER_LIST" >&2
@@ -108,8 +120,8 @@ fi
 step() { printf '\n=== %s\n' "$1" >&2; }
 rexec() { runta exec "$RUNTIME" -- sh -lc "$1"; }
 
-step "1/8 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB)"
-runta run --name "$RUNTIME" --cpus "$CPUS" --memory "$MEMORY"
+step "1/8 creating clean runtime $RUNTIME (${CPUS} vCPU, ${MEMORY} MiB, disk ${DISK_GIB} GiB)"
+runta run --name "$RUNTIME" --cpus "$CPUS" --memory "$MEMORY" --disk-size-gib "$DISK_GIB"
 
 step "2/8 storing $SECRET_NAME as a Runta secret stub ($PROVIDER)"
 runta secret set "$SECRET_NAME" --value-env "$SECRET_NAME"
@@ -194,6 +206,7 @@ rexec "set -eu
   \"checkpoint\": \"$CHECKPOINT\",
   \"cpus\": $CPUS,
   \"memory_mib\": $MEMORY,
+  \"disk_size_gib\": $DISK_GIB,
   \"deep_swe_commit\": \"\$(git -C /work/deep-swe rev-parse HEAD)\",
   \"harbor_version\": \"\$(harbor --version 2>&1 | head -1)\",
   \"pier_version\": \"\$(pier --version 2>&1 | head -1)\",
@@ -203,7 +216,12 @@ rexec "set -eu
 MANIFEST
   jq . /work/manifest.json"
 
-runta cp "$RUNTIME:/work/manifest.json" "./manifest-${CHECKPOINT}.json"
+# runta cp 0.1.21 transfers the file but can still exit non-zero ("unable to create
+# download tar archive"), so the copy is judged on what arrived, not on the exit code.
+runta cp "$RUNTIME:/work/manifest.json" "./manifest-${CHECKPOINT}.json" || true
+jq -e . "./manifest-${CHECKPOINT}.json" >/dev/null \
+  || { echo "manifest did not copy out of $RUNTIME" >&2; exit 1; }
+
 runta checkpoint create "$RUNTIME" "$CHECKPOINT"
 
 if [ "$KEEP_RUNTIME" -eq 0 ]; then

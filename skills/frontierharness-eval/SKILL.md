@@ -1,7 +1,6 @@
 ---
 name: frontierharness-eval
 description: Benchmark a third-party coding-agent harness against FrontierHarness Eval using Runta runtimes. Provisions a clean runtime bound to the GitHub repo under evaluation, installs the Harbor and Pier stacks needed for Terminal-Bench and DeepSWE tasks, freezes a golden checkpoint, runs tasks from identical fresh restores while saving trajectories as evidence, generates a comparison diagram, and builds a shareable report. Use when evaluating, benchmarking, scoring, or comparing a coding agent harness, or when the user mentions FrontierHarness, DeepSWE, Terminal-Bench, Harbor, Pier, golden checkpoints, or harness trajectories.
-disable-model-invocation: true
 ---
 
 # FrontierHarness Eval for a Third-Party Harness
@@ -25,7 +24,7 @@ Run every command below from the repository root, so `results/eval-data.json`,
 address the skill's scripts through an explicit variable rather than a bare `scripts/`:
 
 ```bash
-FH=.cursor/skills/frontierharness-eval/scripts
+FH=skills/frontierharness-eval/scripts
 ```
 
 Collect from the user before starting: harness name and version, the GitHub repo and

@@ -116,7 +116,9 @@ DeepSWE tasks go through Pier rather than Harbor.
 
 If a harness is not a built-in agent for either runner, register it as a custom agent in
 the runner's agent registry inside `--install-script`, then pass its registered name as
-`--harness`.
+`--harness`. Suite-specific overrides `--terminal-cmd` and `--datacurve-cmd` on
+`run-trials.sh` win over `--cmd` so a custom Harbor import path does not have to be the
+DeepSWE command too. graff uses that split: see [graff.md](graff.md).
 
 ## Running Harbor with Runta as the environment provider
 

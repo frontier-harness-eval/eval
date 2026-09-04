@@ -181,6 +181,13 @@ if [ -n "$INSTALL_SCRIPT" ]; then
   step "6/9 running harness install script"
   [ -f "$INSTALL_SCRIPT" ] || { echo "install script not found: $INSTALL_SCRIPT" >&2; exit 1; }
   runta cp "$INSTALL_SCRIPT" "$RUNTIME:/work/install-harness.sh"
+  agents_dir="$(cd "$(dirname "$INSTALL_SCRIPT")" && pwd)/../agents"
+  if [ -d "$agents_dir" ]; then
+    for agent in "$agents_dir"/*.py; do
+      [ -f "$agent" ] || continue
+      runta cp "$agent" "$RUNTIME:/work/$(basename "$agent")"
+    done
+  fi
   rexec 'set -eu
     export PATH="$HOME/.local/bin:$PATH"
     chmod +x /work/install-harness.sh
@@ -260,6 +267,10 @@ rexec "set -eu
   \"created_at\": \"\$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
 }
 MANIFEST
+  if [ -f /work/harness-extra.json ]; then
+    jq -s '.[0] * .[1]' /work/manifest.json /work/harness-extra.json > /work/manifest.merged.json
+    mv /work/manifest.merged.json /work/manifest.json
+  fi
   jq . /work/manifest.json"
 
 # runta cp 0.1.21 transfers the file but can still exit non-zero ("unable to create

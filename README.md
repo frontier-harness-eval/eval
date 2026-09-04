@@ -86,6 +86,12 @@ The workflow that produced the table above ships with this repository, so a harn
 
 [`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run — freezing the golden checkpoint, running every task from an identical fresh restore, scoring the trials, and building the report.
 
+graff has a ready-made profile: Harbor and Pier do not ship a built-in adapter, so [`graff.md`](skills/frontierharness-eval/graff.md) registers a checkpointed Linux binary and two thin custom agents. It does not add a leaderboard row — a comparable score still needs a full Kimi K3 sweep.
+
+```bash
+skills/frontierharness-eval/scripts/run-graff.sh --print-command
+```
+
 ## How to use the skill
 
 ### Let an agent drive it

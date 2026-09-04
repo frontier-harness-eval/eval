@@ -255,6 +255,7 @@ values.
 
 ## Additional resources
 
+- graff (Codegraff) profile: [graff.md](graff.md)
 - Command reference, runner templates, and troubleshooting: [reference.md](reference.md)
 - Published results and task definitions: `results/eval-data.json`, `tasks/<task>/task.toml`
 - Source evaluation: <https://frontierharness.org/>

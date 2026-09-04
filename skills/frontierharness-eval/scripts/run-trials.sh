@@ -16,6 +16,8 @@ RUN_ID=""
 TASKS="tasks"
 OUT="runs"
 CMD_TEMPLATE=""
+TERMINAL_CMD_TEMPLATE=""
+DATACURVE_CMD_TEMPLATE=""
 TIMEOUT=5400
 SECRET_NAME=""
 SECRET_HOST=""
@@ -34,8 +36,12 @@ Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID
   --model ID      Override the model route. Must still be Kimi K3; the benchmark does
                   not vary the model. Required with --provider custom.
   --out DIR       Root output directory (default runs)
-  --cmd TEMPLATE  Override the runner command. Placeholders: {task} {suite} {harness}
-                  {model} {jobs}. Default templates are per suite, see reference.md.
+  --cmd TEMPLATE  Override the runner command for every suite. Placeholders: {task}
+                  {suite} {harness} {model} {jobs}. Default templates are per suite.
+  --terminal-cmd TEMPLATE
+                  Override only the Terminal-Bench (Harbor) template. Wins over --cmd.
+  --datacurve-cmd TEMPLATE
+                  Override only the DeepSWE (Pier) template. Wins over --cmd.
   --timeout SEC   Per-task timeout in seconds (default 5400, matching task.toml)
   --secret-name NAME  Provider key to inject on egress. Defaults to the provider preset.
   --secret-host HOST  Host the key is injected for. Defaults to the provider preset.
@@ -56,6 +62,8 @@ while [ $# -gt 0 ]; do
     --tasks) TASKS=$2; shift 2 ;;
     --out) OUT=$2; shift 2 ;;
     --cmd) CMD_TEMPLATE=$2; shift 2 ;;
+    --terminal-cmd) TERMINAL_CMD_TEMPLATE=$2; shift 2 ;;
+    --datacurve-cmd) DATACURVE_CMD_TEMPLATE=$2; shift 2 ;;
     --timeout) TIMEOUT=$2; shift 2 ;;
     --secret-name) SECRET_NAME=$2; shift 2 ;;
     --secret-host) SECRET_HOST=$2; shift 2 ;;
@@ -201,7 +209,11 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   trial_dir="$RUN_DIR/trials/$slug"
   runtime=$(runtime_name "$RUN_ID-$slug")
 
-  template=${CMD_TEMPLATE:-$(default_cmd "$suite")}
+  case "$suite" in
+    terminal-bench) template=${TERMINAL_CMD_TEMPLATE:-${CMD_TEMPLATE:-$(default_cmd "$suite")}} ;;
+    datacurve)      template=${DATACURVE_CMD_TEMPLATE:-${CMD_TEMPLATE:-$(default_cmd "$suite")}} ;;
+    *)              template=${CMD_TEMPLATE:-$(default_cmd "$suite")} ;;
+  esac
   if [ -z "$template" ]; then
     echo "no runner template for suite '$suite'; pass --cmd" >&2
     exit 1

@@ -2,11 +2,11 @@
   "name": "FrontierHarness Eval v1",
   "status": "frozen",
   "model": "Kimi K3",
-  "model_provider": "Fireworks",
+  "model_provider": "Fireworks and Moonshot AI",
   "task_count": 30,
-  "harness_count": 9,
-  "configuration_count": 12,
-  "evaluation_count": 360,
+  "harness_count": 10,
+  "configuration_count": 13,
+  "evaluation_count": 390,
   "canonical_selection": "first valid attempt 1",
   "excluded_labels": ["warm", "smoke"],
   "task_sources": {
@@ -32,7 +32,8 @@
     "kimi-code",
     "oh-my-pi",
     "opencode",
-    "pi-responses"
+    "pi-responses",
+    "kot"
   ],
   "results": "results/eval-data.json",
   "interactive_report": "https://frontierharness.org"

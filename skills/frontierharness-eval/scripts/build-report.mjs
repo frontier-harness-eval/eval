@@ -130,7 +130,8 @@ ${comparison}
 | Model | \`${candidate.model ?? "unspecified"}\` |
 | Provider | ${candidate.provider ? `\`${candidate.provider}\`` : "unspecified"} |
 | Harness repo | ${manifest?.harness_repo ? `\`${manifest.harness_repo}\`` : "see manifest"} |
-| Harness commit | \`${manifest?.harness_commit ?? "unknown"}\` |
+| Harness commit | \`${manifest?.harness_commit || "unknown"}\` |
+| Harness version | \`${manifest?.harness_version || "see trajectories"}\` |
 | Runtime | ${manifest ? `${manifest.cpus} vCPU, ${manifest.memory_mib} MiB` : "see manifest"} |
 | Harbor | \`${manifest?.harbor_version ?? "unknown"}\` |
 | Pier | \`${manifest?.pier_version ?? "unknown"}\` |

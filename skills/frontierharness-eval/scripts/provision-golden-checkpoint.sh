@@ -15,6 +15,7 @@ CHECKPOINT=""
 HARNESS=""
 REPO=""
 COMMIT=""
+HARNESS_VERSION=""
 MODEL=""
 SECRET_NAME=""
 INSTALL_SCRIPT=""
@@ -28,7 +29,8 @@ KEEP_RUNTIME=0
 usage() {
   cat <<EOF
 Usage: provision-golden-checkpoint.sh --runtime NAME --checkpoint NAME --harness NAME
-                                      --repo URL --commit SHA [options]
+                                      (--repo URL --commit SHA | --harness-version VER)
+                                      [options]
 
 Required:
   --runtime NAME        Name for the build runtime (deleted unless --keep-runtime)
@@ -36,6 +38,9 @@ Required:
   --harness NAME        Harness identifier used in reports, e.g. my-harness
   --repo URL            GitHub repo of the harness under evaluation
   --commit SHA          Commit to pin the harness to
+  --harness-version VER Instead of --repo/--commit, for a harness the runner installs
+                        itself (a Harbor or Pier built-in agent such as cursor-cli):
+                        the version the run is expected to report
 
 Options:
   --provider NAME       Kimi K3 provider (default fireworks, as used by the published
@@ -64,6 +69,7 @@ while [ $# -gt 0 ]; do
     --harness) HARNESS=$2; shift 2 ;;
     --repo) REPO=$2; shift 2 ;;
     --commit) COMMIT=$2; shift 2 ;;
+    --harness-version) HARNESS_VERSION=$2; shift 2 ;;
     --provider) PROVIDER=$2; shift 2 ;;
     --model) MODEL=$2; shift 2 ;;
     --secret-name) SECRET_NAME=$2; shift 2 ;;
@@ -79,13 +85,27 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-for required in RUNTIME CHECKPOINT HARNESS REPO COMMIT; do
+for required in RUNTIME CHECKPOINT HARNESS; do
   if [ -z "${!required}" ]; then
     echo "missing --$(echo "$required" | tr 'A-Z_' 'a-z-')" >&2
     usage >&2
     exit 2
   fi
 done
+
+# A harness is pinned one of two ways: a source checkout at a commit, or, when the runner
+# installs it itself, the version it must report. One of the two, never neither.
+if [ -n "$REPO" ] || [ -n "$COMMIT" ]; then
+  if [ -z "$REPO" ] || [ -z "$COMMIT" ]; then
+    echo "--repo and --commit go together" >&2
+    usage >&2
+    exit 2
+  fi
+elif [ -z "$HARNESS_VERSION" ]; then
+  echo "pin the harness with --repo URL --commit SHA, or --harness-version VER for a runner-built-in harness" >&2
+  usage >&2
+  exit 2
+fi
 
 case "$DISK_GIB" in
   ''|*[!0-9]*) echo "--disk-size-gib must be a whole number of GiB" >&2; exit 2 ;;
@@ -150,14 +170,19 @@ rexec 'set -eu
   command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
   mkdir -p /work/jobs /work/evidence'
 
-step "4/9 cloning $REPO at $COMMIT"
-rexec "set -eu
-  export PATH=\"\$HOME/.local/bin:\$PATH\"
-  rm -rf /work/harness
-  git clone --quiet '$REPO' /work/harness
-  cd /work/harness
-  git checkout --quiet '$COMMIT'
-  git rev-parse HEAD"
+if [ -n "$REPO" ]; then
+  step "4/9 cloning $REPO at $COMMIT"
+  rexec "set -eu
+    export PATH=\"\$HOME/.local/bin:\$PATH\"
+    rm -rf /work/harness
+    git clone --quiet '$REPO' /work/harness
+    cd /work/harness
+    git checkout --quiet '$COMMIT'
+    git rev-parse HEAD"
+else
+  step "4/9 no harness source to clone: the runner installs $HARNESS $HARNESS_VERSION per trial"
+  rexec "mkdir -p /work/harness"
+fi
 
 step "5/9 installing Harbor, Pier, and the deep-swe corpus"
 rexec "set -eu
@@ -234,8 +259,9 @@ rexec "set -eu
 {
   \"harness\": \"$HARNESS\",
   \"harness_repo\": \"$REPO\",
-  \"harness_commit\": \"\$(git rev-parse HEAD)\",
+  \"harness_commit\": \"\$(git rev-parse HEAD 2>/dev/null || true)\",
   \"harness_describe\": \"\$(git describe --tags --always 2>/dev/null || echo unknown)\",
+  \"harness_version\": \"$HARNESS_VERSION\",
   \"model\": \"$MODEL\",
   \"provider\": \"$PROVIDER\",
   \"provider_host\": \"$PROVIDER_HOST\",

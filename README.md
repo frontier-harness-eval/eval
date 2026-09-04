@@ -4,10 +4,10 @@
   <a href="https://frontierharness.org"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
   <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
   <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
-  <img alt="9 harnesses" src="https://img.shields.io/badge/harnesses-9-1267c4?style=flat-square" />
-  <img alt="12 configurations" src="https://img.shields.io/badge/configurations-12-3979b8?style=flat-square" />
+  <img alt="10 harnesses" src="https://img.shields.io/badge/harnesses-10-1267c4?style=flat-square" />
+  <img alt="13 configurations" src="https://img.shields.io/badge/configurations-13-3979b8?style=flat-square" />
   <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-168a7d?style=flat-square" />
-  <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
+  <img alt="390 runs" src="https://img.shields.io/badge/evaluations-390-222?style=flat-square" />
 </p>
 
 <p align="center">
@@ -20,19 +20,19 @@
 
 <div align="center">
   <a href="https://frontierharness.org">
-    <img src="assets/frontier-harness-chart.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
+    <img src="assets/frontier-harness-chart.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across ten harnesses and thirteen configurations" />
   </a>
 </div>
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
-## Similar pass rate. 17.5x cost differences.
+## Similar pass rate. 26.7-point pass-rate spread.
 
-We ran the same **Kimi K3** model through nine coding-agent harnesses—12 configurations in total—on the same 30 software-engineering tasks. With the model, tasks, and runtime held constant, changing the harness changed pass rate, cost, cache behavior, and speed.
+We ran the same **Kimi K3** model through ten coding-agent harnesses—13 configurations in total—on the same 30 software-engineering tasks. With the model and tasks held constant, changing the harness configuration changed pass rate, cost, cache behavior, and speed.
 
 <div align="center">
   <a href="https://frontierharness.org">
-    <img src="assets/frontier-harness-leaders.svg" width="100%" alt="FrontierHarness Eval leaders: Codex for quality, Pi for balance, Exo Harness for cost, and DSH Minimal for speed" />
+    <img src="assets/frontier-harness-leaders.svg" width="100%" alt="FrontierHarness Eval leaders: KOT for quality and speed, Pi for balance, and Exo Harness for cost" />
   </a>
 </div>
 
@@ -40,7 +40,8 @@ We ran the same **Kimi K3** model through nine coding-agent harnesses—12 confi
 
 | Harness (configuration) | Pass rate | Median cost per pass | Cache, median cell | Median time |
 | --- | --- | --- | --- | --- |
-| **Codex** | **66.7%** | $3.47 | 88.0% | 6m 43s |
+| **KOT** | **76.7%** | **$2.83** | 94.1% | 5m 0s |
+| Codex | 66.7% | $3.47 | 88.0% | 6m 43s |
 | DSH Creator | 63.3% | $3.28 | 84.3% | 6m 44s |
 | Claude Code | 63.3% | $18.34 | 67.8% | 9m 38s |
 | Pi | 60.0% | $2.43 | 79.4% | 7m 33s |
@@ -84,21 +85,22 @@ The repository intentionally contains **results and task definitions only**. Int
 | DSH Standard | `0.1.0-rc.8` | Oh My Pi | `17.4.0` |
 | Kimi Code | `0.37.2` | Exo Harness | `0.1.0` |
 | OpenCode | `1.18.19` | Hermes | `0.20.4` |
+| KOT | `1.3.1` | | |
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
 
 - FrontierHarness v1.0 focuses on software engineering contexts and terminal-based tasks. It may not generalize to other areas of knowledge work.
-- Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
-- Kimi K3 is served by [Fireworks](https://fireworks.ai/).
+- Evaluated in isolated agent runtimes with the task-specific resource and network settings declared in `task.toml`.
+- Kimi K3 serving endpoints: [Fireworks](https://fireworks.ai/) and [Moonshot AI](https://www.moonshot.ai/).
 
 ### Benchmark scope
 
 - **30 tasks:** 21 Terminal-Bench tasks and 9 DeepSWE tasks
-- **9 harnesses:** Claude Code, Codex, DeepSeek Harness, Exo Harness, Hermes, Kimi Code, Oh My Pi, OpenCode, and Pi
-- **12 configurations:** one canonical result for every task and harness-configuration pair
-- **360 evaluations:** complete task-by-harness coverage
+- **10 harnesses:** Claude Code, Codex, DeepSeek Harness, Exo Harness, Hermes, Kimi Code, KOT, Oh My Pi, OpenCode, and Pi
+- **13 configurations:** one canonical result for every task and harness-configuration pair
+- **390 evaluations:** complete task-by-configuration coverage
 - **Deterministic scoring:** verifier-based pass/fail outcomes
-- **Comparable cost:** first-turn cache reads repriced consistently across harnesses
+- **Cost:** calculated from reported token usage and configuration-specific token prices
 
 See [`benchmark.json`](benchmark.json) for the public benchmark definition and [`results/eval-data.json`](results/eval-data.json) for the complete normalized result set.
 

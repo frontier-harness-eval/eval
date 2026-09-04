@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 
 const evaluation = JSON.parse(await readFile(new URL("../results/eval-data.json", import.meta.url), "utf8"));
-const iconData = Object.fromEntries(await Promise.all(["codex","pi","exo","deepseek"].map(async name => {
+const iconData = Object.fromEntries(await Promise.all(["codex","pi","exo","deepseek","kot"].map(async name => {
   const source = await readFile(new URL(`../assets/harness-icons/${name}.svg`, import.meta.url));
   return [name, `data:image/svg+xml;base64,${source.toString("base64")}`];
 })));
@@ -15,14 +15,16 @@ const speed = [...rows].sort((a,b) => a.median_duration_seconds-b.median_duratio
 const rate = row => `${(row.successful/total*100).toFixed(1)}%`;
 const dollars = row => `$${row.effective_cost_per_pass.toFixed(2)}`;
 const duration = row => `${Math.floor(row.median_duration_seconds/60)}m ${Math.round(row.median_duration_seconds%60)}s`;
+const displayName = row => ({kot:"KOT",codex:"Codex",exo:"Exo Harness","dsh-minimal":"DSH Minimal","pi-responses":"Pi"}[row.name] ?? row.name);
+const iconKind = row => ({kot:"kot",codex:"codex",exo:"exo","pi-responses":"pi"}[row.name] ?? "deepseek");
 const cards = [
-  {title:"Quality Leader",name:"Codex",metric:`${rate(quality)} pass rate · ${dollars(quality)} per task`,kind:"codex"},
+  {title:"Quality Leader",name:displayName(quality),metric:`${rate(quality)} pass rate · ${dollars(quality)} per task`,kind:iconKind(quality)},
   {title:"Balanced Pick",name:"Pi",metric:`${rate(balanced)} pass rate · ${dollars(balanced)} per task`,kind:"pi"},
-  {title:"Cost Leader",name:"Exo Harness",metric:`${dollars(cost)} per task · ${rate(cost)} pass rate`,kind:"exo"},
-  {title:"Speed Leader",name:"DSH Minimal",metric:`${duration(speed)} median runtime · ${rate(speed)} pass rate`,kind:"dsh"},
+  {title:"Cost Leader",name:displayName(cost),metric:`${dollars(cost)} per task · ${rate(cost)} pass rate`,kind:iconKind(cost)},
+  {title:"Speed Leader",name:displayName(speed),metric:`${duration(speed)} median runtime · ${rate(speed)} pass rate`,kind:iconKind(speed)},
 ];
 
-const icon = (kind,x,y) => `<image href="${iconData[kind === "dsh" ? "deepseek" : kind]}" x="${x}" y="${y}" width="32" height="32"/>`;
+const icon = (kind,x,y) => `<image href="${iconData[kind]}" x="${x}" y="${y}" width="32" height="32"/>`;
 
 const card = (item,index) => {
   const x = index%2*600;

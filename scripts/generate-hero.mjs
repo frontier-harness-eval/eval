@@ -4,13 +4,13 @@ const evaluation = JSON.parse(await readFile(new URL("../results/eval-data.json"
 const width = 1200;
 const height = 630;
 const plot = { x: 68, y: 32, width: 1110, height: 530 };
-const labels = {"pi-responses":"Pi","oh-my-pi":"Oh My Pi","claude-code":"Claude Code",codex:"Codex",opencode:"OpenCode",hermes:"Hermes","kimi-code":"Kimi Code",exo:"Exo Harness","dsh-standard":"DSH Standard","dsh-ptc":"DSH PTC","dsh-minimal":"DSH Minimal","dsh-creator":"DSH Creator"};
-const colors = {"pi-responses":"#f0f0f0","oh-my-pi":"#f2a777","claude-code":"#f0a57f",codex:"#9385ff",opencode:"#a978e7",hermes:"#a3a3a3","kimi-code":"#83d7c5",exo:"#d3d3d3","dsh-standard":"#75b8ed","dsh-ptc":"#75b8ed","dsh-minimal":"#75b8ed","dsh-creator":"#70b6ee"};
-const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
+const labels = {"pi-responses":"Pi","oh-my-pi":"Oh My Pi","claude-code":"Claude Code",codex:"Codex",opencode:"OpenCode",hermes:"Hermes","kimi-code":"Kimi Code",exo:"Exo Harness","dsh-standard":"DSH Standard","dsh-ptc":"DSH PTC","dsh-minimal":"DSH Minimal","dsh-creator":"DSH Creator",kot:"KOT"};
+const colors = {"pi-responses":"#f0f0f0","oh-my-pi":"#f2a777","claude-code":"#f0a57f",codex:"#9385ff",opencode:"#a978e7",hermes:"#a3a3a3","kimi-code":"#83d7c5",exo:"#d3d3d3","dsh-standard":"#75b8ed","dsh-ptc":"#75b8ed","dsh-minimal":"#75b8ed","dsh-creator":"#70b6ee",kot:"rgb(52,231,207)"};
+const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle",kot:"hexagon"};
 const totalTasks = evaluation.overview.checkpoint_tasks;
 const points = evaluation.harnesses.map(item => ({name:item.name,cost:item.effective_cost_per_pass,passRate:item.successful/totalTasks*100,successful:item.successful}));
 const xDomain = { min: 1, max: 22 };
-const yDomain = { min: 49, max: 68 };
+const yDomain = { min: 49, max: 80 };
 const xPercent = cost => Math.log(cost/xDomain.min)/Math.log(xDomain.max/xDomain.min)*100;
 const yPercent = rate => (rate-yDomain.min)/(yDomain.max-yDomain.min)*100;
 const px = percent => plot.x + percent/100*plot.width;
@@ -24,7 +24,7 @@ const frontier = points.filter(point=>!points.some(candidate=>candidate.cost<=po
 const harnessCount = evaluation.overview.harnesses;
 const configurationCount = evaluation.overview.harness_configurations;
 const evaluationCount = evaluation.overview.expected_cells;
-if (totalTasks!==30 || harnessCount!==9 || configurationCount!==12 || evaluationCount!==360 || points.length!==configurationCount) {
+if (totalTasks!==30 || harnessCount!==10 || configurationCount!==13 || evaluationCount!==390 || points.length!==configurationCount) {
   throw new Error("Canonical benchmark counts do not match the banner contract");
 }
 
@@ -89,7 +89,7 @@ function marker(shape,x,y,color,size=9) {
 }
 
 const xTicks=[1,2,5,10,20];
-const yTicks=[50,55,60,65];
+const yTicks=[50,55,60,65,70,75];
 const gridX=xTicks.map(value=>{const x=px(xPercent(value));return `<line x1="${x}" y1="${plot.y}" x2="${x}" y2="${plot.y+plot.height}"/><text x="${x}" y="${plot.y+plot.height+24}" text-anchor="middle">$${value}</text>`}).join("");
 const gridY=yTicks.map(value=>{const y=py(yPercent(value));return `<line x1="${plot.x}" y1="${y}" x2="${plot.x+plot.width}" y2="${y}"/><text x="${plot.x-14}" y="${y+4}" text-anchor="end">${value}%</text>`}).join("");
 const frontierLine=frontier.map(point=>`${px(xPercent(point.cost))},${py(yPercent(point.passRate))}`).join(" ");

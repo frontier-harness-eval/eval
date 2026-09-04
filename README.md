@@ -14,6 +14,8 @@
   <a href="https://frontierharness.org"><strong>Explore the live results →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://runta.com/blog/introducing-frontierharness-eval/"><strong>Read the blog →</strong></a>
+  &nbsp;·&nbsp;
+  <a href="#evaluate-your-own-harness"><strong>Evaluate your own harness →</strong></a>
 </p>
 
 <div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
@@ -60,17 +62,122 @@ The [interactive report](https://frontierharness.org) includes failed runs, tota
 ```text
 .
 ├── benchmark.json              # Public benchmark definition
+├── cli/index.mjs               # `npx @frontierharness/eval`: workspace + skill installer
 ├── metadata/
 │   ├── difficulty.json         # Difficulty assignments and source methodology
 │   └── harness-versions.json   # Harness versions used for the run
 ├── results/
 │   └── eval-data.json          # Normalized aggregate and task-level results
-└── tasks/<task>/
-    ├── instruction.md          # Prompt shown to every harness
-    └── task.toml               # Public task metadata and environment definition
+├── tasks/<task>/
+│   ├── instruction.md          # Prompt shown to every harness
+│   └── task.toml               # Public task metadata and environment definition
+└── skills/frontierharness-eval/  # Agent-neutral skill, usable by hand
+    ├── SKILL.md                # Evaluation workflow for a third-party harness
+    ├── PROMPT.md               # Copy-paste prompt that points an agent at the skill
+    ├── reference.md            # Command reference, runner templates, troubleshooting
+    └── scripts/                # Provisioning, trial runner, scoring, chart, report
 ```
 
-The repository intentionally contains **results and task definitions only**. Internal infrastructure, credentials, runtime identifiers, private evidence, solutions, and deployment configuration are not included.
+The repository intentionally contains **results, task definitions, and the evaluation workflow**. Internal infrastructure, credentials, runtime identifiers, private evidence, solutions, and deployment configuration are not included.
+
+## Evaluate your own harness
+
+The workflow that produced the table above ships with this repository, so a harness that is not in it can be scored on the same tasks, runtime, and cost accounting, then placed directly next to the twelve baseline configurations.
+
+[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run. Nothing in it is tied to a particular agent — the steps are plain Bash and Node, so you can equally run them by hand. If you would rather hand the run to an agent than read the commands below, [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md) is a copy-paste prompt with five blanks to fill in.
+
+### Get the skill
+
+```bash
+npx @frontierharness/eval
+```
+
+One command, no clone. It creates a `frontierharness-eval/` workspace holding the benchmark data every step reads — `benchmark.json`, `results/eval-data.json`, `tasks/` — and installs the skill into the directories Cursor, Claude Code, and Codex read skills from, so opening that folder in your agent and asking it to evaluate your harness is enough. Add `--global` to install the skill for every project, `--agent cursor` to pick one agent, or run it inside a clone of this repository, where it skips the data and just installs the skill.
+
+The same command wraps the rest of the workflow, so you can drive a run from anywhere:
+
+```bash
+npx @frontierharness/eval doctor    # node >= 18, jq, runta CLI and auth, provider key
+npx @frontierharness/eval prompt --harness my-harness --smoke   # the agent prompt, two-task version
+npx @frontierharness/eval provision --help                      # the scripts below, from the workspace
+```
+
+### Run it yourself
+
+`provision`, `run`, `normalize`, `chart` and `report` are the skill's own scripts, so the steps below are the same work whether you invoke them as `npx @frontierharness/eval provision …` from anywhere or as `$FH/provision-golden-checkpoint.sh …` from the repository root.
+
+If you hand the run to an agent, you can skip this section: the skill walks through the same setup, asks for the provider key once, and stores it as a Runta secret stub, so it never enters the runtime or the checkpoint. To drive the scripts yourself, set up the shell first:
+
+```bash
+export RUNTA_TOKEN=rt_...          # Runta dashboard -> Settings -> Runta API Keys
+export FIREWORKS_API_KEY=...       # or the key for whichever provider you pick, below
+FH=skills/frontierharness-eval/scripts
+```
+
+The provider key only has to be exported the first time. Provisioning turns it into a Runta secret and the API never hands the value back, so a later re-cut of the checkpoint reuses the stored secret.
+
+**The model is not a variable, but the provider is.** Every published configuration runs **Kimi K3**, so that the harness is the only thing that differs, and your run has to match to be comparable. Which provider serves it is up to you — pass `--provider` to both scripts and the model route and key name follow from it:
+
+| `--provider` | Model route | Key |
+| --- | --- | --- |
+| `fireworks` *(default, used by the published runs)* | `fireworks_ai/accounts/fireworks/models/kimi-k3` | `FIREWORKS_API_KEY` |
+| `moonshot` | `moonshot/kimi-k3` | `MOONSHOT_API_KEY` |
+| `openrouter` | `openrouter/moonshotai/kimi-k3` | `OPENROUTER_API_KEY` |
+| `together` | `together_ai/moonshotai/Kimi-K3` | `TOGETHER_API_KEY` |
+| `custom` | your `--model` | your `--secret-name` |
+
+Same weights from a different provider means your **pass rate stays comparable**; only the cost column is at risk, since it depends on that provider's token prices. The report flags it for you if you used anything other than Fireworks. Overriding the *model* is what breaks comparability, and the scripts warn when you do.
+
+**1. Freeze a golden checkpoint.** Creates a clean Runta runtime, clones your harness at a pinned commit, installs [Harbor](https://www.tbench.ai/) for Terminal-Bench tasks and [Pier](https://deepswe.datacurve.ai/run) for DeepSWE tasks, pre-pulls the task images, and captures the whole stack as one checkpoint. Your provider key is stored as a Runta secret stub, so it never enters the runtime or the checkpoint.
+
+```bash
+$FH/provision-golden-checkpoint.sh \
+  --runtime fh-build --checkpoint fh-golden-myharness-v1 \
+  --harness my-harness --provider fireworks \
+  --repo https://github.com/acme/my-harness --commit 9f2c1ab \
+  --cpus 4 --memory 8192 --prepull-tasks tasks \
+  --install-script ./install-my-harness.sh
+```
+
+**2. Run the tasks.** Each task gets its own fresh restore of that checkpoint and the runtime is deleted afterwards, so every trial starts from an identical cold start. The agent trajectory, verifier logs, and `model.patch` are copied out per task as evidence.
+
+```bash
+jq -r '.harnesses[0].task_details[].id' results/eval-data.json > tasks.txt   # the published 30 tasks
+$FH/run-trials.sh \
+  --checkpoint fh-golden-myharness-v1 --harness my-harness \
+  --provider fireworks --run-id 2026-09-02-myharness \
+  --tasks tasks.txt --out runs
+```
+
+Pass the same `--provider` you provisioned with — the checkpoint carries that provider's key name as a stub.
+
+**3. Score it, chart it, share it.**
+
+```bash
+node $FH/normalize-results.mjs --run runs/2026-09-02-myharness --label "My Harness"
+node $FH/generate-chart.mjs    --run runs/2026-09-02-myharness
+node $FH/build-report.mjs      --run runs/2026-09-02-myharness
+```
+
+Everything lands in `runs/<run-id>/report/`: a `chart.svg` with your harness highlighted against all twelve baselines, a `REPORT.md`, and a self-contained `index.html` you can open or attach anywhere. To publish a link:
+
+```bash
+gh gist create runs/2026-09-02-myharness/report/REPORT.md \
+               runs/2026-09-02-myharness/report/chart.svg --public
+```
+
+### Keeping a result comparable
+
+A score only belongs next to the published numbers if the run holds these invariants. The report states any that were relaxed.
+
+- **Kimi K3**, the same model every published configuration used, otherwise harness effects and model effects are inseparable. Any provider serving it is fine for pass rate; for cost, check its token prices match the ones in [`reference.md`](skills/frontierharness-eval/reference.md).
+- **One golden checkpoint, one fresh restore per task**, with identical vCPU, memory, and disk on every restore.
+- **No formal task executed before the checkpoint is frozen.** Pre-pulling images is environment prep; running a task early is warm-cache bias. The provisioning script only ever warms on `terminal-bench-sample`.
+- **Infrastructure failures marked `infra_invalid`**, not scored as task failures.
+
+Cost is compared on `effective_cost_per_pass`, which is total cost across all tasks divided by passes and is reproducible from raw per-task cost. The `*_normalized` fields in `results/eval-data.json` reprice first-turn cache reads using data that is not public, so the scoring script leaves them empty rather than inventing values.
+
+Metric definitions and the trial record contract are in [`SKILL.md`](skills/frontierharness-eval/SKILL.md). Runner templates, the alternative Harbor-with-Runta-provider topology, and troubleshooting are in [`reference.md`](skills/frontierharness-eval/reference.md).
 
 ## Methodology
 

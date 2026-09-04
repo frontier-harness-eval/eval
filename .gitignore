@@ -1,1 +1,12 @@
 .DS_Store
+
+# Local output from skills/frontierharness-eval
+runs/
+manifest-*.json
+
+# Skill links and tarballs left by `npx frontierharness-eval` inside a clone
+.agents/skills/frontierharness-eval
+.claude/skills/frontierharness-eval
+.cursor/skills/frontierharness-eval
+frontierharness-eval-*.tgz
+node_modules/

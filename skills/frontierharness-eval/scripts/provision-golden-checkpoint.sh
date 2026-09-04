@@ -22,7 +22,10 @@ PREPULL_TASKS=""
 CPUS=4
 MEMORY=8192
 DISK_GIB=100
-DEEP_SWE_REF="main"
+DEEP_SWE_REF="v1.1"
+HARBOR_PIN="harbor[modal]==0.22.0"
+HARBOR_PIN_FALLBACK="harbor==0.22.0"
+PIER_PIN="datacurve-pier==0.3.1"
 KEEP_RUNTIME=0
 
 usage() {
@@ -52,7 +55,7 @@ Options:
   --disk-size-gib GIB   Writable overlay capacity (default 100). The eval environment
                         needs this much: a harness built from source plus the pre-pulled
                         task images overflows the 16 GiB Runtime Image default.
-  --deep-swe-ref REF    Git ref for the deep-swe corpus (default main)
+  --deep-swe-ref REF    Git ref for the deep-swe corpus (default v1.1, matching benchmark.json)
   --keep-runtime        Do not delete the build runtime after checkpointing
 EOF
 }
@@ -139,6 +142,9 @@ fi
 # The real value stays in the egress proxy; the runtime only ever sees the stub.
 rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
   || echo "warning: $SECRET_NAME is not exposed as a stub inside the runtime" >&2
+if [ -n "$PROVIDER_HOST" ]; then
+  apply_provider_egress "$RUNTIME" "$PROVIDER_HOST" || true
+fi
 
 step "3/9 installing base tooling"
 rexec 'set -eu
@@ -162,9 +168,10 @@ rexec "set -eu
 step "5/9 installing Harbor, Pier, and the deep-swe corpus"
 rexec "set -eu
   export PATH=\"\$HOME/.local/bin:\$PATH\"
-  uv tool install --quiet 'harbor[modal]' || uv tool install --quiet harbor
-  uv tool install --quiet git+https://github.com/datacurve-ai/pier
-  uv tool install --quiet --with 'runta-sdk[harbor]' harbor || true
+  uv tool install --quiet --with 'runta-sdk[harbor]' '$HARBOR_PIN' \
+    || uv tool install --quiet --with 'runta-sdk[harbor]' '$HARBOR_PIN_FALLBACK' \
+    || uv tool install --quiet '$HARBOR_PIN_FALLBACK'
+  uv tool install --quiet '$PIER_PIN'
   rm -rf /work/deep-swe
   git clone --quiet https://github.com/datacurve-ai/deep-swe /work/deep-swe
   cd /work/deep-swe && git checkout --quiet '$DEEP_SWE_REF'
@@ -244,6 +251,9 @@ rexec "set -eu
   \"memory_mib\": $MEMORY,
   \"disk_size_gib\": $DISK_GIB,
   \"deep_swe_commit\": \"\$(git -C /work/deep-swe rev-parse HEAD)\",
+  \"deep_swe_ref\": \"$DEEP_SWE_REF\",
+  \"harbor_pin\": \"$HARBOR_PIN_FALLBACK\",
+  \"pier_pin\": \"$PIER_PIN\",
   \"harbor_version\": \"\$(harbor --version 2>&1 | head -1)\",
   \"pier_version\": \"\$(pier --version 2>&1 | head -1)\",
   \"python_version\": \"\$(python3 --version 2>&1)\",

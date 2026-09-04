@@ -57,11 +57,11 @@ the model id recognisably Kimi K3 or the scripts will warn:
   --secret-name MY_GATEWAY_API_KEY
 ```
 
-Whichever provider you pick, set egress to its host so trials stay air-gapped apart from
-the model call:
+Whichever provider you pick, the provision and trial scripts set egress to its host
+plus `astral.sh` (Terminal-Bench verifiers curl uv). Confirm with:
 
 ```bash
-runta egress set fh-build --mode allowlist --allow api.moonshot.ai
+runta egress describe fh-build
 ```
 
 ### Cost comparability
@@ -90,8 +90,10 @@ Placeholders: `{task}`, `{suite}`, `{harness}`, `{model}`, `{jobs}`.
 **Terminal-Bench through Harbor** (`terminal-bench/*`):
 
 ```
-harbor run -d terminal-bench/terminal-bench@4.0.0 --task-id {task} -a {harness} -m {model} --jobs-dir {jobs}
+harbor run -d terminal-bench@2.0 -i {task} -a {harness} -m {model} --jobs-dir {jobs} --extra-docker-compose /work/runta-ca-overlay.yaml -r 2 -y
 ```
+
+`terminal-bench@2.0` is the registry name that holds this benchmark's 21 Terminal-Bench tasks. `terminal-bench/terminal-bench@4.0.0` is a different 66-task corpus that shares none of these ids, so it silently evaluates nothing. Harbor 0.22 selects tasks with `-i`, not the removed `--task-id`.
 
 **DeepSWE through Pier** (`datacurve/*`):
 
@@ -182,11 +184,17 @@ these fields, so any custom runner can produce them directly:
 ```
 
 `status` is one of `success`, `failure`, `timeout`, or `infra_invalid`. Only
-`infra_invalid` is excluded from scoring.
+`infra_invalid` is excluded from scoring. Auto-marked infra is restore failure,
+runtime never becoming ready, or credential-rule failure. A harness crash is a
+`failure` and stays in the denominator. Mark a trial `infra_invalid` by hand only
+after a confirmed platform outage.
 
-Reward extraction scans the collected job directory for the first non-null
-`resolved`, `is_resolved`, `reward`, or `passed` field. If a runner reports success
-differently, the extracted value will be wrong — spot-check the first trial:
+Reward extraction reads **top-level** `resolved`, `is_resolved`, `reward`, or
+`passed` from result-named JSON files first (`result.json`, `results.json`,
+`eval.json`, `verifier.json`), then other JSON files in sorted path order. It
+does not walk nested objects, so a passing unit test cannot mark the trial as
+success. If a runner reports success differently, the extracted value will be
+wrong — spot-check the first trial:
 
 ```bash
 jq . runs/<run-id>/trials/<task>/trial.json

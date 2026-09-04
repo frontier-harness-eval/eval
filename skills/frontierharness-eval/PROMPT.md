@@ -68,7 +68,8 @@ Do this in order, and stop to show me your findings at each numbered boundary:
 5. Run the published 30-task set with $FH/run-trials.sh, one fresh restore per task, and
    report progress as tasks complete. Re-run any trial that died on infrastructure; if
    it fails on infrastructure twice, mark it infra_invalid rather than scoring it as a
-   task failure.
+   task failure. A harness crash is a failure, not infrastructure. The report ranks
+   against the leaderboard only when all 30 tasks are scoreable.
 
 6. Normalize, chart, and build the report with the three node scripts, then show me
    runs/<run-id>/report/REPORT.md and tell me which reproducibility rules from SKILL.md

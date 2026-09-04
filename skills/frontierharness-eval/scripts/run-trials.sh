@@ -92,7 +92,14 @@ require_runta_auth || exit 1
 # suite-prefixed id in [task] name, so the set that runs is exactly the set that is
 # defined, with no second list to keep in sync.
 TASK_LIST=$(mktemp)
-trap 'rm -f "$TASK_LIST"' EXIT
+CURRENT_RUNTIME=""
+cleanup() {
+  rm -f "$TASK_LIST"
+  if [ -n "$CURRENT_RUNTIME" ]; then
+    runta rm "$CURRENT_RUNTIME" >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup EXIT
 
 if [ -d "$TASKS" ]; then
   for toml in "$TASKS"/*/task.toml; do
@@ -144,18 +151,41 @@ render() {
     | sed "s|{task}|$2|g; s|{suite}|$3|g; s|{harness}|$HARNESS|g; s|{model}|$MODEL|g; s|{jobs}|$4|g"
 }
 
-# Reward field names differ between Harbor and Pier releases, so probe the common ones
-# across every JSON file the runner produced and take the first usable value.
+# Prefer runner result documents, then the rest, always in sorted path order so
+# extraction is deterministic. Values are read from top-level keys only: walking
+# every nested object used to pick up a passing unit test or trajectory event.
+json_files_ordered() {
+  local dir=$1 all preferred rest
+  [ -d "$dir" ] || return 0
+  all=$(find "$dir" -name '*.json' -size -8M 2>/dev/null | LC_ALL=C sort) || return 0
+  [ -n "$all" ] || return 0
+  preferred=$(printf '%s\n' "$all" | grep -E '/(result|results|eval|verifier)[^/]*\.json$' || true)
+  rest=$(printf '%s\n' "$all" | grep -vE '/(result|results|eval|verifier)[^/]*\.json$' || true)
+  printf '%s\n%s\n' "$preferred" "$rest" | sed '/^$/d'
+}
+
 extract() {
   local dir=$1 filter=$2 file value
-  [ -d "$dir" ] || return 0
   while IFS= read -r file; do
+    [ -n "$file" ] || continue
     value=$(jq -c "$filter" "$file" 2>/dev/null) || continue
     if [ -n "$value" ] && [ "$value" != "null" ]; then
       printf '%s' "$value"
       return 0
     fi
-  done < <(find "$dir" -name '*.json' -size -8M 2>/dev/null)
+  done < <(json_files_ordered "$dir")
+}
+
+runtime_name() {
+  local raw hash
+  raw=$(printf 'fh-%s' "$1" | tr -c 'a-zA-Z0-9-' '-')
+  if [ "${#raw}" -le 52 ]; then
+    printf '%s' "$raw"
+    return
+  fi
+  hash=$(printf '%s' "$1" | openssl dgst -sha256 2>/dev/null | awk '{print $NF}')
+  [ -n "$hash" ] || hash=$(printf '%s' "$1" | cksum | awk '{print $1}')
+  printf 'fh-%s' "$(printf '%s' "$hash" | cut -c1-16)"
 }
 
 total=0
@@ -169,7 +199,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   task=${entry#*/}
   slug=$(echo "$entry" | tr '/' '-')
   trial_dir="$RUN_DIR/trials/$slug"
-  runtime="fh-$(printf '%s' "$RUN_ID-$slug" | tr -c 'a-zA-Z0-9-' '-' | cut -c1-48)"
+  runtime=$(runtime_name "$RUN_ID-$slug")
 
   template=${CMD_TEMPLATE:-$(default_cmd "$suite")}
   if [ -z "$template" ]; then
@@ -183,6 +213,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   printf '\n=== [%s] restoring %s\n' "$entry" "$CHECKPOINT" >&2
 
   status=success
+  CURRENT_RUNTIME=""
   if ! runta checkpoint restore "$CHECKPOINT" "$runtime" >"$trial_dir/restore.log" 2>&1; then
     echo "restore failed for $entry" >&2
     jq -n --arg id "$entry" --arg t "$task" \
@@ -190,6 +221,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       > "$trial_dir/trial.json"
     continue
   fi
+  CURRENT_RUNTIME=$runtime
 
   # `checkpoint restore` returns as soon as the restore is accepted, while the runtime is
   # still provisioning. Until it finishes, exec fails with a 504 and secret rules with
@@ -209,16 +241,29 @@ while IFS= read -r entry || [ -n "$entry" ]; do
         error:"restored runtime never became ready", runtime:$rt}' \
       > "$trial_dir/trial.json"
     runta rm "$runtime" >/dev/null 2>&1 || true
+    CURRENT_RUNTIME=""
     continue
+  fi
+
+  if [ -n "$SECRET_HOST" ]; then
+    apply_provider_egress "$runtime" "$SECRET_HOST" >>"$trial_dir/restore.log" 2>&1 || true
   fi
 
   # Injection rules live on the runtime, not in the checkpoint, so without this the
   # harness sends the stub placeholder to the provider and every turn fails on auth.
   if [ -n "$SECRET_NAME" ] && [ -n "$SECRET_HOST" ]; then
-    runta secret rule set "$runtime" --secret "$SECRET_NAME" --host "$SECRET_HOST" \
+    if ! runta secret rule set "$runtime" --secret "$SECRET_NAME" --host "$SECRET_HOST" \
       --header Authorization --template 'Bearer ${secret}' \
-      >>"$trial_dir/restore.log" 2>&1 \
-      || echo "warning: could not set the credential rule on $runtime" >&2
+      >>"$trial_dir/restore.log" 2>&1; then
+      echo "credential rule failed for $entry" >&2
+      jq -n --arg id "$entry" --arg t "$task" --arg rt "$runtime" \
+        '{id:$id, title:$t, status:"infra_invalid", success:false,
+          error:"credential injection rule failed", runtime:$rt}' \
+        > "$trial_dir/trial.json"
+      runta rm "$runtime" >/dev/null 2>&1 || true
+      CURRENT_RUNTIME=""
+      continue
+    fi
   fi
 
   jobs_dir="/work/jobs/$slug"
@@ -238,31 +283,30 @@ while IFS= read -r entry || [ -n "$entry" ]; do
     || echo "no job artifacts collected for $entry" >&2
   runta cp "$runtime:/work/manifest.json" "$trial_dir/manifest.json" >/dev/null 2>&1 || true
   runta rm "$runtime" >/dev/null 2>&1 || echo "failed to delete runtime $runtime" >&2
+  CURRENT_RUNTIME=""
 
-  reward=$(extract "$trial_dir/jobs" '[.. | objects | (.resolved?, .is_resolved?, .reward?, .passed?)] | map(select(. != null)) | .[0]')
-  cost=$(extract "$trial_dir/jobs" '[.. | objects | (.total_cost_usd?, .total_cost?, .cost_usd?)] | map(select(type == "number")) | .[0]')
-  turns=$(extract "$trial_dir/jobs" '[.. | objects | (.n_steps?, .num_turns?, .steps?)] | map(select(type == "number")) | .[0]')
-  cache=$(extract "$trial_dir/jobs" '[.. | objects | (.cache_hit_rate?, .cache_read_ratio?)] | map(select(type == "number")) | .[0]')
+  reward=$(extract "$trial_dir/jobs" '.resolved // .is_resolved // .reward // .passed // empty')
+  cost=$(extract "$trial_dir/jobs" '.total_cost_usd // .total_cost // .cost_usd // .usage.total_cost_usd | select(type == "number")')
+  turns=$(extract "$trial_dir/jobs" '.n_steps // .num_turns // .turns // .agent_info.n_steps // .agent_info.num_turns | select(type == "number")')
+  cache=$(extract "$trial_dir/jobs" '.cache_hit_rate // .cache_read_ratio | select(type == "number")')
+  exception=$(extract "$trial_dir/jobs" '.exception_info | select(. != null) | tostring')
 
-  # A trial whose retries were all exhausted by harness crashes never measured the
-  # harness, so it must not enter the denominator as a failure. Harbor records the
-  # surviving crash in exception_info.
-  exception=$(extract "$trial_dir/jobs" '[.. | objects | .exception_info? | select(. != null)] | .[0] | tostring')
-
-  case "$reward" in
-    true|1|1.0) success=true ;;
-    *) success=false ;;
-  esac
+  success=false
+  if success=$(jq -n --argjson r "${reward:-null}" '($r == true) or ($r == 1)' 2>/dev/null); then
+    :
+  else
+    success=false
+  fi
   if [ "$exit_code" -eq 124 ]; then
     status=timeout
     success=false
   elif [ "$success" = true ]; then
     status=success
     passed=$((passed + 1))
-  elif [ -n "$exception" ]; then
-    status=infra_invalid
-    success=false
   else
+    # A harness crash is a harness failure, not infrastructure. Restore, auth, and
+    # runtime-not-ready are the only auto infra_invalid paths. Users can still mark
+    # a trial infra_invalid by hand after a confirmed platform outage.
     status=failure
   fi
 

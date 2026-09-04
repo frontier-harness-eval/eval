@@ -99,11 +99,11 @@ What the script does, and why each part matters:
   at 100 GiB so every trial restores with the same capacity as the baselines.
 - **Repo pinned by commit.** The harness is cloned to `/work/harness` at `--commit`.
   A branch name is not reproducible; always pin a SHA.
-- **Benchmark stack.** Installs `uv`, `harbor` for Terminal-Bench, `pier` plus the
-  `deep-swe` task corpus for DeepSWE, and `runta-sdk[harbor]`.
+- **Benchmark stack.** Installs `uv`, Harbor `0.22.0` for Terminal-Bench, `datacurve-pier==0.3.1` plus the `deep-swe` corpus at **v1.1**, and `runta-sdk[harbor]`.
 - **Credential as a secret stub.** The provider key named by `--secret-name` (defaulted
   from `--provider`) is stored with `runta secret set` and injected by the egress proxy,
-  so the real key never lands inside the runtime or inside a checkpoint. Verify with
+  so the real key never lands inside the runtime or inside a checkpoint. The script also
+  allowlists the provider host (and `astral.sh` for verifier uv downloads). Verify with
   `runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub'`.
 - **Cache warming on sample tasks only.** Docker images for the formal tasks are
   pre-pulled, but the only task ever *executed* before the checkpoint is
@@ -227,7 +227,8 @@ explicitly in the report which ones were relaxed.
 | Identical vCPU, memory, and disk (100 GiB) across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |
 | Canonical result is the first valid attempt | Matches `benchmark.json` `canonical_selection` |
-| Infra failures marked `infra_invalid`, not `failure` | A crashed runtime is not a harness failure |
+| Infra failures marked `infra_invalid`, not `failure` | A crashed runtime or failed restore is not a harness failure. A harness process crash is a failure and stays in the denominator |
+| One shared golden checkpoint for third-party runs | The published 360 cells used a per-task checkpoint. The skill freezes one checkpoint with every image pre-pulled; say so in the report |
 
 Cost comparability has one caveat worth repeating in every report: baseline costs in
 `results/eval-data.json` reprice first-turn cache reads consistently across harnesses.
@@ -242,11 +243,14 @@ values.
 
 | Field | Definition |
 | --- | --- |
-| `pass_rate` | passes / tasks attempted |
+| `pass_rate` | passes / tasks attempted (infra_invalid excluded) |
+| `expected` | published task count from `benchmark.json` (30) |
+| `completed` | scoreable trials |
+| `comparable` | `completed === expected`; the report ranks only then |
 | `effective_cost_per_pass` | total cost across *all* tasks / passes |
 | `median_cost_per_success` | median per-task cost over successful tasks only |
 | `median_duration_seconds` | median wall-clock over successful tasks only |
-| `cache_hit_rate_typical` | median cache hit rate over successful tasks only |
+| `cache_hit_rate_typical` | median runner-reported cache hit rate over successful tasks; not the baseline's repriced series |
 | `mean_turns` | mean agent turns over successful tasks only |
 
 ## Additional resources

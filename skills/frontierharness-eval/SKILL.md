@@ -43,6 +43,7 @@ is not Kimi K3, and refuse an unknown provider name.
 | `moonshot` | `moonshot/kimi-k3` | `MOONSHOT_API_KEY` |
 | `openrouter` | `openrouter/moonshotai/kimi-k3` | `OPENROUTER_API_KEY` |
 | `together` | `together_ai/moonshotai/Kimi-K3` | `TOGETHER_API_KEY` |
+| `cursor` (only with `--harness cursor-cli`, see `cursor-cli.md`) | `kimi-k3` via Cursor's backend | `CURSOR_API_KEY` |
 | `custom` | supply `--model` | supply `--secret-name` |
 
 Ask which provider the user has a key for, and use `--provider fireworks` if they have
@@ -252,5 +253,6 @@ values.
 ## Additional resources
 
 - Command reference, runner templates, and troubleshooting: [reference.md](reference.md)
+- Cursor CLI through Harbor and Pier: [cursor-cli.md](cursor-cli.md)
 - Published results and task definitions: `results/eval-data.json`, `tasks/<task>/task.toml`
 - Source evaluation: <https://frontierharness.org/>

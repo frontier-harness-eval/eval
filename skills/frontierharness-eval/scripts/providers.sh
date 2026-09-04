@@ -5,7 +5,7 @@
 # the same model produces a comparable pass rate. Model strings use the LiteLLM provider
 # route, which is what Harbor, Pier, and mini-swe-agent expect.
 
-PROVIDER_LIST="fireworks moonshot openrouter together custom"
+PROVIDER_LIST="fireworks moonshot openrouter together cursor custom"
 
 # Sets PROVIDER_MODEL, PROVIDER_SECRET, and PROVIDER_HOST. Returns 1 on unknown input.
 resolve_provider() {
@@ -26,6 +26,15 @@ resolve_provider() {
       PROVIDER_MODEL="together_ai/moonshotai/Kimi-K3"
       PROVIDER_SECRET="TOGETHER_API_KEY"
       PROVIDER_HOST="api.together.xyz" ;;
+    cursor)
+      # Cursor's headless CLI is not a LiteLLM route: it takes Cursor's own model slug and
+      # sends every model call through Cursor's backend to Cursor's inference partner for
+      # Kimi K3 (Moonshot on its pricing page), so the row carries a provider caveat. The
+      # credential is Cursor's API key, injected on the backend host the CLI talks to.
+      # Only meaningful with --harness cursor-cli; see cursor-cli.md.
+      PROVIDER_MODEL="kimi-k3"
+      PROVIDER_SECRET="CURSOR_API_KEY"
+      PROVIDER_HOST="api2.cursor.sh" ;;
     custom)
       # Anything else: --model and --secret-name must be supplied explicitly.
       PROVIDER_MODEL=""

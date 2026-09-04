@@ -179,6 +179,12 @@ Cost is compared on `effective_cost_per_pass`, which is total cost across all ta
 
 Metric definitions and the trial record contract are in [`SKILL.md`](skills/frontierharness-eval/SKILL.md). Runner templates, the alternative Harbor-with-Runta-provider topology, and troubleshooting are in [`reference.md`](skills/frontierharness-eval/reference.md).
 
+Cursor's headless CLI has a ready-made profile: Harbor and Pier both ship a `cursor-cli` adapter, so [`cursor-cli.md`](skills/frontierharness-eval/cursor-cli.md) only fixes the provider, hands the adapter Kimi K3 prices, and states where the row deviates from the baselines (model calls go through Cursor's backend, so it lands with a provider caveat).
+
+```bash
+$FH/run-cursor-cli.sh --print-command
+```
+
 ## Methodology
 
 ### Tested harness configurations

@@ -38,7 +38,13 @@ comparable pass rate. Select one with `--provider`; the presets live in
 | `moonshot` | `moonshot/kimi-k3` | `MOONSHOT_API_KEY` | `api.moonshot.ai` |
 | `openrouter` | `openrouter/moonshotai/kimi-k3` | `OPENROUTER_API_KEY` | `openrouter.ai` |
 | `together` | `together_ai/moonshotai/Kimi-K3` | `TOGETHER_API_KEY` | `api.together.xyz` |
+| `cursor` (only with `--harness cursor-cli`) | `kimi-k3`, Cursor's own model slug | `CURSOR_API_KEY` | `api2.cursor.sh` |
 | `custom` | `--model` (required) | `--secret-name` (required) | set egress yourself |
+
+`cursor` is the one preset that is not a provider in the same sense: Cursor's headless CLI
+sends model calls through Cursor's backend to Cursor's inference partner for Kimi K3, so
+it pairs only with the `cursor-cli` harness and lands with a provider caveat. Details,
+egress hosts, and pricing: [cursor-cli.md](cursor-cli.md).
 
 The provider prefix is the LiteLLM provider route, which is what Harbor, Pier, and
 `mini-swe-agent` expect. A harness that calls the provider directly through an

@@ -76,6 +76,16 @@ const providerDiffers = Boolean(candidate.provider && baselineProvider
   && modelKey(candidate.provider) !== modelKey(baselineProvider));
 
 const caveats = [
+  "This workflow uses one shared checkpoint with images normally pulled after each restore. The published baselines used per-task checkpoints; the environments are not identical.",
+  manifest?.deep_swe_commit
+    ? `DeepSWE ran at commit \`${manifest.deep_swe_commit}\`. The default 435ee89 corpus uses separate-verifier images that differ from the repository's frozen public task metadata. Reproducing a published score requires a control run; matching the task names alone does not establish equivalence.`
+    : null,
+  manifest?.harness_topology && manifest.harness_topology !== "container-cli"
+    ? `The harness topology was \`${manifest.harness_topology}\`; the published baselines used CLIs inside task containers. Custom registration is supported, but does not by itself establish equivalent isolation, resources, or state reset.`
+    : null,
+  manifest?.system_runc_workaround
+    ? "Provisioning enabled the system-runc workaround for Runta's injected-init hang; the resolved runc path is recorded in the manifest."
+    : null,
   candidate.cost_coverage < 1
     ? `Cost was captured for ${(candidate.cost_coverage * 100).toFixed(0)}% of tasks, so cost figures are partial.`
     : null,
@@ -137,7 +147,7 @@ ${comparison}
 | DeepSWE corpus | \`${manifest?.deep_swe_commit ?? "unknown"}\` |
 | Started | ${run.started_at ?? "unknown"} |
 
-Every trial is a fresh restore of the same golden checkpoint, so all runs share an identical cold start with the same vCPU, memory, disk contents, and memory state. No formal task was executed before the checkpoint was frozen.
+Every trial restores the same base checkpoint with the same configured vCPU, memory, and disk capacity. Task images are normally pulled after restore. No formal task was executed before the checkpoint was frozen.
 
 ## Task results
 

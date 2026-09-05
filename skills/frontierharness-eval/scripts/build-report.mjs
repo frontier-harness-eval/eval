@@ -53,7 +53,7 @@ const rows = [
 
 const rank = rows.findIndex(row => row.isCandidate) + 1;
 if (!comparable) rows.sort((a, b) => Number(a.isCandidate) - Number(b.isCandidate) || b.passRate - a.passRate || a.label.localeCompare(b.label));
-const rankingClause = comparable ? `ranking **${rank} of ${rows.length}** on pass rate against the published configurations` : `**subset evaluation; not ranked against the ${candidate.expected}-task leaderboard**`;
+const rankingClause = comparable ? `ranking **${rank} of ${rows.length}** on pass rate against the published configurations` : `**${candidate.completed < candidate.expected ? 'subset evaluation' : 'methodology differs'}; not ranked against the ${candidate.expected}-task leaderboard**`;
 const percent = value => typeof value === "number" ? `${(value * 100).toFixed(1)}%` : "n/a";
 const money = value => typeof value === "number" ? `$${value.toFixed(2)}` : "n/a";
 const duration = value => {
@@ -79,7 +79,8 @@ const providerDiffers = Boolean(candidate.provider && baselineProvider
   && modelKey(candidate.provider) !== modelKey(baselineProvider));
 
 const caveats = [
-  !comparable ? `Only ${candidate.completed} of ${candidate.expected} published tasks were scored. This subset is not comparable to the published leaderboard and receives no rank.` : null,
+  candidate.completed < candidate.expected ? `Only ${candidate.completed} of ${candidate.expected} published tasks were scored. This subset is not comparable to the published leaderboard and receives no rank.` : null,
+  ...(candidate.methodology_notes ?? []),
   manifest?.harness_distribution === "official-release"
     ? `The evaluated executable was official release ${manifest.harness_release}. The repository commit is a separate rebuild reference; no release-to-source mapping is asserted. Packaged executable SHA-256: ${manifest.harness_binary_sha256}.`
     : null,
@@ -106,7 +107,7 @@ const caveats = [
   // holds if that provider's token prices match the ones behind the baselines. A model
   // mismatch subsumes this, so it is not worth saying twice.
   !modelDiffers && providerDiffers
-    ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. Pass rate stays comparable because the model is the same; confirm the provider's input, cached-input, and output token prices match before comparing cost.`
+    ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. The model is held constant; confirm the provider's input, cached-input, and output token prices match before comparing cost. Environment and methodology differences still affect comparability.`
     : null,
   "Baseline costs reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
 ].filter(Boolean).map(item => `- ${item}`).join("\n");
@@ -201,7 +202,7 @@ const html = `<!doctype html>
 <main>
   <h1>${escapeHtml(candidate.label)} on FrontierHarness Eval</h1>
   <p class="lede"><strong>${percent(candidate.pass_rate)}</strong> pass rate (${candidate.successful}/${candidate.completed} tasks)${hasCost ? `
-     at <strong>${money(candidate.effective_cost_per_pass)}</strong> per pass` : ""}; ${comparable ? `ranking ${rank} of ${rows.length}` : `subset evaluation; not ranked against the ${candidate.expected}-task leaderboard`}.
+     at <strong>${money(candidate.effective_cost_per_pass)}</strong> per pass` : ""}; ${comparable ? `ranking ${rank} of ${rows.length}` : `${candidate.completed < candidate.expected ? "subset evaluation" : "methodology differs"}; not ranked against the ${candidate.expected}-task leaderboard`}.
      Model <code>${escapeHtml(candidate.model ?? "unspecified")}</code>,
      golden checkpoint <code>${escapeHtml(run.checkpoint)}</code>.</p>
   ${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
@@ -224,7 +225,7 @@ const html = `<!doctype html>
 
 await writeFile(join(reportDir, "index.html"), html);
 
-console.log(`${candidate.label}: ${percent(candidate.pass_rate)} pass rate, ${comparable ? `rank ${rank} of ${rows.length}` : 'subset not ranked'}`);
+console.log(`${candidate.label}: ${percent(candidate.pass_rate)} pass rate, ${comparable ? `rank ${rank} of ${rows.length}` : 'candidate not ranked'}`);
 console.log(`wrote ${join(reportDir, "REPORT.md")}`);
 console.log(`wrote ${join(reportDir, "index.html")}`);
 console.log(`share: gh gist create ${join(reportDir, "REPORT.md")} ${join(reportDir, "chart.svg")} --public`);

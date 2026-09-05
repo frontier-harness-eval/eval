@@ -184,6 +184,33 @@ test('resuming under a different model, harness, or command is refused', t => {
   assert.equal(f.executions().length, 1);
 });
 
+test('full task coverage does not override an explicit methodology mismatch', t => {
+  const f = fixture(t);
+  ok(f.run());
+  cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
+  const benchmark = JSON.parse(readFileSync(join(repo, 'benchmark.json')));
+  benchmark.task_count = 1;
+  writeFileSync(join(f.root, 'benchmark.json'), JSON.stringify(benchmark));
+  const runPath = join(f.root, 'runs/control/run.json');
+  const run = JSON.parse(readFileSync(runPath));
+  run.methodology_comparable = false;
+  run.methodology_notes = ['Verifier corpus differs; control comparison unavailable.'];
+  writeFileSync(runPath, JSON.stringify(run));
+  for (const script of ['normalize-results.mjs', 'generate-chart.mjs', 'build-report.mjs']) {
+    ok(spawnSync(process.execPath, [join(scripts, script), '--run', 'runs/control'],
+      { cwd: f.root, env: f.env, encoding: 'utf8', timeout: 10000 }));
+  }
+  const candidate = JSON.parse(readFileSync(join(f.root, 'runs/control/candidate.json')));
+  assert.equal(candidate.full_coverage, true);
+  assert.equal(candidate.comparable, false);
+  for (const file of ['REPORT.md', 'index.html']) {
+    const report = readFileSync(join(f.root, 'runs/control/report', file), 'utf8');
+    assert.match(report, /methodology differs/);
+    assert.match(report, /control comparison unavailable/);
+    assert.doesNotMatch(report, /subset evaluation|ranking (?:\*\*)?\d+ of/);
+  }
+});
+
 test('provisioning waits for ready before cleanup and skips formal pre-pulls by default', t => {
   const f = fixture(t, { provision: true, checkpointStates: ['creating', 'ready'] });
   ok(f.execute('provision-golden-checkpoint.sh', ['--runtime', 'build', '--checkpoint', 'golden',

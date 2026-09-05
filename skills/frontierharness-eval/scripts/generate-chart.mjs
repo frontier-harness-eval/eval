@@ -153,7 +153,7 @@ const list = ranked.map((point, index) => {
 }).join("");
 
 const note = !comparable
-  ? `<text class="note" x="${plot.left}" y="${plot.bottom + 22}">Candidate excluded from comparison: ${candidate.successful}/${candidate.completed} passed; ${candidate.completed}/${candidate.expected} tasks scored. Subset is not ranked.</text>`
+  ? `<text class="note" x="${plot.left}" y="${plot.bottom + 22}">Candidate excluded from comparison: ${candidate.successful}/${candidate.completed} passed; ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed < candidate.expected ? "Subset" : "Methodology differs; candidate"} is not ranked.</text>`
   : costMissing
   ? `<text class="note" x="${plot.left}" y="${plot.bottom + 22}">${costMissing} harness omitted from the scatter: cost unavailable</text>`
   : "";
@@ -196,7 +196,7 @@ await mkdir(reportDir, { recursive: true });
 await writeFile(join(reportDir, "chart.svg"), svg);
 
 const rank = ranked.findIndex(point => point.isCandidate) + 1;
-console.log(comparable ? `${candidate.label} ranks ${rank} of ${ranked.length} on pass rate` : `${candidate.label}: subset is not ranked`);
+console.log(comparable ? `${candidate.label} ranks ${rank} of ${ranked.length} on pass rate` : `${candidate.label}: candidate is not ranked`);
 console.log(`wrote ${join(reportDir, "chart.svg")}`);
 
 async function readJson(path, message) {

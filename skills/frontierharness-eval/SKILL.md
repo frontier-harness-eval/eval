@@ -311,7 +311,8 @@ values.
 | `pass_rate` | passes / tasks attempted (infra_invalid excluded) |
 | `expected` | published task count from `benchmark.json` (30) |
 | `completed` | scoreable trials |
-| `comparable` | `completed === expected`; the report ranks only then |
+| `full_coverage` | `completed === expected` |
+| `comparable` | Full coverage and no explicit `methodology_comparable: false` in `run.json`; the report ranks only then |
 | `effective_cost_per_pass` | total cost across *all* tasks / passes |
 | `median_cost_per_success` | median per-task cost over successful tasks only |
 | `median_duration_seconds` | median wall-clock over successful tasks only |

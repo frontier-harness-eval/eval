@@ -55,8 +55,8 @@ Do this in order, and stop to show me your findings at each numbered boundary:
    registered name as --harness. Show me the script and wait for my approval before
    running it.
 
-3. Provision the golden checkpoint with $FH/provision-golden-checkpoint.sh, pre-pulling
-   task images from tasks/. Confirm afterwards that the checkpoint exists and that the
+3. Provision a small golden checkpoint with $FH/provision-golden-checkpoint.sh, leaving
+   formal image pulls to each trial restore. Confirm the checkpoint is ready and that the
    provider key is a stub inside the runtime, not a real key.
 
 4. Smoke-test before spending money on a full sweep: restore the checkpoint once, run a
@@ -66,7 +66,9 @@ Do this in order, and stop to show me your findings at each numbered boundary:
    for my go-ahead.
 
 5. Run the published 30-task set with $FH/run-trials.sh, one fresh restore per task, and
-   report progress as tasks complete. Re-run any trial that died on infrastructure; if
+   report progress as tasks complete. Resume retained runtimes after transport errors
+   using the same run command; never rerun a completed valid attempt. Retry setup
+   failures that happened before harness launch; if
    it fails on infrastructure twice, mark it infra_invalid rather than scoring it as a
    task failure. A harness crash is a failure, not infrastructure. The report ranks
    against the leaderboard only when all 30 tasks are scoreable.

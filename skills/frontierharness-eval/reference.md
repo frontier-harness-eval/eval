@@ -273,9 +273,9 @@ all of its configuration. Record that provenance in the install script and repor
 After provisioning a Pi checkpoint with those settings, run:
 
 ```bash
-$FH/run-trials.sh --checkpoint fh-golden-pi-control --harness pi-responses \
+bash "$FH/run-trials.sh" --checkpoint fh-golden-pi-control --harness pi-responses \
   --provider fireworks --run-id pi-control --tasks tasks --out runs
-node $FH/normalize-results.mjs --run runs/pi-control --label "Pi control"
+node "$FH/normalize-results.mjs" --run runs/pi-control --label "Pi control"
 ```
 
 Use one task from each suite first to verify setup, then resume the same run id for

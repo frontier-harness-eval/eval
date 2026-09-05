@@ -9,7 +9,52 @@ Score a harness that is not in the published FrontierHarness v1.0 set, on the sa
 tasks, runtime, and cost accounting, so the result can be placed next to the twelve
 baseline configurations in `results/eval-data.json`.
 
+## Workspace setup
+
+`npx skills add frontier-harness-eval/eval --skill frontierharness-eval` installs this
+skill and its scripts, but not the repository's task definitions or baseline results.
+Prepare those files before following the evaluation workflow.
+
+Set `FH` to the absolute path of the `scripts/` directory beside the `SKILL.md` you
+loaded. Use that installed copy even after changing the working directory; the install
+location varies by agent and by project/global scope. For example, replace this path
+with the actual location:
+
+```bash
+FH="/absolute/path/to/frontierharness-eval/scripts"
+```
+
+If the current directory already contains `benchmark.json`, `results/eval-data.json`,
+and `tasks/`, use it as the benchmark workspace. An existing repository checkout or a
+workspace created by `npx @frontierharness/eval` both qualify. Otherwise reuse a known
+checkout, or create one with Git:
+
+```bash
+git clone https://github.com/frontier-harness-eval/eval.git frontierharness-eval
+cd frontierharness-eval
+```
+
+If that destination already exists, inspect it and reuse it if complete, or choose a
+new directory; do not overwrite existing work. Run the commands below from the
+benchmark workspace so data paths and `runs/` resolve there. Keep `FH` pointing to
+the installed skill's scripts, not the repository's unrelated top-level `scripts/`.
+
 ## Prerequisites
+
+Use the official [Runta skills](https://runta.com/docs/skills/) for Runta setup and
+command guidance. Install them in the same agent and scope as this skill if needed:
+
+```bash
+npx skills add https://runta.com/docs --skill runta-installer runta-cli
+```
+
+Read `runta-installer` when the Runta CLI needs installation or authentication setup;
+this evaluation requires the local CLI, and its provisioning script installs the
+runtime's SDK dependencies. Read `runta-cli` when checking runtime commands or
+troubleshooting Runta operations. If these skills are unavailable, use the linked
+Runta docs and the checks below. Keep this skill's benchmark requirements: prepare a
+clean runtime without an agent preset, freeze one golden checkpoint, and use a fresh
+restore per task with the specified resources.
 
 Confirm all of these before touching a runtime:
 
@@ -17,16 +62,6 @@ Confirm all of these before touching a runtime:
 runta --version                 # brew install runta-dev/tap/runta  (or npm i -g @runta/runta-cli)
 runta checkpoint ls             # any API call proves the CLI is authenticated
 jq --version && node --version  # jq for trial parsing, node >= 18 for the report scripts
-```
-
-Run every command below from the repository root — or from the workspace that
-`npx @frontierharness/eval` creates, which has the same layout — so
-`results/eval-data.json`, `benchmark.json`, and `tasks/` resolve. This repo has its own
-`scripts/` directory, so address the skill's scripts through an explicit variable rather
-than a bare `scripts/`:
-
-```bash
-FH=skills/frontierharness-eval/scripts
 ```
 
 Collect from the user before starting: harness name and version, the GitHub repo and
@@ -78,7 +113,7 @@ checkpoint reuses the stored secret instead of demanding the plaintext again.
 ```bash
 export FIREWORKS_API_KEY=...   # or the key for whichever --provider you pick
 
-$FH/provision-golden-checkpoint.sh \
+bash "$FH/provision-golden-checkpoint.sh" \
   --runtime fh-build \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
@@ -150,7 +185,7 @@ evidence is verified locally and the trial record is written. Never reuse a
 runtime across tasks.
 
 ```bash
-$FH/run-trials.sh \
+bash "$FH/run-trials.sh" \
   --checkpoint fh-golden-myharness-v1 \
   --harness my-harness \
   --provider fireworks \
@@ -197,7 +232,7 @@ retry the affected task rather than scoring it as a failure:
 ```bash
 # Resume pending work or retry infra-invalid setup; keep all valid attempts.
 echo "terminal-bench/<task>" > retry.txt
-$FH/run-trials.sh --checkpoint fh-golden-myharness-v1 --harness my-harness \
+bash "$FH/run-trials.sh" --checkpoint fh-golden-myharness-v1 --harness my-harness \
   --provider fireworks --run-id 2026-09-02-myharness --tasks retry.txt --out runs
 
 # If it fails on infrastructure again, mark it so it is excluded rather than scored.
@@ -208,8 +243,8 @@ jq '.status = "infra_invalid" | .success = false' "$trial" > "$trial.tmp" && mv 
 ### 5. Generate the diagram
 
 ```bash
-node $FH/normalize-results.mjs --run runs/2026-09-02-myharness --label "My Harness"
-node $FH/generate-chart.mjs   --run runs/2026-09-02-myharness
+node "$FH/normalize-results.mjs" --run runs/2026-09-02-myharness --label "My Harness"
+node "$FH/generate-chart.mjs"    --run runs/2026-09-02-myharness
 ```
 
 `normalize-results.mjs` folds the trials into `candidate.json` using the same field
@@ -221,7 +256,7 @@ baselines muted and the candidate highlighted, plus a pass-rate ranking panel.
 ### 6. Build and share the report
 
 ```bash
-node $FH/build-report.mjs --run runs/2026-09-02-myharness
+node "$FH/build-report.mjs" --run runs/2026-09-02-myharness
 ```
 
 This writes `runs/<run-id>/report/REPORT.md` and a self-contained

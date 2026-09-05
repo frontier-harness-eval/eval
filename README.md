@@ -90,16 +90,43 @@ This repository ships a reproduction workflow for evaluating another harness on 
 
 ### Let an agent drive it
 
-Clone this repository and open it in any coding agent:
+Install the evaluation skill and its [Runta companion skills](https://runta.com/docs/skills/)
+with the [Skills CLI](https://github.com/vercel-labs/skills) (Node.js and Git required).
+Run these in the project where you use your coding agent:
 
 ```bash
-git clone https://github.com/frontier-harness-eval/eval.git
+npx skills add https://runta.com/docs --skill runta-installer runta-cli
+npx skills add frontier-harness-eval/eval --skill frontierharness-eval
 ```
 
-Ask the agent to evaluate your harness:
+`runta-installer` handles Runta tooling setup and verification; `runta-cli` provides
+runtime operation guidance. `frontierharness-eval` drives the benchmark, scoring, and
+report. If the Runta skills are already installed, only the second command is needed.
+
+Choose the same agent for both commands when prompted, or select one directly:
+
+```bash
+npx skills add https://runta.com/docs --skill runta-installer runta-cli --agent codex -y
+npx skills add frontier-harness-eval/eval --skill frontierharness-eval --agent codex -y
+```
+
+Add `--global` to both commands to make the skills available across projects. Start a new agent session
+in the project and ask:
 
 ```text
-use the skill located in the repo to evaluate [your harness github link]
+Use the frontierharness-eval skill to evaluate https://github.com/acme/my-harness.
+Start with one Terminal-Bench task and one DeepSWE task.
+```
+
+The skill sets up a benchmark checkout for the task definitions and baseline results,
+uses the Runta skills for tooling setup, then checks prerequisites and guides the
+evaluation. Installing skills alone does not run evaluations. For a prompt with explicit harness, commit, provider, and build
+settings, see [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md).
+
+Already cloned this repository? Install the local copy from its root:
+
+```bash
+npx skills add . --skill frontierharness-eval
 ```
 
 <details>

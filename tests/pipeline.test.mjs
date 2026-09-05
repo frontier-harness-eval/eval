@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, readdirSync, symlinkSync, readlinkSync } from 'node:fs';
+import { cpSync, mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, readdirSync, symlinkSync, readlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -122,6 +122,38 @@ test('Terminal-Bench uses the same verified execution and recovery path', t => {
   const record = JSON.parse(readFileSync(join(f.root, 'runs/control/trials/terminal-bench-regex-log/trial.json')));
   assert.equal(record.status, 'success');
   assert.equal(f.executions()[0][0], 'harbor');
+});
+
+test('a standalone skill runs a subset using workspace task images and builds a report', t => {
+  const f = fixture(t);
+  // Skills CLI copies only the skill folder; the data lives in a separate workspace.
+  // A path with spaces also exercises the documented absolute script paths.
+  const installed = join(f.root, 'installed skill/scripts');
+  cpSync(scripts, installed, { recursive: true });
+  for (const entry of ['benchmark.json', 'results', 'tasks/regex-log']) {
+    cpSync(join(repo, entry), join(f.root, entry), { recursive: true });
+  }
+  writeFileSync(f.tasks, 'terminal-bench/regex-log\n');
+  ok(spawnSync('bash', [join(installed, 'run-trials.sh'), '--checkpoint', 'golden',
+    '--harness', 'pi-responses', '--run-id', 'installed', '--tasks', f.tasks,
+    '--timeout', '5'], { cwd: f.root, env: f.env, encoding: 'utf8', timeout: 20000 }));
+
+  const calls = f.calls();
+  const imagePull = calls.findIndex(a => a[0] === 'exec' && a.at(-1).includes('docker pull'));
+  assert.ok(imagePull >= 0, 'subset image must be pulled even without task data beside the skill');
+  assert.ok(calls[imagePull].at(-1).includes('alexgshaw/regex-log:20251031'));
+  assert.ok(imagePull < calls.findIndex(a => a[0] === 'egress'));
+  assert.equal(f.executions().length, 1);
+
+  for (const script of ['normalize-results.mjs', 'generate-chart.mjs', 'build-report.mjs']) {
+    ok(spawnSync(process.execPath, [join(installed, script), '--run', 'runs/installed'],
+      { cwd: f.root, env: f.env, encoding: 'utf8', timeout: 10000 }));
+  }
+  const candidate = JSON.parse(readFileSync(join(f.root, 'runs/installed/candidate.json')));
+  assert.equal(candidate.successful, 1);
+  for (const file of ['chart.svg', 'REPORT.md', 'index.html']) {
+    assert.ok(readFileSync(join(f.root, 'runs/installed/report', file), 'utf8').length > 0);
+  }
 });
 
 test('resuming under a different model, harness, or command is refused', t => {

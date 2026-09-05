@@ -235,6 +235,9 @@ prepare_image() {
       "awk -F '\"' '/^docker_image *=/ { print \$2; exit }' /work/deep-swe/tasks/$(shell_quote "$task")/task.toml") || return 1
   else
     toml="$TASKS/$task/task.toml"
+    # A Skills CLI install has no adjacent task data. For a subset list, resolve
+    # task images from the benchmark workspace before trying a repository install.
+    [ -f "$toml" ] || toml="tasks/$task/task.toml"
     [ -f "$toml" ] || toml="$SCRIPT_DIR/../../../tasks/$task/task.toml"
     [ -f "$toml" ] || return 0 # A custom --cmd may prepare its own environment.
     image=$(awk -F'"' '/^docker_image *=/ { print $2; exit }' "$toml")

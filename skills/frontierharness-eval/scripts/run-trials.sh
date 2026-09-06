@@ -201,6 +201,17 @@ extract() {
   done < <(json_files_ordered "$dir")
 }
 
+extract_turns() {
+  local dir=$1 file value
+  # Adapter metrics are authoritative, including an explicit null after timeout.
+  # Falling through in that case can mistake a saved subagent's count for the run.
+  while IFS= read -r file; do
+    value=$(jq -c 'select(has("turns")) | .turns | select(. == null or type == "number")' "$file" 2>/dev/null) || continue
+    if [ -n "$value" ]; then printf '%s' "$value"; return 0; fi
+  done < <(find "$dir" -name 'fh-metrics.json' 2>/dev/null | LC_ALL=C sort)
+  extract "$dir" '.n_steps // .num_turns // .turns // .agent_info.n_steps // .agent_info.num_turns | select(type == "number")'
+}
+
 runtime_name() {
   local raw hash
   raw=$(printf 'fh-%s' "$1" | tr -c 'a-zA-Z0-9-' '-')
@@ -420,7 +431,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   # top-level rewards. Do not search arbitrary nested events for a passing unit test.
   reward=$(extract "$trial_dir/jobs" '[.resolved, .is_resolved, .reward, .passed, .verifier_result.rewards.reward] | map(select(. != null)) | .[0] | select(. != null)')
   cost=$(extract "$trial_dir/jobs" '.total_cost_usd // .total_cost // .cost_usd // .usage.total_cost_usd | select(type == "number")')
-  turns=$(extract "$trial_dir/jobs" '.n_steps // .num_turns // .turns // .agent_info.n_steps // .agent_info.num_turns | select(type == "number")')
+  turns=$(extract_turns "$trial_dir/jobs")
   cache=$(extract "$trial_dir/jobs" '.cache_hit_rate // .cache_read_ratio | select(type == "number")')
   exception=$(extract "$trial_dir/jobs" '.exception_info | select(. != null)')
   environment_failure=$(extract "$trial_dir/jobs" 'select(.exception_info != null and .environment_setup != null and .agent_setup == null and .agent_execution == null) | true')

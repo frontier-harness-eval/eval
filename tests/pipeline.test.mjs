@@ -105,6 +105,18 @@ test('environment failure before agent setup is excluded and may be retried', t 
   assert.equal(f.executions().length, 2);
 });
 
+for (const turns of [null, 226]) test(`adapter turns ${turns} cannot fall through to a saved subagent count`, t => {
+  const f = fixture(t, { agentMetrics: { turns }, result: {
+    verifier_result: { rewards: { reward: 0 } },
+    exception_info: { exception_type: 'AgentTimeoutError' },
+    environment_setup: {}, agent_setup: {}, agent_execution: {},
+  } });
+  ok(f.run());
+  assert.equal(f.trial().status, 'failure');
+  assert.equal(f.trial().turns, turns);
+  assert.equal(f.executions().length, 1);
+});
+
 for (const [name, config, status] of [
   ['verifier failure', { result: { resolved: false, reward: 1 } }, 'failure'],
   ['harness crash', { runnerCrash: true }, 'failure'],

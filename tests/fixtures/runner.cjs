@@ -14,4 +14,9 @@ const result = config.result || { verifier_result: { rewards: { reward: 1 } }, t
 fs.writeFileSync(path.join(jobs, 'result.json'), JSON.stringify(result));
 fs.writeFileSync(path.join(jobs, 'trajectory.json'), JSON.stringify({ steps: [{ reward: 1 }] }));
 fs.writeFileSync(path.join(jobs, 'model.patch'), 'test patch evidence\n');
+if (config.agentMetrics) {
+  fs.mkdirSync(path.join(jobs, 'agent/sessions/subagents/one'), { recursive: true });
+  fs.writeFileSync(path.join(jobs, 'agent/fh-metrics.json'), JSON.stringify(config.agentMetrics));
+  fs.writeFileSync(path.join(jobs, 'agent/sessions/subagents/one/meta.json'), JSON.stringify({ turns: 1 }));
+}
 console.log('verifier finished');

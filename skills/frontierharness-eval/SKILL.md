@@ -87,6 +87,27 @@ cached-input, and output prices match the ones in `reference.md`. The report rai
 caveat automatically. Only change the *model* if the user explicitly wants a
 non-comparable run, and say so in the report.
 
+## Runtime quota and concurrency
+
+This tenant's shared maximum is **32 vCPUs and 64 GB RAM across all runtimes**,
+not per instance. Leave headroom below both limits; do not create enough instances
+to fill the quota.
+
+- Before creating or restoring a runtime, inspect `runta ps -a` and account for
+  existing CPU and memory allocations plus the proposed runtime. Include build
+  runtimes, trials retained for recovery, other evaluations, and unrelated workloads.
+  If available capacity is unclear, resolve it before provisioning.
+- Run trials sequentially by default. Only increase concurrency when the combined
+  allocations leave headroom under both limits, and recheck before each allocation.
+  Preserve the benchmark's per-runtime resources; reduce concurrency instead of
+  shrinking trial runtimes to fit.
+- Remove this evaluation's build runtime after the checkpoint and checks succeed.
+  Remove completed trial runtimes only after their evidence is verified locally.
+  Recover retained attempts before cleanup, and leave unrelated runtimes alone.
+  If capacity is insufficient or `RESOURCE_EXHAUSTED` occurs, stop provisioning,
+  wait for capacity or safely clean up this evaluation's finished runtimes, then
+  recheck usage before retrying.
+
 ## Workflow
 
 Copy this checklist into your working notes and keep it updated:

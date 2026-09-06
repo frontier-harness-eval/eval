@@ -144,6 +144,8 @@ harbor run -d terminal-bench-sample@2.0 -a oracle -l 1 \
 This parallelizes better, but Harbor controls runtime creation, so trials no longer
 start from one shared golden checkpoint. Prefer it only for large sweeps where
 throughput matters more than identical cold starts, and say so in the report.
+Apply the same [runtime quota and concurrency rules](SKILL.md#runtime-quota-and-concurrency)
+to Harbor-managed runtimes; bound concurrency before starting a sweep.
 
 Known limitations of the provider: `harbor run -e runta` is not registered yet, so the
 import path is required; GPU, TPU, Windows, and mounted-resource tasks are unsupported;
@@ -225,8 +227,13 @@ without `runta-sdk[harbor]`, usually a global `uv tool` install at `~/.local/bin
 Use `uvx --with "runta-sdk[harbor]" harbor run ...`.
 
 **`RESOURCE_EXHAUSTED` on create or restore** — the tenant CPU or memory limit is
-reached. Delete leftover trial runtimes: `runta ps -a` then `runta rm <name>`. A crashed
-`run-trials.sh` can leave runtimes behind.
+reached. Stop provisioning and follow the
+[runtime quota and concurrency rules](SKILL.md#runtime-quota-and-concurrency).
+Inspect `runta ps -a`; a crashed `run-trials.sh` can leave runtimes behind, including
+attempts retained for evidence recovery. Recover those attempts first. Use
+`runta rm <name>` only for this evaluation's finished runtimes after verifying their
+evidence, or its build runtime after the checkpoint and checks succeed. Leave
+unrelated runtimes alone, and recheck capacity before retrying.
 
 **Agent cannot reach the model provider** — the task is air-gapped. Confirm the runtime
 egress policy allows the provider host and that the key is a stub inside the runtime:

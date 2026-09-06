@@ -158,8 +158,10 @@ What the script does, and why each part matters:
 - **Credential as a secret stub.** The provider key named by `--secret-name` (defaulted
   from `--provider`) is stored with `runta secret set` and injected by the egress proxy,
   so the real key never lands inside the runtime or inside a checkpoint. The script also
-  allowlists the provider host plus `astral.sh`, `releases.astral.sh`, `github.com`,
-  and `release-assets.githubusercontent.com` for every hop of verifier uv downloads.
+  allowlists the provider host plus the benchmark registry, source download hosts,
+  and package registries required by verifiers. This runtime policy also permits
+  agent package downloads, subject to Harbor/Pier isolation. The shared host list
+  lives in `scripts/providers.sh`; see [trial network access](reference.md#trial-network-access).
   Installation and image pulls happen before this restriction; egress setup errors
   stop preparation instead of silently falling back to a broken policy. Verify with
   `runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub'`.
@@ -233,6 +235,14 @@ datacurve/anko-typed-variable-bindings
 ```
 
 A subset is not comparable to the published leaderboard; say so in the report.
+
+`run.json` records the trial `egress_policy` (mode, runtime scope, and exact hosts).
+The published baselines' applied policy is unknown, so new runs default to
+`methodology_comparable: false` and receive no leaderboard rank, even with all 30
+tasks. Use a matched control with the same policy and environment before claiming
+comparability. A changed or unrecorded policy requires a new run id; do not relabel
+old trial evidence with the new policy. Recover retained trials using the original
+script version and configuration.
 
 Per task the script restores the checkpoint, runs the harness through Harbor
 (`terminal-bench/*`) or Pier (`datacurve/*`), copies `/work/jobs/<task>` out, writes a
@@ -315,6 +325,7 @@ explicitly in the report which ones were relaxed.
 | Infra failures marked `infra_invalid`, not `failure` | A crashed runtime or failed restore is not a harness failure. A harness process crash is a failure and stays in the denominator |
 | One shared golden checkpoint for third-party runs | The published 360 cells used per-task checkpoints. This workflow normally pulls images after each restore; the report discloses this difference |
 | Harness execution topology recorded | Custom agents may run as container CLIs, runtime services, or external services. Registration alone does not establish equivalent resource limits, isolation, or state reset |
+| Exact trial egress policy recorded and held fixed for candidate and control | Package access can change task outcomes. The published baselines' applied allowlist is unknown; new reproduction runs default to unranked |
 
 Cost comparability has one caveat worth repeating in every report: baseline costs in
 `results/eval-data.json` reprice first-turn cache reads consistently across harnesses.

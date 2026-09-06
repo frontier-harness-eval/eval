@@ -66,12 +66,33 @@ warn_unless_kimi_k3() {
   echo "warning: --model $1 is not Kimi K3. Every published FrontierHarness result uses Kimi K3, so this score will not be comparable to them." >&2
 }
 
-# Exact hosts are required at every redirect in the verifier's uv download chain.
+# Shared by provisioning and both trial runners. Runta matches exact hosts, including
+# redirects. Harbor needs its task registry and sources; verifiers install packages.
+# This runtime policy also permits agent downloads, subject to runner-level isolation.
+# Keep policy generation shared with run.json so recorded and applied hosts agree.
+provider_egress_policy() {
+  local host=$1
+  [ -n "$host" ] || { echo "provider egress host is required" >&2; return 1; }
+  jq -cn --arg host "$host" \
+    '{mode:"allowlist", scope:"runtime", allowed_hosts:([$host] + $ARGS.positional | unique)}' \
+    --args \
+    astral.sh releases.astral.sh \
+    github.com codeload.github.com raw.githubusercontent.com \
+    objects.githubusercontent.com release-assets.githubusercontent.com \
+    hlqxxzsirfrgeqasvaps.supabase.co \
+    pypi.org files.pythonhosted.org registry.npmjs.org \
+    archive.ubuntu.com security.ubuntu.com ports.ubuntu.com \
+    deb.debian.org security.debian.org download.pytorch.org
+}
+
 # Never fall back to provider-only egress: that turns setup failures into reward 0.
 apply_provider_egress() {
-  local runtime=$1 host=$2
-  [ -n "$runtime" ] && [ -n "$host" ] || return 0
-  runta egress set "$runtime" --mode allowlist --allow "$host" \
-    --allow astral.sh --allow releases.astral.sh --allow github.com \
-    --allow release-assets.githubusercontent.com
+  local runtime=$1 host=$2 policy allowed_host
+  [ -n "$runtime" ] || return 1
+  policy=$(provider_egress_policy "$host") || return 1
+  local args=(egress set "$runtime" --mode allowlist)
+  while IFS= read -r allowed_host; do
+    args+=(--allow "$allowed_host")
+  done < <(printf '%s' "$policy" | jq -r '.allowed_hosts[]')
+  runta "${args[@]}"
 }

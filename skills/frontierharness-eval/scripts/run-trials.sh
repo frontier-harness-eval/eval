@@ -42,6 +42,8 @@ Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID
   --timeout SEC   Per-task timeout in seconds (default 5400, matching task.toml)
   --secret-name NAME  Provider key to inject on egress. Defaults to the provider preset.
   --secret-host HOST  Host the key is injected for. Defaults to the provider preset.
+                  Required with --provider custom. The trial allowlist also permits
+                  benchmark source and package downloads for agents and verifiers.
                   Credential injection rules are per-runtime and are not carried by a
                   checkpoint, so each restored trial runtime needs the rule reapplied.
 
@@ -91,9 +93,14 @@ if [ -z "$MODEL" ]; then
   echo "--provider custom needs --model" >&2
   exit 2
 fi
+if [ -z "$SECRET_HOST" ]; then
+  echo "--provider custom needs --secret-host to apply the trial egress policy" >&2
+  exit 2
+fi
 warn_unless_kimi_k3 "$MODEL"
 
 require_runta_auth || exit 1
+EGRESS_POLICY=$(provider_egress_policy "$SECRET_HOST")
 
 # The task list is either a directory of task definitions or a plain list file. A
 # directory is the normal case: every tasks/<task>/task.toml already carries its
@@ -130,6 +137,10 @@ RUN_DIR="$OUT/$RUN_ID"
 mkdir -p "$RUN_DIR/trials"
 
 if [ -f "$RUN_DIR/run.json" ]; then
+  # Refuse legacy/unrecorded policies as well as changed hosts. Otherwise a resumed
+  # run could combine canonical attempts made under different network conditions.
+  jq -e --argjson policy "$EGRESS_POLICY" '.egress_policy == $policy' "$RUN_DIR/run.json" >/dev/null \
+    || { echo "run egress policy differs or is unrecorded; use a new --run-id (existing evidence retained)" >&2; exit 2; }
   jq -e --arg checkpoint "$CHECKPOINT" --arg harness "$HARNESS" --arg model "$MODEL" \
     --arg provider "$PROVIDER" --arg cmd "$CMD_TEMPLATE" --argjson timeout "$TIMEOUT" \
     '.checkpoint == $checkpoint and .harness == $harness and .model == $model
@@ -140,9 +151,12 @@ else
 jq -n --arg run_id "$RUN_ID" --arg checkpoint "$CHECKPOINT" --arg harness "$HARNESS" \
       --arg model "$MODEL" --arg provider "$PROVIDER" \
       --arg cmd "$CMD_TEMPLATE" --argjson timeout "$TIMEOUT" \
+      --argjson egress_policy "$EGRESS_POLICY" \
       --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   '{run_id:$run_id, checkpoint:$checkpoint, harness:$harness, model:$model,
-    provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout, started_at:$started}' \
+    provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout, started_at:$started,
+    egress_policy:$egress_policy, methodology_comparable:false,
+    methodology_notes:["The runtime allowlist permits agents and verifiers to download packages and benchmark sources, subject to runner-level isolation. The published baselines did not record their applied egress policy; a matched control run with the same policy and environment is required before claiming comparability."]}' \
   > "$RUN_DIR/run.json"
 fi
 
@@ -332,7 +346,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       CURRENT_RUNTIME=""
       continue
     fi
-    if [ -n "$SECRET_HOST" ] && ! retry_transport apply_provider_egress "$runtime" "$SECRET_HOST" >>"$trial_dir/restore.log" 2>&1; then
+    if ! retry_transport apply_provider_egress "$runtime" "$SECRET_HOST" >>"$trial_dir/restore.log" 2>&1; then
       record_infra "egress policy failed" false
       runta rm "$runtime" >>"$trial_dir/restore.log" 2>&1 || true
       CURRENT_RUNTIME=""

@@ -84,6 +84,10 @@ The repository intentionally contains **results, task definitions, and the evalu
 
 This repository ships a reproduction workflow for evaluating another harness on the published task set. It records environment differences from the original baseline run; a matched control run is needed to establish comparability.
 
+**Trial network access.** Agents have access to the package registries and source hosts needed by the verifiers, including Ubuntu/Debian apt mirrors, PyPI, npm, PyTorch, GitHub download hosts, and Harbor's task registry. Runta applies the allowlist to the whole runtime, including agent containers; any additional Harbor/Pier isolation still applies. Verifiers install dependencies during trials, so allowing only the model provider and uv downloads blocks valid verification. Task images are pulled before the trial policy is applied. The exact hosts are defined in [`providers.sh`](skills/frontierharness-eval/scripts/providers.sh).
+
+Each `run.json` records `egress_policy` with its mode, scope, and exact `allowed_hosts`; the same policy is used for both suites and is included in candidate data and reports. The published baselines did not record their applied allowlist, so new runs default to `methodology_comparable: false` and receive no leaderboard rank. Evaluate a control harness under the same policy and environment before claiming comparability. Resuming with a changed or unrecorded policy is refused; use a new run id for the new policy and preserve earlier evidence.
+
 [`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run — freezing the golden checkpoint, running every task from an identical fresh restore, scoring the trials, and building the report.
 
 ## How to use the skill

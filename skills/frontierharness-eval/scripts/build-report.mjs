@@ -81,6 +81,9 @@ const providerDiffers = Boolean(candidate.provider && baselineProvider
 const caveats = [
   candidate.completed < candidate.expected ? `Only ${candidate.completed} of ${candidate.expected} published tasks were scored. This subset is not comparable to the published leaderboard and receives no rank.` : null,
   ...(candidate.methodology_notes ?? []),
+  run.egress_policy
+    ? `Trial-time egress (${run.egress_policy.mode}, ${run.egress_policy.scope} scope), applied to agents and verifiers subject to runner-level isolation: ${run.egress_policy.allowed_hosts.join(", ")}.`
+    : "Trial-time egress was not recorded for this run; its network conditions cannot be compared with other runs.",
   manifest?.harness_distribution === "official-release"
     ? `The evaluated executable was official release ${manifest.harness_release}. The repository commit is a separate rebuild reference; no release-to-source mapping is asserted. Packaged executable SHA-256: ${manifest.harness_binary_sha256}.`
     : null,

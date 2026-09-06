@@ -55,7 +55,7 @@ Options:
                         does not vary the model. Required with --provider custom.
   --secret-name NAME    Env var holding the provider key, stored as a Runta secret stub.
                         Defaults to the provider preset, required with custom.
-  --secret-host HOST    Provider host for custom-route egress and credential injection.
+  --secret-host HOST    Provider host for egress and credential injection; required with custom.
   --install-script PATH Local script uploaded and run inside /work/harness to build it
   --harness-topology NAME  container-cli (default), runtime-service, or external-service;
                         recorded in the manifest so reports disclose the topology.
@@ -142,6 +142,10 @@ PROVIDER_HOST=${SECRET_HOST:-$PROVIDER_HOST}
 
 if [ -z "$MODEL" ] || [ -z "$SECRET_NAME" ]; then
   echo "--provider custom needs both --model and --secret-name" >&2
+  exit 2
+fi
+if [ -z "$PROVIDER_HOST" ]; then
+  echo "--provider custom needs --secret-host to apply the trial egress policy" >&2
   exit 2
 fi
 warn_unless_kimi_k3 "$MODEL"
@@ -277,9 +281,7 @@ rexec 'set -eu
     >/work/evidence/warmup.log 2>&1 || echo "warmup run failed; see /work/evidence/warmup.log" >&2
   rm -rf /work/warmup'
 
-if [ -n "$PROVIDER_HOST" ]; then
-  retry_transport apply_provider_egress "$RUNTIME" "$PROVIDER_HOST"
-fi
+retry_transport apply_provider_egress "$RUNTIME" "$PROVIDER_HOST"
 
 step "9/9 writing manifest and creating golden checkpoint $CHECKPOINT"
 rexec "set -eu

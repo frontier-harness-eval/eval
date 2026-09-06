@@ -44,6 +44,7 @@ const candidate = {
   label: args.label ?? run.harness,
   model: run.model,
   provider: run.provider ?? null,
+  egress_policy: run.egress_policy ?? null,
   checkpoint: run.checkpoint,
   run_id: run.run_id,
   candidate: true,

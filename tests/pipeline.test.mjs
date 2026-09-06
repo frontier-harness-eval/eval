@@ -10,6 +10,16 @@ const repo = fileURLToPath(new URL('../', import.meta.url));
 const scripts = join(repo, 'skills/frontierharness-eval/scripts');
 const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
 
+// Exact hosts from the verifier probe in PR #11, including redirect targets.
+const dependencyHosts = [
+  'astral.sh', 'releases.astral.sh', 'github.com', 'codeload.github.com',
+  'raw.githubusercontent.com', 'objects.githubusercontent.com', 'release-assets.githubusercontent.com',
+  'hlqxxzsirfrgeqasvaps.supabase.co', 'pypi.org', 'files.pythonhosted.org', 'registry.npmjs.org',
+  'archive.ubuntu.com', 'security.ubuntu.com', 'ports.ubuntu.com', 'deb.debian.org',
+  'security.debian.org', 'download.pytorch.org',
+];
+const allowedHosts = call => call.filter((_, index) => call[index - 1] === '--allow').sort();
+
 function fixture(t, config = {}) {
   const root = mkdtempSync(join(tmpdir(), 'fh-pipeline-'));
   t.after(() => process.env.KEEP_FH_FIXTURES ? t.diagnostic(root) : rmSync(root, { recursive: true, force: true }));
@@ -142,13 +152,35 @@ for (const [name, config] of [['egress', { egressFailure: true }], ['credential'
   });
 }
 
-test('Terminal-Bench uses the same verified execution and recovery path', t => {
+for (const suite of ['terminal-bench/regex-log', 'datacurve/httpx-multipart-response-parsing']) test(`${suite} records the dependency policy applied before execution`, t => {
   const f = fixture(t);
-  writeFileSync(f.tasks, 'terminal-bench/regex-log\n');
+  writeFileSync(f.tasks, `${suite}\n`);
   ok(f.run());
-  const record = JSON.parse(readFileSync(join(f.root, 'runs/control/trials/terminal-bench-regex-log/trial.json')));
+  const record = JSON.parse(readFileSync(join(f.root, 'runs/control/trials', suite.replace('/', '-'), 'trial.json')));
   assert.equal(record.status, 'success');
-  assert.equal(f.executions()[0][0], 'harbor');
+  assert.equal(f.executions()[0][0], suite.startsWith('terminal-bench/') ? 'harbor' : 'pier');
+  const egressIndex = f.calls().findIndex(a => a[0] === 'egress');
+  const hosts = allowedHosts(f.calls()[egressIndex]);
+  assert.deepEqual(hosts, [...dependencyHosts, 'api.fireworks.ai'].sort());
+  const launchIndex = f.calls().findIndex(a => a[0] === 'exec' && a.at(-1).includes('nohup setsid'));
+  assert.ok(egressIndex < launchIndex);
+  const run = JSON.parse(readFileSync(join(f.root, 'runs/control/run.json')));
+  assert.deepEqual(run.egress_policy, { mode: 'allowlist', scope: 'runtime', allowed_hosts: hosts });
+  assert.equal(run.methodology_comparable, false);
+});
+
+test('custom trial routes require a host and record the selected provider without the default', t => {
+  const f = fixture(t);
+  const args = ['--provider', 'custom', '--model', 'openai/kimi-k3', '--secret-name', 'CUSTOM_API_KEY'];
+  assert.equal(f.run(args).status, 2);
+  assert.equal(f.calls().length, 0, 'missing host must fail before contacting Runta');
+  ok(f.run([...args, '--secret-host', 'gateway.example.com']));
+  const run = JSON.parse(readFileSync(join(f.root, 'runs/control/run.json')));
+  assert.deepEqual(run.egress_policy.allowed_hosts, [...dependencyHosts, 'gateway.example.com'].sort());
+  assert.deepEqual(allowedHosts(f.calls().find(a => a[0] === 'egress')), run.egress_policy.allowed_hosts);
+  const calls = f.calls().length;
+  assert.equal(f.run([...args, '--secret-host', 'another.example.com']).status, 2);
+  assert.equal(f.calls().length, calls + 1, 'changed policy must fail before restoring a trial');
 });
 
 test('a standalone skill runs a subset using workspace task images and builds a report', t => {
@@ -196,6 +228,51 @@ test('resuming under a different model, harness, or command is refused', t => {
   assert.equal(f.executions().length, 1);
 });
 
+for (const legacy of [false, true]) test(`resuming with ${legacy ? 'unrecorded' : 'changed'} egress is refused without altering evidence`, t => {
+  const f = fixture(t, { copyFailure: 'always' });
+  ok(f.run());
+  const runPath = join(f.root, 'runs/control/run.json');
+  const run = JSON.parse(readFileSync(runPath));
+  if (legacy) delete run.egress_policy;
+  else run.egress_policy.allowed_hosts.push('extra.example.com');
+  writeFileSync(runPath, JSON.stringify(run));
+  const before = readFileSync(runPath, 'utf8');
+  const trial = f.trial();
+  const calls = f.calls().length;
+  const result = f.run();
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /egress policy/);
+  assert.equal(f.calls().length, calls + 1);
+  assert.equal(readFileSync(runPath, 'utf8'), before);
+  assert.deepEqual(f.trial(), trial);
+  assert.equal(f.executions().length, 1);
+});
+
+test('full coverage with the new egress policy stays unranked and discloses package access', t => {
+  const f = fixture(t);
+  ok(f.run());
+  cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
+  const benchmark = JSON.parse(readFileSync(join(repo, 'benchmark.json')));
+  benchmark.task_count = 1;
+  writeFileSync(join(f.root, 'benchmark.json'), JSON.stringify(benchmark));
+  for (const script of ['normalize-results.mjs', 'generate-chart.mjs', 'build-report.mjs']) {
+    ok(spawnSync(process.execPath, [join(scripts, script), '--run', 'runs/control'],
+      { cwd: f.root, env: f.env, encoding: 'utf8', timeout: 10000 }));
+  }
+  const run = JSON.parse(readFileSync(join(f.root, 'runs/control/run.json')));
+  const candidate = JSON.parse(readFileSync(join(f.root, 'runs/control/candidate.json')));
+  assert.equal(candidate.full_coverage, true);
+  assert.equal(candidate.comparable, false);
+  assert.deepEqual(candidate.egress_policy, run.egress_policy);
+  for (const file of ['REPORT.md', 'index.html']) {
+    const report = readFileSync(join(f.root, 'runs/control/report', file), 'utf8');
+    assert.match(report, /not ranked/);
+    assert.match(report, /agents.*package/i);
+    assert.match(report, /matched control/);
+    for (const host of candidate.egress_policy.allowed_hosts) assert.ok(report.includes(host));
+  }
+});
+
 test('full task coverage does not override an explicit methodology mismatch', t => {
   const f = fixture(t);
   ok(f.run());
@@ -233,6 +310,7 @@ test('provisioning waits for ready before cleanup and skips formal pre-pulls by 
   const install = f.calls().find(a => a[0] === 'exec' && a.at(-1).includes('git checkout') && a.at(-1).includes('deep-swe'));
   assert.ok(install.at(-1).includes('435ee89ec2f2e2289f33b0da4f992f0b7b7266b9'));
   assert.ok(install.at(-1).includes('--jobs-dir'));
+  assert.deepEqual(allowedHosts(f.calls().find(a => a[0] === 'egress')), [...dependencyHosts, 'api.fireworks.ai'].sort());
 });
 
 test('custom provider provisioning injects credentials and restricts the selected host', t => {
@@ -244,7 +322,7 @@ test('custom provider provisioning injects credentials and restricts the selecte
   const rule = f.calls().find(a => a[0] === 'secret' && a[1] === 'rule');
   assert.ok(rule.includes('gateway.example.com'));
   assert.ok(rule.includes('Bearer ${secret}'));
-  assert.ok(f.calls().find(a => a[0] === 'egress').includes('gateway.example.com'));
+  assert.deepEqual(allowedHosts(f.calls().find(a => a[0] === 'egress')), [...dependencyHosts, 'gateway.example.com'].sort());
 });
 
 for (const state of ['creating', 'error']) test(`checkpoint stuck in ${state} retains build runtime`, t => {

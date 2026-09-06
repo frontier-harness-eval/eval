@@ -26,7 +26,7 @@ INSTALL_SCRIPT=""
 PREPULL_TASKS=""
 CPUS=4
 MEMORY=8192
-DISK_GIB=100
+DISK_GIB=50
 DEEP_SWE_REF="435ee89ec2f2e2289f33b0da4f992f0b7b7266b9"
 HARBOR_PIN="harbor[modal]==0.22.0"
 HARBOR_PIN_FALLBACK="harbor==0.22.0"
@@ -63,9 +63,9 @@ Options:
                         stall). Normally images are pulled after each trial restore.
   --cpus N              vCPUs (default 4)
   --memory MIB          Memory in MiB (default 8192)
-  --disk-size-gib GIB   Writable overlay capacity (default 100). The eval environment
-                        needs this much: a harness built from source plus a task image
-                        can overflow the 16 GiB Runtime Image default.
+  --disk-size-gib GIB   Writable overlay capacity (default 50). A harness built from
+                        source plus a task image can overflow the 16 GiB Runtime
+                        Image default.
   --deep-swe-ref REF    DeepSWE commit (default $DEEP_SWE_REF)
   --checkpoint-timeout SEC  Wait for checkpoint readiness (default 900); retain the
                         build runtime on timeout or failure for diagnosis.
@@ -127,8 +127,8 @@ done
 case "$DISK_GIB" in
   ''|*[!0-9]*) echo "--disk-size-gib must be a whole number of GiB" >&2; exit 2 ;;
 esac
-if [ "$DISK_GIB" -lt 100 ]; then
-  echo "warning: disk ${DISK_GIB} GiB is below the 100 GiB the eval environment needs" >&2
+if [ "$DISK_GIB" -lt 50 ]; then
+  echo "warning: disk ${DISK_GIB} GiB is below the 50 GiB eval default" >&2
 fi
 
 if ! resolve_provider "$PROVIDER"; then

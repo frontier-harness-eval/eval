@@ -141,7 +141,7 @@ bash "$FH/provision-golden-checkpoint.sh" \
   --provider fireworks \
   --repo https://github.com/acme/my-harness \
   --commit 9f2c1ab \
-  --cpus 4 --memory 8192 --disk-size-gib 100 --keep-runtime \
+  --cpus 4 --memory 8192 --disk-size-gib 50 --keep-runtime \
   --install-script ./install-my-harness.sh
 ```
 
@@ -149,9 +149,9 @@ What the script does, and why each part matters:
 
 - **Clean runtime.** `runta run` with no `--agent` preset, so no vendor harness is
   pre-installed and nothing competes with the harness under test. Disk defaults to
-  100 GiB, which is what the eval environment needs: building a harness from source
-  plus a task image can overflow the 16 GiB Runtime Image default. Keep it
-  at 100 GiB so every trial restores with the same capacity as the baselines.
+  50 GiB: building a harness from source plus a task image can overflow the 16 GiB
+  Runtime Image default. Keep it at 50 GiB so every trial restores with the same
+  capacity.
 - **Repo pinned by commit.** The harness is cloned to `/work/harness` at `--commit`.
   A branch name is not reproducible; always pin a SHA.
 - **Benchmark stack.** Installs `uv`, Harbor `0.22.0` for Terminal-Bench, `datacurve-pier==0.3.1` plus the `deep-swe` corpus at commit **`435ee89ec2f2e2289f33b0da4f992f0b7b7266b9`** (the published `v1.1` label is not a Git tag; see the [corpus caveat](reference.md#corpus-pin-and-pi-control)), and `runta-sdk[harbor]`.
@@ -309,7 +309,7 @@ explicitly in the report which ones were relaxed.
 | Kimi K3, the same model as every published configuration, from any provider serving it | Harness effects and model effects are otherwise inseparable |
 | Provider token prices matching the baselines, or a stated caveat | Pass rate survives a provider swap; the cost column does not |
 | One golden checkpoint per task set, every trial a fresh restore | Identical cold start, identical disk and memory state |
-| Identical vCPU, memory, and disk (100 GiB) across all restores | Compute differences show up as time and pass-rate differences |
+| Identical vCPU, memory, and disk (50 GiB) across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |
 | Canonical result is the first valid attempt | Matches `benchmark.json` `canonical_selection` |
 | Infra failures marked `infra_invalid`, not `failure` | A crashed runtime or failed restore is not a harness failure. A harness process crash is a failure and stays in the denominator |

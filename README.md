@@ -157,7 +157,7 @@ $FH/provision-golden-checkpoint.sh \
   --runtime fh-build --checkpoint fh-golden-myharness-v1 \
   --harness my-harness --provider fireworks \
   --repo https://github.com/acme/my-harness --commit 9f2c1ab \
-  --cpus 4 --memory 8192 --disk-size-gib 100 --keep-runtime \
+  --cpus 4 --memory 8192 --disk-size-gib 50 --keep-runtime \
   --install-script ./install-my-harness.sh
 ```
 

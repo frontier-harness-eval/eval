@@ -6,7 +6,7 @@ Command reference, runner templates, and troubleshooting for `frontierharness-ev
 
 | Purpose | Command |
 | --- | --- |
-| Create a clean runtime | `runta run --name demo --cpus 4 --memory 8192 --disk-size-gib 100` |
+| Create a clean runtime | `runta run --name demo --cpus 4 --memory 8192 --disk-size-gib 50` |
 | Run a command inside it | `runta exec demo -- sh -lc 'harbor --version'` |
 | Copy files in or out | `runta cp local.txt demo:/work/` · `runta cp demo:/work/jobs ./jobs` |
 | Store a provider key | `runta secret set OPENAI_API_KEY --value-env OPENAI_API_KEY` |
@@ -17,7 +17,7 @@ Command reference, runner templates, and troubleshooting for `frontierharness-ev
 | Inspect or clean up | `runta inspect demo` · `runta rm demo` |
 
 `runta run` requires both `--cpus` and `--memory`. `--disk-size-gib` defaults to 16,
-which is too small for the eval environment, so pass 100. Restoring a checkpoint always
+which is too small for the eval environment, so pass 50. Restoring a checkpoint always
 creates a new runtime with the checkpoint's capacity; it never mutates the checkpoint. Full docs: <https://runta.com/docs/>.
 
 Use `--` before the remote command in `runta exec` whenever arguments could be parsed as

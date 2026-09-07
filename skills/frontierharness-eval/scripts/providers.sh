@@ -69,6 +69,8 @@ warn_unless_kimi_k3() {
 # Shared by provisioning and both trial runners. Wildcard patterns cover redirect
 # hosts and registry subdomains; apex hosts stay listed because *.example.com does
 # not match example.com. Verifiers also need sources and package registries.
+# *.ecr.aws covers the DeepSWE corpus registry (public.ecr.aws and gallery
+# subdomains); Pier's compose build still HEADs it after the trial allowlist.
 # This runtime policy also permits agent downloads, subject to runner-level isolation.
 # Keep policy generation shared with run.json so recorded and applied hosts agree.
 provider_egress_policy() {
@@ -82,7 +84,8 @@ provider_egress_policy() {
     '*.supabase.co' \
     pypi.org '*.pythonhosted.org' '*.npmjs.org' \
     '*.ubuntu.com' \
-    '*.debian.org' '*.pytorch.org'
+    '*.debian.org' '*.pytorch.org' \
+    '*.ecr.aws'
 }
 
 # Never fall back to provider-only egress: that turns setup failures into reward 0.

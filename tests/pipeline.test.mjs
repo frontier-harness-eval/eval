@@ -15,6 +15,7 @@ const dependencyHosts = [
   'astral.sh', '*.astral.sh', 'github.com', '*.github.com', '*.githubusercontent.com',
   '*.supabase.co', 'pypi.org', '*.pythonhosted.org', '*.npmjs.org',
   '*.ubuntu.com', '*.debian.org', '*.pytorch.org',
+  '*.ecr.aws',
 ];
 const allowedHosts = call => call.filter((_, index) => call[index - 1] === '--allow').sort();
 

@@ -85,7 +85,7 @@ provider_egress_policy() {
     pypi.org '*.pythonhosted.org' '*.npmjs.org' \
     '*.ubuntu.com' \
     '*.debian.org' '*.pytorch.org' \
-    '*.ecr.aws'
+    '*.ecr.aws' '*.cloudfront.net'
 }
 
 # Never fall back to provider-only egress: that turns setup failures into reward 0.

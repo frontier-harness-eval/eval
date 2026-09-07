@@ -16,6 +16,7 @@ const dependencyHosts = [
   '*.supabase.co', 'pypi.org', '*.pythonhosted.org', '*.npmjs.org',
   '*.ubuntu.com', '*.debian.org', '*.pytorch.org',
   '*.ecr.aws',
+  '*.cloudfront.net',
 ];
 const allowedHosts = call => call.filter((_, index) => call[index - 1] === '--allow').sort();
 

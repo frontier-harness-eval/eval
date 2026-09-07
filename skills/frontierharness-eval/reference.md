@@ -71,7 +71,8 @@ Runta's policy applies to the whole runtime, including agent containers. Agents
 therefore have package-registry and source access under this policy, subject to
 additional Harbor/Pier isolation; it is not a verifier-only exception. Every hostname
 must match an allowlist entry, including redirect targets. Related subdomains use
-wildcard patterns such as `*.githubusercontent.com` and `*.supabase.co`; apex
+wildcard patterns such as `*.githubusercontent.com`, `*.supabase.co`, and
+`*.cloudfront.net`; apex
 hosts like `github.com` stay listed because a wildcard does not match them.
 There is no provider-only
 fallback. Provisioning installs packages and clones sources before restricting

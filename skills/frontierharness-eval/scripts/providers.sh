@@ -66,8 +66,9 @@ warn_unless_kimi_k3() {
   echo "warning: --model $1 is not Kimi K3. Every published FrontierHarness result uses Kimi K3, so this score will not be comparable to them." >&2
 }
 
-# Shared by provisioning and both trial runners. Runta matches exact hosts, including
-# redirects. Harbor needs its task registry and sources; verifiers install packages.
+# Shared by provisioning and both trial runners. Wildcard patterns cover redirect
+# hosts and registry subdomains; apex hosts stay listed because *.example.com does
+# not match example.com. Verifiers also need sources and package registries.
 # This runtime policy also permits agent downloads, subject to runner-level isolation.
 # Keep policy generation shared with run.json so recorded and applied hosts agree.
 provider_egress_policy() {
@@ -76,13 +77,12 @@ provider_egress_policy() {
   jq -cn --arg host "$host" \
     '{mode:"allowlist", scope:"runtime", allowed_hosts:([$host] + $ARGS.positional | unique)}' \
     --args \
-    astral.sh releases.astral.sh \
-    github.com codeload.github.com raw.githubusercontent.com \
-    objects.githubusercontent.com release-assets.githubusercontent.com \
-    hlqxxzsirfrgeqasvaps.supabase.co \
-    pypi.org files.pythonhosted.org registry.npmjs.org \
-    archive.ubuntu.com security.ubuntu.com ports.ubuntu.com \
-    deb.debian.org security.debian.org download.pytorch.org
+    astral.sh '*.astral.sh' \
+    github.com '*.github.com' '*.githubusercontent.com' \
+    '*.supabase.co' \
+    pypi.org '*.pythonhosted.org' '*.npmjs.org' \
+    '*.ubuntu.com' \
+    '*.debian.org' '*.pytorch.org'
 }
 
 # Never fall back to provider-only egress: that turns setup failures into reward 0.

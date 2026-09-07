@@ -60,7 +60,7 @@ the model id recognisably Kimi K3 or the scripts will warn:
 
 ### Trial network access
 
-The provision and trial scripts use the same exact-host allowlist for both suites:
+The provision and trial scripts use the same host allowlist for both suites:
 the selected provider plus the hosts in `scripts/providers.sh`. These cover uv and
 its redirects, GitHub sources, Harbor's Supabase task registry, PyPI, npm, Ubuntu and
 Debian apt mirrors, and PyTorch packages. The verifier probe in [PR #11](https://github.com/frontier-harness-eval/eval/pull/11#issuecomment-5557351214)
@@ -70,7 +70,10 @@ Harbor's registry and verifier dependency installs blocked.
 Runta's policy applies to the whole runtime, including agent containers. Agents
 therefore have package-registry and source access under this policy, subject to
 additional Harbor/Pier isolation; it is not a verifier-only exception. Every hostname
-must be allowed explicitly, including redirect targets. There is no provider-only
+must match an allowlist entry, including redirect targets. Related subdomains use
+wildcard patterns such as `*.githubusercontent.com` and `*.supabase.co`; apex
+hosts like `github.com` stay listed because a wildcard does not match them.
+There is no provider-only
 fallback. Provisioning installs packages and clones sources before restricting
 egress; each trial pulls its selected image before applying the policy, so container
 registries need not stay open during execution. Confirm with:

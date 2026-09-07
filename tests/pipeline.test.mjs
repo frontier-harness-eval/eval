@@ -10,13 +10,11 @@ const repo = fileURLToPath(new URL('../', import.meta.url));
 const scripts = join(repo, 'skills/frontierharness-eval/scripts');
 const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
 
-// Exact hosts from the verifier probe in PR #11, including redirect targets.
+// Wildcard patterns covering the verifier probe hosts in PR #11, including redirects.
 const dependencyHosts = [
-  'astral.sh', 'releases.astral.sh', 'github.com', 'codeload.github.com',
-  'raw.githubusercontent.com', 'objects.githubusercontent.com', 'release-assets.githubusercontent.com',
-  'hlqxxzsirfrgeqasvaps.supabase.co', 'pypi.org', 'files.pythonhosted.org', 'registry.npmjs.org',
-  'archive.ubuntu.com', 'security.ubuntu.com', 'ports.ubuntu.com', 'deb.debian.org',
-  'security.debian.org', 'download.pytorch.org',
+  'astral.sh', '*.astral.sh', 'github.com', '*.github.com', '*.githubusercontent.com',
+  '*.supabase.co', 'pypi.org', '*.pythonhosted.org', '*.npmjs.org',
+  '*.ubuntu.com', '*.debian.org', '*.pytorch.org',
 ];
 const allowedHosts = call => call.filter((_, index) => call[index - 1] === '--allow').sort();
 
@@ -69,7 +67,7 @@ test('detached execution survives lost launch ACK and poll; verifies copies desp
   assert.ok(existsSync(join(f.trialDir, 'runner.log')));
   assert.equal(f.calls().at(-1)[0], 'rm');
   const egress = f.calls().find(a => a[0] === 'egress');
-  for (const host of ['api.fireworks.ai', 'astral.sh', 'releases.astral.sh', 'github.com', 'release-assets.githubusercontent.com']) assert.ok(egress.includes(host));
+  for (const host of ['api.fireworks.ai', 'astral.sh', '*.astral.sh', 'github.com', '*.githubusercontent.com']) assert.ok(egress.includes(host));
   const imagePull = f.calls().findIndex(a => a[0] === 'exec' && a.at(-1).includes('docker pull'));
   assert.ok(imagePull >= 0 && imagePull < f.calls().findIndex(a => a[0] === 'egress'));
   assert.ok(f.calls()[imagePull].at(-1).includes(':v1.1'), 'use the pinned corpus image');

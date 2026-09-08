@@ -28,8 +28,8 @@ CLI options, and wrap multi-step commands in `sh -lc '...'`.
 The benchmark fixes the **model** at **Kimi K3**, matching `benchmark.json`
 (`"model": "Kimi K3"`). Both scripts warn if the model is anything else. The
 **provider** is a choice: the published baselines used Fireworks
-(`"model_provider": "Fireworks"`), but the same weights from another provider give a
-comparable pass rate. Select one with `--provider`; the presets live in
+(`"model_provider": "Fireworks"`), but another provider requires a matched control to establish comparable
+serving behavior. Select one with `--provider`; the presets live in
 `scripts/providers.sh`.
 
 | `--provider` | Model route | Credential | Egress host |
@@ -101,7 +101,7 @@ evidence collection, use the original script version and configuration to recove
 
 ### Cost comparability
 
-The cost calculation uses the frozen `runta-cost-eval` price table
+The cost calculation uses the frozen benchmark price table
 (`scripts/pricing.json`, version `kimi-k3-2026-08-20`): $3.00 fresh input and
 cache writes, $0.30 cache reads, and $15.00 output per million tokens. Recognized
 Kimi K3 routes use this common benchmark basis; these are not live provider bills.
@@ -124,8 +124,8 @@ recalculates existing runs from retained job evidence without rewriting raw reco
 Multiple leaf results are ambiguous and remain unpriced, avoiding retry double counting.
 
 Success-only mean and median normalized costs require 100% successful-task cost
-coverage. Effective cost per pass follows `runta-cost-eval`: sum of known costs
-across scored tasks divided by passes, with missing-cost coverage disclosed.
+coverage. Effective cost per pass is the sum of known costs
+across all canonical cells (including invalid cells with known costs) divided by passes, with missing-cost coverage disclosed.
 
 ## Runner templates
 
@@ -235,11 +235,12 @@ these fields, so any custom runner can produce them directly:
 }
 ```
 
-`status` is one of `success`, `failure`, `timeout`, or `infra_invalid`. Only
+`status` is one of `success`, `failure`, or `infra_invalid`. Only
 `infra_invalid` is excluded from scoring. Setup failures (restore, readiness, image
 pull, egress, credentials) and unconfirmed execution or evidence transfer are marked
-automatically. A confirmed harness crash remains `failure`; a remote timeout remains
-`timeout`. Neither is retried by transport recovery. A pending record carries
+automatically. Verifier outcomes require model usage. A timeout after agent execution starts is
+`failure`; pre-execution timeouts and unproven crashes are `infra_invalid`. Valid
+outcomes are never retried by transport recovery. A pending record carries
 `recovery: true`, `runtime`, and the exact `runner_command`: re-running the same run
 reattaches to that runtime. A valid attempt is never replaced. Earlier setup failures
 are archived under `runs/<run-id>/attempts/` before retrying. Use a new run id for a

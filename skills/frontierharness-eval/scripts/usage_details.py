@@ -1,6 +1,6 @@
 """Per-call usage details (turn count, first-call cache stats) per harness.
 
-Ported from runta-cost-eval/runta_cost_eval/usage_details.py.
+Per-call accounting for the frozen benchmark.
 
 Trial totals come from agent_result via Harbor's AgentContext; this module
 reads the raw harness logs in the trial's agent directory to answer two

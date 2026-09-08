@@ -61,7 +61,7 @@ test('detached execution survives lost launch ACK and poll; verifies copies desp
   const f = fixture(t, { launchDisconnects: 1, pollFailures: 1, copyFailures: 1, copyReturnsError: true });
   ok(f.run());
   assert.equal(f.trial().status, 'success');
-  assert.equal(f.trial().cost_usd, 2.5);
+  assert.equal(f.trial().cost_usd, 0.000045);
   assert.equal(f.trial().cost_first_cold_usd, null, "reported billing alone cannot establish first-cold cost");
   assert.equal(f.executions().length, 1, 'transport retries must not rerun the harness');
   assert.ok(f.executions()[0].includes('--jobs-dir'));
@@ -120,28 +120,29 @@ for (const turns of [null, 226]) test(`adapter turns ${turns} cannot fall throug
   const f = fixture(t, { agentMetrics: { turns }, result: {
     verifier_result: { rewards: { reward: 0 } },
     exception_info: { exception_type: 'AgentTimeoutError' },
-    environment_setup: {}, agent_setup: {}, agent_execution: {},
+    environment_setup: {}, agent_setup: {}, agent_execution: { started_at: "2026-09-05T00:00:00Z" },
   } });
   ok(f.run());
   assert.equal(f.trial().status, 'failure');
-  assert.equal(f.trial().turns, turns);
+  assert.equal(f.trial().turns, null, "turns require per-call usage evidence");
   assert.equal(f.executions().length, 1);
 });
 
 for (const [name, config, status] of [
-  ['verifier failure', { result: { resolved: false, reward: 1 } }, 'failure'],
-  ['harness crash', { runnerCrash: true }, 'failure'],
+  ['verifier failure', { result: { resolved: false, reward: 1, agent_result: { n_input_tokens: 10 } } }, 'failure'],
+  ['harness crash', { runnerCrash: true }, 'infra_invalid'],
   ['agent execution exception', { result: { exception_info: { exception_type: 'RuntimeError' },
-    environment_setup: {}, agent_setup: {}, agent_execution: { started_at: '2026-09-05T00:00:00Z' } } }, 'failure'],
-  ['remote timeout', { runnerTimeout: true }, 'timeout'],
-]) test(`${name} stays scoreable and is never rerun by transport recovery`, t => {
+    environment_setup: {}, agent_setup: {}, agent_execution: { started_at: '2026-09-05T00:00:00Z' } } }, 'infra_invalid'],
+  ['remote timeout', { runnerTimeout: true }, 'infra_invalid'],
+]) test(`${name} follows baseline validity rules`, t => {
   const f = fixture(t, config);
   ok(f.run());
   assert.equal(f.trial().status, status);
   assert.equal(f.trial().success, false);
   const calls = f.calls().length;
   ok(f.run());
-  assert.equal(f.calls().length, calls + 1, 'only authentication probe is needed for a valid trial');
+  if (status === 'failure') assert.equal(f.calls().length, calls + 1, 'valid outcomes remain canonical');
+  else assert.ok(f.calls().length > calls + 1, 'infra-invalid attempts may be retried');
 });
 
 for (const [name, config] of [['egress', { egressFailure: true }], ['credential', { authFailure: true }]]) {
@@ -255,6 +256,7 @@ test('full coverage with the new egress policy stays unranked and discloses pack
   cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
   const benchmark = JSON.parse(readFileSync(join(repo, 'benchmark.json')));
   benchmark.task_count = 1;
+  benchmark.task_ids = ["datacurve/httpx-multipart-response-parsing"];
   writeFileSync(join(f.root, 'benchmark.json'), JSON.stringify(benchmark));
   for (const script of ['normalize-results.mjs', 'generate-chart.mjs', 'build-report.mjs']) {
     ok(spawnSync(process.execPath, [join(scripts, script), '--run', 'runs/control'],
@@ -280,6 +282,7 @@ test('full task coverage does not override an explicit methodology mismatch', t 
   cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
   const benchmark = JSON.parse(readFileSync(join(repo, 'benchmark.json')));
   benchmark.task_count = 1;
+  benchmark.task_ids = ["datacurve/httpx-multipart-response-parsing"];
   writeFileSync(join(f.root, 'benchmark.json'), JSON.stringify(benchmark));
   const runPath = join(f.root, 'runs/control/run.json');
   const run = JSON.parse(readFileSync(runPath));

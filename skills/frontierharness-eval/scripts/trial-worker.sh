@@ -17,6 +17,6 @@ cd "${FH_WORK_DIR:-/work}"
 exit_code=0
 timeout --kill-after=30 "$limit" bash -lc "$command" >"$state/runner.log" 2>&1 || exit_code=$?
 duration=$(( $(date +%s) - started ))
-jq -n --argjson exit_code "$exit_code" --argjson duration "$duration" \
-  '{exit_code:$exit_code, duration_seconds:$duration}' > "$state/completion.json.tmp"
+jq -n --argjson exit_code "$exit_code" --argjson duration "$duration" --argjson timeout "$limit" \
+  '{exit_code:$exit_code, duration_seconds:$duration, timeout_seconds:$timeout}' > "$state/completion.json.tmp"
 mv "$state/completion.json.tmp" "$state/completion.json"

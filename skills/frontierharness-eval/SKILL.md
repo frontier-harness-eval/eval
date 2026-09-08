@@ -81,10 +81,10 @@ is not Kimi K3, and refuse an unknown provider name.
 | `custom` | supply `--model` | supply `--secret-name` |
 
 Ask which provider the user has a key for, and use `--provider fireworks` if they have
-no preference. A different provider keeps the pass rate comparable, since the model is
-identical; it only puts the cost column at risk, so check that the provider's input,
-cached-input, and output prices match the ones in `reference.md`. The report raises this
-caveat automatically. Only change the *model* if the user explicitly wants a
+no preference. A different provider must be documented and validated with a matched control;
+matching the model name alone does not prove equivalent serving behavior. Costs use
+the frozen benchmark token prices in `reference.md`, regardless of the provider's
+actual billing rates. Only change the *model* if the user explicitly wants a
 non-comparable run, and say so in the report.
 
 ## Runtime quota and concurrency
@@ -263,9 +263,10 @@ it is the only proof a score is real.
 
 If transport fails, the script records `infra_invalid` with `recovery: true` and
 retains the runtime. Re-run the same command to collect the original attempt. Valid
-passes, failures, and timeouts are preserved as the first valid attempt. Use a new
+passes and failures (including post-execution timeouts) are preserved as the first valid attempt. Use a new
 `--run-id` for an intentional new experiment. If infrastructure failed before launch,
-retry the affected task rather than scoring it as a failure:
+retry the affected task rather than scoring it as a failure. The collector classifies
+raw evidence automatically; do not override `trial.json` status by hand:
 
 ```bash
 # Resume pending work or retry infra-invalid setup; keep all valid attempts.
@@ -273,9 +274,6 @@ echo "terminal-bench/<task>" > retry.txt
 bash "$FH/run-trials.sh" --checkpoint fh-golden-myharness-v1 --harness my-harness \
   --provider fireworks --run-id 2026-09-02-myharness --tasks retry.txt --out runs
 
-# If it fails on infrastructure again, mark it so it is excluded rather than scored.
-trial=runs/2026-09-02-myharness/trials/terminal-bench-<task>/trial.json
-jq '.status = "infra_invalid" | .success = false' "$trial" > "$trial.tmp" && mv "$trial.tmp" "$trial"
 ```
 
 ### 5. Generate the diagram
@@ -324,39 +322,61 @@ explicitly in the report which ones were relaxed.
 | Rule | Why |
 | --- | --- |
 | Kimi K3, the same model as every published configuration, from any provider serving it | Harness effects and model effects are otherwise inseparable |
-| Provider token prices matching the baselines, or a stated caveat | Pass rate survives a provider swap; the cost column does not |
+| Frozen benchmark price table, with overrides disclosed | Compare standardized costs; actual provider billing may differ |
 | One golden checkpoint per task set, every trial a fresh restore | Identical cold start, identical disk and memory state |
 | Identical vCPU, memory, and disk (50 GiB) across all restores | Compute differences show up as time and pass-rate differences |
 | No formal task executed before the checkpoint | Prevents warm-cache bias |
 | Canonical result is the first valid attempt | Matches `benchmark.json` `canonical_selection` |
-| Infra failures marked `infra_invalid`, not `failure` | A crashed runtime or failed restore is not a harness failure. A harness process crash is a failure and stays in the denominator |
+| Evidence-based validity | Verifier reward plus model usage establishes a quality outcome. A timeout after agent execution starts is a valid failure even without usage; unproven execution, setup errors, and missing verifier outcomes otherwise remain `infra_invalid` |
 | One shared golden checkpoint for third-party runs | The published 360 cells used per-task checkpoints. This workflow normally pulls images after each restore; the report discloses this difference |
 | Harness execution topology recorded | Custom agents may run as container CLIs, runtime services, or external services. Registration alone does not establish equivalent resource limits, isolation, or state reset |
 | Exact trial egress policy recorded and held fixed for candidate and control | Package access can change task outcomes. The published baselines' applied allowlist is unknown; new reproduction runs default to unranked |
 
-Cost comparability has one caveat worth repeating in every report: baseline costs in
-`results/eval-data.json` reprice first-turn cache reads consistently across harnesses.
-`effective_cost_per_pass` (total cost over all tasks divided by passes) is reproducible
-from raw per-task cost and is the safe field to compare. The `*_normalized` fields are
-not reproducible from public data — the scripts leave them null rather than inventing
-values.
+## Accounting and canonical selection
 
-## Metric definitions
+The scripts follow the frozen benchmark’s scoring and aggregation conventions:
 
-`normalize-results.mjs` computes these from `trial.json` files, matching the baseline:
+- Filter to `benchmark.json` `task_ids`, exclude attempt numbers other than 1 and
+  labels containing `warm` or starting with `smoke`, and select the earliest valid
+  outcome per task. Later valid retries cannot replace it. Retain the latest invalid
+  cell when no valid outcome exists. Never edit raw outcomes to manufacture validity.
+- A verifier reward of at least 1 plus observed model usage is a success, even when
+  the agent also raised an exception. Other verifier outcomes with usage are failures.
+  A timeout after `agent_execution.started_at` is a failure even without usage or
+  verifier output. All other unproven outcomes are infrastructure-invalid.
+- Price total input as fresh + cache read + cache write with the bundled frozen
+  table. Preserve agent-reported billing as diagnostic/fallback data. Reprice only
+  first-call cached reads at the fresh rate for `cost_first_cold_usd`; missing
+  first-call details leave that value null. Retained per-call evidence supports
+  normalized costs and cache metrics; missing values are never invented.
+- Success-only efficiency metrics require 100% successful-cell coverage. Coverage
+  denominators for duration, turns, tokens, cache, and success cost are successes.
+  `cost_per_success_normalized` is the arithmetic mean first-cold cost of successes;
+  `median_cost_per_success_normalized` is their median.
+- `effective_cost_per_pass` sums known first-cold costs across all canonical cells
+  and divides by passes, including failed and invalid cells with known costs.
+  This field can be partial: report `effective_cost_coverage` (known-cost cells /
+  expected tasks) beside it. It is distinct from success-only mean cost.
+- `cache_hit_rate_normalized` is token-weighted `(cached - first_cached) / input`
+  across successes. `cache_hit_rate_typical` is the median per-success normalized
+  rate; quartiles use inclusive interpolation. Raw and session-only cache rates
+  are retained separately on trials.
+- `median_duration_seconds` is median full runner trial wall time over successes,
+  from raw start/finish timestamps; a cell watchdog uses its configured limit.
+  It is not model latency. Turns count model calls from per-call harness records.
+- `pass_rate` is passes / valid cells; `success_rate_expected` is passes / expected
+  tasks; `valid_coverage` is valid / expected. Missing and invalid cells stay visible.
+  Full coverage requires a valid canonical cell for every frozen task identity.
 
-| Field | Definition |
-| --- | --- |
-| `pass_rate` | passes / tasks attempted (infra_invalid excluded) |
-| `expected` | published task count from `benchmark.json` (30) |
-| `completed` | scoreable trials |
-| `full_coverage` | `completed === expected` |
-| `comparable` | Full coverage and no explicit `methodology_comparable: false` in `run.json`; the report ranks only then |
-| `effective_cost_per_pass` | total cost across *all* tasks / passes |
-| `median_cost_per_success` | median per-task cost over successful tasks only |
-| `median_duration_seconds` | median wall-clock over successful tasks only |
-| `cache_hit_rate_typical` | median runner-reported cache hit rate over successful tasks; not the baseline's repriced series |
-| `mean_turns` | mean agent turns over successful tasks only |
+Before sharing, review invalid cells, successful cells with exceptions, missing
+successful-cell metrics, zero-usage outcomes, and duration/token/turn/cache/cost
+outliers. A flag requires evidence review, not automatic exclusion. Preserve raw
+results and recovery evidence. Do not call an incomplete matrix complete.
+
+Accounting alignment does not establish environment equivalence. The shared
+checkpoint, registry-resolved Terminal-Bench tasks, corpus image differences,
+provider route, topology, and trial egress must be matched with a control before
+claiming leaderboard comparability. New runs remain unranked by default.
 
 ## Additional resources
 

@@ -10,7 +10,7 @@ const index = args.indexOf('--jobs-dir');
 if (index < 0 || args.includes('--output-dir')) process.exit(2);
 const jobs = path.join(args[index + 1], 'job', 'trial');
 fs.mkdirSync(jobs, { recursive: true });
-const result = config.result || { verifier_result: { rewards: { reward: 1 } }, total_cost_usd: 2.5 };
+const result = config.result || { verifier_result: { rewards: { reward: 1 } }, total_cost_usd: 2.5, agent_result: { n_input_tokens: 10, n_output_tokens: 1 } };
 fs.writeFileSync(path.join(jobs, 'result.json'), JSON.stringify(result));
 fs.writeFileSync(path.join(jobs, 'trajectory.json'), JSON.stringify({ steps: [{ reward: 1 }] }));
 fs.writeFileSync(path.join(jobs, 'model.patch'), 'test patch evidence\n');

@@ -191,42 +191,6 @@ render() {
   printf '%s\n' "$rendered"
 }
 
-# Prefer runner result documents, then the rest, always in sorted path order so
-# extraction is deterministic. Only explicit result fields are read: walking every
-# nested object used to pick up a passing unit test or trajectory event.
-json_files_ordered() {
-  local dir=$1 all preferred rest
-  [ -d "$dir" ] || return 0
-  all=$(find "$dir" -name '*.json' -size -8M 2>/dev/null | LC_ALL=C sort) || return 0
-  [ -n "$all" ] || return 0
-  preferred=$(printf '%s\n' "$all" | grep -E '/(result|results|eval|verifier)[^/]*\.json$' || true)
-  rest=$(printf '%s\n' "$all" | grep -vE '/(result|results|eval|verifier)[^/]*\.json$' || true)
-  printf '%s\n%s\n' "$preferred" "$rest" | sed '/^$/d'
-}
-
-extract() {
-  local dir=$1 filter=$2 file value
-  while IFS= read -r file; do
-    [ -n "$file" ] || continue
-    value=$(jq -c "$filter" "$file" 2>/dev/null) || continue
-    if [ -n "$value" ] && [ "$value" != "null" ]; then
-      printf '%s' "$value"
-      return 0
-    fi
-  done < <(json_files_ordered "$dir")
-}
-
-extract_turns() {
-  local dir=$1 file value
-  # Adapter metrics are authoritative, including an explicit null after timeout.
-  # Falling through in that case can mistake a saved subagent's count for the run.
-  while IFS= read -r file; do
-    value=$(jq -c 'select(has("turns")) | .turns | select(. == null or type == "number")' "$file" 2>/dev/null) || continue
-    if [ -n "$value" ]; then printf '%s' "$value"; return 0; fi
-  done < <(find "$dir" -name 'fh-metrics.json' 2>/dev/null | LC_ALL=C sort)
-  extract "$dir" '.n_steps // .num_turns // .turns // .agent_info.n_steps // .agent_info.num_turns | select(type == "number")'
-}
-
 runtime_name() {
   local raw hash
   raw=$(printf 'fh-%s' "$1" | tr -c 'a-zA-Z0-9-' '-')
@@ -296,9 +260,15 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   total=$((total + 1))
   CURRENT_RUNTIME=""
 
+  # Reclassify legacy normalized records from retained raw evidence before deciding
+  # whether a task has a valid canonical attempt. Pending transfers remain recoverable.
+  if [ -f "$trial_dir/trial.json" ] && [ -d "$trial_dir/jobs" ] && \
+    ! jq -e '.recovery == true' "$trial_dir/trial.json" >/dev/null; then
+    python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --score --write
+  fi
   # Preserve the first valid attempt, whether it passed or failed.
   if [ -f "$trial_dir/trial.json" ] && jq -e \
-    '.status == "success" or .status == "failure" or .status == "timeout"' "$trial_dir/trial.json" >/dev/null; then
+    '.status == "success" or .status == "failure"' "$trial_dir/trial.json" >/dev/null; then
     echo "[$entry] keeping first valid attempt" >&2
     if jq -e '.success == true' "$trial_dir/trial.json" >/dev/null; then passed=$((passed + 1)); fi
     continue
@@ -442,27 +412,13 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   exit_code=$(jq -er '.exit_code' "$trial_dir/completion.json")
   duration=$(jq -er '.duration_seconds' "$trial_dir/completion.json")
 
-  # Support the pinned runners' explicit verifier field, as well as custom runners'
-  # top-level rewards. Do not search arbitrary nested events for a passing unit test.
-  reward=$(extract "$trial_dir/jobs" '[.resolved, .is_resolved, .reward, .passed, .verifier_result.rewards.reward] | map(select(. != null)) | .[0] | select(. != null)')
-  cost=$(extract "$trial_dir/jobs" '.total_cost_usd // .total_cost // .cost_usd // .usage.total_cost_usd | select(type == "number")')
-  turns=$(extract_turns "$trial_dir/jobs")
-  cache=$(extract "$trial_dir/jobs" '.cache_hit_rate // .cache_read_ratio | select(type == "number")')
-  exception=$(extract "$trial_dir/jobs" '.exception_info | select(. != null)')
-  environment_failure=$(extract "$trial_dir/jobs" 'select(.exception_info != null and .environment_setup != null and .agent_setup == null and .agent_execution == null) | true')
-  success=$(jq -n --argjson r "${reward:-null}" '($r == true) or ($r == 1)' 2>/dev/null) || success=false
-  if [ "$environment_failure" = true ]; then
-    status=infra_invalid
-    success=false
-  elif [ "$exit_code" -eq 124 ] || [ "$exit_code" -eq 137 ]; then
-    status=timeout
-    success=false
-  elif [ "$success" = true ]; then
-    status=success
-    passed=$((passed + 1))
-  else
-    status=failure # A confirmed harness crash is still a scoreable failure.
-  fi
+  # Score only authoritative leaf result evidence, using the baseline collector rules.
+  success=false
+  status=infra_invalid
+  cost=null
+  turns=null
+  cache=null
+  exception=null
 
   jq -n \
     --arg id "$entry" --arg task "$task" --arg suite "$suite" --arg status "$status" \
@@ -477,7 +433,10 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       harness_exception:$exception,
       included_in_efficiency:$success}' > "$trial_dir/trial.json.tmp"
   mv "$trial_dir/trial.json.tmp" "$trial_dir/trial.json"
-  python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --write
+  python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --score --write
+  status=$(jq -r .status "$trial_dir/trial.json")
+  success=$(jq -r .success "$trial_dir/trial.json")
+  if [ "$success" = true ]; then passed=$((passed + 1)); fi
   runta rm "$runtime" >>"$trial_dir/transport.log" 2>&1 || echo "failed to delete runtime $runtime" >&2
   CURRENT_RUNTIME=""
   printf '=== [%s] %s in %ss (exit %s)\n' "$entry" "$status" "$duration" "$exit_code" >&2

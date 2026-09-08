@@ -1,4 +1,4 @@
-"""Token pricing ported from runta-cost-eval/scripts/collect_results.py."""
+"""Token pricing for the frozen benchmark."""
 from __future__ import annotations
 from typing import Any
 

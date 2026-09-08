@@ -20,7 +20,7 @@ const trialsDir = join(runDir, "trials");
 const entries = (await readdir(trialsDir, { withFileTypes: true }).catch(() => die(`no trials directory in ${runDir}`)))
   .filter(entry => entry.isDirectory());
 
-const trials = [];
+let trials = [];
 for (const entry of entries) {
   const path = join(trialsDir, entry.name, "trial.json");
   try {
@@ -35,27 +35,55 @@ if (!trials.length) die(`no trials found in ${trialsDir}`);
 // rerunning the model or changing their raw trial records.
 for (const trial of trials) {
   const trialDir = join(runDir, trial.evidence);
-  if (trial.status === "infra_invalid" || !existsSync(join(trialDir, "jobs"))) continue;
+  if (trial.recovery || !existsSync(join(trialDir, "jobs"))) continue;
   const accounting = JSON.parse(execFileSync("python3", [
     fileURLToPath(new URL("./calculate-cost.py", import.meta.url)),
-    "--trial", trialDir, "--model", run.model ?? "", "--harness", run.harness ?? "",
+    "--score", "--trial", trialDir, "--model", run.model ?? "", "--harness", run.harness ?? "",
     ...(args.pricing ? ["--pricing", args.pricing] : []),
   ], { encoding: "utf8" }));
   Object.assign(trial, accounting);
 }
 
-// An infra failure is not a harness failure, so it is reported but never scored.
-const invalid = trials.filter(trial => trial.status === "infra_invalid");
-const scored = trials.filter(trial => trial.status !== "infra_invalid");
-const passes = scored.filter(trial => trial.success);
-
-const costs = numbers(scored.map(trial => trial.cost_first_cold_usd));
-const totalCost = costs.reduce((sum, value) => sum + value, 0);
-const effectiveCostCoverage = scored.length ? costs.length / scored.length : 0;
-const successCosts = numbers(passes.map(trial => trial.cost_first_cold_usd));
-const costCoverage = passes.length ? successCosts.length / passes.length : 0;
+// Restrict the population to the frozen manifest before selecting canonical cells.
 const benchmark = JSON.parse(await readFile(args.benchmark ?? 'benchmark.json', 'utf8'));
-const expected = benchmark.task_count;
+const taskIds = benchmark.task_ids;
+if (!Number.isInteger(benchmark.task_count) || benchmark.task_count <= 0 || !Array.isArray(taskIds) || taskIds.length !== benchmark.task_count || new Set(taskIds).size !== benchmark.task_count)
+  die("benchmark.json must provide unique task_ids matching task_count");
+const expected = taskIds.length;
+const grouped = new Map();
+for (const trial of trials) {
+  const label = String(trial.label ?? run.label ?? "").toLowerCase();
+  if (!taskIds.includes(trial.id) || (trial.attempt ?? 1) !== 1 || label.includes("warm") || label.startsWith("smoke")) continue;
+  if (trial.harness && trial.harness !== run.harness) continue;
+  if (!grouped.has(trial.id)) grouped.set(trial.id, []);
+  grouped.get(trial.id).push(trial);
+}
+const valid = trial => ["success", "failure"].includes(trial.status);
+trials = [...grouped.values()].map(rows => {
+  rows.sort((a, b) => String(a.started_at ?? "").localeCompare(String(b.started_at ?? "")) || String(a.run_id ?? "").localeCompare(String(b.run_id ?? "")));
+  return rows.find(valid) ?? rows.at(-1);
+});
+const invalid = trials.filter(trial => !valid(trial));
+const scored = trials.filter(valid);
+const passes = scored.filter(trial => trial.success);
+// Baseline effective cost includes known costs in all canonical cells, including invalids.
+const costs = numbers(trials.map(trial => trial.cost_first_cold_usd));
+const totalCost = costs.reduce((sum, value) => sum + value, 0);
+const effectiveCostCoverage = coverage(scored, "cost_first_cold_usd");
+const successCosts = numbers(passes.map(trial => trial.cost_first_cold_usd));
+const costCoverage = coverage(passes, "cost_first_cold_usd");
+const durationCoverage = coverage(passes, "duration_seconds");
+const turnsCoverage = passes.length ? passes.filter(t => Number.isInteger(t.turns)).length / passes.length : 0;
+const input = t => t.input_tokens ?? t.tokens?.input;
+const cached = t => t.cached_input_tokens ?? t.tokens?.cached;
+const output = t => t.output_tokens ?? t.tokens?.output;
+const cacheRows = passes.filter(t => [input(t), cached(t), t.first_turn_cached_tokens].every(Number.isInteger));
+const cacheCoverage = passes.length ? cacheRows.length / passes.length : 0;
+const rate = t => input(t) ? Math.max(0, cached(t) - t.first_turn_cached_tokens) / input(t) : null;
+const cacheRates = numbers(cacheRows.map(rate));
+const inputCoverage = passes.length ? passes.filter(t => Number.isInteger(input(t))).length / passes.length : 0;
+const outputCoverage = passes.length ? passes.filter(t => Number.isInteger(output(t))).length / passes.length : 0;
+const cacheInput = cacheRows.reduce((sum, t) => sum + input(t), 0);
 
 const candidate = {
   name: args.name ?? run.harness,
@@ -71,6 +99,8 @@ const candidate = {
   comparable: scored.length === expected && run.methodology_comparable !== false,
   methodology_notes: run.methodology_notes ?? [],
   completed: scored.length,
+  valid_coverage: scored.length / expected,
+  success_rate_expected: passes.length / expected,
   successful: passes.length,
   infra_invalid: invalid.length,
   pass_rate: scored.length ? passes.length / scored.length : null,
@@ -81,24 +111,32 @@ const candidate = {
   median_cost_per_task: median(costs),
   median_cost_per_success: costCoverage === 1 ? median(successCosts) : null,
 
-  // Match runta-cost-eval: success-only metrics require complete success coverage.
+  // Success-only metrics require complete success coverage.
   cost_per_success_normalized: costCoverage === 1 ? mean(successCosts) : null,
   median_cost_per_success_normalized: costCoverage === 1 ? median(successCosts) : null,
   cost_per_success_normalized_lower_bound: mean(successCosts),
 
-  median_duration_seconds: median(numbers(passes.map(trial => trial.duration_seconds))),
-  cache_hit_rate_typical: median(numbers(passes.map(trial => trial.cache_hit_rate_normalized))),
-  cache_hit_rate_typical_n: numbers(passes.map(trial => trial.cache_hit_rate_normalized)).length,
-  mean_turns: mean(numbers(passes.map(trial => trial.turns))),
+  median_duration_seconds: durationCoverage === 1 ? median(numbers(passes.map(trial => trial.duration_seconds))) : null,
+  cache_hit_rate_typical: cacheCoverage === 1 ? median(cacheRates) : null,
+  cache_hit_rate_typical_n: cacheRates.length,
+  cache_hit_rate_typical_q1: cacheCoverage === 1 ? quantile(cacheRates, 0.25) : null,
+  cache_hit_rate_typical_q3: cacheCoverage === 1 ? quantile(cacheRates, 0.75) : null,
+  cache_hit_rate_normalized: cacheCoverage === 1 && cacheInput ? cacheRows.reduce((sum, t) => sum + Math.max(0, cached(t) - t.first_turn_cached_tokens), 0) / cacheInput : null,
+  mean_input_tokens: inputCoverage === 1 ? mean(passes.map(input)) : null,
+  mean_output_tokens: outputCoverage === 1 ? mean(passes.map(output)) : null,
+  input_tokens_coverage: inputCoverage,
+  output_tokens_coverage: outputCoverage,
+  termination_anomalies: scored.filter(t => t.completed_with_agent_exception).length,
+  mean_turns: turnsCoverage === 1 ? mean(passes.map(trial => trial.turns)) : null,
 
   cost_coverage: costCoverage,
   effective_cost_coverage: expected ? costs.length / expected : 0,
   scored_cost_coverage: effectiveCostCoverage,
-  duration_coverage: coverage(scored, "duration_seconds"),
-  turns_coverage: coverage(scored, "turns"),
-  cache_coverage: coverage(scored, "cache_hit_rate_normalized"),
+  duration_coverage: durationCoverage,
+  turns_coverage: turnsCoverage,
+  cache_coverage: cacheCoverage,
 
-  task_details: trials.map(trial => ({
+  task_details: taskIds.map(id => trials.find(t => t.id === id) ?? { id, status: "missing" }).map(trial => ({
     id: trial.id,
     title: trial.title,
     status: trial.status,
@@ -109,8 +147,8 @@ const candidate = {
     cost_basis: trial.cost_basis ?? null,
     duration_seconds: trial.duration_seconds ?? null,
     turns: trial.turns ?? null,
-    cache_hit_rate_normalized: trial.cache_hit_rate_normalized ?? null,
-    included_in_efficiency: Boolean(trial.success),
+    cache_hit_rate_normalized: [input(trial), cached(trial), trial.first_turn_cached_tokens].every(Number.isInteger) ? rate(trial) : null,
+    included_in_efficiency: valid(trial) && Boolean(trial.success),
     evidence: trial.evidence,
   })),
 };
@@ -120,7 +158,7 @@ await writeFile(out, `${JSON.stringify(candidate, null, 2)}\n`);
 
 console.log(`${candidate.label}: ${passes.length}/${scored.length} passed (${(candidate.pass_rate * 100).toFixed(1)}%)`);
 if (invalid.length) console.log(`${invalid.length} trial(s) marked infra_invalid and excluded from scoring`);
-if (scored.length && effectiveCostCoverage < 1) console.log(`cost missing for ${scored.length - costs.length} task(s); effective_cost_per_pass uses only known costs`);
+if (scored.length && effectiveCostCoverage < 1) console.log(`cost missing for ${scored.length - numbers(scored.map(t => t.cost_first_cold_usd)).length} task(s); effective_cost_per_pass uses only known costs`);
 if (!scored.length) console.log("no scoreable trials: every trial was infra_invalid");
 console.log(`wrote ${out}`);
 
@@ -137,6 +175,14 @@ function median(values) {
   const sorted = [...values].sort((a, b) => a - b);
   const mid = sorted.length / 2;
   return sorted.length % 2 ? sorted[Math.floor(mid)] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function quantile(values, q) {
+  if (!values.length) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const index = (sorted.length - 1) * q;
+  const low = Math.floor(index);
+  return sorted[low] + (sorted[Math.ceil(index)] - sorted[low]) * (index - low);
 }
 
 function mean(values) {

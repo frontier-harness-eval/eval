@@ -106,13 +106,11 @@ const caveats = [
   modelDiffers
     ? `The candidate ran on \`${candidate.model}\` while the baselines ran on \`${baselineModel}\`. Harness and model effects are not separable across this gap.`
     : null,
-  // Same model from a different provider keeps pass rate comparable, but cost only
-  // holds if that provider's token prices match the ones behind the baselines. A model
-  // mismatch subsumes this, so it is not worth saying twice.
+  // Provider and environment differences still require a matched control.
   !modelDiffers && providerDiffers
     ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. The model is held constant; Costs use a common benchmark price basis; actual provider bills can differ. Environment and methodology differences still affect comparability.`
     : null,
-  "Costs follow runta-cost-eval accounting with the bundled benchmark table (or an explicit pricing override) and reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
+  "Costs follow the frozen benchmark accounting rules with the bundled benchmark table (or an explicit pricing override) and reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
 ].filter(Boolean).map(item => `- ${item}`).join("\n");
 
 const hasCost = typeof candidate.effective_cost_per_pass === "number";

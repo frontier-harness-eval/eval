@@ -50,7 +50,7 @@ Relaxed / disclosed:
 | [`run-config.json`](run-config.json) | Run metadata: command template, timeout, egress allowlist (one internal telemetry host redacted), per-task images and limits |
 | [`trials/<task>/trial.json`](trials/) | Official per-trial summaries (status, duration, exit code, checkpoint) |
 | [`model-costs-cny.csv`](model-costs-cny.csv) | Per-task status, durations, and raw-usage CNY cost estimates |
-| [`report/chart.svg`](report/chart.svg) | Chart from the official `generate-chart.mjs` |
+| [`report/chart.svg`](report/chart.svg) | Chart from the official `generate-chart.mjs`; since the script omits points without a cost, mcode is annotated post-generation as a dashed pass-rate line with no cost position |
 
 Full raw evidence (30 per-task bundles with complete agent trajectories, tool calls, usage, verifier stdout, and collected `model.patch`) is preserved offline — roughly 150 MB of archives that do not belong in this repository. We will provide it to the maintainers on request for reproduction and verification.
 

@@ -39,7 +39,7 @@ const costMissing = points.length - plotted.length;
 
 const width = 1200;
 const pad = 24;
-const accent = "#ff6418";
+const accent = "#f47b35";
 const scatterHeight = 420;
 const rowHeight = 24;
 const listTop = 60;
@@ -159,25 +159,25 @@ const note = !comparable
   : "";
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(candidate.label)} compared with the FrontierHarness Eval baselines by pass rate and effective cost per pass" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-  <rect width="${width}" height="${height}" fill="#020202"/>
+  <rect width="${width}" height="${height}" fill="#000000"/>
   <style>
     text{font-family:Arial,Helvetica,sans-serif}
     .title{fill:#ededed;font-size:17px}
     .subtitle{fill:#8a8a8a;font-size:11px}
     .axis{fill:#8a8a8a;font-size:11px}
     .tick,.rank,.value,.note,.dot-label,.dot-label-candidate{font-family:"SFMono-Regular",Menlo,monospace}
-    .tick{fill:#6a6a6a;font-size:9px}
-    .grid{stroke:#161616}
+    .tick{fill:#929292;font-size:9px}
+    .grid{stroke:#282828;stroke-dasharray:3 3}
     .dot-label{fill:#9aa0aa;font-size:9px}
     .dot-label-candidate{fill:${accent};font-size:10px}
     .name{fill:#b9b9b9;font-size:11px}
     .name-candidate{fill:${accent};font-size:11px}
-    .rank{fill:#5a5a5a;font-size:9px}
+    .rank{fill:#929292;font-size:9px}
     .value{fill:#ededed;font-size:11px}
     .note{fill:#706a63;font-size:9px}
     .track{fill:#1a1a1a}
   </style>
-  <rect x="${pad}" y="${pad}" width="${width - pad * 2}" height="${scatterHeight}" rx="12" fill="#0a0a0a" stroke="#242424"/>
+  <rect x="${pad}" y="${pad}" width="${width - pad * 2}" height="${scatterHeight}" fill="#000000" stroke="#242424"/>
   <text class="title" x="${pad + 20}" y="${pad + 28}">${esc(candidate.label)} versus FrontierHarness Eval v1.0</text>
   <text class="subtitle" x="${pad + 20}" y="${pad + 46}">Pass rate against effective cost per pass · model ${esc(candidate.model ?? "unspecified")} · ${candidate.completed} tasks</text>
   ${grid}
@@ -185,7 +185,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${
   <text class="axis" transform="translate(${pad + 22} ${(plot.top + plot.bottom) / 2}) rotate(-90)" text-anchor="middle">Pass rate</text>
   ${dots}
   ${note}
-  <rect x="${pad}" y="${pad + scatterHeight + 20}" width="${width - pad * 2}" height="${panelHeight}" rx="12" fill="#0a0a0a" stroke="#242424"/>
+  <rect x="${pad}" y="${pad + scatterHeight + 20}" width="${width - pad * 2}" height="${panelHeight}" fill="#000000" stroke="#242424"/>
   <text class="title" x="${pad + 20}" y="${pad + scatterHeight + 51}">Pass rate</text>
   <line x1="${pad + 20}" y1="${pad + scatterHeight + 68}" x2="${width - pad - 20}" y2="${pad + scatterHeight + 68}" stroke="#1c1c1c"/>
   ${list}

@@ -184,41 +184,80 @@ const html = `<!doctype html>
 <title>${escapeHtml(candidate.label)} on FrontierHarness Eval</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root { color-scheme: dark; }
-  body { margin: 0; padding: 48px 24px; background: #020202; color: #ededed;
-         font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-  main { max-width: 1200px; margin: 0 auto; }
-  h1 { font-size: 28px; margin: 0 0 8px; }
-  h2 { font-size: 18px; margin: 40px 0 12px; font-weight: 600; }
-  p.lede { color: #b9b9b9; margin: 0 0 32px; }
-  strong { color: #ff6418; }
-  svg { width: 100%; height: auto; display: block; border-radius: 12px; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; }
-  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #1c1c1c; }
-  th { color: #8a8a8a; font-weight: 500; }
-  tr.candidate td { color: #ff6418; }
-  a { color: #ff6418; }
-  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #1c1c1c; color: #706a63; font-size: 13px; }
+  :root { color-scheme: dark; --bg: #000; --text: #ededed; --muted: #929292; --line: #282828; --accent: #f47b35; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 1160px; margin: auto; padding: 28px 24px 48px; }
+  .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; color: var(--accent); font-weight: 650; letter-spacing: .02em; }
+  .brand span, .eyebrow { font: 11px/1.5 "SFMono-Regular", Consolas, monospace; color: var(--muted); }
+  .brand span { border: 1px solid var(--line); padding: 4px 9px; }
+  h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.15; font-weight: 550; letter-spacing: -.035em; margin: 8px 0 18px; overflow-wrap: anywhere; }
+  h2 { font-size: 20px; margin: 0 0 20px; font-weight: 500; letter-spacing: -.02em; }
+  p.lede { color: var(--muted); max-width: 850px; margin: 0 0 30px; overflow-wrap: anywhere; }
+  strong { color: var(--text); font-weight: 550; }
+  .chart { margin: 24px -24px; overflow-x: auto; }
+  svg { width: 100%; min-width: 760px; height: auto; display: block; }
+  nav { display: flex; gap: 26px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow-x: auto; }
+  nav a { color: var(--muted); white-space: nowrap; font-size: 13px; }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); margin: 32px 0 48px; }
+  .metric { padding: 0 20px; border-left: 1px solid var(--line); }
+  .metric:first-child { padding-left: 0; border: 0; }
+  .metric span { display: block; color: var(--muted); font: 11px/1.5 "SFMono-Regular", Consolas, monospace; }
+  .metric strong { display: block; font-size: 28px; margin: 5px 0; font-variant-numeric: tabular-nums; }
+  section { margin-top: 48px; scroll-margin-top: 24px; }
+  .table-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 13px 12px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font: 11px/1.5 "SFMono-Regular", Consolas, monospace; white-space: nowrap; }
+  td:not(:nth-child(2)), code { font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; }
+  tr.candidate { background: #f47b350d; }
+  tr.candidate td { color: var(--accent); }
+  tbody tr:hover { background: #ffffff06; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+  .caveats { list-style: decimal-leading-zero; padding-left: 32px; color: var(--muted); }
+  .caveats li { padding: 14px 0 14px 10px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+  .caveats li::marker { color: var(--accent); font: 12px "SFMono-Regular", Consolas, monospace; }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { main { padding: 20px 16px 32px; } .brand { margin-bottom: 28px; } .chart { margin-inline: -16px; } .metrics { grid-template-columns: repeat(2, 1fr); gap: 24px 0; } .metric:nth-child(3) { padding-left: 0; border: 0; } nav { gap: 20px; } th, td { padding: 10px; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 <main>
+  <div class="brand">FrontierHarness Eval <span>HARNESS REPORT</span></div>
+  <div class="eyebrow">CANDIDATE EVALUATION</div>
   <h1>${escapeHtml(candidate.label)} on FrontierHarness Eval</h1>
   <p class="lede"><strong>${percent(candidate.pass_rate)}</strong> pass rate (${candidate.successful}/${candidate.completed} tasks)${hasCost ? `
      at <strong>${money(candidate.effective_cost_per_pass)}</strong> per pass` : ""}; ${comparable ? `ranking ${rank} of ${rows.length}` : `${candidate.completed < candidate.expected ? "subset evaluation" : "methodology differs"}; not ranked against the ${candidate.expected}-task leaderboard`}.
      Model <code>${escapeHtml(candidate.model ?? "unspecified")}</code>,
      golden checkpoint <code>${escapeHtml(run.checkpoint)}</code>.</p>
-  ${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
-  <h2>Comparison</h2>
+  <div class="chart">${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
+  </div>
+  <nav aria-label="Report sections"><a href="#result">Result</a><a href="#comparison">Comparison</a><a href="#methodology">Methodology</a><a href="#tasks">Task results</a></nav>
+  <div class="metrics" id="result">
+    <div class="metric"><span>Pass rate</span><strong>${percent(candidate.pass_rate)}</strong><span>${candidate.successful} / ${candidate.completed} scored tasks</span></div>
+    <div class="metric"><span>Effective cost per pass</span><strong>${money(candidate.effective_cost_per_pass)}</strong><span>Includes known costs of failures</span></div>
+    <div class="metric"><span>Median successful runtime</span><strong>${duration(candidate.median_duration_seconds)}</strong><span>Full runner wall time</span></div>
+    <div class="metric"><span>Median cache hit rate</span><strong>${percent(candidate.cache_hit_rate_typical)}</strong><span>Successful tasks</span></div>
+  </div>
+  <section id="comparison"><h2>Comparison</h2>
+  <div class="table-scroll">
   <table>
     <tr><th>#</th><th>Harness</th><th>Pass rate</th><th>Effective cost per pass</th><th>Cache, median</th><th>Median time</th></tr>
     ${rows.map((row, index) => `<tr${row.isCandidate ? ' class="candidate"' : ""}><td>${row.isCandidate && !comparable ? '—' : index + 1}</td><td>${escapeHtml(row.label)}</td><td>${percent(row.passRate)}</td><td>${money(row.cost)}</td><td>${percent(row.cache)}</td><td>${duration(row.duration)}</td></tr>`).join("\n    ")}
   </table>
-  <h2>Reproducibility caveats</h2>
-  <ul>${caveats.split('\n').map(line => `<li>${escapeHtml(line.replace(/^- /, ''))}</li>`).join('')}</ul>
-  <h2>Task results</h2>
+  </div></section>
+  <section id="methodology"><h2>Beyond the numbers</h2>
+  <p class="lede">Reproducibility and comparability notes for this run.</p>
+  <ol class="caveats">${caveats.split('\n').map(line => `<li>${escapeHtml(line.replace(/^- /, ''))}</li>`).join('')}</ol></section>
+  <section id="tasks"><h2>Task results</h2>
+  <div class="table-scroll">
   <table>
     <tr><th>Task</th><th>Result</th><th>Cost</th><th>Time</th><th>Turns</th></tr>
     ${candidate.task_details.map(task => `<tr><td><code>${escapeHtml(task.id)}</code></td><td>${task.status}</td><td>${money(task.cost_first_cold_usd)}</td><td>${duration(task.duration_seconds)}</td><td>${task.turns ?? "n/a"}</td></tr>`).join("\n    ")}
   </table>
+  </div></section>
   <footer>Baseline data and methodology: <a href="${SOURCE_EVAL}">FrontierHarness Eval</a></footer>
 </main>
 </html>

@@ -300,6 +300,28 @@ This writes `runs/<run-id>/report/REPORT.md` and a self-contained
 attached or opened anywhere. Both end with a link back to the source evaluation at
 <https://frontierharness.org/>.
 
+#### Report visual style
+
+Use [frontierharness.org](https://frontierharness.org/) as the visual reference for
+reports. The bundled `build-report.mjs` and `generate-chart.mjs` implement this style:
+
+- Pure black background, off-white primary text, muted gray secondary text, thin
+  charcoal dividers, and restrained orange (`#f47b35`) highlights.
+- System sans-serif headings and harness names; monospace labels, ranks, metadata,
+  and tabular numbers. Keep the layout spacious and flat, with square edges.
+- Lead with the candidate summary and comparison chart, then section navigation,
+  four compact result metrics, comparison rows, numbered methodology notes, and
+  task evidence. Keep wide charts and tables horizontally scrollable on phones.
+- Use orange to identify the candidate and key links. Preserve visible subset and
+  methodology caveats and the existing rules for excluding non-comparable candidates.
+- Keep HTML self-contained with inline CSS/SVG and system font fallbacks. The
+  Markdown version remains a portable content equivalent. Retain the report's
+  actual metric definitions (including effective cost per pass); the reference
+  site's visual style does not justify changing accounting or copying its scores.
+
+After changing the report template, generate a report from existing candidate data
+and inspect the HTML at desktop and narrow widths before sharing.
+
 Share it with whichever path fits:
 
 ```bash

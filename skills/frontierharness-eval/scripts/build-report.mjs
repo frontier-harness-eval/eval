@@ -131,8 +131,6 @@ const costClause = hasCost ? ` at **${money(websiteCost(candidate))} median cost
 
 const markdown = `# ${candidate.label} on FrontierHarness Eval
 
-**${percent(candidate.pass_rate)} pass rate** (${candidate.successful}/${candidate.completed} tasks)${costClause}; ${rankingClause}.
-
 ![Pass rate versus median cost per task, ${candidate.label} against the FrontierHarness Eval baselines](chart.svg)
 
 ## Result
@@ -141,20 +139,15 @@ const markdown = `# ${candidate.label} on FrontierHarness Eval
 | --- | --- |
 | Pass rate | ${percent(candidate.pass_rate)} |
 | Tasks passed | ${candidate.successful} / ${candidate.completed} |
-| Cost per pass | ${money(websiteCost(candidate))} |
+| Cost per pass | ${money(websiteCost(candidate))}${observedAudit?.missing_usage ? " · Lower bound" : ""} |
+| Complete cost coverage | ${costMeasured}/${candidate.expected} tasks |
 | Median cost per successful task | ${successfulCostDisplay} |
 | Median time per successful task | ${duration(candidate.median_duration_seconds)} |
 | Median cache hit rate | ${cacheDisplay} |
 | Cache measurement coverage | ${cacheCoverageText} |
 | Mean turns | ${typeof candidate.mean_turns === "number" ? candidate.mean_turns.toFixed(1) : "Not recorded"} |
 
-${cacheExplanation}
-
-${costCoverageNote}
-
-${observedNote}
-
-## Comparison
+## Comparison${!comparable && displayRank ? " · Provisional" : ""}
 
 | # | Harness | Pass rate | Median cost per task | Cache, median | Median time |
 | --- | --- | --- | --- | --- | --- |
@@ -177,19 +170,13 @@ ${manifest?.harness_release ? `| Evaluated release | ${manifest.harness_release}
 | DeepSWE corpus | \`${manifest?.deep_swe_commit ?? "unknown"}\` |
 | Started | ${run.started_at ?? "unknown"} |
 
-${run.checkpoint === "none" ? "Checkpoint creation and restoration were skipped. Runtimes were reused across tasks; evaluation conditions differ from the published baselines. Detailed provenance is retained in candidate.json." : "Every trial restores the same base checkpoint with the same configured vCPU, memory, and disk capacity. Task images are normally pulled after restore. No formal task was executed before the checkpoint was frozen."}
 
 ## Task results
-
-${diagnosticNote}
-
-${exclusiveNote}
 
 | Task | Result | Cost | Time | Turns | Cache hit rate | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 ${taskRows}
 
-Each evidence directory holds the agent trajectory, verifier logs, the collected \`model.patch\`, and raw runner output for that trial.
 
 ---
 
@@ -197,6 +184,7 @@ Baseline data and methodology: [FrontierHarness Eval](${SOURCE_EVAL})
 `;
 
 await writeFile(join(reportDir, "REPORT.md"), markdown);
+await writeFile(join(reportDir, "measurement-notes.json"), JSON.stringify({cache: cacheExplanation, cost: costCoverageNote, observed: observedNote, taskMeasurements: diagnosticNote, comparison: comparable ? "Comparable" : "Provisional; conditions differ"}, null, 2) + "\n");
 
 const html = `<!doctype html>
 <html lang="en">
@@ -249,29 +237,23 @@ const html = `<!doctype html>
   <div class="brand">FrontierHarness Eval <span>HARNESS REPORT</span></div>
   <div class="eyebrow">CANDIDATE EVALUATION</div>
   <h1>${escapeHtml(candidate.label)} on FrontierHarness Eval</h1>
-  <p class="lede"><strong>${percent(candidate.pass_rate)}</strong> pass rate (${candidate.successful}/${candidate.completed} tasks)${hasCost ? `
-     at <strong>${money(websiteCost(candidate))}</strong> median cost per task` : ""}; ${displayRank ? `${comparable ? "ranking" : "provisional display rank"} ${rank} of ${rows.length}${comparable ? "" : "; evaluation conditions differ"}` : `${candidate.completed < candidate.expected ? "subset evaluation" : "methodology differs"}; not ranked against the ${candidate.expected}-task leaderboard`}.
-     Model <code>${escapeHtml(candidate.model ?? "unspecified")}</code>,
-     golden checkpoint <code>${escapeHtml(run.checkpoint)}</code>.</p>
   <div class="chart">${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
   </div>
   <nav aria-label="Report sections"><a href="#result">Result</a><a href="#comparison">Comparison</a><a href="#tasks">Task results</a></nav>
   <div class="metrics" id="result">
     <div class="metric"><span>Pass rate</span><strong>${percent(candidate.pass_rate)}</strong><span>${candidate.successful} / ${candidate.completed} scored tasks</span></div>
-    <div class="metric"><span>Cost per pass</span><strong>${money(websiteCost(candidate))}</strong><span>${money(websiteCost(candidate) === null ? null : websiteCost(candidate) * candidate.successful)} total / ${candidate.successful} passes</span></div>
+    <div class="metric"><span>Cost per pass</span><strong>${money(websiteCost(candidate))}</strong><span>${money(websiteCost(candidate) === null ? null : websiteCost(candidate) * candidate.successful)} total / ${candidate.successful} passes${observedAudit?.missing_usage ? " · Lower bound" : ""}</span></div>
     <div class="metric"><span>Median successful runtime</span><strong>${duration(candidate.median_duration_seconds)}</strong><span>Full runner wall time</span></div>
     <div class="metric"><span>Median cache hit rate</span><strong>${cacheValue === null ? "Unavailable" : percent(cacheValue)}</strong><span>${cacheCount}/${candidate.successful} successes measured</span></div>
   </div>
-  <p class="lede">${escapeHtml(cacheExplanation)}</p><p class="lede">${escapeHtml(costCoverageNote)}</p>${observedNote ? `<p class="lede">${escapeHtml(observedNote)}</p>` : ""}
-  <section id="comparison"><h2>Comparison</h2>
+  <section id="comparison"><h2>Comparison${!comparable && displayRank ? " · Provisional" : ""}</h2>
   <div class="table-scroll">
   <table>
     <tr><th>#</th><th>Harness</th><th>Pass rate</th><th>Median cost per task</th><th>Cache, median</th><th>Median time</th></tr>
     ${rows.map((row, index) => `<tr${row.isCandidate ? ' class="candidate"' : ""}><td>${row.isCandidate && !displayRank ? '—' : index + 1}</td><td>${escapeHtml(row.label)}</td><td>${percent(row.passRate)}</td><td>${money(row.cost)}</td><td>${row.isCandidate ? cacheDisplay : percent(row.cache)}</td><td>${duration(row.duration)}</td></tr>`).join("\n    ")}
   </table>
   </div></section>
-  <section id="tasks"><h2>Task results</h2><p class="lede">${escapeHtml(diagnosticNote)}</p>
-  ${exclusiveNote ? `<p class="lede">${escapeHtml(exclusiveNote)}</p>` : ""}
+  <section id="tasks"><h2>Task results</h2>
   <div class="table-scroll">
   <table>
     <tr><th>Task</th><th>Result</th><th>Cost</th><th>Time</th><th>Turns</th><th>Cache hit rate</th></tr>

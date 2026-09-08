@@ -117,7 +117,7 @@ const ticks = [1, 2, 5, 10, 20].filter(value => value >= xDomain.min && value <=
 const gridX=ticks.map(value=>`<line x1="${px(value)}" y1="${plot.y}" x2="${px(value)}" y2="${plot.y+plot.height}"/><text x="${px(value)}" y="${plot.y+plot.height+27}" text-anchor="middle">$${value}</text>`).join("");
 const gridY=Array.from({length:4},(_,i)=>rateLow+(rateHigh-rateLow)*i/3).map(value=>`<line x1="${plot.x}" y1="${py(value)}" x2="${plot.x+plot.width}" y2="${py(value)}"/><text x="${plot.x-13}" y="${py(value)+5}" text-anchor="end">${percent(value)}</text>`).join("");
 const note = !comparable && displayRank
-  ? "Candidate shown provisionally; evaluation conditions differ. Candidate cost may be incomplete (see report coverage); excluded from baseline frontier."
+  ? "Provisional comparison · Cost coverage: see report data"
   : !comparable
   ? `${candidate.label}: ${percent(candidate.pass_rate)} · ${Number.isFinite(websiteCost(candidate))?money(websiteCost(candidate)):"cost unavailable"} · ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed<candidate.expected?"Subset":"Methodology differs"}; excluded from plot; not ranked.`
   : !plotted.some(point=>point.isCandidate) ? `${candidate.label}: cost unavailable; candidate omitted from plot.` : `${candidate.label} · Third-party harness under evaluation`;

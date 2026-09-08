@@ -524,3 +524,15 @@ and show total available cost divided by passes beneath the HTML value. Keep the
 user-requested “Median cost per task” label on the website-aligned chart and
 comparison only, with the calculation disclosure. Do not use a true task median
 or a complete-cells-only subtotal for the Result card.
+
+### Concise report presentation
+
+Keep report sections focused on headings, charts, metric cards and tables. Omit
+introductory score/model/checkpoint prose and explanatory paragraphs in Result,
+Comparison and Task results. Preserve essential qualifications as compact labels
+(e.g. “Provisional”, “Lower bound”, measured/expected coverage), not long prose.
+Keep the source footer and evidence links. Write detailed measurement explanations
+to `report/measurement-notes.json`; retain methodology and raw provenance in the
+existing data artifacts. This presentation guidance supersedes instructions to
+place explanatory paragraphs beside tables, without changing accounting or
+concealing incomplete coverage. Apply it consistently to HTML and Markdown.

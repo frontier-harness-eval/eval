@@ -4,7 +4,7 @@
 
 - Median time per successful task: **4m 33s**
 - Run id: `frontierharness-mcode-kimi` · started `2026-09-07T04:00:03Z`
-- Harness: `mcode` (MiniMax Code) `0.3.2`, driven through the Harbor adapter from PR #2
+- Harness: `mcode` (MiniMax Code) `0.3.2`, driven headless through a pinned Harbor adapter
 - Model: Kimi K3 (`openai/kimi-k3`), thinking=max, max output 131072, context 1048576, default sampling; prompt compression and X-Ray disabled
 
 ## Result

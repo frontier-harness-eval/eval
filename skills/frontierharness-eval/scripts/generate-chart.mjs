@@ -1,5 +1,5 @@
 // Plot a candidate harness against the published FrontierHarness baselines:
-// a pass-rate versus cost scatter plus a pass-rate ranking panel.
+// a reference-style pass-rate versus cost scatter with a starred candidate.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -20,12 +20,14 @@ const comparable = candidate.comparable === true;
 
 const points = [
   ...baseline.harnesses.map(item => ({
+    name: item.name,
     label: labels[item.name] ?? item.name,
     passRate: item.pass_rate,
     cost: item.effective_cost_per_pass,
     isCandidate: false,
   })),
   {
+    name: "candidate",
     label: candidate.label,
     passRate: candidate.pass_rate,
     cost: candidate.effective_cost_per_pass,
@@ -33,191 +35,107 @@ const points = [
   },
 ];
 
+const colors = {"pi-responses":"#f0f0f0","oh-my-pi":"#f2a777","claude-code":"#f0a57f",codex:"#9385ff",opencode:"#a978e7",hermes:"#a3a3a3","kimi-code":"#83d7c5",exo:"#d3d3d3","dsh-standard":"#75b8ed","dsh-ptc":"#75b8ed","dsh-minimal":"#75b8ed","dsh-creator":"#70b6ee"};
+const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diamond",codex:"circle",opencode:"square",hermes:"triangle","kimi-code":"circle",exo:"hexagon","dsh-standard":"square","dsh-ptc":"diamond","dsh-minimal":"circle","dsh-creator":"triangle"};
+
+const accent = "#ff7a12";
+colors.candidate = accent;
+shapes.candidate = "star";
 const eligible = points.filter(point => !point.isCandidate || comparable);
-const plotted = eligible.filter(point => typeof point.cost === "number" && point.cost > 0);
-const costMissing = points.length - plotted.length;
-
-const width = 1200;
-const pad = 24;
-const accent = "#f47b35";
-const scatterHeight = 420;
-const rowHeight = 24;
-const listTop = 60;
-const panelHeight = listTop + points.length * rowHeight + 16;
-const height = pad * 2 + scatterHeight + 20 + panelHeight;
-
-// Cost spans more than an order of magnitude across harnesses, so use a log axis.
-// Bounds snap to the 1-2-5 ladder rather than to powers of ten, which would leave
-// most of the axis empty for a set clustered between $1 and $20.
-const ladder = [];
-for (let exponent = -3; exponent <= 4; exponent += 1) {
-  for (const step of [1, 2, 5]) ladder.push(step * Math.pow(10, exponent));
-}
+const plotted = eligible.filter(point => Number.isFinite(point.cost) && point.cost > 0 && Number.isFinite(point.passRate));
+const width = 1344;
+const height = 660;
+const plot = { x: 102, y: 96, width: 1200, height: 460 };
 const costs = plotted.map(point => point.cost);
-const minCost = Math.min(...costs, 1);
-const maxCost = Math.max(...costs, 2);
-const domain = [
-  [...ladder].reverse().find(value => value <= minCost) ?? minCost,
-  ladder.find(value => value >= maxCost) ?? maxCost,
-];
-const rates = eligible.map(point => point.passRate);
-const rateMin = Math.max(0, Math.floor((Math.min(...rates) - 0.05) * 20) / 20);
-const rateMax = Math.min(1, Math.ceil((Math.max(...rates) + 0.05) * 20) / 20);
-
-const plot = { left: pad + 62, right: width - pad - 20, top: pad + 62, bottom: pad + scatterHeight - 40 };
-const scaleX = value => plot.left + (Math.log10(value) - Math.log10(domain[0])) / (Math.log10(domain[1]) - Math.log10(domain[0])) * (plot.right - plot.left);
-const scaleY = value => plot.bottom - (value - rateMin) / (rateMax - rateMin) * (plot.bottom - plot.top);
-
-const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-const money = value => Number.isInteger(value) ? `$${value}` : `$${value.toFixed(2)}`;
-const percent = value => `${(value * 100).toFixed(1)}%`;
-
-const xTicks = ladder.filter(value => value >= domain[0] && value <= domain[1]);
-const yTicks = [];
-for (let value = rateMin; value <= rateMax + 1e-9; value += 0.05) yTicks.push(Number(value.toFixed(2)));
-
-const grid = [
-  ...xTicks.map(tick => `<line class="grid" x1="${scaleX(tick).toFixed(1)}" y1="${plot.top}" x2="${scaleX(tick).toFixed(1)}" y2="${plot.bottom}"/>`
-    + `<text class="tick" x="${scaleX(tick).toFixed(1)}" y="${plot.bottom + 18}" text-anchor="middle">${money(tick)}</text>`),
-  ...yTicks.map(tick => `<line class="grid" x1="${plot.left}" y1="${scaleY(tick).toFixed(1)}" x2="${plot.right}" y2="${scaleY(tick).toFixed(1)}"/>`
-    + `<text class="tick" x="${plot.left - 10}" y="${(scaleY(tick) + 3.5).toFixed(1)}" text-anchor="end">${percent(tick)}</text>`),
-].join("");
-
-// Labels are placed left to right so neighbours are known, then nudged vertically off
-// any label already placed. Labels near an edge switch anchor so they stay in frame.
-const offsets = [-13, 20, -26, 33, -39, 46, -52, 59];
-const boxes = [];
-const dotObstacles = plotted.map(point => ({
-  x: scaleX(point.cost),
-  y: scaleY(point.passRate),
-  r: point.isCandidate ? 11 : 5,
-}));
-const placements = [...plotted]
-  .sort((a, b) => a.cost - b.cost)
-  .map(point => {
-    const x = scaleX(point.cost);
-    const y = scaleY(point.passRate);
-    const text = `${point.label} · ${percent(point.passRate)} · ${money(point.cost)}`;
-    const half = text.length * 2.95;
-    const minX = pad + 12;
-    const maxX = width - pad - 12;
-
-    let anchor = "middle";
-    let labelX = x;
-    if (x - half < minX) {
-      anchor = "start";
-      labelX = minX;
-    } else if (x + half > maxX) {
-      anchor = "end";
-      labelX = maxX;
-    }
-    const left = anchor === "start" ? labelX : anchor === "end" ? labelX - half * 2 : labelX - half;
-    const right = left + half * 2;
-
-    let labelY = y + offsets[0];
-    for (const offset of offsets) {
-      labelY = y + offset;
-      const hitsLabel = boxes.some(box => right > box.left && left < box.right && Math.abs(box.y - labelY) < 12);
-      const hitsDot = dotObstacles.some(dot =>
-        dot.x + dot.r > left && dot.x - dot.r < right && Math.abs(dot.y - labelY) < dot.r + 4);
-      if (!hitsLabel && !hitsDot) break;
-    }
-    labelY = Math.min(Math.max(labelY, plot.top - 4), plot.bottom + 26);
-    boxes.push({ left, right, y: labelY });
-    return { point, x, y, labelX, labelY, anchor, text };
-  });
-
-function star(x, y, radius = 11) {
-  const vertices = Array.from({ length: 10 }, (_, index) => {
-    const angle = -Math.PI / 2 + index * Math.PI / 5;
-    const r = index % 2 === 0 ? radius : radius * 0.45;
-    return `${(x + Math.cos(angle) * r).toFixed(1)},${(y + Math.sin(angle) * r).toFixed(1)}`;
-  }).join(" ");
-  return `<polygon points="${vertices}" fill="${accent}" stroke="#ffd5a8" stroke-width="1"/>`;
+const rates = plotted.map(point => point.passRate);
+const xDomain = { min: Math.min(0.83, ...costs.map(cost => cost / 1.15)), max: Math.max(23, ...costs.map(cost => cost * 1.15)) };
+const rateLow = Math.min(...rates, 0.5);
+const rateHigh = Math.max(...rates, 2/3);
+const rateSpan = Math.max(rateHigh - rateLow, 0.1);
+const yDomain = { min: Math.max(0, rateLow - rateSpan * 0.08), max: Math.min(1, rateHigh + rateSpan * 0.08) };
+const px = cost => plot.x + Math.log(cost/xDomain.min)/Math.log(xDomain.max/xDomain.min)*plot.width;
+const py = rate => plot.y + (yDomain.max-rate)/(yDomain.max-yDomain.min)*plot.height;
+const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', '&quot;');
+const money = value => `$${value.toFixed(2)}`;
+const percent = value => `${(value*100).toFixed(1)}%`;
+const metric = point => `${percent(point.passRate)} · ${money(point.cost)}`;
+const frontier = plotted.filter(point => !plotted.some(other => other.cost <= point.cost && other.passRate >= point.passRate && (other.cost < point.cost || other.passRate > point.passRate))).sort((a,b) => a.cost-b.cost);
+function marker(shape,x,y,color,size=6.5) {
+  const common=`fill="${color}" stroke="#c4c4c4" stroke-width="1.1"`;
+  if(shape === "star") {
+    const vertices=Array.from({length:10},(_,i)=>{const a=-Math.PI/2+i*Math.PI/5;const r=i%2?size*.45:size;return `${x+Math.cos(a)*r},${y+Math.sin(a)*r}`;}).join(" ");
+    return `<polygon points="${vertices}" ${common}/>`;
+  }
+  if(shape === "circle") return `<circle cx="${x}" cy="${y}" r="${size}" ${common}/>`;
+  if(shape === "square") return `<rect x="${x-size}" y="${y-size}" width="${size*2}" height="${size*2}" ${common}/>`;
+  const vertices = shape === "diamond" ? [[0,-1],[1,0],[0,1],[-1,0]] : shape === "triangle" ? [[0,-1],[1,1],[-1,1]] : [[-1,0],[-.5,-1],[.5,-1],[1,0],[.5,1],[-.5,1]];
+  return `<polygon points="${vertices.map(([dx,dy])=>`${x+dx*size},${y+dy*size}`).join(" ")}" ${common}/>`;
 }
-
-// Only nondominated points belong to the frontier; ties share one vertex.
-const frontier = [...plotted]
-  .sort((a, b) => a.cost - b.cost || b.passRate - a.passRate)
-  .filter((point, index, sorted) => !sorted.slice(0, index).some(other => other.passRate >= point.passRate));
-const frontierLine = frontier.length > 1
-  ? `<polyline points="${frontier.map(point => `${scaleX(point.cost).toFixed(1)},${scaleY(point.passRate).toFixed(1)}`).join(" ")}" fill="none" stroke="${accent}" stroke-width="2"/>`
-  : "";
-
-const dots = placements
-  .sort((a, b) => Number(a.point.isCandidate) - Number(b.point.isCandidate))
-  .map(({ point, x, y, labelX, labelY, anchor, text }) => {
-    const halo = point.isCandidate
-      ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="none" stroke="${accent}" stroke-opacity="0.35"/>`
-      : "";
-    return halo
-      + (point.isCandidate ? star(x, y) : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#5f6672"/>`)
-      + `<text class="${point.isCandidate ? "dot-label-candidate" : "dot-label"}" x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="${anchor}">${esc(text)}</text>`;
-  }).join("");
-
-const ranked = [...eligible].sort((a, b) => b.passRate - a.passRate || a.label.localeCompare(b.label));
-const barLeft = pad + 20 + 20 + 140;
-const barWidth = width - pad * 2 - 40 - 20 - 140 - 80;
-const list = ranked.map((point, index) => {
-  const center = pad + scatterHeight + 20 + listTop + index * rowHeight + rowHeight / 2;
-  const baselineY = center + 3.8;
-  const fill = Math.max(point.passRate / Math.max(...rates, 0.01) * barWidth, 2);
-  return `<text class="rank" x="${pad + 20}" y="${baselineY}">${String(index + 1).padStart(2, "0")}</text>`
-    + `<text class="${point.isCandidate ? "name-candidate" : "name"}" x="${pad + 20 + 28}" y="${baselineY}">${esc(point.label)}</text>`
-    + `<rect class="track" x="${barLeft}" y="${center - 7}" width="${barWidth}" height="14"/>`
-    + `<rect x="${barLeft}" y="${center - 7}" width="${fill.toFixed(1)}" height="14" fill="${point.isCandidate ? accent : "#5f6672"}"/>`
-    + `<text class="value" x="${width - pad - 20}" y="${baselineY}" text-anchor="end">${percent(point.passRate)}</text>`;
+const overlaps=(a,b,p=4)=>a.left<b.right+p&&a.right>b.left-p&&a.top<b.bottom+p&&a.bottom>b.top-p;
+const obstacles=plotted.map(point=>({left:px(point.cost)-10,right:px(point.cost)+10,top:py(point.passRate)-10,bottom:py(point.passRate)+10}));
+const placed=[];
+// Give the candidate first choice of label position and draw its marker last.
+const annotations=[...plotted].sort((a,b)=>Number(b.isCandidate)-Number(a.isCandidate)).map(point=>{
+  const x=px(point.cost), y=py(point.passRate);
+  const w=Math.max(point.label.length*7.5,metric(point).length*7.2);
+  const sides=point.name === "kimi-code" || point.name === "hermes" ? [-1,1] : [1,-1];
+  let selected;
+  for(const dy of [-3,-34,27,55,-62,83,-90]) {
+    for(const side of sides) {
+      const lx=x+side*13;
+      const rect={left:side===1?lx:lx-w,right:side===1?lx+w:lx,top:y+dy-12,bottom:y+dy+20};
+      if(rect.left<plot.x+2||rect.right>plot.x+plot.width-2||rect.top<plot.y||rect.bottom>plot.y+plot.height)continue;
+      if(placed.some(other=>overlaps(rect,other))||obstacles.some(other=>overlaps(rect,other,2)))continue;
+      selected={lx,ly:y+dy,anchor:side===1?"start":"end",rect};break;
+    }
+    if(selected)break;
+  }
+  if(!selected)throw new Error(`No collision-free label placement for ${point.label}; enlarge the plot or extend label positions`);
+  placed.push(selected.rect);
+  const {lx,ly,anchor}=selected;
+  return `<text class="point-name" x="${lx}" y="${ly}" fill="${colors[point.name]??"#bcbcbc"}" text-anchor="${anchor}"><tspan x="${lx}">${esc(point.label)}</tspan><tspan class="point-value" x="${lx}" dy="18">${metric(point)}</tspan></text>`;
 }).join("");
-
+const dots=[...plotted].sort((a,b)=>Number(a.isCandidate)-Number(b.isCandidate)).map(point=>{
+  const x=px(point.cost),y=py(point.passRate);
+  return (point.isCandidate?`<circle cx="${x}" cy="${y}" r="16" fill="none" stroke="${accent}" stroke-opacity=".4"/>`:"")+marker(shapes[point.name]??"circle",x,y,colors[point.name]??"#bcbcbc",point.isCandidate?12:6.5);
+}).join("");
+let legendX=48,legendY=29;
+const legendOrder=["codex","dsh-creator","claude-code","pi-responses","dsh-ptc","dsh-standard","oh-my-pi","kimi-code","dsh-minimal","exo","opencode","hermes","candidate"];
+const legend=legendOrder.map(name=>points.find(point=>point.name===name)).filter(Boolean).map(point=>{
+  const label=point.isCandidate?"Third-party harness":"";
+  const text=label||point.label;
+  const itemWidth=text.length*7.4+30;
+  if(legendX+itemWidth>width-35){legendX=48;legendY+=25;}
+  const item=marker(shapes[point.name],legendX,legendY-4,colors[point.name],point.isCandidate?8:4.7)+`<text class="legend" x="${legendX+11}" y="${legendY}">${esc(text)}</text>`;
+  legendX+=itemWidth;return item;
+}).join("");
+const ticks=[];
+for(let exponent=-6;exponent<=6;exponent++)for(const step of [1,2,5]){const value=step*10**exponent;if(value>=xDomain.min&&value<=xDomain.max)ticks.push(value);}
+const gridX=ticks.map(value=>`<line x1="${px(value)}" y1="${plot.y}" x2="${px(value)}" y2="${plot.y+plot.height}"/><text x="${px(value)}" y="${plot.y+plot.height+27}" text-anchor="middle">$${value}</text>`).join("");
+const gridY=Array.from({length:4},(_,i)=>rateLow+(rateHigh-rateLow)*i/3).map(value=>`<line x1="${plot.x}" y1="${py(value)}" x2="${plot.x+plot.width}" y2="${py(value)}"/><text x="${plot.x-13}" y="${py(value)+5}" text-anchor="end">${percent(value)}</text>`).join("");
 const note = !comparable
-  ? `<text class="note" x="${plot.left}" y="${plot.bottom + 22}">Candidate excluded from comparison: ${candidate.successful}/${candidate.completed} passed; ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed < candidate.expected ? "Subset" : "Methodology differs; candidate"} is not ranked.</text>`
-  : costMissing
-  ? `<text class="note" x="${plot.left}" y="${plot.bottom + 22}">${costMissing} harness omitted from the scatter: cost unavailable</text>`
-  : "";
-
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(candidate.label)} compared with the FrontierHarness Eval baselines by pass rate and effective cost per pass" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-  <rect width="${width}" height="${height}" fill="#000000"/>
-  <style>
-    text{font-family:Arial,Helvetica,sans-serif}
-    .title{fill:#ededed;font-size:17px}
-    .subtitle{fill:#8a8a8a;font-size:11px}
-    .axis{fill:#8a8a8a;font-size:11px}
-    .tick,.rank,.value,.note,.dot-label,.dot-label-candidate{font-family:"SFMono-Regular",Menlo,monospace}
-    .tick{fill:#929292;font-size:9px}
-    .grid{stroke:#282828;stroke-dasharray:3 3}
-    .dot-label{fill:#9aa0aa;font-size:9px}
-    .dot-label-candidate{fill:${accent};font-size:10px}
-    .name{fill:#b9b9b9;font-size:11px}
-    .name-candidate{fill:${accent};font-size:11px}
-    .rank{fill:#929292;font-size:9px}
-    .value{fill:#ededed;font-size:11px}
-    .note{fill:#706a63;font-size:9px}
-    .track{fill:#1a1a1a}
-  </style>
-  <rect x="${pad}" y="${pad}" width="${width - pad * 2}" height="${scatterHeight}" fill="#000000" stroke="#242424"/>
-  <text class="title" x="${pad + 20}" y="${pad + 28}">${esc(candidate.label)} versus FrontierHarness Eval v1.0</text>
-  <text class="subtitle" x="${pad + 20}" y="${pad + 46}">Pass rate against effective cost per pass · model ${esc(candidate.model ?? "unspecified")} · ${candidate.completed} tasks</text>
-  ${star(width - pad - 190, pad + 25, 8)}
-  <text class="dot-label-candidate" x="${width - pad - 176}" y="${pad + 29}">Third-party harness</text>
-  ${grid}
-  <text class="axis" x="${(plot.left + plot.right) / 2}" y="${plot.bottom + 38}" text-anchor="middle">Effective cost per pass (log scale)</text>
-  <text class="axis" transform="translate(${pad + 22} ${(plot.top + plot.bottom) / 2}) rotate(-90)" text-anchor="middle">Pass rate</text>
-  ${frontierLine}
-  ${dots}
-  ${note}
-  <rect x="${pad}" y="${pad + scatterHeight + 20}" width="${width - pad * 2}" height="${panelHeight}" fill="#000000" stroke="#242424"/>
-  <text class="title" x="${pad + 20}" y="${pad + scatterHeight + 51}">Pass rate</text>
-  <line x1="${pad + 20}" y1="${pad + scatterHeight + 68}" x2="${width - pad - 20}" y2="${pad + scatterHeight + 68}" stroke="#1c1c1c"/>
-  ${list}
+  ? `${candidate.label}: ${percent(candidate.pass_rate)} · ${Number.isFinite(candidate.effective_cost_per_pass)?money(candidate.effective_cost_per_pass):"cost unavailable"} · ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed<candidate.expected?"Subset":"Methodology differs"}; excluded from plot; not ranked.`
+  : !plotted.some(point=>point.isCandidate) ? `${candidate.label}: cost unavailable; candidate omitted from plot.` : `${candidate.label} · Third-party harness under evaluation`;
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(candidate.label)} versus FrontierHarness baselines: pass rate and effective cost per pass">
+<rect width="${width}" height="${height}" fill="#000"/>
+<style>
+text{font-family:Arial,Helvetica,sans-serif}.legend,.axis,.point-value,.grid text,.note{font-family:Menlo,Consolas,monospace}
+.legend{font-size:11px;fill:#b5b5b5}.grid line{stroke:#333;stroke-dasharray:4 2;stroke-width:1}.grid text{fill:#ccc;font-size:15px}
+.point-name{font-size:14px}.point-value{fill:#bcbcbc;font-size:12px}.axis{fill:#ccc;font-size:15px}.note{fill:#aaa;font-size:11px}
+</style>
+${legend}
+<g class="grid">${gridX}${gridY}</g>
+<path d="M ${plot.x} ${plot.y} V ${plot.y+plot.height} H ${plot.x+plot.width}" fill="none" stroke="#ccc" stroke-width="1.2"/>
+<polyline points="${frontier.map(point=>`${px(point.cost)},${py(point.passRate)}`).join(" ")}" fill="none" stroke="${accent}" stroke-width="2.2"/>
+${annotations}${dots}
+<text class="axis" x="${plot.x+plot.width/2}" y="613" text-anchor="middle">Effective cost per pass (log scale)</text>
+<text class="axis" transform="translate(49 ${plot.y+plot.height/2}) rotate(-90)" text-anchor="middle">Pass rate</text>
+${marker("star",49,642,accent,8)}<text class="note" x="65" y="646">${esc(note)}</text>
 </svg>`;
-
-const reportDir = join(runDir, "report");
-await mkdir(reportDir, { recursive: true });
-await writeFile(join(reportDir, "chart.svg"), svg);
-
-const rank = ranked.findIndex(point => point.isCandidate) + 1;
-console.log(comparable ? `${candidate.label} ranks ${rank} of ${ranked.length} on pass rate` : `${candidate.label}: candidate is not ranked`);
-console.log(`wrote ${join(reportDir, "chart.svg")}`);
+const reportDir=join(runDir,"report");
+await mkdir(reportDir,{recursive:true});
+await writeFile(join(reportDir,"chart.svg"),svg);
+console.log(`wrote ${join(reportDir,"chart.svg")}`);
 
 async function readJson(path, message) {
   try {

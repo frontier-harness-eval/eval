@@ -19,11 +19,6 @@ const labels = {
 const baseline = await readJson(baselinePath, `baseline not found at ${baselinePath}; pass --baseline <path to eval-data.json>`);
 const candidate = await readJson(join(runDir, "candidate.json"), `candidate.json not found in ${runDir}; run normalize-results.mjs first`);
 const run = await readJson(join(runDir, "run.json"), `run.json not found in ${runDir}`);
-// eval-data.json carries an internal model slug ("k3"); benchmark.json has the
-// readable name ("Kimi K3"), which is what a candidate model id can be matched against.
-const benchmark = await readJsonOrNull(args.benchmark ?? "benchmark.json");
-const baselineModel = benchmark?.model ?? baseline.model;
-const baselineProvider = benchmark?.model_provider ?? null;
 const comparable = candidate.comparable === true;
 const manifest = await readJsonOrNull(join(runDir, "trials", firstTrialDir(candidate), "manifest.json"));
 
@@ -63,55 +58,47 @@ const duration = value => {
   return minutes ? `${minutes}m ${seconds % 60}s` : `${seconds}s`;
 };
 
+// A partial observed median is diagnostic; never replace the canonical aggregate.
+const cacheTasks = candidate.task_details.filter(task => task.status === "success" && task.success);
+const observedCacheRates = cacheTasks.map(task => task.cache_hit_rate_normalized)
+  .filter(value => Number.isFinite(value) && value >= 0 && value <= 1).sort((a, b) => a - b);
+const observedCacheMedian = observedCacheRates.length
+  ? (observedCacheRates[Math.floor((observedCacheRates.length - 1) / 2)] + observedCacheRates[Math.floor(observedCacheRates.length / 2)]) / 2
+  : null;
+const completeCache = Number.isFinite(candidate.cache_hit_rate_typical);
+const cacheValue = completeCache ? candidate.cache_hit_rate_typical : observedCacheMedian;
+const cachePartial = !completeCache && cacheValue !== null;
+const cacheCount = completeCache ? (candidate.cache_hit_rate_typical_n ?? candidate.successful) : observedCacheRates.length;
+const cacheCoverageText = `${cacheCount}/${candidate.successful} successful tasks with measured cache rates`;
+const cacheDisplay = cacheValue === null ? "Unavailable" : `${percent(cacheValue)}${cachePartial ? " (partial)" : ""}`;
+const missingCacheTasks = cacheTasks.filter(task => !Number.isFinite(task.cache_hit_rate_normalized)).map(task => task.id);
+const cacheExplanation = `${cacheCoverageText}. Rates exclude first-call cached tokens. ${cachePartial
+  ? "The displayed median covers observed successes only; the full-success aggregate remains unavailable."
+  : cacheValue === null ? "No complete cache measurements are available; missing usage is not zero cache hits." : "The median covers all successful tasks."}${missingCacheTasks.length ? ` Missing complete cache usage: ${missingCacheTasks.join(", ")}.` : ""}`;
+
 const comparison = rows.map((row, index) => {
   const name = row.isCandidate ? `**${row.label}**` : row.label;
-  return `| ${row.isCandidate && !comparable ? '—' : String(index + 1).padStart(2, "0")} | ${name} | ${percent(row.passRate)} | ${money(row.cost)} | ${percent(row.cache)} | ${duration(row.duration)} |`;
+  return `| ${row.isCandidate && !comparable ? '—' : String(index + 1).padStart(2, "0")} | ${name} | ${percent(row.passRate)} | ${money(row.cost)} | ${row.isCandidate ? cacheDisplay : percent(row.cache)} | ${duration(row.duration)} |`;
 }).join("\n");
+
+// Require a scored failure from every baseline; missing/invalid cells are not failures.
+const exclusiveSolves = new Set(candidate.task_details.filter(task =>
+  task.status === "success" && task.success === true && baseline.harnesses.length > 0
+  && baseline.harnesses.every(harness => {
+    const cells = (harness.task_details ?? []).filter(cell => cell.id === task.id);
+    return cells.length === 1 && cells[0].status === "failure" && cells[0].success === false;
+  })
+).map(task => task.id));
+const exclusiveBadge = `★ Solved · 0/${baseline.harnesses.length} baselines passed`;
+const exclusiveNote = exclusiveSolves.size
+  ? `★ Highlighted tasks were solved by this harness while every published baseline configuration recorded a failure on the same task. Times are this harness's full runner wall time.${comparable ? "" : " These are observed results from an unranked run; evaluation conditions are not established as equivalent."}`
+  : "";
 
 const taskRows = candidate.task_details.map(task => {
-  const mark = task.status === "success" ? "pass" : task.status === "infra_invalid" ? "invalid" : task.status;
-  return `| \`${task.id}\` | ${mark} | ${money(task.cost_first_cold_usd)} | ${duration(task.duration_seconds)} | ${task.turns ?? "n/a"} | [evidence](../${task.evidence}) |`;
+  const highlighted = exclusiveSolves.has(task.id);
+  const mark = highlighted ? exclusiveBadge : task.status === "success" ? "pass" : task.status === "infra_invalid" ? "invalid" : task.status;
+  return `| \`${task.id}\` | ${mark} | ${money(task.cost_first_cold_usd)} | ${highlighted ? `**${duration(task.duration_seconds)}**` : duration(task.duration_seconds)} | ${task.turns ?? "n/a"} | ${percent(task.cache_hit_rate_normalized)} | [evidence](../${task.evidence}) |`;
 }).join("\n");
-
-const modelDiffers = Boolean(candidate.model && baselineModel
-  && modelKey(candidate.model) !== modelKey(baselineModel));
-const providerDiffers = Boolean(candidate.provider && baselineProvider
-  && modelKey(candidate.provider) !== modelKey(baselineProvider));
-
-const caveats = [
-  candidate.completed < candidate.expected ? `Only ${candidate.completed} of ${candidate.expected} published tasks were scored. This subset is not comparable to the published leaderboard and receives no rank.` : null,
-  ...(candidate.methodology_notes ?? []),
-  run.egress_policy
-    ? `Trial-time egress (${run.egress_policy.mode}, ${run.egress_policy.scope} scope), applied to agents and verifiers subject to runner-level isolation: ${run.egress_policy.allowed_hosts.join(", ")}.`
-    : "Trial-time egress was not recorded for this run; its network conditions cannot be compared with other runs.",
-  manifest?.harness_distribution === "official-release"
-    ? `The evaluated executable was official release ${manifest.harness_release}. The repository commit is a separate rebuild reference; no release-to-source mapping is asserted. Packaged executable SHA-256: ${manifest.harness_binary_sha256}.`
-    : null,
-  "This workflow uses one shared checkpoint with images normally pulled after each restore. The published baselines used per-task checkpoints; the environments are not identical.",
-  manifest?.deep_swe_commit
-    ? `DeepSWE ran at commit \`${manifest.deep_swe_commit}\`. The default 435ee89 corpus uses separate-verifier images that differ from the repository's frozen public task metadata. Reproducing a published score requires a control run; matching the task names alone does not establish equivalence.`
-    : null,
-  manifest?.harness_topology && manifest.harness_topology !== "container-cli"
-    ? `The harness topology was \`${manifest.harness_topology}\`; the published baselines used CLIs inside task containers. Custom registration is supported, but does not by itself establish equivalent isolation, resources, or state reset.`
-    : null,
-  manifest?.system_runc_workaround
-    ? "Provisioning enabled the system-runc workaround for Runta's injected-init hang; the resolved runc path is recorded in the manifest."
-    : null,
-  (candidate.scored_cost_coverage ?? candidate.cost_coverage) < 1
-    ? `Cost was captured for ${((candidate.scored_cost_coverage ?? candidate.cost_coverage) * 100).toFixed(0)}% of tasks, so cost figures are partial.`
-    : null,
-  candidate.infra_invalid
-    ? `${candidate.infra_invalid} trial(s) failed on infrastructure and were excluded from scoring rather than counted as failures.`
-    : null,
-  modelDiffers
-    ? `The candidate ran on \`${candidate.model}\` while the baselines ran on \`${baselineModel}\`. Harness and model effects are not separable across this gap.`
-    : null,
-  // Provider and environment differences still require a matched control.
-  !modelDiffers && providerDiffers
-    ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. The model is held constant; Costs use a common benchmark price basis; actual provider bills can differ. Environment and methodology differences still affect comparability.`
-    : null,
-  "Costs follow the frozen benchmark accounting rules with the bundled benchmark table (or an explicit pricing override) and reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
-].filter(Boolean).map(item => `- ${item}`).join("\n");
 
 const hasCost = typeof candidate.effective_cost_per_pass === "number";
 const costClause = hasCost ? ` at **${money(candidate.effective_cost_per_pass)} per pass**` : "";
@@ -131,8 +118,11 @@ const markdown = `# ${candidate.label} on FrontierHarness Eval
 | Effective cost per pass | ${money(candidate.effective_cost_per_pass)} |
 | Median cost per successful task | ${money(candidate.median_cost_per_success)} |
 | Median time per successful task | ${duration(candidate.median_duration_seconds)} |
-| Median cache hit rate | ${percent(candidate.cache_hit_rate_typical)} |
+| Median cache hit rate | ${cacheDisplay} |
+| Cache measurement coverage | ${cacheCoverageText} |
 | Mean turns | ${typeof candidate.mean_turns === "number" ? candidate.mean_turns.toFixed(1) : "n/a"} |
+
+${cacheExplanation}
 
 ## Comparison
 
@@ -161,15 +151,13 @@ Every trial restores the same base checkpoint with the same configured vCPU, mem
 
 ## Task results
 
-| Task | Result | Cost | Time | Turns | Evidence |
-| --- | --- | --- | --- | --- | --- |
+${exclusiveNote}
+
+| Task | Result | Cost | Time | Turns | Cache hit rate | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
 ${taskRows}
 
 Each evidence directory holds the agent trajectory, verifier logs, the collected \`model.patch\`, and raw runner output for that trial.
-
-## Caveats
-
-${caveats}
 
 ---
 
@@ -213,13 +201,14 @@ const html = `<!doctype html>
   td:not(:nth-child(2)), code { font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; }
   tr.candidate { background: #f47b350d; }
   tr.candidate td { color: var(--accent); }
+  tr.exclusive-solve { background: #ff7a1214; }
+  tr.exclusive-solve td { border-bottom-color: #ff7a1240; }
+  tr.exclusive-solve td:first-child { border-left: 3px solid var(--accent); }
+  .solve-badge, tr.exclusive-solve .solve-time { color: var(--accent); font-weight: 650; }
   tbody tr:hover { background: #ffffff06; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
-  .caveats { list-style: decimal-leading-zero; padding-left: 32px; color: var(--muted); }
-  .caveats li { padding: 14px 0 14px 10px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
-  .caveats li::marker { color: var(--accent); font: 12px "SFMono-Regular", Consolas, monospace; }
   footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
   @media (max-width: 640px) { main { padding: 20px 16px 32px; } .brand { margin-bottom: 28px; } .chart { margin-inline: -16px; } .metrics { grid-template-columns: repeat(2, 1fr); gap: 24px 0; } .metric:nth-child(3) { padding-left: 0; border: 0; } nav { gap: 20px; } th, td { padding: 10px; } }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -234,28 +223,27 @@ const html = `<!doctype html>
      golden checkpoint <code>${escapeHtml(run.checkpoint)}</code>.</p>
   <div class="chart">${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
   </div>
-  <nav aria-label="Report sections"><a href="#result">Result</a><a href="#comparison">Comparison</a><a href="#methodology">Methodology</a><a href="#tasks">Task results</a></nav>
+  <nav aria-label="Report sections"><a href="#result">Result</a><a href="#comparison">Comparison</a><a href="#tasks">Task results</a></nav>
   <div class="metrics" id="result">
     <div class="metric"><span>Pass rate</span><strong>${percent(candidate.pass_rate)}</strong><span>${candidate.successful} / ${candidate.completed} scored tasks</span></div>
     <div class="metric"><span>Effective cost per pass</span><strong>${money(candidate.effective_cost_per_pass)}</strong><span>Includes known costs of failures</span></div>
     <div class="metric"><span>Median successful runtime</span><strong>${duration(candidate.median_duration_seconds)}</strong><span>Full runner wall time</span></div>
-    <div class="metric"><span>Median cache hit rate</span><strong>${percent(candidate.cache_hit_rate_typical)}</strong><span>Successful tasks</span></div>
+    <div class="metric"><span>Median cache hit rate</span><strong>${cacheValue === null ? "Unavailable" : percent(cacheValue)}</strong><span>${cachePartial ? "Partial · " : ""}${cacheCount}/${candidate.successful} successes measured</span></div>
   </div>
+  <p class="lede">${escapeHtml(cacheExplanation)}</p>
   <section id="comparison"><h2>Comparison</h2>
   <div class="table-scroll">
   <table>
     <tr><th>#</th><th>Harness</th><th>Pass rate</th><th>Effective cost per pass</th><th>Cache, median</th><th>Median time</th></tr>
-    ${rows.map((row, index) => `<tr${row.isCandidate ? ' class="candidate"' : ""}><td>${row.isCandidate && !comparable ? '—' : index + 1}</td><td>${escapeHtml(row.label)}</td><td>${percent(row.passRate)}</td><td>${money(row.cost)}</td><td>${percent(row.cache)}</td><td>${duration(row.duration)}</td></tr>`).join("\n    ")}
+    ${rows.map((row, index) => `<tr${row.isCandidate ? ' class="candidate"' : ""}><td>${row.isCandidate && !comparable ? '—' : index + 1}</td><td>${escapeHtml(row.label)}</td><td>${percent(row.passRate)}</td><td>${money(row.cost)}</td><td>${row.isCandidate ? cacheDisplay : percent(row.cache)}</td><td>${duration(row.duration)}</td></tr>`).join("\n    ")}
   </table>
   </div></section>
-  <section id="methodology"><h2>Beyond the numbers</h2>
-  <p class="lede">Reproducibility and comparability notes for this run.</p>
-  <ol class="caveats">${caveats.split('\n').map(line => `<li>${escapeHtml(line.replace(/^- /, ''))}</li>`).join('')}</ol></section>
   <section id="tasks"><h2>Task results</h2>
+  ${exclusiveNote ? `<p class="lede">${escapeHtml(exclusiveNote)}</p>` : ""}
   <div class="table-scroll">
   <table>
-    <tr><th>Task</th><th>Result</th><th>Cost</th><th>Time</th><th>Turns</th></tr>
-    ${candidate.task_details.map(task => `<tr><td><code>${escapeHtml(task.id)}</code></td><td>${task.status}</td><td>${money(task.cost_first_cold_usd)}</td><td>${duration(task.duration_seconds)}</td><td>${task.turns ?? "n/a"}</td></tr>`).join("\n    ")}
+    <tr><th>Task</th><th>Result</th><th>Cost</th><th>Time</th><th>Turns</th><th>Cache hit rate</th></tr>
+    ${candidate.task_details.map(task => `<tr${exclusiveSolves.has(task.id) ? ' class="exclusive-solve"' : ""}><td><code>${escapeHtml(task.id)}</code></td><td>${exclusiveSolves.has(task.id) ? `<span class="solve-badge">${exclusiveBadge}</span>` : task.status}</td><td>${money(task.cost_first_cold_usd)}</td><td class="solve-time">${duration(task.duration_seconds)}</td><td>${task.turns ?? "n/a"}</td><td>${percent(task.cache_hit_rate_normalized)}</td></tr>`).join("\n    ")}
   </table>
   </div></section>
   <footer>Baseline data and methodology: <a href="${SOURCE_EVAL}">FrontierHarness Eval</a></footer>
@@ -269,12 +257,6 @@ console.log(`${candidate.label}: ${percent(candidate.pass_rate)} pass rate, ${co
 console.log(`wrote ${join(reportDir, "REPORT.md")}`);
 console.log(`wrote ${join(reportDir, "index.html")}`);
 console.log(`share: gh gist create ${join(reportDir, "REPORT.md")} ${join(reportDir, "chart.svg")} --public`);
-
-// "fireworks_ai/accounts/fireworks/models/kimi-k3" and "Kimi K3" are the same model, so
-// compare on a key that drops the provider route, case, and separators.
-function modelKey(value) {
-  return String(value).toLowerCase().split("/").pop().replace(/[^a-z0-9]/g, "");
-}
 
 function firstTrialDir(record) {
   const withEvidence = record.task_details.find(task => task.evidence);

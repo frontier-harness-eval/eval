@@ -97,6 +97,22 @@ raw model requests, response events, and tool results without credentials.
 
 ## Proxy and dependency preparation
 
+When translating a verifier's `pip install` command to `uv pip install`, parse its
+arguments with `shlex.split` and add required boolean flags only once. Do not blindly
+prepend `--break-system-packages`: `largest-eigenval` already supplies it, and uv
+0.9.5 rejects the duplicate before the agent starts. The reusable
+[`uv_install_command`](scripts/dependency_commands.py) helper adds `--system` and
+`--break-system-packages` once while preserving package pins, other repeated
+arguments, and shell quoting. It accepts an argument list, not an arbitrary shell
+script; inspect unsupported pip options or shell syntax before translating them.
+Validate absent, already-present, and duplicated flags, then build the affected
+image with the pinned uv version. Repeating a deterministic argument error will
+not fix it. Preserve the blocked attempt and retry only after fixing preparation.
+
+Preflight host-side worker utilities as well as container dependencies. In
+particular, verify `jq` before launching workers that use it to publish completion
+records; a task can finish successfully while the wrapper fails to record its exit.
+
 Check connectivity from inside the task container, including HTTP(S) proxy handling
 and CA trust. Outer runtime egress does not override an inner isolated network.
 Do not silently disable certificate verification. In the observed Python 3.13

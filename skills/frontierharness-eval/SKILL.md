@@ -287,7 +287,10 @@ node "$FH/generate-chart.mjs"    --run runs/2026-09-02-myharness
 names and definitions as `results/eval-data.json`, so the candidate slots directly into
 the baseline set. `generate-chart.mjs` writes
 `runs/<run-id>/report/chart.svg`: a pass-rate versus cost scatter with the twelve
-baselines muted and the candidate highlighted, plus a pass-rate ranking panel.
+baselines in their reference colors and marker shapes, and the candidate highlighted
+with a star. Keep the chart wide (about 2:1), with a top legend and two-line point
+labels: colored harness name above gray percentage and cost. Keep rankings in the
+report comparison section rather than adding a second panel inside the diagram.
 
 Every evaluation report must include this diagram. Match the supplied reference's
 visual structure: black background, dashed gray grid, logarithmic cost axis,
@@ -325,14 +328,25 @@ reports. The bundled `build-report.mjs` and `generate-chart.mjs` implement this 
 - System sans-serif headings and harness names; monospace labels, ranks, metadata,
   and tabular numbers. Keep the layout spacious and flat, with square edges.
 - Lead with the candidate summary and comparison chart, then section navigation,
-  four compact result metrics, comparison rows, numbered methodology notes, and
-  task evidence. Keep wide charts and tables horizontally scrollable on phones.
+  four compact result metrics, comparison rows, and task evidence. Omit the
+  Methodology section and its navigation link from generated reports. Keep wide charts and tables horizontally scrollable on phones.
 - Use orange to identify the candidate and key links. Preserve visible subset and
-  methodology caveats and the existing rules for excluding non-comparable candidates.
+  comparability status in the summary and the existing rules for excluding
+  non-comparable candidates; retain detailed methodology notes in candidate.json.
 - Keep HTML self-contained with inline CSS/SVG and system font fallbacks. The
   Markdown version remains a portable content equivalent. Retain the report's
   actual metric definitions (including effective cost per pass); the reference
   site's visual style does not justify changing accounting or copying its scores.
+
+In Task results, highlight candidate successes for which **every published baseline
+configuration recorded a failure on the exact same task ID**. Use an orange row
+accent, a star badge stating `Solved · 0/N baselines passed`, and emphasize the
+candidate's completion time (full runner wall time). Apply the badge and bold time
+in Markdown too. Check each baseline's `task_details`: missing, duplicate, or
+infrastructure-invalid cells do not establish a failure. Never infer exclusive
+success from aggregate scores. For unranked runs, describe this as an observed
+result and retain a nearby note that evaluation conditions are not established as
+equivalent. If no task qualifies, do not manufacture a highlight.
 
 After changing the report template, generate a report from existing candidate data
 and inspect the HTML at desktop and narrow widths before sharing.
@@ -398,6 +412,15 @@ The scripts follow the frozen benchmark’s scoring and aggregation conventions:
   across successes. `cache_hit_rate_typical` is the median per-success normalized
   rate; quartiles use inclusive interpolation. Raw and session-only cache rates
   are retained separately on trials.
+- Always display cache hit rate in the report summary, comparison, and task details,
+  with measurement coverage (measured successes / all successes). If the canonical
+  median is unavailable but per-task normalized rates exist, show their median as
+  **partial / observed successes only** and keep the canonical aggregate null.
+  Name successful tasks with missing measurements and inspect their retained usage
+  records for recoverable input, cached-read, and first-call cached tokens. If no
+  complete measurements exist, say **Unavailable** and explain why; never substitute
+  zero or silently hide available partial data. Do not average task rates to estimate
+  a token-weighted cache rate.
 - `median_duration_seconds` is median full runner trial wall time over successes,
   from raw start/finish timestamps; a cell watchdog uses its configured limit.
   It is not model latency. Turns count model calls from per-call harness records.

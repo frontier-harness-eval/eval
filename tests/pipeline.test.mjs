@@ -250,7 +250,7 @@ for (const legacy of [false, true]) test(`resuming with ${legacy ? 'unrecorded' 
   assert.equal(f.executions().length, 1);
 });
 
-test('full coverage with the new egress policy stays unranked and discloses package access', t => {
+test('full coverage with the new egress policy stays unranked without a methodology section', t => {
   const f = fixture(t);
   ok(f.run());
   cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
@@ -270,9 +270,7 @@ test('full coverage with the new egress policy stays unranked and discloses pack
   for (const file of ['REPORT.md', 'index.html']) {
     const report = readFileSync(join(f.root, 'runs/control/report', file), 'utf8');
     assert.match(report, /not ranked/);
-    assert.match(report, /agents.*package/i);
-    assert.match(report, /matched control/);
-    for (const host of candidate.egress_policy.allowed_hosts) assert.ok(report.includes(host));
+    assert.doesNotMatch(report, /<section id="methodology"|href="#methodology"|## Caveats/);
   }
 });
 
@@ -299,7 +297,7 @@ test('full task coverage does not override an explicit methodology mismatch', t 
   for (const file of ['REPORT.md', 'index.html']) {
     const report = readFileSync(join(f.root, 'runs/control/report', file), 'utf8');
     assert.match(report, /methodology differs/);
-    assert.match(report, /control comparison unavailable/);
+    assert.ok(candidate.methodology_notes.some(note => note.includes("control comparison unavailable")));
     assert.doesNotMatch(report, /subset evaluation|ranking (?:\*\*)?\d+ of/);
   }
 });

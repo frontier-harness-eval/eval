@@ -16,13 +16,26 @@
 | Timed out before verifier scoring | 3 (counted in the 30-attempt denominator) |
 | `infra_invalid` | 0 |
 | Median time per successful task | 4m 33s |
-| Effective cost per pass (USD) | n/a — see cost note |
+| Effective cost per pass (USD, repriced at the baseline card) | **$1.83** — lower bound, see cost note |
 
 The three timeouts (`arktype-json-schema-refs-dependencies`, `meriyah-explicit-resource-declarations`, `python-statemachine-state-data-scoping`) hit the 5400s task limit before the verifier ran. They received no verifier score and are counted against the pass rate, so 76.7% is the conservative reading; the pass rate over verifier-scored attempts is 23/27.
 
 ## Cost note
 
-The official USD cost fields are left empty rather than estimated: this run served Kimi K3 through Moonshot's official CN API (`api.moonshot.cn`) instead of Fireworks, and the `*_normalized` cache repricing inputs are not public. Raw usage-based CNY estimates per task are in [`model-costs-cny.csv`](model-costs-cny.csv) (total ≈ ¥279.85 across all 30 attempts, including failures; usage not returned after aborts is still pending, not zero). Pass rate remains comparable because the model is identical; do not compare the CNY figures against the published USD `effective_cost_per_pass` without checking token prices.
+This run served Kimi K3 through Moonshot's official CN API (`api.moonshot.cn`), billed in CNY, so the official USD cost fields in `candidate.json` are left as `normalize-results.mjs` produced them (empty) rather than hand-filled.
+
+The cost is still computable in the baseline's own terms. Per `reference.md`, Moonshot's list price matches the baseline card used by the Fireworks/OpenRouter/Together baselines ($3.00 per million input tokens, $0.30 per million cached input tokens, $15.00 per million output tokens). Repricing this run's raw per-task token usage at exactly that card gives:
+
+- **Total model cost: $41.98** across all 30 attempts (failures included)
+- **Effective cost per pass: $41.98 / 23 = $1.83**
+- Median cost per successful task: $0.18
+
+Two caveats, both in the conservative direction or disclosed:
+
+1. **Lower bound**: 4 tasks (`arktype-json-schema-refs-dependencies`, `meriyah-explicit-resource-declarations`, `python-statemachine-state-data-scoping`, `build-cython-ext`) have partial usage — the final in-flight request's usage was not returned after the timeout abort — so their true cost is slightly higher than recorded.
+2. **Cache behaviour is provider-dependent** (minimum prefix length, TTL), as `reference.md` notes. The cache hit rates in this run (median ≈ 89%) were produced by Moonshot's serving; the same trajectories on Fireworks could price slightly differently. The `*_normalized` baseline fields that reprice first-turn cache reads use non-public inputs and are left empty.
+
+Per-task figures in both currencies are in [`model-costs.csv`](model-costs.csv): `model_cost_cny_estimate` is the raw-usage CNY estimate on Moonshot pricing (total ≈ ¥279.85), and `model_cost_at_baseline_prices_usd` is the same token usage repriced at the baseline card.
 
 ## Invariants held / relaxed
 
@@ -49,8 +62,8 @@ Relaxed / disclosed:
 | [`candidate.json`](candidate.json) | Output of the official `normalize-results.mjs` scoring |
 | [`run-config.json`](run-config.json) | Run metadata: command template, timeout, egress allowlist (one internal telemetry host redacted), per-task images and limits |
 | [`trials/<task>/trial.json`](trials/) | Official per-trial summaries (status, duration, exit code, checkpoint) |
-| [`model-costs-cny.csv`](model-costs-cny.csv) | Per-task status, durations, and raw-usage CNY cost estimates |
-| [`report/chart.svg`](report/chart.svg) | Chart from the official `generate-chart.mjs`; since the script omits points without a cost, mcode is annotated post-generation as a dashed pass-rate line with no cost position |
+| [`model-costs.csv`](model-costs.csv) | Per-task status, durations, raw-usage CNY estimates, and USD repriced at the baseline card |
+| [`report/chart.svg`](report/chart.svg) | Chart from the official `generate-chart.mjs`; generated with mcode's cost repriced at the baseline card ($1.83 per pass); the repricing footnote and axis wording were adjusted post-generation |
 
 Full raw evidence (30 per-task bundles with complete agent trajectories, tool calls, usage, verifier stdout, and collected `model.patch`) is preserved offline — roughly 150 MB of archives that do not belong in this repository. We will provide it to the maintainers on request for reproduction and verification.
 

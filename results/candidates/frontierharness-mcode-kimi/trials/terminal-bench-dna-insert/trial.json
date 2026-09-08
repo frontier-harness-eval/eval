@@ -1,0 +1,16 @@
+{
+  "id": "terminal-bench/dna-insert",
+  "title": "dna-insert",
+  "suite": "terminal-bench",
+  "status": "failure",
+  "success": false,
+  "duration_seconds": 1361,
+  "cost_first_cold_usd": null,
+  "turns": null,
+  "cache_hit_rate_normalized": null,
+  "exit_code": 0,
+  "runtime": "frontierharness-task-15",
+  "checkpoint": "01a07c81-d5e9-7dce-8b67-e03c2bae8bcb",
+  "harness_exception": null,
+  "included_in_efficiency": false
+}

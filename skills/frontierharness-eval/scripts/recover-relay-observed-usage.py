@@ -1,4 +1,4 @@
-"""Derive diagnostic cache coverage from retained Alma relay records; never fill canonical metrics."""
+"""Derive diagnostic cache coverage from retained relay records; never fill canonical metrics."""
 import json
 import sys
 from pathlib import Path

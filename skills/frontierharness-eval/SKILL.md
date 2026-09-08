@@ -468,7 +468,7 @@ The primary report cost metric is median cost per task, computed from measured c
 ### Report naming
 
 Use the harness name and version as the candidate display label, for example
-`--label "Alma 0.4.27"`. Keep run status, task counts and worker counts in the
+`--label "My Harness 1.0"`. Keep run status, task counts and worker counts in the
 report metrics and metadata; do not append phrases such as “completed 30-task
 evaluation” to titles, chart labels or comparison rows. Apply the same concise
 label in HTML, Markdown and PDF exports.
@@ -486,8 +486,9 @@ for a normalized aggregate. Where no evidence exists,
 state what was not recorded instead of filling zero. Successful-cost medians may
 show the observed-success median with measured-success coverage while leaving the
 canonical aggregate null. Apply these labels consistently in HTML and Markdown.
-For Alma, `recover-alma-observed-usage.py <run>` augments an existing cost audit
-with diagnostic raw cache rates; `build-report.mjs` reads that optional audit.
+For harnesses retaining `kimi-relay.jsonl` request/usage records,
+`recover-relay-observed-usage.py <run>` augments an existing cost audit with
+diagnostic raw cache rates; `build-report.mjs` reads that optional audit.
 
 ### Aligning with the published website chart
 

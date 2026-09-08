@@ -1,3 +1,4 @@
+import { websiteCost as calculateWebsiteCost } from "./website-cost.mjs";
 // Plot a candidate harness against the published FrontierHarness baselines:
 // a reference-style pass-rate versus cost scatter with a starred candidate.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -16,21 +17,23 @@ const labels = {
 
 const baseline = await readJson(baselinePath, `baseline not found at ${baselinePath}; pass --baseline <path to eval-data.json>`);
 const candidate = await readJson(join(runDir, "candidate.json"), `candidate.json not found in ${runDir}; run normalize-results.mjs first`);
+const observedAudit = await readFile(join(runDir, "observed-cost-audit.json"), "utf8").then(JSON.parse).catch(() => null);
 const comparable = candidate.comparable === true;
+const displayRank = comparable || args["display-rank"] === "true";
 
 const points = [
   ...baseline.harnesses.map(item => ({
     name: item.name,
     label: labels[item.name] ?? item.name,
     passRate: item.pass_rate,
-    cost: item.effective_cost_per_pass,
+    cost: websiteCost(item),
     isCandidate: false,
   })),
   {
     name: "candidate",
     label: candidate.label,
     passRate: candidate.pass_rate,
-    cost: candidate.effective_cost_per_pass,
+    cost: websiteCost(candidate),
     isCandidate: true,
   },
 ];
@@ -41,7 +44,7 @@ const shapes = {"pi-responses":"square","oh-my-pi":"diamond","claude-code":"diam
 const accent = "#ff7a12";
 colors.candidate = accent;
 shapes.candidate = "star";
-const eligible = points.filter(point => !point.isCandidate || comparable);
+const eligible = points.filter(point => !point.isCandidate || displayRank);
 const plotted = eligible.filter(point => Number.isFinite(point.cost) && point.cost > 0 && Number.isFinite(point.passRate));
 const width = 1344;
 const height = 660;
@@ -59,7 +62,8 @@ const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt
 const money = value => `$${value.toFixed(2)}`;
 const percent = value => `${(value*100).toFixed(1)}%`;
 const metric = point => `${percent(point.passRate)} · ${money(point.cost)}`;
-const frontier = plotted.filter(point => !plotted.some(other => other.cost <= point.cost && other.passRate >= point.passRate && (other.cost < point.cost || other.passRate > point.passRate))).sort((a,b) => a.cost-b.cost);
+const frontierEligible = plotted.filter(point => !point.isCandidate || comparable);
+const frontier = frontierEligible.filter(point => !frontierEligible.some(other => other.cost <= point.cost && other.passRate >= point.passRate && (other.cost < point.cost || other.passRate > point.passRate))).sort((a,b) => a.cost-b.cost);
 function marker(shape,x,y,color,size=6.5) {
   const common=`fill="${color}" stroke="#c4c4c4" stroke-width="1.1"`;
   if(shape === "star") {
@@ -80,7 +84,7 @@ const annotations=[...plotted].sort((a,b)=>Number(b.isCandidate)-Number(a.isCand
   const w=Math.max(point.label.length*7.5,metric(point).length*7.2);
   const sides=point.name === "kimi-code" || point.name === "hermes" ? [-1,1] : [1,-1];
   let selected;
-  for(const dy of [-3,-34,27,55,-62,83,-90]) {
+  for(const dy of [-3,-34,27,55,-62,83,-90,111,-118,139,-146]) {
     for(const side of sides) {
       const lx=x+side*13;
       const rect={left:side===1?lx:lx-w,right:side===1?lx+w:lx,top:y+dy-12,bottom:y+dy+20};
@@ -109,14 +113,15 @@ const legend=legendOrder.map(name=>points.find(point=>point.name===name)).filter
   const item=marker(shapes[point.name],legendX,legendY-4,colors[point.name],point.isCandidate?8:4.7)+`<text class="legend" x="${legendX+11}" y="${legendY}">${esc(text)}</text>`;
   legendX+=itemWidth;return item;
 }).join("");
-const ticks=[];
-for(let exponent=-6;exponent<=6;exponent++)for(const step of [1,2,5]){const value=step*10**exponent;if(value>=xDomain.min&&value<=xDomain.max)ticks.push(value);}
+const ticks = [1, 2, 5, 10, 20].filter(value => value >= xDomain.min && value <= xDomain.max);
 const gridX=ticks.map(value=>`<line x1="${px(value)}" y1="${plot.y}" x2="${px(value)}" y2="${plot.y+plot.height}"/><text x="${px(value)}" y="${plot.y+plot.height+27}" text-anchor="middle">$${value}</text>`).join("");
 const gridY=Array.from({length:4},(_,i)=>rateLow+(rateHigh-rateLow)*i/3).map(value=>`<line x1="${plot.x}" y1="${py(value)}" x2="${plot.x+plot.width}" y2="${py(value)}"/><text x="${plot.x-13}" y="${py(value)+5}" text-anchor="end">${percent(value)}</text>`).join("");
-const note = !comparable
-  ? `${candidate.label}: ${percent(candidate.pass_rate)} · ${Number.isFinite(candidate.effective_cost_per_pass)?money(candidate.effective_cost_per_pass):"cost unavailable"} · ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed<candidate.expected?"Subset":"Methodology differs"}; excluded from plot; not ranked.`
+const note = !comparable && displayRank
+  ? "Candidate shown provisionally; evaluation conditions differ. Candidate cost may be incomplete (see report coverage); excluded from baseline frontier."
+  : !comparable
+  ? `${candidate.label}: ${percent(candidate.pass_rate)} · ${Number.isFinite(websiteCost(candidate))?money(websiteCost(candidate)):"cost unavailable"} · ${candidate.completed}/${candidate.expected} tasks scored. ${candidate.completed<candidate.expected?"Subset":"Methodology differs"}; excluded from plot; not ranked.`
   : !plotted.some(point=>point.isCandidate) ? `${candidate.label}: cost unavailable; candidate omitted from plot.` : `${candidate.label} · Third-party harness under evaluation`;
-const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(candidate.label)} versus FrontierHarness baselines: pass rate and effective cost per pass">
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(candidate.label)} versus FrontierHarness baselines: pass rate and median cost per task">
 <rect width="${width}" height="${height}" fill="#000"/>
 <style>
 text{font-family:Arial,Helvetica,sans-serif}.legend,.axis,.point-value,.grid text,.note{font-family:Menlo,Consolas,monospace}
@@ -128,7 +133,7 @@ ${legend}
 <path d="M ${plot.x} ${plot.y} V ${plot.y+plot.height} H ${plot.x+plot.width}" fill="none" stroke="#ccc" stroke-width="1.2"/>
 <polyline points="${frontier.map(point=>`${px(point.cost)},${py(point.passRate)}`).join(" ")}" fill="none" stroke="${accent}" stroke-width="2.2"/>
 ${annotations}${dots}
-<text class="axis" x="${plot.x+plot.width/2}" y="613" text-anchor="middle">Effective cost per pass (log scale)</text>
+<text class="axis" x="${plot.x+plot.width/2}" y="613" text-anchor="middle">Median cost per task</text>
 <text class="axis" transform="translate(49 ${plot.y+plot.height/2}) rotate(-90)" text-anchor="middle">Pass rate</text>
 ${marker("star",49,642,accent,8)}<text class="note" x="65" y="646">${esc(note)}</text>
 </svg>`;
@@ -156,4 +161,9 @@ function parseArgs(argv) {
 function die(message) {
   console.error(message);
   process.exit(2);
+}
+
+// Website chart compatibility: the public label differs from the accounting field.
+function websiteCost(record) {
+  return calculateWebsiteCost(record, record === candidate ? observedAudit : null);
 }

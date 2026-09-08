@@ -286,7 +286,7 @@ node "$FH/generate-chart.mjs"    --run runs/2026-09-02-myharness
 `normalize-results.mjs` folds the trials into `candidate.json` using the same field
 names and definitions as `results/eval-data.json`, so the candidate slots directly into
 the baseline set. `generate-chart.mjs` writes
-`runs/<run-id>/report/chart.svg`: a pass-rate versus cost scatter with the twelve
+`runs/<run-id>/report/chart.svg`: a pass-rate versus median-task-cost scatter with the twelve
 baselines in their reference colors and marker shapes, and the candidate highlighted
 with a star. Keep the chart wide (about 2:1), with a top legend and two-line point
 labels: colored harness name above gray percentage and cost. Keep rankings in the
@@ -296,8 +296,12 @@ Every evaluation report must include this diagram. Match the supplied reference'
 visual structure: black background, dashed gray grid, logarithmic cost axis,
 percentage pass-rate axis, harness labels with both values, and an orange line
 connecting the cost/pass-rate Pareto frontier. Use actual normalized results, not
-the example image's scores. Keep the existing **effective cost per pass** definition
-and label; do not relabel it as the reference's median cost per task.
+the example image's scores. Use **Median cost per task** on the chart and report.
+The x-axis label must be exactly `Median cost per task`, without a scale suffix;
+retain logarithmic axis spacing. Calculate the median
+from canonical per-task `cost_first_cold_usd` values for both the candidate and
+each baseline, including failures. Do not relabel effective cost per pass: it is
+a different calculation. Show measured-task coverage beside incomplete medians.
 
 Highlight the **third-party harness under evaluation** with a large, five-point
 orange **star**, an outline/halo, and a matching label. The star identifies the
@@ -335,7 +339,7 @@ reports. The bundled `build-report.mjs` and `generate-chart.mjs` implement this 
   non-comparable candidates; retain detailed methodology notes in candidate.json.
 - Keep HTML self-contained with inline CSS/SVG and system font fallbacks. The
   Markdown version remains a portable content equivalent. Retain the report's
-  actual metric definitions (including effective cost per pass); the reference
+  actual metric definitions (including median cost per task); the reference
   site's visual style does not justify changing accounting or copying its scores.
 
 In Task results, highlight candidate successes for which **every published baseline
@@ -443,3 +447,80 @@ claiming leaderboard comparability. New runs remain unranked by default.
 - Command reference, runner templates, and troubleshooting: [reference.md](reference.md)
 - Published results and task definitions: `results/eval-data.json`, `tasks/<task>/task.toml`
 - Source evaluation: <https://frontierharness.org/>
+
+### User-requested display ranking
+
+When the user explicitly requests placing and ranking a non-comparable candidate,
+pass `--display-rank true` to both `generate-chart.mjs` and `build-report.mjs`.
+This places the candidate star at its observed metrics and includes its ordinal
+position in the pass-rate table. Label the position provisional and retain the
+conditions-differ disclosure; do not change `candidate.comparable`, raw scoring,
+or the baseline-only Pareto frontier. Missing cost still prevents plotting.
+Keep cost coverage visible when the plotted cost is incomplete.
+
+Cache-rate values should omit the parenthetical “partial” suffix. Keep measured
+success coverage and the observed-success-only explanation beside the value,
+with the canonical aggregate null when coverage is incomplete. This display rule
+supersedes the earlier parenthetical-label guidance.
+
+The primary report cost metric is median cost per task, computed from measured canonical first-cold costs across successes and failures. Missing task costs are excluded, not imputed. Keep `effective_cost_per_pass` in machine-readable accounting for compatibility, but use the median for chart coordinates, labels, comparison rows and PDF exports. Recompute frontier membership from median costs; provisional non-comparable candidates remain excluded from the baseline frontier.
+
+### Report naming
+
+Use the harness name and version as the candidate display label, for example
+`--label "Alma 0.4.27"`. Keep run status, task counts and worker counts in the
+report metrics and metadata; do not append phrases such as “completed 30-task
+evaluation” to titles, chart labels or comparison rows. Apply the same concise
+label in HTML, Markdown and PDF exports.
+
+### Missing report measurements
+
+Avoid unexplained `n/a` cells. Inspect retained request, response and usage evidence
+before rendering. When total usage is incomplete, show the observed cost as a plain dollar value without a ≥ symbol or “recorded”
+suffix. Explain beside the task table that costs with incomplete usage are lower
+bounds; keep the canonical complete cost null. For incomplete
+cache data, display the observed cached/input percentage without a “raw” or
+call-count suffix in the cell. Explain the different basis near the table and
+retain per-task call coverage in the audit artifact; never substitute that ratio
+for a normalized aggregate. Where no evidence exists,
+state what was not recorded instead of filling zero. Successful-cost medians may
+show the observed-success median with measured-success coverage while leaving the
+canonical aggregate null. Apply these labels consistently in HTML and Markdown.
+For Alma, `recover-alma-observed-usage.py <run>` augments an existing cost audit
+with diagnostic raw cache rates; `build-report.mjs` reads that optional audit.
+
+### Aligning with the published website chart
+
+The live frontierharness.org chart labels its x-axis “Median cost per task”, but
+`scripts/generate-hero.mjs` actually plots `effective_cost_per_pass` (known canonical
+first-cold task costs divided by successes). When matching the website, use that
+field for every baseline and candidate in the chart and primary comparison,
+retain the exact requested axis label, and disclose that it is not a statistical
+median. This supersedes earlier instructions to recompute the plotted metric as
+a median. Preserve true median fields in machine-readable data. Use logarithmic
+spacing and the website’s $1, $2, $5, $10, $20 ticks, extending the domain if needed
+to keep the candidate visible. Keep measured-task cost coverage explicit.
+Verify representative published values (Codex $3.47, Pi $2.43, Claude Code $18.34
+as checked on 2026-09-08) against current website/source when aligning again.
+
+### Equal cost accounting for the candidate
+
+Apply the website numerator and denominator to third-party harnesses too: total
+available costs of all canonical tasks, including failures, divided by passes.
+Do not drop all available usage for a task merely because some requests lack usage.
+Use `website-cost.mjs` in both the chart and report: complete first-cold task cost
+takes precedence; otherwise use that task's observed cost from the audit once.
+Never add a partial audit total on top of a complete task cost. Missing calls and
+unmeasured cold-start adjustments keep the displayed aggregate a lower bound;
+disclose request and complete-task coverage, retain canonical nulls, and never
+present observed-token costs as actual billing. This supersedes excluding partial
+task bounds from the website-aligned display metric. Keep earlier attempts out.
+
+### Result cost card
+
+Label the Result section’s cost metric **Cost per pass** in HTML and Markdown.
+Use the shared `websiteCost` calculation, identical to the chart and comparison,
+and show total available cost divided by passes beneath the HTML value. Keep the
+user-requested “Median cost per task” label on the website-aligned chart and
+comparison only, with the calculation disclosure. Do not use a true task median
+or a complete-cells-only subtotal for the Result card.

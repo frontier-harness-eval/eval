@@ -101,21 +101,31 @@ evidence collection, use the original script version and configuration to recove
 
 ### Cost comparability
 
-Pass rate survives a provider swap because the model is identical. Cost only survives if
-the token prices do. Moonshot's list price is $3.00 per million input tokens, $0.30 per
-million cached input tokens, and $15.00 per million output tokens, and Fireworks
-standard serverless, OpenRouter, and Together all matched those three numbers at the
-time of writing. Verify against the provider's own pricing page before comparing a cost
-number, since these move; `build-report.mjs` flags any non-baseline provider as a caveat
-rather than assuming parity.
+The cost calculation uses the frozen `runta-cost-eval` price table
+(`scripts/pricing.json`, version `kimi-k3-2026-08-20`): $3.00 fresh input and
+cache writes, $0.30 cache reads, and $15.00 output per million tokens. Recognized
+Kimi K3 routes use this common benchmark basis; these are not live provider bills.
+Unknown models need an explicit table, keyed by the exact model name:
 
-Two Fireworks routers are traps: `kimi-k3-fast` and `kimi-k3-us` are the same weights at
-a premium (+50% and +10%), which inflates every cost metric relative to the baselines.
+```bash
+node /path/to/scripts/normalize-results.mjs --run runs/my-run --pricing /path/to/pricing.json
+```
 
-Cached reads being 10x cheaper than fresh input is why cache hit rate moves cost so much
-between harnesses, and why the published baselines reprice first-turn cache reads before
-comparing. Providers also differ in cache *behaviour* — minimum prefix length and TTL —
-so a provider swap can shift cache hit rate even at identical prices.
+Harbor/Pier `agent_result` and `step_results` provide inclusive input, cache read,
+cache write, and output totals. The bundled harness log parsers recover first-call
+cache reads. First-cold cost is token-priced cost plus
+`first_turn_cached_tokens * (fresh_input_rate - cache_read_rate) / unit_tokens`.
+Later calls retain their cache discount. The normalized cache rate is
+`(cached_input_tokens - first_turn_cached_tokens) / input_tokens`.
+
+Reported billing stays in `reported_cost_usd`; it is only a fallback for `cost_usd`.
+Missing first-call details leave `cost_first_cold_usd` null. The normalizer also
+recalculates existing runs from retained job evidence without rewriting raw records.
+Multiple leaf results are ambiguous and remain unpriced, avoiding retry double counting.
+
+Success-only mean and median normalized costs require 100% successful-task cost
+coverage. Effective cost per pass follows `runta-cost-eval`: sum of known costs
+across scored tasks divided by passes, with missing-cost coverage disclosed.
 
 ## Runner templates
 
@@ -281,9 +291,9 @@ runta checkpoint restore fh-golden-myharness-v1 fh-debug
 runta exec fh-debug -- sh -lc 'cd /work && <runner command with one task>'
 ```
 
-**Costs are null in the report** — the runner did not emit usage in its job output.
-Either enable usage reporting in the harness or record cost from the provider dashboard
-and patch `cost_first_cold_usd` into each `trial.json` before normalizing.
+**Costs are null in the report** — retain token totals and supported per-call harness
+logs, including first-call cached reads. Provider billing alone cannot establish
+first-cold cost. Custom harnesses need a parser in `scripts/usage_details.py`.
 
 
 ## Corpus pin and Pi control

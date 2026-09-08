@@ -203,6 +203,13 @@ The report discloses the topology difference from the container CLI baselines.
 
 ### 4. Run trials and save trajectories
 
+Before a full sweep, preflight the harness's actual tool calls and both the agent's
+and verifier's dependency paths under the intended task isolation. A reachable model
+endpoint alone is insufficient. For offline source caches, native tool validation, and
+distinguishing verifier infrastructure failures from wrong answers, read
+[isolated evaluation repairs](isolated-evaluation-repairs.md). Preserve original
+tests, prompts, timeouts, and raw results; record repairs in a new run variant.
+
 Each task gets its own fresh restore. The runtime is deleted only after complete
 evidence is verified locally and the trial record is written. Never reuse a
 runtime across tasks.

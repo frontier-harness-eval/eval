@@ -97,8 +97,8 @@ const caveats = [
   manifest?.system_runc_workaround
     ? "Provisioning enabled the system-runc workaround for Runta's injected-init hang; the resolved runc path is recorded in the manifest."
     : null,
-  candidate.cost_coverage < 1
-    ? `Cost was captured for ${(candidate.cost_coverage * 100).toFixed(0)}% of tasks, so cost figures are partial.`
+  (candidate.scored_cost_coverage ?? candidate.cost_coverage) < 1
+    ? `Cost was captured for ${((candidate.scored_cost_coverage ?? candidate.cost_coverage) * 100).toFixed(0)}% of tasks, so cost figures are partial.`
     : null,
   candidate.infra_invalid
     ? `${candidate.infra_invalid} trial(s) failed on infrastructure and were excluded from scoring rather than counted as failures.`
@@ -110,9 +110,9 @@ const caveats = [
   // holds if that provider's token prices match the ones behind the baselines. A model
   // mismatch subsumes this, so it is not worth saying twice.
   !modelDiffers && providerDiffers
-    ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. The model is held constant; confirm the provider's input, cached-input, and output token prices match before comparing cost. Environment and methodology differences still affect comparability.`
+    ? `${baselineModel} was served by ${candidate.provider === "custom" ? `a custom route (\`${candidate.model}\`)` : candidate.provider} rather than ${baselineProvider}, which the baselines used. The model is held constant; Costs use a common benchmark price basis; actual provider bills can differ. Environment and methodology differences still affect comparability.`
     : null,
-  "Baseline costs reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
+  "Costs follow runta-cost-eval accounting with the bundled benchmark table (or an explicit pricing override) and reprice first-turn cache reads consistently across harnesses. The comparison uses `effective_cost_per_pass` (total cost over all tasks divided by passes), which is reproducible from raw per-task cost.",
 ].filter(Boolean).map(item => `- ${item}`).join("\n");
 
 const hasCost = typeof candidate.effective_cost_per_pass === "number";

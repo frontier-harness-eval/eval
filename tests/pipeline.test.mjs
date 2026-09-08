@@ -61,7 +61,8 @@ test('detached execution survives lost launch ACK and poll; verifies copies desp
   const f = fixture(t, { launchDisconnects: 1, pollFailures: 1, copyFailures: 1, copyReturnsError: true });
   ok(f.run());
   assert.equal(f.trial().status, 'success');
-  assert.equal(f.trial().cost_first_cold_usd, 2.5);
+  assert.equal(f.trial().cost_usd, 2.5);
+  assert.equal(f.trial().cost_first_cold_usd, null, "reported billing alone cannot establish first-cold cost");
   assert.equal(f.executions().length, 1, 'transport retries must not rerun the harness');
   assert.ok(f.executions()[0].includes('--jobs-dir'));
   assert.equal(f.calls().filter(a => a[0] === 'cp' && a[1].includes('evidence.tar.gz')).length, 2);

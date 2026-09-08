@@ -142,7 +142,7 @@ The skill's scripts are the same ones an agent would call, so the run works with
 FH=skills/frontierharness-eval/scripts
 ```
 
-**1. Prerequisites.** The `runta` CLI (`brew install runta-dev/tap/runta` or `npm i -g @runta/runta-cli`) authenticated with `runta login`, plus `jq` and node >= 18.
+**1. Prerequisites.** The `runta` CLI (`brew install runta-dev/tap/runta` or `npm i -g @runta/runta-cli`) authenticated with `runta login`, plus `jq`, node >= 18, and Python >= 3.9 for token cost accounting.
 
 **2. Install script.** Write a script that builds your harness on a clean Linux box. If it is not a built-in agent for Harbor or Pier, register it as a custom agent in both runner registries there, and use the registered name as `--harness`. For a service on the runtime host or an external host, set `--harness-topology runtime-service` or `external-service` when provisioning and document its resource limits and state reset.
 

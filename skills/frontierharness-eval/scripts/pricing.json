@@ -1,0 +1,14 @@
+{
+  "version": "kimi-k3-2026-08-20",
+  "currency": "USD",
+  "unit_tokens": 1000000,
+  "source": "https://www.kimi.com/zh-cn/resources/kimi-k3-pricing",
+  "models": {
+    "k3": {
+      "fresh_input": 3.0,
+      "cache_write": 3.0,
+      "cache_read": 0.3,
+      "output": 15.0
+    }
+  }
+}

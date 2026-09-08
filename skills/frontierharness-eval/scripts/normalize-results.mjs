@@ -1,6 +1,9 @@
 // Fold per-task trial.json files into a candidate harness record that uses the same
 // field names and definitions as results/eval-data.json.
 import { readdir, readFile, writeFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const args = parseArgs(process.argv.slice(2));
@@ -28,6 +31,19 @@ for (const entry of entries) {
 }
 if (!trials.length) die(`no trials found in ${trialsDir}`);
 
+// Recalculate from retained evidence too, so existing runs can be corrected without
+// rerunning the model or changing their raw trial records.
+for (const trial of trials) {
+  const trialDir = join(runDir, trial.evidence);
+  if (trial.status === "infra_invalid" || !existsSync(join(trialDir, "jobs"))) continue;
+  const accounting = JSON.parse(execFileSync("python3", [
+    fileURLToPath(new URL("./calculate-cost.py", import.meta.url)),
+    "--trial", trialDir, "--model", run.model ?? "", "--harness", run.harness ?? "",
+    ...(args.pricing ? ["--pricing", args.pricing] : []),
+  ], { encoding: "utf8" }));
+  Object.assign(trial, accounting);
+}
+
 // An infra failure is not a harness failure, so it is reported but never scored.
 const invalid = trials.filter(trial => trial.status === "infra_invalid");
 const scored = trials.filter(trial => trial.status !== "infra_invalid");
@@ -35,7 +51,9 @@ const passes = scored.filter(trial => trial.success);
 
 const costs = numbers(scored.map(trial => trial.cost_first_cold_usd));
 const totalCost = costs.reduce((sum, value) => sum + value, 0);
-const costCoverage = scored.length ? costs.length / scored.length : 0;
+const effectiveCostCoverage = scored.length ? costs.length / scored.length : 0;
+const successCosts = numbers(passes.map(trial => trial.cost_first_cold_usd));
+const costCoverage = passes.length ? successCosts.length / passes.length : 0;
 const benchmark = JSON.parse(await readFile(args.benchmark ?? 'benchmark.json', 'utf8'));
 const expected = benchmark.task_count;
 
@@ -58,15 +76,15 @@ const candidate = {
   pass_rate: scored.length ? passes.length / scored.length : null,
 
   // Reproducible from raw per-task cost, so directly comparable to the baseline field.
-  effective_cost_per_pass: passes.length && costCoverage === 1 ? totalCost / passes.length : null,
+  effective_cost_per_pass: passes.length && costs.length ? totalCost / passes.length : null,
   total_cost_usd: costs.length ? totalCost : null,
   median_cost_per_task: median(costs),
-  median_cost_per_success: median(numbers(passes.map(trial => trial.cost_first_cold_usd))),
+  median_cost_per_success: costCoverage === 1 ? median(successCosts) : null,
 
-  // The baseline *_normalized fields reprice first-turn cache reads using data that is
-  // not public, so they stay null rather than being filled with a different basis.
-  cost_per_success_normalized: null,
-  median_cost_per_success_normalized: null,
+  // Match runta-cost-eval: success-only metrics require complete success coverage.
+  cost_per_success_normalized: costCoverage === 1 ? mean(successCosts) : null,
+  median_cost_per_success_normalized: costCoverage === 1 ? median(successCosts) : null,
+  cost_per_success_normalized_lower_bound: mean(successCosts),
 
   median_duration_seconds: median(numbers(passes.map(trial => trial.duration_seconds))),
   cache_hit_rate_typical: median(numbers(passes.map(trial => trial.cache_hit_rate_normalized))),
@@ -74,6 +92,8 @@ const candidate = {
   mean_turns: mean(numbers(passes.map(trial => trial.turns))),
 
   cost_coverage: costCoverage,
+  effective_cost_coverage: expected ? costs.length / expected : 0,
+  scored_cost_coverage: effectiveCostCoverage,
   duration_coverage: coverage(scored, "duration_seconds"),
   turns_coverage: coverage(scored, "turns"),
   cache_coverage: coverage(scored, "cache_hit_rate_normalized"),
@@ -84,6 +104,9 @@ const candidate = {
     status: trial.status,
     success: Boolean(trial.success),
     cost_first_cold_usd: trial.cost_first_cold_usd ?? null,
+    cost_usd: trial.cost_usd ?? null,
+    cost_source: trial.cost_source ?? null,
+    cost_basis: trial.cost_basis ?? null,
     duration_seconds: trial.duration_seconds ?? null,
     turns: trial.turns ?? null,
     cache_hit_rate_normalized: trial.cache_hit_rate_normalized ?? null,
@@ -97,7 +120,7 @@ await writeFile(out, `${JSON.stringify(candidate, null, 2)}\n`);
 
 console.log(`${candidate.label}: ${passes.length}/${scored.length} passed (${(candidate.pass_rate * 100).toFixed(1)}%)`);
 if (invalid.length) console.log(`${invalid.length} trial(s) marked infra_invalid and excluded from scoring`);
-if (scored.length && costCoverage < 1) console.log(`cost missing for ${scored.length - costs.length} task(s); effective_cost_per_pass left null`);
+if (scored.length && effectiveCostCoverage < 1) console.log(`cost missing for ${scored.length - costs.length} task(s); effective_cost_per_pass uses only known costs`);
 if (!scored.length) console.log("no scoreable trials: every trial was infra_invalid");
 console.log(`wrote ${out}`);
 

@@ -90,7 +90,7 @@ const boxes = [];
 const dotObstacles = plotted.map(point => ({
   x: scaleX(point.cost),
   y: scaleY(point.passRate),
-  r: point.isCandidate ? 7 : 5,
+  r: point.isCandidate ? 11 : 5,
 }));
 const placements = [...plotted]
   .sort((a, b) => a.cost - b.cost)
@@ -127,6 +127,23 @@ const placements = [...plotted]
     return { point, x, y, labelX, labelY, anchor, text };
   });
 
+function star(x, y, radius = 11) {
+  const vertices = Array.from({ length: 10 }, (_, index) => {
+    const angle = -Math.PI / 2 + index * Math.PI / 5;
+    const r = index % 2 === 0 ? radius : radius * 0.45;
+    return `${(x + Math.cos(angle) * r).toFixed(1)},${(y + Math.sin(angle) * r).toFixed(1)}`;
+  }).join(" ");
+  return `<polygon points="${vertices}" fill="${accent}" stroke="#ffd5a8" stroke-width="1"/>`;
+}
+
+// Only nondominated points belong to the frontier; ties share one vertex.
+const frontier = [...plotted]
+  .sort((a, b) => a.cost - b.cost || b.passRate - a.passRate)
+  .filter((point, index, sorted) => !sorted.slice(0, index).some(other => other.passRate >= point.passRate));
+const frontierLine = frontier.length > 1
+  ? `<polyline points="${frontier.map(point => `${scaleX(point.cost).toFixed(1)},${scaleY(point.passRate).toFixed(1)}`).join(" ")}" fill="none" stroke="${accent}" stroke-width="2"/>`
+  : "";
+
 const dots = placements
   .sort((a, b) => Number(a.point.isCandidate) - Number(b.point.isCandidate))
   .map(({ point, x, y, labelX, labelY, anchor, text }) => {
@@ -134,7 +151,7 @@ const dots = placements
       ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="none" stroke="${accent}" stroke-opacity="0.35"/>`
       : "";
     return halo
-      + `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${point.isCandidate ? 7 : 5}" fill="${point.isCandidate ? accent : "#5f6672"}"/>`
+      + (point.isCandidate ? star(x, y) : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#5f6672"/>`)
       + `<text class="${point.isCandidate ? "dot-label-candidate" : "dot-label"}" x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="${anchor}">${esc(text)}</text>`;
   }).join("");
 
@@ -180,9 +197,12 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${
   <rect x="${pad}" y="${pad}" width="${width - pad * 2}" height="${scatterHeight}" fill="#000000" stroke="#242424"/>
   <text class="title" x="${pad + 20}" y="${pad + 28}">${esc(candidate.label)} versus FrontierHarness Eval v1.0</text>
   <text class="subtitle" x="${pad + 20}" y="${pad + 46}">Pass rate against effective cost per pass · model ${esc(candidate.model ?? "unspecified")} · ${candidate.completed} tasks</text>
+  ${star(width - pad - 190, pad + 25, 8)}
+  <text class="dot-label-candidate" x="${width - pad - 176}" y="${pad + 29}">Third-party harness</text>
   ${grid}
   <text class="axis" x="${(plot.left + plot.right) / 2}" y="${plot.bottom + 38}" text-anchor="middle">Effective cost per pass (log scale)</text>
   <text class="axis" transform="translate(${pad + 22} ${(plot.top + plot.bottom) / 2}) rotate(-90)" text-anchor="middle">Pass rate</text>
+  ${frontierLine}
   ${dots}
   ${note}
   <rect x="${pad}" y="${pad + scatterHeight + 20}" width="${width - pad * 2}" height="${panelHeight}" fill="#000000" stroke="#242424"/>

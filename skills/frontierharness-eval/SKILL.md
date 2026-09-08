@@ -289,6 +289,21 @@ the baseline set. `generate-chart.mjs` writes
 `runs/<run-id>/report/chart.svg`: a pass-rate versus cost scatter with the twelve
 baselines muted and the candidate highlighted, plus a pass-rate ranking panel.
 
+Every evaluation report must include this diagram. Match the supplied reference's
+visual structure: black background, dashed gray grid, logarithmic cost axis,
+percentage pass-rate axis, harness labels with both values, and an orange line
+connecting the cost/pass-rate Pareto frontier. Use actual normalized results, not
+the example image's scores. Keep the existing **effective cost per pass** definition
+and label; do not relabel it as the reference's median cost per task.
+
+Highlight the **third-party harness under evaluation** with a large, five-point
+orange **star**, an outline/halo, and a matching label. The star identifies the
+candidate, not the third baseline or the highest-scoring harness. Draw it above
+baseline markers. Preserve comparability exclusions: an unranked candidate remains
+outside the comparison plot, with a star key and an explicit exclusion note.
+Before sharing, inspect the SVG and inlined report for a visible star, readable
+labels, and correct frontier membership (lower cost and higher pass rate are better).
+
 ### 6. Build and share the report
 
 ```bash

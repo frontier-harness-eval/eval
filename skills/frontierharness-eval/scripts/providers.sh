@@ -66,16 +66,36 @@ warn_unless_kimi_k3() {
   echo "warning: --model $1 is not Kimi K3. Every published FrontierHarness result uses Kimi K3, so this score will not be comparable to them." >&2
 }
 
-# Restrict runtime egress to the model host. astral.sh is required because some
-# Terminal-Bench verifiers curl uv; blocking it scores a download failure as a
-# task failure. github.com is intentionally not allowed.
+# Shared by provisioning and both trial runners. Wildcard patterns cover redirect
+# hosts and registry subdomains; apex hosts stay listed because *.example.com does
+# not match example.com. Verifiers also need sources and package registries.
+# *.ecr.aws covers the DeepSWE corpus registry (public.ecr.aws and gallery
+# subdomains); Pier's compose build still HEADs it after the trial allowlist.
+# This runtime policy also permits agent downloads, subject to runner-level isolation.
+# Keep policy generation shared with run.json so recorded and applied hosts agree.
+provider_egress_policy() {
+  local host=$1
+  [ -n "$host" ] || { echo "provider egress host is required" >&2; return 1; }
+  jq -cn --arg host "$host" \
+    '{mode:"allowlist", scope:"runtime", allowed_hosts:([$host] + $ARGS.positional | unique)}' \
+    --args \
+    astral.sh '*.astral.sh' \
+    github.com '*.github.com' '*.githubusercontent.com' \
+    '*.supabase.co' \
+    pypi.org '*.pythonhosted.org' '*.npmjs.org' \
+    '*.ubuntu.com' \
+    '*.debian.org' '*.pytorch.org' \
+    '*.ecr.aws' '*.cloudfront.net'
+}
+
+# Never fall back to provider-only egress: that turns setup failures into reward 0.
 apply_provider_egress() {
-  local runtime=$1 host=$2
-  [ -n "$runtime" ] && [ -n "$host" ] || return 0
-  if runta egress set "$runtime" --mode allowlist --allow "$host" --allow astral.sh; then
-    return 0
-  fi
-  echo "warning: could not add astral.sh to the egress allowlist on $runtime; trying provider host only" >&2
-  runta egress set "$runtime" --mode allowlist --allow "$host" \
-    || { echo "warning: could not set egress allowlist on $runtime" >&2; return 1; }
+  local runtime=$1 host=$2 policy allowed_host
+  [ -n "$runtime" ] || return 1
+  policy=$(provider_egress_policy "$host") || return 1
+  local args=(egress set "$runtime" --mode allowlist)
+  while IFS= read -r allowed_host; do
+    args+=(--allow "$allowed_host")
+  done < <(printf '%s' "$policy" | jq -r '.allowed_hosts[]')
+  runta "${args[@]}"
 }

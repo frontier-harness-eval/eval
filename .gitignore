@@ -10,3 +10,7 @@ manifest-*.json
 .cursor/skills/frontierharness-eval
 frontierharness-eval-*.tgz
 node_modules/
+
+# Python cost accounting helpers
+__pycache__/
+install-*.sh

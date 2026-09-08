@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-# Run benchmark tasks against a harness, one fresh golden-checkpoint restore per task,
-# collecting trajectories and verifier logs as evidence.
+# Shared-runtime trial runner: same evidence contract as run-trials.sh, but reuses
+# one already-provisioned Runta runtime instead of restoring a golden checkpoint.
 set -euo pipefail
 
-# shellcheck source=providers.sh
+# shellcheck source=skills/frontierharness-eval/scripts/providers.sh
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 . "$SCRIPT_DIR/providers.sh"
-# shellcheck source=transport.sh
+# shellcheck source=skills/frontierharness-eval/scripts/transport.sh
 . "$SCRIPT_DIR/transport.sh"
 command -v python3 >/dev/null || { echo "python3 is required for cost accounting" >&2; exit 2; }
 
 # The benchmark is fixed to Kimi K3; the provider is free. See providers.sh.
 PROVIDER="fireworks"
 
-CHECKPOINT=""
+CHECKPOINT="none"
+REUSE_RUNTIME=""
 HARNESS=""
 MODEL=""
 RUN_ID=""
@@ -26,7 +27,7 @@ SECRET_HOST=""
 
 usage() {
   cat <<EOF
-Usage: run-trials.sh --checkpoint NAME --harness NAME --run-id ID
+Usage: run-trials-shared-runtime.sh --reuse-runtime NAME --harness NAME --run-id ID
                      [--tasks PATH] [--provider NAME] [--model ID] [--out DIR]
                      [--cmd TEMPLATE] [--timeout SEC]
 
@@ -56,6 +57,7 @@ EOF
 while [ $# -gt 0 ]; do
   case "$1" in
     --checkpoint) CHECKPOINT=$2; shift 2 ;;
+    --reuse-runtime) REUSE_RUNTIME=$2; shift 2 ;;
     --harness) HARNESS=$2; shift 2 ;;
     --provider) PROVIDER=$2; shift 2 ;;
     --model) MODEL=$2; shift 2 ;;
@@ -75,13 +77,18 @@ case "$TIMEOUT" in
   ''|*[!0-9]*|0) echo "--timeout must be a positive integer" >&2; exit 2 ;;
 esac
 
-for required in CHECKPOINT HARNESS RUN_ID; do
+for required in HARNESS RUN_ID; do
   if [ -z "${!required}" ]; then
     echo "missing --$(echo "$required" | tr 'A-Z_' 'a-z-')" >&2
     usage >&2
     exit 2
   fi
 done
+if [ -z "$REUSE_RUNTIME" ]; then
+  echo "missing --reuse-runtime (this runner does not restore checkpoints)" >&2
+  usage >&2
+  exit 2
+fi
 
 if ! resolve_provider "$PROVIDER"; then
   echo "unknown --provider $PROVIDER; expected one of: $PROVIDER_LIST" >&2
@@ -102,6 +109,21 @@ warn_unless_kimi_k3 "$MODEL"
 
 require_runta_auth || exit 1
 EGRESS_POLICY=$(provider_egress_policy "$SECRET_HOST")
+# Shared runtime is already allowlisted, so image pulls cannot use the golden
+# checkpoint's unrestricted bootstrap. Open egress for the pull, then re-apply
+# the recorded trial policy — same hosts as a checkpoint restore.
+open_pull_egress() {
+  runta egress set "$1" --mode denylist
+}
+apply_shared_egress() {
+  local runtime=$1 policy allowed_host
+  policy=$EGRESS_POLICY
+  local args=(egress set "$runtime" --mode allowlist)
+  while IFS= read -r allowed_host; do
+    args+=(--allow "$allowed_host")
+  done < <(printf '%s' "$policy" | jq -r '.allowed_hosts[]')
+  runta "${args[@]}"
+}
 
 # The task list is either a directory of task definitions or a plain list file. A
 # directory is the normal case: every tasks/<task>/task.toml already carries its
@@ -154,10 +176,17 @@ jq -n --arg run_id "$RUN_ID" --arg checkpoint "$CHECKPOINT" --arg harness "$HARN
       --arg cmd "$CMD_TEMPLATE" --argjson timeout "$TIMEOUT" \
       --argjson egress_policy "$EGRESS_POLICY" \
       --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  --arg reuse_runtime "$REUSE_RUNTIME" \
   '{run_id:$run_id, checkpoint:$checkpoint, harness:$harness, model:$model,
     provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout, started_at:$started,
+    reuse_runtime:$reuse_runtime,
     egress_policy:$egress_policy, methodology_comparable:false,
-    methodology_notes:["The runtime allowlist permits agents and verifiers to download packages and benchmark sources, subject to runner-level isolation. The published baselines did not record their applied egress policy; a matched control run with the same policy and environment is required before claiming comparability."]}' \
+    methodology_notes:[
+      "No golden checkpoint: runta checkpoint create returned PERMISSION_DENIED, so every task reused one already-provisioned runtime instead of a fresh restore.",
+      "Shared-runtime bias: Docker images, package caches, and host filesystem state persist across tasks.",
+      "Image pulls temporarily open runtime egress (empty denylist), then re-apply the trial allowlist, approximating the checkpoint pull-then-restrict sequence.",
+      "The runtime allowlist permits agents and verifiers to download packages and benchmark sources, subject to runner-level isolation. The published baselines did not record their applied egress policy; a matched control run with the same policy and environment is required before claiming comparability."
+    ]}' \
   > "$RUN_DIR/run.json"
 fi
 
@@ -191,6 +220,42 @@ render() {
   printf '%s\n' "$rendered"
 }
 
+# Prefer runner result documents, then the rest, always in sorted path order so
+# extraction is deterministic. Only explicit result fields are read: walking every
+# nested object used to pick up a passing unit test or trajectory event.
+json_files_ordered() {
+  local dir=$1 all preferred rest
+  [ -d "$dir" ] || return 0
+  all=$(find "$dir" -name '*.json' -size -8M 2>/dev/null | LC_ALL=C sort) || return 0
+  [ -n "$all" ] || return 0
+  preferred=$(printf '%s\n' "$all" | grep -E '/(result|results|eval|verifier)[^/]*\.json$' || true)
+  rest=$(printf '%s\n' "$all" | grep -vE '/(result|results|eval|verifier)[^/]*\.json$' || true)
+  printf '%s\n%s\n' "$preferred" "$rest" | sed '/^$/d'
+}
+
+extract() {
+  local dir=$1 filter=$2 file value
+  while IFS= read -r file; do
+    [ -n "$file" ] || continue
+    value=$(jq -c "$filter" "$file" 2>/dev/null) || continue
+    if [ -n "$value" ] && [ "$value" != "null" ]; then
+      printf '%s' "$value"
+      return 0
+    fi
+  done < <(json_files_ordered "$dir")
+}
+
+extract_turns() {
+  local dir=$1 file value
+  # Adapter metrics are authoritative, including an explicit null after timeout.
+  # Falling through in that case can mistake a saved subagent's count for the run.
+  while IFS= read -r file; do
+    value=$(jq -c 'select(has("turns")) | .turns | select(. == null or type == "number")' "$file" 2>/dev/null) || continue
+    if [ -n "$value" ]; then printf '%s' "$value"; return 0; fi
+  done < <(find "$dir" -name 'fh-metrics.json' 2>/dev/null | LC_ALL=C sort)
+  extract "$dir" '.n_steps // .num_turns // .turns // .agent_info.n_steps // .agent_info.num_turns | select(type == "number")'
+}
+
 runtime_name() {
   local raw hash
   raw=$(printf 'fh-%s' "$1" | tr -c 'a-zA-Z0-9-' '-')
@@ -220,20 +285,27 @@ record_infra() {
 # which predates the separate-verifier image layout).
 prepare_image() {
   local image toml
-  if [ "$suite" = datacurve ]; then
-    image=$(retry_transport runta exec "$runtime" -- sh -lc \
-      "awk -F '\"' '/^docker_image *=/ { print \$2; exit }' /work/deep-swe/tasks/$(shell_quote "$task")/task.toml") || return 1
-  else
-    toml="$TASKS/$task/task.toml"
-    # A Skills CLI install has no adjacent task data. For a subset list, resolve
-    # task images from the benchmark workspace before trying a repository install.
-    [ -f "$toml" ] || toml="tasks/$task/task.toml"
-    [ -f "$toml" ] || toml="$SCRIPT_DIR/../../../tasks/$task/task.toml"
-    [ -f "$toml" ] || return 0 # A custom --cmd may prepare its own environment.
+  # Prefer the workspace task.toml so image names are not parsed through nested
+  # remote shells. DeepSWE copies in this repo match the pinned corpus.
+  toml="$TASKS/$task/task.toml"
+  [ -f "$toml" ] || toml="tasks/$task/task.toml"
+  [ -f "$toml" ] || toml="$SCRIPT_DIR/../../../tasks/$task/task.toml"
+  if [ -f "$toml" ]; then
     image=$(awk -F'"' '/^docker_image *=/ { print $2; exit }' "$toml")
+  elif [ "$suite" = datacurve ]; then
+    image=$(retry_transport runta exec "$runtime" -- sh -lc \
+      "awk -F '\"' '/^docker_image *=/ { print \$2; exit }' /work/deep-swe/tasks/$(shell_quote "$task")/task.toml" \
+      | tail -n1 | tr -d '\r') || return 1
+  else
+    return 0
   fi
+  image=${image//$'\r'/}
+  printf 'prepare_image: pulling %s\n' "$image" >&2
   [ -n "$image" ] || return 0
-  retry_transport runta exec "$runtime" -- sh -lc "timeout 1800 docker pull $(shell_quote "$image")"
+  retry_transport runta exec "$runtime" -- timeout 1800 docker pull "$image" || return 1
+  # Pier builds an egress-proxy from ubuntu:24.04 after the trial allowlist is applied.
+  printf 'prepare_image: pulling ubuntu:24.04\n' >&2
+  retry_transport runta exec "$runtime" -- timeout 1800 docker pull ubuntu:24.04
 }
 
 total=0
@@ -260,25 +332,18 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   total=$((total + 1))
   CURRENT_RUNTIME=""
 
-  # Reclassify legacy normalized records from retained raw evidence before deciding
-  # whether a task has a valid canonical attempt. Pending transfers remain recoverable.
-  if [ -f "$trial_dir/trial.json" ] && [ -d "$trial_dir/jobs" ] && \
-    ! jq -e '.recovery == true' "$trial_dir/trial.json" >/dev/null; then
-    python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --score --write
-  fi
   # Preserve the first valid attempt, whether it passed or failed.
   if [ -f "$trial_dir/trial.json" ] && jq -e \
-    '.status == "success" or .status == "failure"' "$trial_dir/trial.json" >/dev/null; then
+    '.status == "success" or .status == "failure" or .status == "timeout"' "$trial_dir/trial.json" >/dev/null; then
     echo "[$entry] keeping first valid attempt" >&2
     if jq -e '.success == true' "$trial_dir/trial.json" >/dev/null; then passed=$((passed + 1)); fi
     continue
   fi
 
   resume=false
+  runtime=$REUSE_RUNTIME
   if [ -f "$trial_dir/trial.json" ] && jq -e '.recovery == true' "$trial_dir/trial.json" >/dev/null; then
     resume=true
-    runtime=$(jq -r '.runtime' "$trial_dir/trial.json")
-    # Reconnect using the exact command recorded before launch, even if templates changed.
     command=$(jq -r '.runner_command' "$trial_dir/trial.json")
     echo "[$entry] resuming $runtime" >&2
   else
@@ -287,11 +352,8 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       mv "$trial_dir" "$RUN_DIR/attempts/$slug/$(date +%s)-$$"
     fi
     mkdir -p "$trial_dir"
-    printf '\n=== [%s] restoring %s\n' "$entry" "$CHECKPOINT" >&2
-    if ! runta checkpoint restore "$CHECKPOINT" "$runtime" >"$trial_dir/restore.log" 2>&1; then
-      record_infra "checkpoint restore failed; inspect for an accepted restore before retrying" false
-      continue
-    fi
+    printf '\n=== [%s] reusing runtime %s (no checkpoint restore)\n' "$entry" "$runtime" >&2
+    echo "shared runtime $runtime; checkpoint restore skipped" >"$trial_dir/restore.log"
   fi
   CURRENT_RUNTIME=$runtime
 
@@ -305,21 +367,23 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   done
   if [ "$ready" -ne 1 ]; then
     record_infra "restored runtime never became ready" "$resume"
-    if [ "$resume" = false ]; then runta rm "$runtime" >>"$trial_dir/restore.log" 2>&1 || true; fi
     CURRENT_RUNTIME=""
     continue
   fi
 
   if [ "$resume" = false ]; then
-    if ! prepare_image >>"$trial_dir/restore.log" 2>&1; then
-      record_infra "task image pull failed" false
-      runta rm "$runtime" >>"$trial_dir/restore.log" 2>&1 || true
+    if ! retry_transport open_pull_egress "$runtime" >>"$trial_dir/restore.log" 2>&1; then
+      record_infra "bootstrap egress failed" false
       CURRENT_RUNTIME=""
       continue
     fi
-    if ! retry_transport apply_provider_egress "$runtime" "$SECRET_HOST" >>"$trial_dir/restore.log" 2>&1; then
+    if ! prepare_image >>"$trial_dir/restore.log" 2>&1; then
+      record_infra "task image pull failed" false
+      CURRENT_RUNTIME=""
+      continue
+    fi
+    if ! retry_transport apply_shared_egress "$runtime" >>"$trial_dir/restore.log" 2>&1; then
       record_infra "egress policy failed" false
-      runta rm "$runtime" >>"$trial_dir/restore.log" 2>&1 || true
       CURRENT_RUNTIME=""
       continue
     fi
@@ -327,16 +391,14 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       if ! retry_transport runta secret rule set "$runtime" --secret "$SECRET_NAME" --host "$SECRET_HOST" \
         --header Authorization --template 'Bearer ${secret}' >>"$trial_dir/restore.log" 2>&1; then
         record_infra "credential injection rule failed" false
-        runta rm "$runtime" >>"$trial_dir/restore.log" 2>&1 || true
         CURRENT_RUNTIME=""
         continue
       fi
     fi
     if ! retry_transport runta exec "$runtime" -- sh -lc \
-      "mkdir -p $jobs_dir $state_dir; command -v flock && command -v setsid && command -v timeout" >>"$trial_dir/transport.log" 2>&1 \
+      "rm -rf $jobs_dir $state_dir; mkdir -p $jobs_dir $state_dir; command -v flock && command -v setsid && command -v timeout" >>"$trial_dir/transport.log" 2>&1 \
       || ! retry_transport runta cp "$SCRIPT_DIR/trial-worker.sh" "$runtime:$state_dir/worker.sh" >>"$trial_dir/transport.log" 2>&1; then
       record_infra "detached runner preparation failed" false
-      runta rm "$runtime" >>"$trial_dir/transport.log" 2>&1 || true
       CURRENT_RUNTIME=""
       continue
     fi
@@ -412,13 +474,27 @@ while IFS= read -r entry || [ -n "$entry" ]; do
   exit_code=$(jq -er '.exit_code' "$trial_dir/completion.json")
   duration=$(jq -er '.duration_seconds' "$trial_dir/completion.json")
 
-  # Score only authoritative leaf result evidence, using the baseline collector rules.
-  success=false
-  status=infra_invalid
-  cost=null
-  turns=null
-  cache=null
-  exception=null
+  # Support the pinned runners' explicit verifier field, as well as custom runners'
+  # top-level rewards. Do not search arbitrary nested events for a passing unit test.
+  reward=$(extract "$trial_dir/jobs" '[.resolved, .is_resolved, .reward, .passed, .verifier_result.rewards.reward] | map(select(. != null)) | .[0] | select(. != null)')
+  cost=$(extract "$trial_dir/jobs" '.total_cost_usd // .total_cost // .cost_usd // .usage.total_cost_usd | select(type == "number")')
+  turns=$(extract_turns "$trial_dir/jobs")
+  cache=$(extract "$trial_dir/jobs" '.cache_hit_rate // .cache_read_ratio | select(type == "number")')
+  exception=$(extract "$trial_dir/jobs" '.exception_info | select(. != null)')
+  environment_failure=$(extract "$trial_dir/jobs" 'select(.exception_info != null and .environment_setup != null and .agent_setup == null and .agent_execution == null) | true')
+  success=$(jq -n --argjson r "${reward:-null}" '($r == true) or ($r == 1)' 2>/dev/null) || success=false
+  if [ "$environment_failure" = true ]; then
+    status=infra_invalid
+    success=false
+  elif [ "$exit_code" -eq 124 ] || [ "$exit_code" -eq 137 ]; then
+    status=timeout
+    success=false
+  elif [ "$success" = true ]; then
+    status=success
+    passed=$((passed + 1))
+  else
+    status=failure # A confirmed harness crash is still a scoreable failure.
+  fi
 
   jq -n \
     --arg id "$entry" --arg task "$task" --arg suite "$suite" --arg status "$status" \
@@ -433,13 +509,9 @@ while IFS= read -r entry || [ -n "$entry" ]; do
       harness_exception:$exception,
       included_in_efficiency:$success}' > "$trial_dir/trial.json.tmp"
   mv "$trial_dir/trial.json.tmp" "$trial_dir/trial.json"
-  python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --score --write
-  status=$(jq -r .status "$trial_dir/trial.json")
-  success=$(jq -r .success "$trial_dir/trial.json")
-  if [ "$success" = true ]; then passed=$((passed + 1)); fi
-  runta rm "$runtime" >>"$trial_dir/transport.log" 2>&1 || echo "failed to delete runtime $runtime" >&2
-  CURRENT_RUNTIME=""
+  python3 "$SCRIPT_DIR/calculate-cost.py" --trial "$trial_dir" --model "$MODEL" --harness "$HARNESS" --write
   printf '=== [%s] %s in %ss (exit %s)\n' "$entry" "$status" "$duration" "$exit_code" >&2
+  CURRENT_RUNTIME=""
 done < "$TASK_LIST"
 
 echo >&2

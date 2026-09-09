@@ -52,6 +52,17 @@
     "pi-responses": {
       "version": "0.84.2",
       "version_source": "harbor agent_info.version"
+    },
+    "kot": {
+      "captured_at": "2026-09-04",
+      "auto_compaction": true,
+      "effort": "max",
+      "executable_sha256": "ac992437515974b8dae5ac96ef78fc5d584d3bbf28d72dac1163e2d1ce2d558e",
+      "harbor_version": "0.22.0",
+      "model_provider": "moonshotai",
+      "source_revision": "96328165955504c601b67301d4be89bec5259b6b",
+      "version": "1.3.1",
+      "version_source": "kot --version, source revision, and musl-static executable fingerprint"
     }
   },
   "model": "k3"

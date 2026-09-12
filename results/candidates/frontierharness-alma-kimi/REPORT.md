@@ -82,6 +82,47 @@ the audit below is over all 1,324 tool calls of the run.
 | Run id | `alma-full-20260911-2300`, 2026-09-11T15:02Z → 2026-09-12T04:55Z, 6 h 28 m of agent time |
 | Provider key | Runta secret; the runtime only ever saw `runta-secret-stub` |
 
+## How Alma was run
+
+The published harnesses are CLIs that Harbor/Pier install inside the task
+container. Alma is a server application (the Express + WebSocket process the
+desktop app hosts in its main process) with a remote-workspace stack for
+machines reached over ssh, so it ran the other way round:
+
+- The headless server build (`bin/server.mjs`) lived on the Runta runtime
+  host next to Harbor/Pier, baked into the golden checkpoint from a git
+  bundle of commit `a26dd7b4` (Node 22 + pnpm; started once to write the
+  provider and settings, then stopped, before any task ran).
+- Each task container was registered as an Alma **remote host**. Alma's ssh
+  transport was pointed at a shim that turns `ssh <container> <cmd>` into
+  `docker exec -i <container> sh -c <cmd>`, so every command, read and edit
+  went through Alma's ordinary remote-host code path and executed inside the
+  container. DeepSWE tasks keep `network_mode: none`; `docker exec` is
+  unaffected.
+- A driver script (`alma-drive.mjs`, ~600 lines) speaks only Alma's public
+  REST/WebSocket API: `POST /api/remote-hosts` (container as ssh target),
+  `POST /api/workspaces` on `/app`, `POST /api/threads` bound to that
+  workspace, the task instruction sent over `/ws/threads` with an explicit
+  tool list (Bash, BashOutput, KillShell, Read, Write, Edit, Glob, Grep), a
+  poll on the thread until the turn ends or the task's own `timeout_sec`
+  arrives (one steer message shortly before the deadline, no retries), then
+  the thread traces and the proxy's per-response usage log written to
+  `/logs/agent` for `usage_details.py`. The official verifier then runs in
+  the same container as for any other harness.
+- Model traffic: Alma → local logging proxy (`fw-proxy.mjs`, 127.0.0.1) →
+  `api.fireworks.ai`; the key is a Runta secret the runtime only sees as a
+  stub.
+
+Why not the `alma` CLI: `alma run` is a thin client of the same server. It
+creates a thread, sends one message over the websocket, streams the reply
+and deletes the thread; it assumes an already-running server, runs the turn
+in the server's own working directory rather than a remote workspace, cannot
+restrict the tool set or steer near a deadline, and discards the transcript
+on exit. The driver is `alma run` plus those five things; the generation
+code is the same either way. The adapter (driver, shim, Harbor/Pier agent
+files, install script) is not in this PR; it is available to maintainers on
+request.
+
 ## Held and relaxed invariants
 
 Held: Kimi K3; one golden checkpoint, one fresh restore per task, identical

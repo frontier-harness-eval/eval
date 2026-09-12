@@ -115,11 +115,17 @@ machines reached over ssh, so it ran the other way round:
 
 Why not the `alma` CLI: `alma run` is a thin client of the same server. It
 creates a thread, sends one message over the websocket, streams the reply
-and deletes the thread; it assumes an already-running server, runs the turn
-in the server's own working directory rather than a remote workspace, cannot
-restrict the tool set or steer near a deadline, and discards the transcript
-on exit. The driver is `alma run` plus those five things; the generation
-code is the same either way. The adapter (driver, shim, Harbor/Pier agent
+and deletes the thread. The decisive problem is the tool set: `alma run`
+sends no tool selection, which the server treats as an empty one, so the
+model gets only the skill baseline — Bash (plus Skill and a dormant
+ToolSearch) — and no Read/Write/Edit/Grep/Glob. The first full run of this
+adapter made the same omission and produced 922 Bash calls and zero
+file-tool calls across thirty trials; the explicit eight-tool list exists to
+fix that. Beyond tools, `alma run` assumes an already-running server, runs
+the turn in the server's own working directory rather than a remote
+workspace, cannot steer near a deadline, and discards the transcript on
+exit. The driver is `alma run` plus those things; the generation code is the
+same either way. The adapter (driver, shim, Harbor/Pier agent
 files, install script) is not in this PR; it is available to maintainers on
 request.
 

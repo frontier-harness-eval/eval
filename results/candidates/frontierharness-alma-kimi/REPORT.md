@@ -37,6 +37,36 @@ claim of an official leaderboard placement. `candidate.json` carries the
 normalizer's own `comparable: false` note: the published baselines did not
 record the egress policy they ran under.
 
+### Where the passes come from
+
+Against Codex (the highest published configuration), Alma passes seven tasks
+Codex does not (`fastapi-deprecation-response-headers`,
+`katex-multicolumn-array-spans`, `scc-bounded-memory-spilling`, `dna-insert`,
+`extract-elf`, `kv-store-grpc`, `largest-eigenval`) and fails two Codex passes
+(`code-from-image`, `sanitize-git-repo`). Every trajectory is in `trials/`;
+the audit below is over all 1,324 tool calls of the run.
+
+- Tool surface: Bash 854, Edit 214, Read 205, Write 39, BashOutput 9, Grep 3.
+  Every call executed inside the task container; no web, browser or
+  sub-agent tools.
+- Hidden tests: the verifier resets and re-applies `test.patch` after the
+  agent finishes, so agent edits under `/app/tests` cannot reach the score;
+  `/logs/verifier` is empty during the agent phase. One trajectory
+  (`extract-elf`) searched the filesystem for reference or test files, found
+  none, and then wrote its own extractor.
+- Egress: the three DeepSWE passes above were solved with no network at all
+  (those containers do not resolve external hosts; the trajectories show the
+  attempts failing). `largest-eigenval` installed scipy but the final
+  `eigen.py` imports only numpy. **Two passes depend on the allowlist:**
+  `kv-store-grpc` (the task's first step is `pip install grpcio==1.73.0`, so
+  it is unsolvable without PyPI) and `dna-insert` (`apt-get install primer3`
+  to obtain `oligotm`, which the task names as the melting-temperature
+  ground truth). The same allowlist is what the official verifiers use to
+  install pytest, so it is not a deviation; whether the published baselines
+  ran under it is not recorded. Discounting both, the run is 23/30 (76.7%).
+- Sampling: one attempt per task, no best-of-N; timeouts are recorded as
+  failures verbatim.
+
 ## Setup
 
 | Field | Value |

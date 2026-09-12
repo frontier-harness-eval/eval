@@ -1,0 +1,143 @@
+diff --git a/skills/frontierharness-eval/scripts/provision-golden-checkpoint.sh b/skills/frontierharness-eval/scripts/provision-golden-checkpoint.sh
+index ce80d9f..609a403 100755
+--- a/skills/frontierharness-eval/scripts/provision-golden-checkpoint.sh
++++ b/skills/frontierharness-eval/scripts/provision-golden-checkpoint.sh
+@@ -23,6 +23,7 @@ MODEL=""
+ SECRET_NAME=""
+ SECRET_HOST=""
+ INSTALL_SCRIPT=""
++REPO_BUNDLE=""
+ PREPULL_TASKS=""
+ CPUS=4
+ MEMORY=8192
+@@ -57,6 +58,10 @@ Options:
+                         Defaults to the provider preset, required with custom.
+   --secret-host HOST    Provider host for egress and credential injection; required with custom.
+   --install-script PATH Local script uploaded and run inside /work/harness to build it
++  --repo-bundle PATH    Local `git bundle` of the harness repo, uploaded to the runtime
++                        and cloned instead of fetching --repo over the network (private
++                        repos; no credentials ever enter the runtime). --repo is still
++                        recorded in the manifest as the harness identity.
+   --harness-topology NAME  container-cli (default), runtime-service, or external-service;
+                         recorded in the manifest so reports disclose the topology.
+   --prepull-tasks DIR   Optional image pre-pull (off by default; large checkpoints can
+@@ -86,6 +91,7 @@ while [ $# -gt 0 ]; do
+     --secret-name) SECRET_NAME=$2; shift 2 ;;
+     --secret-host) SECRET_HOST=$2; shift 2 ;;
+     --install-script) INSTALL_SCRIPT=$2; shift 2 ;;
++    --repo-bundle) REPO_BUNDLE=$2; shift 2 ;;
+     --harness-topology) HARNESS_TOPOLOGY=$2; shift 2 ;;
+     --prepull-tasks) PREPULL_TASKS=$2; shift 2 ;;
+     --cpus) CPUS=$2; shift 2 ;;
+@@ -188,6 +194,22 @@ rexec "test \"\$$SECRET_NAME\" = runta-secret-stub" \
+ # Bootstrap needs package and source registries. Apply restricted egress only after
+ # installation and sample warmup, before freezing the checkpoint.
+ 
++CLONE_SRC=$REPO
++if [ -n "$REPO_BUNDLE" ]; then
++  [ -f "$REPO_BUNDLE" ] || { echo "repo bundle not found: $REPO_BUNDLE" >&2; exit 1; }
++  step "2b/9 uploading harness bundle $(basename "$REPO_BUNDLE")"
++  # `runta run` returns while the runtime is still creating; cp streams over an exec
++  # session and fails with "channel closed" until the runtime accepts exec.
++  tries=0
++  until runta exec "$RUNTIME" -- sh -c 'mkdir -p /work' >/dev/null 2>&1; do
++    tries=$((tries + 1))
++    [ "$tries" -lt 60 ] || { echo "runtime $RUNTIME did not become ready for exec" >&2; exit 1; }
++    sleep 5
++  done
++  retry_transport runta cp "$REPO_BUNDLE" "$RUNTIME:/work/harness.bundle"
++  CLONE_SRC=/work/harness.bundle
++fi
++
+ step "3/9 installing base tooling"
+ rexec 'set -eu
+   export DEBIAN_FRONTEND=noninteractive
+@@ -202,7 +224,7 @@ step "4/9 cloning $REPO at $COMMIT"
+ rexec "set -eu
+   export PATH=\"\$HOME/.local/bin:\$PATH\"
+   rm -rf /work/harness
+-  git clone --quiet '$REPO' /work/harness
++  git clone --quiet '$CLONE_SRC' /work/harness
+   cd /work/harness
+   git checkout --quiet '$COMMIT'
+   git rev-parse HEAD"
+@@ -282,6 +304,7 @@ rexec 'set -eu
+   rm -rf /work/warmup'
+ 
+ retry_transport apply_provider_egress "$RUNTIME" "$PROVIDER_HOST"
++[ -n "$REPO_BUNDLE" ] && rexec "rm -f /work/harness.bundle"
+ 
+ step "9/9 writing manifest and creating golden checkpoint $CHECKPOINT"
+ rexec "set -eu
+@@ -292,6 +315,7 @@ rexec "set -eu
+   \"harness\": \"$HARNESS\",
+   \"harness_topology\": \"$HARNESS_TOPOLOGY\",
+   \"harness_repo\": \"$REPO\",
++  \"harness_source\": \"$( [ -n "$REPO_BUNDLE" ] && echo "git bundle uploaded from the operator machine" || echo "git clone over the network" )\",
+   \"harness_commit\": \"\$(git rev-parse HEAD)\",
+   \"harness_describe\": \"\$(git describe --tags --always 2>/dev/null || echo unknown)\",
+   \"model\": \"$MODEL\",
+@@ -321,6 +345,13 @@ copy_verified "$RUNTIME:/work/manifest.json" "./manifest-${CHECKPOINT}.json" "$m
+ jq -e . "./manifest-${CHECKPOINT}.json" >/dev/null \
+   || { echo "manifest did not copy out of $RUNTIME" >&2; exit 1; }
+ 
++# Keep the memory snapshot small before checkpointing: the install leaves most of the
++# guest's RAM as page cache. (The hard limit on checkpoint creation is the disk delta,
++# not the cache: on 2026-09-05 a clean runtime checkpointed in ~30 s, +5 GiB in ~90 s,
++# and +10 GiB / +20 GiB never left `creating`, cold cache or not. Hence no --prepull-tasks
++# for the golden image; trials pull their task image at run time instead.)
++rexec "sync; echo 3 > /proc/sys/vm/drop_caches; free -m | head -2"
++
+ runta checkpoint create "$RUNTIME" "$CHECKPOINT"
+ if ! wait_for_checkpoint "$CHECKPOINT" "$CHECKPOINT_TIMEOUT"; then
+   echo "Build runtime retained: $RUNTIME. Inspect the checkpoint before retrying; no ready checkpoint is being claimed." >&2
+diff --git a/skills/frontierharness-eval/scripts/usage_details.py b/skills/frontierharness-eval/scripts/usage_details.py
+index 94b4dd5..2d4a1c4 100644
+--- a/skills/frontierharness-eval/scripts/usage_details.py
++++ b/skills/frontierharness-eval/scripts/usage_details.py
+@@ -173,6 +173,23 @@ def _kimi_code(text: str) -> Detail:
+     return _detail(usages)
+ 
+ 
++def _alma(text: str) -> Detail:
++    # fw-proxy.mjs records one line per upstream chat/completions response
++    # ({"t":…,"status":…,"prompt":…,"completion":…,"cached":…}); the driver
++    # writes this trial's slice into the agent dir. OpenAI semantics: prompt
++    # includes cached. A call that never returned a usage block (non-200,
++    # transport error) carries a null prompt and is not a turn.
++    usages = []
++    for event in _jsonl(text):
++        total = event.get("prompt")
++        if total is None:
++            continue
++        cached = int(event.get("cached") or 0)
++        if int(total) or event.get("completion"):
++            usages.append((int(total), cached))
++    return _detail(usages)
++
++
+ def _hermes(text: str) -> Detail:
+     # Per-call records from the eval-usage plugin (post_api_request hook):
+     # input_tokens is fresh-only, cache_read_tokens the cached portion.
+@@ -209,6 +226,13 @@ REGISTRY: dict[str, tuple[str, Any]] = {
+     "claude-code": ("sessions/projects/*/*.jsonl", _claude_code),
+     "opencode": ("opencode.txt", _opencode),
+     "pi-responses": ("pi.txt", _pi_style),
++    # The Pier agent adapter reports itself as "pi" in result.json's
++    # agent_info.name, and calculate-cost.py prefers that recorded identity over
++    # the --harness label. Without this alias the control's turn count and cache
++    # metrics come back null while Alma's (whose adapter reports "alma") do not,
++    # which would flatter Alma on exactly the efficiency columns the report
++    # ranks on. Same file, same parser as "pi-responses". README deviation 26.
++    "pi": ("pi.txt", _pi_style),
+     "oh-my-pi": ("omp.txt", _pi_style),
+     "exo": ("exo-events.json", _exo),
+     "dsh-standard": ("dsh-session.jsonl", _dsh),
+@@ -217,6 +241,7 @@ REGISTRY: dict[str, tuple[str, Any]] = {
+     "dsh-creator": ("dsh-session.jsonl", _dsh),
+     "kimi-code": (".kimi-code/sessions/*/*/agents/main/wire.jsonl", _kimi_code),
+     "hermes": ("hermes-calls.jsonl", _hermes),
++    "alma": ("fw-usage.jsonl", _alma),
+ }
+ 
+ 

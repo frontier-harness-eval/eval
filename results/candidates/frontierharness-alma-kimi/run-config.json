@@ -1,0 +1,35 @@
+{
+  "run_id": "alma-full-20260911-2300",
+  "checkpoint": "alma-golden-v10",
+  "harness": "alma",
+  "model": "fireworks_ai/accounts/fireworks/models/kimi-k3",
+  "provider": "fireworks",
+  "cmd_template": "/work/harness/eval/frontierharness/run-task.sh {suite} {task} {model} {jobs}",
+  "timeout_seconds": 5400,
+  "started_at": "2026-09-11T15:02:15Z",
+  "egress_policy": {
+    "mode": "allowlist",
+    "scope": "runtime",
+    "allowed_hosts": [
+      "*.astral.sh",
+      "*.cloudfront.net",
+      "*.debian.org",
+      "*.ecr.aws",
+      "*.github.com",
+      "*.githubusercontent.com",
+      "*.npmjs.org",
+      "*.pythonhosted.org",
+      "*.pytorch.org",
+      "*.supabase.co",
+      "*.ubuntu.com",
+      "api.fireworks.ai",
+      "astral.sh",
+      "github.com",
+      "pypi.org"
+    ]
+  },
+  "methodology_comparable": false,
+  "methodology_notes": [
+    "The runtime allowlist permits agents and verifiers to download packages and benchmark sources, subject to runner-level isolation. The published baselines did not record their applied egress policy; a matched control run with the same policy and environment is required before claiming comparability."
+  ]
+}

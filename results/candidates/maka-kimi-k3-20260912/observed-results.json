@@ -14,27 +14,27 @@
       "aggregate_adjustment_nanos": 39315000
     },
     "deep-swe": {
-      "completed": 8,
+      "completed": 9,
       "passed": 5,
-      "duration_ms": 21210930,
-      "captured_calls": 1256,
-      "prompt_tokens": 137508935,
-      "cached_prompt_tokens": 135296370,
-      "completion_tokens": 780191,
-      "captured_cost_nanos": 58929471000,
-      "ledger_captured_micro_usd": 58930031,
+      "duration_ms": 23255376,
+      "captured_calls": 1386,
+      "prompt_tokens": 149142247,
+      "cached_prompt_tokens": 146782123,
+      "completion_tokens": 858119,
+      "captured_cost_nanos": 63986793900,
+      "ledger_captured_micro_usd": 63987410,
       "aggregate_adjustment_nanos": 0
     },
     "all": {
-      "completed": 29,
+      "completed": 30,
       "passed": 23,
-      "duration_ms": 25250871,
-      "captured_calls": 1555,
-      "prompt_tokens": 141878632,
-      "cached_prompt_tokens": 139307509,
-      "completion_tokens": 983889,
-      "captured_cost_nanos": 64263956700,
-      "ledger_captured_micro_usd": 64264637,
+      "duration_ms": 27295317,
+      "captured_calls": 1685,
+      "prompt_tokens": 153511944,
+      "cached_prompt_tokens": 150793262,
+      "completion_tokens": 1061817,
+      "captured_cost_nanos": 69321279600,
+      "ledger_captured_micro_usd": 69322016,
       "aggregate_adjustment_nanos": 39315000
     }
   },
@@ -531,9 +531,26 @@
       "aggregate_adjustment_nanos": 0,
       "evidence_sha256": "2d3afe5900882f75cbe24031dbea369ce8130b2f52085aea484d2580927f5fc3",
       "native_usage_available": true
+    },
+    {
+      "index": 30,
+      "task": "datacurve/scc-bounded-memory-spilling",
+      "score": 0,
+      "status": "completed",
+      "duration_ms": 2044446,
+      "failure_reason": null,
+      "captured_calls": 130,
+      "prompt_tokens": 11633312,
+      "cached_prompt_tokens": 11485753,
+      "completion_tokens": 77928,
+      "captured_cost_nanos": 5057322900,
+      "ledger_captured_micro_usd": 5057379,
+      "aggregate_adjustment_nanos": 0,
+      "evidence_sha256": "b16b1420ee9a76c28df5b7fe9e9c7896431809eba845719eea441dc55152bba4",
+      "native_usage_available": true
     }
   ],
-  "complete": false,
+  "complete": true,
   "comparable": false,
   "measurement_basis": "Captured provider usage priced at actual K3 rates; aggregate adjustments separate. Not first-call-cold normalized benchmark costs. Duration is subject execution, not full runner wall time."
 }

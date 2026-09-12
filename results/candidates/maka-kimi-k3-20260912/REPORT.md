@@ -1,13 +1,13 @@
 # Maka on Kimi K3
 
-**Draft, incomplete: 29/30 tasks completed; 23 passed, 6 failed. The final SCC task is running.**
+**Draft result: 30/30 tasks completed; 23 passed, 7 failed.**
 
-This is the first full formal sweep under the frozen configuration. Results are unranked and submitted for inspection, not an official leaderboard placement. This directory will be updated when the final task and accounting checks finish.
+This is the first full formal sweep under the frozen configuration. Results are unranked and submitted for inspection, not an official leaderboard placement. Final accounting and normalized report artifacts are being completed.
 
 | Suite | Completed | Passed |
 |---|---:|---:|
 | Terminal-Bench | 21/21 | 18 |
-| DeepSWE | 8/9 | 5 |
+| DeepSWE | 9/9 | 5 |
 
 ## Reproduction and evidence
 
@@ -68,4 +68,6 @@ This is the first full formal sweep under the frozen configuration. Results are 
 | datacurve/katex-multicolumn-array-spans | 1 | completed |
 | datacurve/meriyah-explicit-resource-declarations | 0 | completed |
 | datacurve/python-statemachine-state-data-scoping | 1 | completed |
-| datacurve/scc-bounded-memory-spilling | pending | running |
+| datacurve/scc-bounded-memory-spilling | 0 | completed |
+
+SCC: P2P 286/286, F2P 28/31; three csv-stream format/output equivalence tests failed.

@@ -121,7 +121,10 @@ model gets only the skill baseline — Bash (plus Skill and a dormant
 ToolSearch) — and no Read/Write/Edit/Grep/Glob. The first full run of this
 adapter made the same omission and produced 922 Bash calls and zero
 file-tool calls across thirty trials; the explicit eight-tool list exists to
-fix that. Beyond tools, `alma run` assumes an already-running server, runs
+fix that. (The CLI itself has since been fixed — Alma commit `03f8135e`,
+after this run: `alma run` now sends the same eight-tool coding set by
+default and takes `--tools <list|auto|none>` — but the run recorded here
+predates it and did not use the CLI.) Beyond tools, `alma run` assumes an already-running server, runs
 the turn in the server's own working directory rather than a remote
 workspace, cannot steer near a deadline, and discards the transcript on
 exit. The driver is `alma run` plus those things; the generation code is the

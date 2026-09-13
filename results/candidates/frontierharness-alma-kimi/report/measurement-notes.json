@@ -1,0 +1,7 @@
+{
+  "cache": "25/25 successful tasks with measured cache rates. Rates exclude first-call cached tokens. The median covers all successful tasks.",
+  "cost": "Complete cost coverage: 30/30 tasks. Website-aligned metric for every harness: total available task costs divided by passes, including failures. For incomplete tasks, include observed usage costs as lower bounds rather than discard the entire task. The public label “Median cost per task” is retained to match frontierharness.org; this is not a statistical median. Missing costs are excluded, never zero-filled.",
+  "observed": "",
+  "taskMeasurements": "Costs for tasks with incomplete usage are observed lower bounds, shown as plain dollar values. Cache percentages for tasks with incomplete usage use cached/input tokens from available calls, including first-call cache reads. These differ from the normalized rates used in summary metrics; per-task call coverage is retained in observed-cost-audit.json. The website-aligned aggregate includes these bounds once, using complete task costs wherever available.",
+  "comparison": "Provisional; conditions differ"
+}

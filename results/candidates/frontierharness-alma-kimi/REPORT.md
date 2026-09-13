@@ -129,8 +129,8 @@ the turn in the server's own working directory rather than a remote
 workspace, cannot steer near a deadline, and discards the transcript on
 exit. The driver is `alma run` plus those things; the generation code is the
 same either way. The adapter (driver, shim, Harbor/Pier agent
-files, install script) is not in this PR; it is available to maintainers on
-request.
+files, install script) is in `adapter/`, verbatim from the checkout that ran,
+with a README on how to run it.
 
 ## Held and relaxed invariants
 
@@ -152,8 +152,9 @@ Relaxed or adapted, stated in full:
    so the harness is uploaded as a `git bundle` and cloned from the local file
    instead of over the network; `--repo`/`--commit` are still recorded as the
    harness identity. This is the first hunk of `eval-deviations.patch`.
-   A reproduction bundle (source at `a26dd7b4`, install script, Harbor and
-   Pier adapters, driver) is available to maintainers on request.
+   The install script, Harbor and Pier adapters and driver are in
+   `adapter/`; the source bundle at `a26dd7b4` is available to maintainers on
+   request.
 3. **Per-call usage extraction.** `usage_details.py` has a fixed registry of
    harness → usage log; an unregistered harness silently gets `turns: null`
    and `cost_first_cold_usd: null`. The patch adds an `alma` entry reading the
@@ -237,8 +238,8 @@ rests on them.
 Full raw evidence — 30 per-task bundles with complete agent transcripts, tool
 calls, per-call usage, verifier stdout, `reward.json` and the runner's leaf
 `result.json` (~200 MB) — is preserved outside this PR and available to
-maintainers on request, as is the reproduction bundle for the private
-harness.
+maintainers on request, as is the source bundle for the private harness
+(the adapter that drove it is in `adapter/`).
 
 Independent checks that need nothing but this directory:
 

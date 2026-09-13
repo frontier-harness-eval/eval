@@ -13,7 +13,7 @@ This is the first full formal sweep under the frozen configuration. Results are 
 
 - The exact Maka source commit is linked in `run-config.json`; this evaluates a development branch, not a released Maka version.
 - `observed-results.json` contains per-task native outcomes, subject execution duration, captured usage, cost, and SHA256 digests of retained full evidence archives. Absolute local paths, credentials, prompts, solutions, and infrastructure identifiers are excluded.
-- Full per-task archives retain native verifier output, Runtime Host trajectories, outbound requests, and provider usage locally. They are not included here because they require separate redaction before sharing.
+- All 30 formal tasks now have public execution evidence: recorded prompts, tool calls/results, model responses, verifier logs, provider request/response bodies, and retained patches. See [TRACES.md](TRACES.md) for the download, integrity checks, privacy review, and documented export boundaries. Original SQLite containers remain local; all persisted runtime events are exported as JSONL.
 - Accounting is observed provider-token pricing, not first-call-cold normalized benchmark pricing. Aggregate interrupted-call billing adjustments are separate and do not fabricate missing tokens. Do not use these costs as a normalized leaderboard comparison. The normalized candidate/report remains pending.
 
 ## Configuration and deviations

@@ -1,0 +1,4518 @@
+{
+  "schema_version": 1,
+  "experiment": "2026-09-glm-5.3-flash-four-harnesses",
+  "model": "glm-5.3-flash",
+  "provider": "Zhipu Coding Plan",
+  "benchmark_commit": "e837a70bd6beb4e72eeeda62dd06e3bd34f6cb63",
+  "published_baseline_sha256": "ffd18213a165e985fd7d876395a3f53e00961253a89bbc88420a41374bc20c4c",
+  "methodology_comparable": false,
+  "leaderboard_eligible": false,
+  "raw_evidence_public": false,
+  "attempt_policy": "First valid attempt per harness/task; three pre-agent setup failures excluded and repaired under new attempt IDs; no successful or failed executed attempt retried to select a score.",
+  "harnesses": [
+    {
+      "name": "opencode",
+      "version": "1.18.19",
+      "expected": 30,
+      "completed": 30,
+      "successful": 19,
+      "published_kimi_successful": 15,
+      "suites": {
+        "terminal-bench": {
+          "expected": 21,
+          "glm_passed": 16,
+          "published_kimi_passed": 15
+        },
+        "datacurve": {
+          "expected": 9,
+          "glm_passed": 3,
+          "published_kimi_passed": 0
+        }
+      },
+      "paired_outcomes": {
+        "glm_only_pass": 6,
+        "both_fail": 9,
+        "both_pass": 13,
+        "kimi_only_pass": 2
+      }
+    },
+    {
+      "name": "codex",
+      "version": "0.148.0",
+      "expected": 30,
+      "completed": 30,
+      "successful": 16,
+      "published_kimi_successful": 20,
+      "suites": {
+        "terminal-bench": {
+          "expected": 21,
+          "glm_passed": 14,
+          "published_kimi_passed": 15
+        },
+        "datacurve": {
+          "expected": 9,
+          "glm_passed": 2,
+          "published_kimi_passed": 5
+        }
+      },
+      "paired_outcomes": {
+        "kimi_only_pass": 7,
+        "both_fail": 7,
+        "glm_only_pass": 3,
+        "both_pass": 13
+      }
+    },
+    {
+      "name": "claude-code",
+      "version": "2.1.237",
+      "expected": 30,
+      "completed": 30,
+      "successful": 21,
+      "published_kimi_successful": 19,
+      "suites": {
+        "terminal-bench": {
+          "expected": 21,
+          "glm_passed": 15,
+          "published_kimi_passed": 16
+        },
+        "datacurve": {
+          "expected": 9,
+          "glm_passed": 6,
+          "published_kimi_passed": 3
+        }
+      },
+      "paired_outcomes": {
+        "glm_only_pass": 6,
+        "both_fail": 5,
+        "both_pass": 15,
+        "kimi_only_pass": 4
+      }
+    },
+    {
+      "name": "pi-responses",
+      "version": "0.84.2",
+      "expected": 30,
+      "completed": 30,
+      "successful": 19,
+      "published_kimi_successful": 18,
+      "suites": {
+        "terminal-bench": {
+          "expected": 21,
+          "glm_passed": 14,
+          "published_kimi_passed": 16
+        },
+        "datacurve": {
+          "expected": 9,
+          "glm_passed": 5,
+          "published_kimi_passed": 2
+        }
+      },
+      "paired_outcomes": {
+        "kimi_only_pass": 5,
+        "glm_only_pass": 6,
+        "both_fail": 6,
+        "both_pass": 13
+      }
+    }
+  ],
+  "trials": [
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/anko-typed-variable-bindings",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-19T18:07:13.091340Z",
+      "finished_at": "2026-09-19T18:23:03.578565Z",
+      "phase_seconds": {
+        "environment_setup": 52.900025,
+        "agent_setup": 0.082363,
+        "agent_execution": 854.104489,
+        "verifier": 29.770566
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 9,
+        "f2p_passed": 9,
+        "p2p_total": 94,
+        "p2p_passed": 94,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 103,
+        "passed": 103,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "7de4ceb2a5bfa1e5e7a484132afeb0ecec713e563f42034ddd9b0236797370df",
+        "runner_config": "abf05b89f3356c6b5e43594a93125ffe3ca18e5d825bf70c08fd697700ba8c64",
+        "declared_job_config": "7daafaed8279bdc935bff94b821426a35983269cfe81792b161a963bf1b153d6",
+        "verifier_stdout": "7d0fe6d7bd52df9689ab5f8a14581b53571681b3aff39f9a2b8f45a85d3c86a7",
+        "agent_opencode": "0b93080bf95772206a6678484af29778d147b9b573705e2449e2467968985bea"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/arktype-json-schema-refs-dependencies",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T03:56:53.144984Z",
+      "finished_at": "2026-09-20T04:49:58.221640Z",
+      "phase_seconds": {
+        "environment_setup": 89.377463,
+        "agent_setup": 0.081312,
+        "agent_execution": 3022.683703,
+        "verifier": 59.198672
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 25,
+        "f2p_passed": 23,
+        "p2p_total": 1679,
+        "p2p_passed": 1679,
+        "f2p": 0.92,
+        "p2p": 1.0,
+        "partial": 0.9988262910798122
+      },
+      "verifier_reported_summary": {
+        "tests": 1704,
+        "passed": 1702,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "db292b189e6879f2c9387d7a62175e6c313c5e84a5e900a085cf2076d62c2811",
+        "runner_config": "226b53d0f8b150d60ddee04c6a0e0674fff9ea429b92355cac4c1e85b869ea00",
+        "declared_job_config": "e5d4e0cc1ff6d845611ed55c52c3096d4cff45eb694ef9beff02ace8a91467ef",
+        "verifier_stdout": "a44e0958c0370e0ef04564b725ae014d20e5d2e45938db168d9aab874c297184",
+        "agent_opencode": "c9f3ffa45d92ecc6bf4c15fc004c052ae7df1689c0d754ed68d29aca2ffae761"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/expr-try-catch-errors",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T04:50:07.210053Z",
+      "finished_at": "2026-09-20T05:38:53.828934Z",
+      "phase_seconds": {
+        "environment_setup": 197.078611,
+        "agent_setup": 0.078,
+        "agent_execution": 2714.377551,
+        "verifier": 1.554587
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "7920c4f68dd840b14d0f89e2df62f9f15ff7d740f555be5f8537bd44d8d877f0",
+        "runner_config": "359445418f0c8e2c6c3c794c8990193bc1cb7b0a49c756982f584a6c7a874187",
+        "declared_job_config": "57b93edd1ec0e883f95934f54959b6913ff1e9e8c8abfa5fc306251efb58e30f",
+        "verifier_stdout": "a4071378e4c812189e7941edfeb8b77e74af44f4698387e2c62415387956f9b0",
+        "agent_opencode": "06aa195e57edfdc3c18b011224783d5d73093731577794333ad53b46b3c48d0c"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/fastapi-deprecation-response-headers",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T05:38:57.954940Z",
+      "finished_at": "2026-09-20T06:03:13.154357Z",
+      "phase_seconds": {
+        "environment_setup": 65.776824,
+        "agent_setup": 0.084673,
+        "agent_execution": 1316.566597,
+        "verifier": 59.152859
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 137,
+        "f2p_passed": 134,
+        "p2p_total": 3134,
+        "p2p_passed": 3134,
+        "f2p": 0.9781021897810219,
+        "p2p": 1.0,
+        "partial": 0.9990828492815653
+      },
+      "verifier_reported_summary": {
+        "tests": 3271,
+        "passed": 3268,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "4df8987f7c6ee099c426a21272c811767e832897059c17b18e9821763a92775a",
+        "runner_config": "1f8bb41657f67e4e67915c135cb0895cafbf7b97a77b49a13773eaf81d41c66f",
+        "declared_job_config": "e7383ddb7d8a5e44f893fa7de01551233ee3fdf1f437cf8b6db08d10c5ada714",
+        "verifier_stdout": "afcf1ff8f48ae0d5f4f7af90413a4b26b2d964b5cb7b9e89f2a75af323c2f74f",
+        "agent_opencode": "f401480e74e36b66e23e7efe2a6d99552dd46d008124020752a415da2196e489"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/httpx-multipart-response-parsing",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T03:27:09.846138Z",
+      "finished_at": "2026-09-20T03:56:49.241849Z",
+      "phase_seconds": {
+        "environment_setup": 69.736045,
+        "agent_setup": 0.078281,
+        "agent_execution": 1689.852828,
+        "verifier": 6.12432
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "53bfd767ecb596790cd71997440b85da077cba1413836838d3d13aca558e9617",
+        "runner_config": "56398dd891582ea501cea859e2aa8225f645d1f356842fadf36371bc132551e9",
+        "declared_job_config": "d14bfed16e27434e164c6c8290e9fe90eced19f83749434256da1417dab50a95",
+        "verifier_stdout": "dcefdd615992f8991ff1c7c6ef7ac7485cb18ca004ecafc1e1f9cf916cf8256c",
+        "agent_opencode": "cbbbc234fd6ec57d222e68420224a3a7555b6115d856a30f6c01741d7490d6c2"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/katex-multicolumn-array-spans",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T06:03:17.194735Z",
+      "finished_at": "2026-09-20T06:37:51.488153Z",
+      "phase_seconds": {
+        "environment_setup": 75.393495,
+        "agent_setup": 0.080034,
+        "agent_execution": 1967.22242,
+        "verifier": 18.305423
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 94,
+        "f2p_passed": 94,
+        "p2p_total": 599,
+        "p2p_passed": 599,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 693,
+        "passed": 693,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "6efdcf9f66112db145fa21bfc695b8b31fb80ad2c1fb4a663ea64ca4496bfbba",
+        "runner_config": "e080af7062b8243c9c33ff12f26b6b4830456d1a8d710107b08a6f1baaeb1cdb",
+        "declared_job_config": "c1ab9aee8dbdb180605fd60c56c76c064a1c8e394f4f999238f38839b3f3536b",
+        "verifier_stdout": "be343656c2b2780188a13d6e961b9bc2e74a51f429271a487b51d8684ce422b0",
+        "agent_opencode": "9f7e5e4923d5bb9114e735c4c5b430b8814474eaaab94b17db0a58bb4eeaa8f3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/meriyah-explicit-resource-declarations",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T06:37:55.573030Z",
+      "finished_at": "2026-09-20T07:26:33.905975Z",
+      "phase_seconds": {
+        "environment_setup": 76.209401,
+        "agent_setup": 0.098373,
+        "agent_execution": 2768.862214,
+        "verifier": 58.983564
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 49,
+        "f2p_passed": 48,
+        "p2p_total": 51469,
+        "p2p_passed": 51469,
+        "f2p": 0.9795918367346939,
+        "p2p": 1.0,
+        "partial": 0.9999805893085911
+      },
+      "verifier_reported_summary": {
+        "tests": 51518,
+        "passed": 51517,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "f3bdb165ef45407fcc115a2338e65e406d5293f79bb99b0fa6e69a1a8da89715",
+        "runner_config": "dff04730b7802fd42d59d4f09576580f96bf2ea1dd8f8cb0632ad4b2c246c4fb",
+        "declared_job_config": "680002d24c8d0c61725d0ee5679efd00c34c88f39d1491b00ad7abd1b46606ff",
+        "verifier_stdout": "61726f82342c5533775d6bcce2b5cd3ea5967ae3f5f7e2df05b93baf00af2b3e",
+        "agent_opencode": "86acce7a71bbc251e4047ea690a99bb3fd7aece511933e90cf5476f651a0c0e5"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/python-statemachine-state-data-scoping",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-19T18:32:09.031201Z",
+      "finished_at": "2026-09-19T19:18:39.568041Z",
+      "phase_seconds": {
+        "environment_setup": 63.065697,
+        "agent_setup": 0.076236,
+        "agent_execution": 2689.299313,
+        "verifier": 24.167697
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "6b0bf92889025a96a4bc82951582a0b90acf9bf0ec685680a14f29f2091c66fc",
+        "runner_config": "45101bc4006655911d82d342bcf5c93bcc04f1354e45d5e5cc65c609690b7174",
+        "declared_job_config": "79c046893ba48afbc16c821a303a9df1b10613a1107dd2e854f14366a64abafa",
+        "verifier_stdout": "c61ac41a2ba7c860552a4b50e88f65a4c7a27aa79d47bad9d18cd6fe29dc4bdd",
+        "agent_opencode": "ebae6f92bce892159746f68d01d605d63d5c20d36e052da5c56456f6a2894170"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "datacurve/scc-bounded-memory-spilling",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T07:26:38.130374Z",
+      "finished_at": "2026-09-20T07:56:48.360215Z",
+      "phase_seconds": {
+        "environment_setup": 79.269202,
+        "agent_setup": 0.084041,
+        "agent_execution": 1670.108757,
+        "verifier": 47.592756
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 31,
+        "f2p_passed": 28,
+        "p2p_total": 286,
+        "p2p_passed": 286,
+        "f2p": 0.9032258064516129,
+        "p2p": 1.0,
+        "partial": 0.9905362776025236
+      },
+      "verifier_reported_summary": {
+        "tests": 317,
+        "passed": 314,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "f15333e4523dc852",
+      "local_evidence_sha256": {
+        "runner_result": "fff29dba1cec4516b92bd39fd821ffdab5d747c3ec1bfb88bab54b6b939c2980",
+        "runner_config": "0c46107ecfb9d4175e45c42719db202d5eee8c79301e0073e20e44ac6f7a7f98",
+        "declared_job_config": "e0b2dfca218075245955c8391095251cdb676d29893212a833fb0b0c03efec38",
+        "verifier_stdout": "8d3d72a69efa235e09e9bd99ba6490fb507fe979748136b98b2ce8d689a7d0cb",
+        "agent_opencode": "88d133fafba68156574084b6e846dbfcc7fd44c4cf33321479e7341e15de3592"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/build-cython-ext",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T07:56:49.942532Z",
+      "finished_at": "2026-09-20T08:12:59.231349Z",
+      "phase_seconds": {
+        "environment_setup": 25.313601,
+        "agent_setup": 200.141571,
+        "agent_execution": 722.278,
+        "verifier": 9.346902
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "7655d7670db47d27",
+      "local_evidence_sha256": {
+        "runner_result": "1d5069686055f3cc9bdc775c142af47e3bfaa2fdc2e0ca93d77b5308969f3114",
+        "runner_config": "a26307f5b1508037e264abde4231f7f967862260b8d8ef87e542cc40a39613ff",
+        "declared_job_config": "8929c8acb3bcf029dfb9b0a77c639fa0f2e8a1be55bfbacdf500ade580ba5888",
+        "verifier_stdout": "68bcbbaab26e10244f5cfdf969079581ad062c3023a00448001eee48e1a0d452",
+        "agent_opencode": "835c058e4e173bba35ffa1ebe1e5ed232359f76c30fc6363df058b4c85d75184"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/chess-best-move",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T08:13:03.650610Z",
+      "finished_at": "2026-09-20T08:31:42.723692Z",
+      "phase_seconds": {
+        "environment_setup": 20.695429,
+        "agent_setup": 196.229067,
+        "agent_execution": 868.747131,
+        "verifier": 21.093131
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "5542eb474af406be",
+      "local_evidence_sha256": {
+        "runner_result": "905f069a8cc1a2616f6d674a7344948399afed86475e5e70c5cd3fdda9765c9d",
+        "runner_config": "9ebb0b824898d9d9c63e357edc7943fc1c2874bd0f3e3627283a0286746d8a7c",
+        "declared_job_config": "89e089485ae2bf3a0a0e8a8dcb6c0073714091691fc2110bedd5fd5cb07d2017",
+        "verifier_stdout": "d9d7e297f55b22cf8aff367e4d1de3c8314869235a3cab6ab015d9cfa2dbb1e3",
+        "agent_opencode": "58c102b6214ac17e02f4fef4dc716a83df0305cdebf6f5a57fc254e98e0a8efb"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/code-from-image",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T08:31:47.384489Z",
+      "finished_at": "2026-09-20T08:37:10.075119Z",
+      "phase_seconds": {
+        "environment_setup": 10.580348,
+        "agent_setup": 263.872539,
+        "agent_execution": 21.445375,
+        "verifier": 14.402243
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "5542eb474af406be",
+      "local_evidence_sha256": {
+        "runner_result": "840b5a464cf1f70af2b7c341d3db57cf9db1a379f1f609c0c53681c1a0f40f5c",
+        "runner_config": "271171b2879275cdb11c09b4754ecccc0b2c872295a702bdc00e72e2e4bbbd7a",
+        "declared_job_config": "b59ed883359eeed71d43245e7b26dac356143ea7900eb43f2fea83bcaead8928",
+        "verifier_stdout": "22d3ad0c76569728acd775d41aac8e4f01b84727f4b13b7d3901798cd853b2b2",
+        "agent_opencode": "53fb10d16529dfcda433273890265a9bfba5789c96ddd16dc6cb850ebc6da2f0"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/constraints-scheduling",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T08:37:14.516933Z",
+      "finished_at": "2026-09-20T08:43:00.951067Z",
+      "phase_seconds": {
+        "environment_setup": 12.720591,
+        "agent_setup": 242.753697,
+        "agent_execution": 57.538111,
+        "verifier": 20.940374
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "5542eb474af406be",
+      "local_evidence_sha256": {
+        "runner_result": "f42d16dd701c46b4049c48fc3eda1bb25bee487602ea68fb2e1daf6a9b86a170",
+        "runner_config": "7926efe78c47ed30ab9a8e5c2569cb30f4c2fe5a1a773a1ff6ea68d756914099",
+        "declared_job_config": "1f199814e22aeb1376ca5012c9a41c03ac7ca20e910dde1a1ea0db5a2453af5d",
+        "verifier_stdout": "7ab956419102022a04554b14eae1a5527247e32cb640467fab0c67070ed33486",
+        "agent_opencode": "9c64fc4ad0054946862826f69903cf9f0e75df876ab9378cabc33c803517d7cf"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/db-wal-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T16:04:53.548039Z",
+      "finished_at": "2026-09-20T16:16:35.493768Z",
+      "phase_seconds": {
+        "environment_setup": 3.547301,
+        "agent_setup": 202.358835,
+        "agent_execution": 462.906432,
+        "verifier": 20.828476
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "abcbe6a89da2abf0bf3b66c45fa5a86da2df6272eada72267cbfd80bced1ad57",
+        "runner_config": "7151d93cd6cba0d83aa77c5b78eb00985692dfab5948bd46d37d60069085855c",
+        "declared_job_config": "2c267e0b894147c2145692c5d68b5e4c6d7e1af982badffd79159c965b770f63",
+        "verifier_stdout": "25ec5c2d7943070dee8cb4ea3a3e31cb9b9f38704820c916076233756f4b96bb",
+        "agent_opencode": "e3e138e69bd97ffbd2de5c501015f4cc0c3752eb05915099734e0ce748bb34f0"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/dna-insert",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T16:16:40.034971Z",
+      "finished_at": "2026-09-20T16:26:22.153572Z",
+      "phase_seconds": {
+        "environment_setup": 3.543048,
+        "agent_setup": 312.526035,
+        "agent_execution": 232.996796,
+        "verifier": 20.580283
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "6b1b991220aa5fb726dc9fd7328f9b26ca41050a377a9ececc4c7814523e2e2d",
+        "runner_config": "9a4c2673c8860d2bc212acfa2b4f4ecdbfc341a8f333fb4b127645264f2fc531",
+        "declared_job_config": "bdf58c15aaeba79b37c1a5e4ac48a2ea517ef71acdca8182031251618f186c4a",
+        "verifier_stdout": "0753030fbcafefd799fe5c93bc7e505417c0292357158809e119686160d04740",
+        "agent_opencode": "e2f7a732b41408ecebd5277b36522c50bfaaf1996de248208e3d205ba36b3a17"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/extract-elf",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T16:26:26.578557Z",
+      "finished_at": "2026-09-20T16:30:11.735638Z",
+      "phase_seconds": {
+        "environment_setup": 3.64343,
+        "agent_setup": 37.358994,
+        "agent_execution": 151.957181,
+        "verifier": 20.557328
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "d4fc1782cb0788a9a76cbe5b2ebd76524cf53d45106a66534d87c7b06ccd9195",
+        "runner_config": "af8762199fe547388abbf684610c459577bd5beec7fd6fa6c5587394c1dfba16",
+        "declared_job_config": "1488c72cfa01e1f206402c4ddd4cabc37537ff929d388ea39bd31e469ae84405",
+        "verifier_stdout": "c6925b43e6d9afde1531a4d2a654ecfa2d4c8626ba220a58f427b02c372e066f",
+        "agent_opencode": "3027c4a503dc5fca0de49cd17bf708826d0502bf9894e25df26c00bc3e59bcac"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/gcode-to-text",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T16:30:16.177749Z",
+      "finished_at": "2026-09-20T16:50:11.022687Z",
+      "phase_seconds": {
+        "environment_setup": 3.558253,
+        "agent_setup": 264.467151,
+        "agent_execution": 900.082912,
+        "verifier": 14.338696
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "015f8bbc2518b523fd47bc221831e222c7850eea47b4e61796dc88d49ed85e89",
+        "runner_config": "c58cc8bdb789f8cc0e7f367256c8298db8c83568c45f90e7d9ea31cdb5918a07",
+        "declared_job_config": "178c62f6fc51d6341fbf6816d67e490460ca2a979c443b77d4098421773419b3",
+        "verifier_stdout": "509f2904cc9de1ba1f6d74c4d424a88c5bafe0eadb0604c4bae2a7b4d7e39a3d",
+        "agent_opencode": "b59d066c5c7ab273a16f25de9e17f7eb4b5f265f215ce4ed1de726d670d9be80"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/git-leak-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T16:50:15.585721Z",
+      "finished_at": "2026-09-20T16:55:32.499728Z",
+      "phase_seconds": {
+        "environment_setup": 3.56914,
+        "agent_setup": 242.761266,
+        "agent_execution": 37.933241,
+        "verifier": 20.241829
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "cbfae2ccd8b75d680060bf614d9819f9c1e8d142e1c99441ef1f97b9fe13e0c2",
+        "runner_config": "3a48cbb9695e1412cc7233606c909250dd2ce639e6a30c7c4af7a3c8d3125dcf",
+        "declared_job_config": "f2854727d1db7704c76ded89888079cb25c6dc60ab0366ba3c918d13f0b6eaec",
+        "verifier_stdout": "79bd4e68883679df40df7195f8c434ea167d7efbb95cf958fc5e6d88627615eb",
+        "agent_opencode": "cb6335d7f742d711a9620767e0c214dda34d0ea9974cd622734e737368dfd8dc"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/kv-store-grpc",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T16:55:36.907118Z",
+      "finished_at": "2026-09-20T17:01:36.738598Z",
+      "phase_seconds": {
+        "environment_setup": 3.566127,
+        "agent_setup": 266.98848,
+        "agent_execution": 61.667713,
+        "verifier": 15.333853
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "10610e47c6c701feba47b09b6e6a5ab620e8103c7550f07051518a29c60c9a8e",
+        "runner_config": "2046de885c02090005a4bc1a92ebeb53c16eafde0a34ecc6d8f1b3b95442f0e1",
+        "declared_job_config": "5c1a633fcce9fa835f6e2041fb8bb7f636ffde2b9cd5f4d66238addabcb359f0",
+        "verifier_stdout": "6779104051b82369f0d60af90a9d66405734b0264fa2c33106c865d62c6d7ece",
+        "agent_opencode": "9b4d5eaf53eb62c6284d3ffb519d7af65c8f0bdc2b6e9c6fb21711d050a6f8e5"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/largest-eigenval",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T17:01:41.152146Z",
+      "finished_at": "2026-09-20T17:21:21.871628Z",
+      "phase_seconds": {
+        "environment_setup": 3.553446,
+        "agent_setup": 254.442767,
+        "agent_execution": 900.003347,
+        "verifier": 10.405265
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 0,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "983202bec44268483d425ace3c4aebd259d306878ff9f26a9fb1a9e5e8d2033e",
+        "runner_config": "4f6abd87413b4cadae0b37fb9727c771f583198efa85d75f5e1520049995aa23",
+        "declared_job_config": "549173ef2af34f8e79acc9a5b5c56dbc47b5ae95f644b9ec3615813784eb6791",
+        "verifier_stdout": "6e36a34a4eed0cd7d3d62cd7e6e1923caf58673f79c081ed77c01940b3be9abd",
+        "agent_opencode": "3ab9f18dcda40f35340e2b308091b65da514963487add35e8450a2000adc3697"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/log-summary-date-ranges",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:21:26.386207Z",
+      "finished_at": "2026-09-20T17:26:53.264574Z",
+      "phase_seconds": {
+        "environment_setup": 3.560044,
+        "agent_setup": 255.988803,
+        "agent_execution": 40.523264,
+        "verifier": 14.348076
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "ea5610c41acbf13c55c9d03f72d6b9e4f1d76ebdd0d63b3cd50f8edd59e0b86b",
+        "runner_config": "f3a351f16747c573315d9c8b6f158bf2198f03965bca5c2761f387e6430deda3",
+        "declared_job_config": "41f59bd53cc7868f658fcb6f0c0201319c29c92e128bcef385102065a37bdf91",
+        "verifier_stdout": "67bac381911815861843d7c4339999f77e766611bfbdc3d07d2c1a1a0e7d84ee",
+        "agent_opencode": "5c4936c6279bd2c01fc1f83e8154a77663b4e55bbd439a84a559fc9f9e5a40ff"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/merge-diff-arc-agi-task",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:26:57.755879Z",
+      "finished_at": "2026-09-20T17:34:31.782637Z",
+      "phase_seconds": {
+        "environment_setup": 3.587573,
+        "agent_setup": 262.110873,
+        "agent_execution": 155.304824,
+        "verifier": 20.500142
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "bf5594a1dc6c3ecf97569fab85adb4b910d1ed649998f8c8da97b90fc172fcc8",
+        "runner_config": "4251ce8e3a5d4203604831dc654b845bbfdbce85812990337113928b6c3f0a9b",
+        "declared_job_config": "391365d4086bc8f99cd27f7a543bbb4cc8eebd93b3dab7629c509ca6a94157e6",
+        "verifier_stdout": "2028ca8d12a5ac942d2c851c9245536b7d5d4b9f7a64235ff133f696811a2924",
+        "agent_opencode": "1607661de497b167f66635565bac38573dbf88eb011705117af34c9562be5898"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/modernize-scientific-stack",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:34:36.402100Z",
+      "finished_at": "2026-09-20T17:39:25.834140Z",
+      "phase_seconds": {
+        "environment_setup": 3.552896,
+        "agent_setup": 220.205859,
+        "agent_execution": 29.317439,
+        "verifier": 23.967186
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "1eea5136782b669fc1fac1d9250314d03d6c6e16769bf024a1dc718427c513d4",
+        "runner_config": "67ab0c54a4ddda7fae5ec7ed970e1290368462fa8f512300b853195278093a5b",
+        "declared_job_config": "61702a7e332732488a3bd930fd4f4e534f3e61459023debd688a11ee343d1be7",
+        "verifier_stdout": "f01963a0cae1db5fc8aaf57e38d86d109cec926e16e8a09936f435f828e3ea29",
+        "agent_opencode": "478d87b86067722fe37f5fa0ad15825bf351d3fb4c284d4121a654acbc564852"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/multi-source-data-merger",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:39:35.165492Z",
+      "finished_at": "2026-09-20T17:45:21.285827Z",
+      "phase_seconds": {
+        "environment_setup": 3.547566,
+        "agent_setup": 255.660721,
+        "agent_execution": 49.624568,
+        "verifier": 24.827727
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "1b5c800dbb755e066e17be909db62b911a8bce8adeb0b54060521df984a0196a",
+        "runner_config": "7639bb4fb25bb832dbcfbbf57feb64065c776f46da3f60294302e012b51775b2",
+        "declared_job_config": "96bfefc0c2ec04660533dfa37c3d1c045231e1c3a37ea6ef7e18f57474582123",
+        "verifier_stdout": "a266890046f9a26b0b36ab82ed42ae3f77a6031c655d19cb50e1fad596ed5a54",
+        "agent_opencode": "aaad90157906513b2d84fd8237b0dce0cd9de10faa600845f372f11f768c0631"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/openssl-selfsigned-cert",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:45:25.746583Z",
+      "finished_at": "2026-09-20T17:51:14.560999Z",
+      "phase_seconds": {
+        "environment_setup": 3.562074,
+        "agent_setup": 256.367049,
+        "agent_execution": 62.162041,
+        "verifier": 14.458229
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "8950b57d9576b639db878a9392f3818f3d5542c5ee87743eb3933a7a71aa097a",
+        "runner_config": "96225da1ad20915223ef3960e81aba7df76911829fb661647815dd1a50cf676e",
+        "declared_job_config": "3032a7a241c3551415e8e1d001a726ca4d94d138caad6cb9ca55e958c773644d",
+        "verifier_stdout": "1b4855e200a11ea252912f90dca201974f8ce2b9e5dff3fefa05dd5096baf8e8",
+        "agent_opencode": "21403cea3a56a3df6d7cda1662d864657c99f187d55471b013b1d56a64714c4b"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/polyglot-c-py",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T17:51:18.942584Z",
+      "finished_at": "2026-09-20T17:59:00.199958Z",
+      "phase_seconds": {
+        "environment_setup": 3.559281,
+        "agent_setup": 234.549384,
+        "agent_execution": 189.666035,
+        "verifier": 21.116002
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "267de92ba87822bcfaf14cac39b1f8b0e46e7854f98df444b11ac73bc9f32b45",
+        "runner_config": "7d1c49049de8a5a846c72bbc440a61710d13f6ac91a98e1c68b88f1c3cef5f9e",
+        "declared_job_config": "c2e3f68207a4f37a2d0364595c7477ab5342afd993642ec83c147bdc99c6149f",
+        "verifier_stdout": "c938a1118ced762380dd5e4c2d2f1e91ab26af09812277eb65c2429b31318d98",
+        "agent_opencode": "727f5a7dfbb53faf344b29faeb8d32167ac75357fe267604add263aa60e60076"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/regex-log",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-19T17:54:43.099187Z",
+      "finished_at": "2026-09-19T18:06:46.164107Z",
+      "phase_seconds": {
+        "environment_setup": 3.55566,
+        "agent_setup": 240.106789,
+        "agent_execution": 447.87574,
+        "verifier": 19.167539
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "5542eb474af406be",
+      "local_evidence_sha256": {
+        "runner_result": "d6825c09c11c4b0ee43e3586cac49a498fe1beffe2efa0c8213bd460d2c5e9cc",
+        "runner_config": "cf653e73055f2f97dc175e38316cbbe12bfc23f0a23eaea4d732c6e9e3432acc",
+        "declared_job_config": "b933d1bd922c2b76a8b36cefc2bbd0eb5c706ab1c708ed97583043231f81c287",
+        "verifier_stdout": "0c5c28878092d98972aa2173dc4b935925e5f19920ce7813712bf3c395ccb0a4",
+        "agent_opencode": "b80bac842a032b17591c6220ce73e1999dc59f7c988d19d4cd6b17c14c0e1cf3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/sanitize-git-repo",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-19T18:24:56.513386Z",
+      "finished_at": "2026-09-19T18:32:02.305622Z",
+      "phase_seconds": {
+        "environment_setup": 17.628898,
+        "agent_setup": 242.611396,
+        "agent_execution": 140.082312,
+        "verifier": 13.348539
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "5542eb474af406be",
+      "local_evidence_sha256": {
+        "runner_result": "25b5f040d08dc0569f5e579b28beaf24052938c5eba2c71c2f2fbeff791865fb",
+        "runner_config": "ca79c75664074cb576c11927b56dbf0a02f6732acbf662d0b497fa2f6b23e75a",
+        "declared_job_config": "caeaedf7eaf5c33fe6b889030279123971e807aa8097cf9af7e305c919bcfd4f",
+        "verifier_stdout": "fdb31ac4006f97b36b9e5dd5dd5a2f55c161803a6fe714c8d8a3ab9d0494f5f9",
+        "agent_opencode": "2321f82a75524c2d6a7056109881b9023ef15886f3e210dff33fd09144544cd5"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/sqlite-db-truncate",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T17:59:04.531308Z",
+      "finished_at": "2026-09-20T18:06:41.766805Z",
+      "phase_seconds": {
+        "environment_setup": 3.546243,
+        "agent_setup": 249.842153,
+        "agent_execution": 177.079775,
+        "verifier": 14.520243
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "13e6b73221124f4c0fed82660b6f926c40c23b1a67c1fa7cc65606561d9dcba0",
+        "runner_config": "87cdb94e8ebef116b7ad56cf34f783e1b0cf777f7dff11a93de9e67fe607734c",
+        "declared_job_config": "14d802877caba8c393e976bf687db86c0b4d121319400f0c3e0213e1a3b14bd0",
+        "verifier_stdout": "ea4f0c931418e7541525eae288529e703a6692331625da7ad085840a6b1ad53e",
+        "agent_opencode": "13dfe589e05e71d216ace330fcd7be7e95acee328f171820de9d27fb4a2387b0"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "opencode",
+      "version": "1.18.19",
+      "task_id": "terminal-bench/vulnerable-secret",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T18:06:46.375369Z",
+      "finished_at": "2026-09-20T18:12:19.421832Z",
+      "phase_seconds": {
+        "environment_setup": 3.592825,
+        "agent_setup": 229.503351,
+        "agent_execution": 73.366854,
+        "verifier": 14.393384
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "bf51b5c73e30f4e7",
+      "local_evidence_sha256": {
+        "runner_result": "b2f6b6d042091b0ed37aa0b84714ccd777cba939a62da3437705283f486421ca",
+        "runner_config": "cacfaf07388c45b75af2abebf5aba825353c886f548788b5873565774febc039",
+        "declared_job_config": "76f6200610ba881da0a8abf83efd71f9b4d3bd8298bb929764ce21a578addaa1",
+        "verifier_stdout": "f80cf83b0f1b7362224e2c83756f950a060c3e533ae8ebc549784aa2847cba6e",
+        "agent_opencode": "91162779d38dd0a61e08ef555537b2d62f1b3e2970492ec14ec0459aaa27cfc9"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/anko-typed-variable-bindings",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-19T19:36:40.477387Z",
+      "finished_at": "2026-09-19T19:56:29.139934Z",
+      "phase_seconds": {
+        "environment_setup": 53.039237,
+        "agent_setup": 0.078178,
+        "agent_execution": 1092.621456,
+        "verifier": 29.437998
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 9,
+        "f2p_passed": 8,
+        "p2p_total": 94,
+        "p2p_passed": 94,
+        "f2p": 0.8888888888888888,
+        "p2p": 1.0,
+        "partial": 0.9902912621359223
+      },
+      "verifier_reported_summary": {
+        "tests": 103,
+        "passed": 102,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "dc5aa62cf67d9dd9f434660dafa3bc44ee726df5dd75a07cdb824a6aed413fcd",
+        "runner_config": "bbded673d75047f85e7830ac085a55a5a39694be4829c30a72dbe22c7c99c1e8",
+        "declared_job_config": "c1da4ee17acec467f24a60222c382d920b6a5efaa565316588b78fafee8e0b8d",
+        "verifier_stdout": "3387c725567f532910d0b32e715cd51537b2ee1f12441acca8efadf874d1fd9a",
+        "agent_codex": "131eaaf51df17d0f1f11b2fb5425a53f09614fef9a7bcab15d381c73bc73898b"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/arktype-json-schema-refs-dependencies",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T06:59:46.965717Z",
+      "finished_at": "2026-09-20T07:33:47.526101Z",
+      "phase_seconds": {
+        "environment_setup": 57.178361,
+        "agent_setup": 0.086234,
+        "agent_execution": 1908.62775,
+        "verifier": 60.599016
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 25,
+        "f2p_passed": 22,
+        "p2p_total": 1679,
+        "p2p_passed": 1679,
+        "f2p": 0.88,
+        "p2p": 1.0,
+        "partial": 0.9982394366197183
+      },
+      "verifier_reported_summary": {
+        "tests": 1704,
+        "passed": 1701,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "8cfe2fad6b5ef36e44d2e1026ca7ca6f7d00d29603ccdcba0919afac74d96e42",
+        "runner_config": "515eea5b12c179b8a9ba878575eb9b1765a3c4f6b9e859450c1c5097ba839f2a",
+        "declared_job_config": "b408e3654396a5c73e61ccf4d93e5f01d5c1bf1641bd5198260cd09b2475d6c3",
+        "verifier_stdout": "1ee1446addbe87ee580ea7e3ad5f3b2dfdf27ce260daab2a546a8910a549b9d1",
+        "agent_codex": "efc4fd75b711ea24e3f26525f591ed659a77a6b7a4d783a74c109341a91cb40d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/expr-try-catch-errors",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T07:33:51.990275Z",
+      "finished_at": "2026-09-20T08:07:50.511006Z",
+      "phase_seconds": {
+        "environment_setup": 57.572506,
+        "agent_setup": 0.079927,
+        "agent_execution": 1965.487166,
+        "verifier": 1.569048
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "9299c28862ed7ce75e767ebf1d98f60cecfbbff7be18fe20716d3e51a5932301",
+        "runner_config": "91b2c6e13153830854ba49253fa55f2ecfa1b735e23a1c41a2b40528b5255128",
+        "declared_job_config": "fb73259e64347e0bd4f3a63b80741a2c2f618e24141b6b1a6c650b9eabcb053b",
+        "verifier_stdout": "a12199ea3e0a9be0c702fb7a6be4ab1ffc271da1f6dc11e3ba184298ef05be77",
+        "agent_codex": "e4d0f8de34cdd8f3da627828ec83efd58588620d39569e16d734fbc30a1a5f10"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/fastapi-deprecation-response-headers",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T08:07:55.287010Z",
+      "finished_at": "2026-09-20T08:55:29.426694Z",
+      "phase_seconds": {
+        "environment_setup": 58.706688,
+        "agent_setup": 0.079506,
+        "agent_execution": 2721.069638,
+        "verifier": 60.883784
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 137,
+        "f2p_passed": 136,
+        "p2p_total": 3134,
+        "p2p_passed": 3134,
+        "f2p": 0.9927007299270073,
+        "p2p": 1.0,
+        "partial": 0.9996942830938551
+      },
+      "verifier_reported_summary": {
+        "tests": 3271,
+        "passed": 3270,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "5f1187cfa8b3617fa15b464aedeabf0c633a22dde0bcc6c6ad00a3a5fdc1cf6a",
+        "runner_config": "65b15a614269d0d9dd4084febd5f643f47b1def48c44da5873121239c5903757",
+        "declared_job_config": "eadbf13e797f4e7166796d73555f717b54091bc8f2fb0f5a3cde0459c158e3c8",
+        "verifier_stdout": "898db56ce3e31192f1237fa9d31f2c7ac2b496dc156dd518015e2080c4f95752",
+        "agent_codex": "2b0afd49a2d21049f11b0c51282ad558b919a7de1e58c044739a1648deafde8d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/httpx-multipart-response-parsing",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T06:35:43.712424Z",
+      "finished_at": "2026-09-20T06:59:42.785995Z",
+      "phase_seconds": {
+        "environment_setup": 60.630874,
+        "agent_setup": 0.085105,
+        "agent_execution": 1357.971501,
+        "verifier": 6.420373
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "26cae065cb8a41fb85f4c0ceaec2f6cbfeab1790fc095caee928f2785ddbba14",
+        "runner_config": "913c0be0938b6867d21c24ec337ac1ccc59fb658663a20b8dfc08fe0912396fb",
+        "declared_job_config": "0ac5ccb846646140c522c0740cab78fbcf8e8f9666c90bec51ed43f9c5b354b4",
+        "verifier_stdout": "992b85bf966cd9582f3af6e1d69886cd021e70b1de53e1211d2be323d2b6be0e",
+        "agent_codex": "b827d9dfd18f6fa0006c6e60eafebae87892db695ecec692736374efa10ca92a"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/katex-multicolumn-array-spans",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T08:55:33.749906Z",
+      "finished_at": "2026-09-20T09:13:29.864834Z",
+      "phase_seconds": {
+        "environment_setup": 56.759658,
+        "agent_setup": 0.080735,
+        "agent_execution": 986.209113,
+        "verifier": 19.292232
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 94,
+        "f2p_passed": 94,
+        "p2p_total": 599,
+        "p2p_passed": 599,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 693,
+        "passed": 693,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "f009dd7abc5546f6d7e170fcb85c46e3f3ede1bf320a721924681637b1738a5b",
+        "runner_config": "ba971a41ff477d1fc596318b679e95dc5cc7ee8cd501006aebeef6e47fc0aebc",
+        "declared_job_config": "92c771ae7a8294b13adb81fadeaa45e552136f83b2c4e0982ccd02876dac3109",
+        "verifier_stdout": "14e1e8eb41f3e7b5abfe7580dcb5cc128be301f766d9d50485f8323492df9f81",
+        "agent_codex": "44a27b4f4f27efa79646694b1ad36b3702c11f0df3c29850cbf7a86a773ff034"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/meriyah-explicit-resource-declarations",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T09:13:39.544106Z",
+      "finished_at": "2026-09-20T09:37:14.537985Z",
+      "phase_seconds": {
+        "environment_setup": 57.515406,
+        "agent_setup": 0.081235,
+        "agent_execution": 1286.623562,
+        "verifier": 56.236594
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 49,
+        "f2p_passed": 49,
+        "p2p_total": 51469,
+        "p2p_passed": 51469,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 51518,
+        "passed": 51518,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "c451cfae8842a0cb02d2e8de819b54b9588eae6b88b78787d1dfc7c8c7e1bed5",
+        "runner_config": "2850c60dbd4102da306992805874eea5a1edae33c93033c0e5ad6f1b29aec228",
+        "declared_job_config": "ae4861147d98c759be1caf912105bcb9321e06beac43bb1965fac2199811acbe",
+        "verifier_stdout": "10484ab1a70ce9c3b1d1c2ac087e29849a8d5e3b03fb6b33a0d3be869f2a05d7",
+        "agent_codex": "23a6af2769223b22aa809eaf2ca1bdc0c8b2104e12b333706c3d5d70aa1c772a"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/python-statemachine-state-data-scoping",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T04:48:29.223193Z",
+      "finished_at": "2026-09-20T05:15:34.350850Z",
+      "phase_seconds": {
+        "environment_setup": 57.412956,
+        "agent_setup": 0.080087,
+        "agent_execution": 1529.342135,
+        "verifier": 24.367716
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "749d1fad208452aef71aeb46d8e03bbd136059327a4ca04195ec67db127134e7",
+        "runner_config": "756caa864a6a17cd7c9806d282f17336aef020ac40315c60990ecb8742cdf437",
+        "declared_job_config": "c2caa51b39081cf6bb3c83b4978c91db13a73d348b3e8f2a54955acb986d3daa",
+        "verifier_stdout": "f2735269ed1351f00d80539c8b474170e9946f25e8d9784cb8032afcbc06d3bc",
+        "agent_codex": "791e2db96874f36b4e5dce2a8e9e882855c87507030c766a51e9e91762594d4d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "datacurve/scc-bounded-memory-spilling",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T09:37:18.927254Z",
+      "finished_at": "2026-09-20T09:56:33.983487Z",
+      "phase_seconds": {
+        "environment_setup": 75.024599,
+        "agent_setup": 0.081675,
+        "agent_execution": 1021.110096,
+        "verifier": 44.964289
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 31,
+        "f2p_passed": 28,
+        "p2p_total": 286,
+        "p2p_passed": 286,
+        "f2p": 0.9032258064516129,
+        "p2p": 1.0,
+        "partial": 0.9905362776025236
+      },
+      "verifier_reported_summary": {
+        "tests": 317,
+        "passed": 314,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "9bf033c6652341d3",
+      "local_evidence_sha256": {
+        "runner_result": "faf2ab87df46ce037af0466dd59ab9c0df30110a0d0c3e47cb684146a148c021",
+        "runner_config": "dac6e08af868dc81279543cf1e6ada960b968ff56e8e4f29b560bbbac6f6ea00",
+        "declared_job_config": "3428e0b079f3ec8b03fbcbe489aa2421ff3617854ddae788fb996293e89f746d",
+        "verifier_stdout": "7b7514341dac11691ea8dab889d2c2f8d4305ab17a72c15f31daaad61b9ab2b7",
+        "agent_codex": "06c01fa00cd38119e9d2bee7ab19fac01c26f64cb60568a54e4b1d876f171ac3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/build-cython-ext",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T09:56:35.624085Z",
+      "finished_at": "2026-09-20T10:07:30.051485Z",
+      "phase_seconds": {
+        "environment_setup": 3.551794,
+        "agent_setup": 195.356725,
+        "agent_execution": 431.142898,
+        "verifier": 9.293565
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "94aa3cfd6b00d624",
+      "local_evidence_sha256": {
+        "runner_result": "1a3462b66419cf1b7aa7877fe5a6006995af5c3d2177d950a9245168d5ddb59a",
+        "runner_config": "4ea1e49d67ded3db8759204ccae66a5823d0aae050761934db2b93afbcdba3d6",
+        "declared_job_config": "cee1b3ec16f3032dc494e1a661a5407455a305c438833e840aa1bd8060d83a88",
+        "verifier_stdout": "7cf2c2eb8749f5bb613a6cfbca8b84a7e152ac64bfa342c96db3c25c5b454d58",
+        "agent_codex": "c44bac671c78d6242267af2709ca48e931fc97d0730769a1e6f2d17a5a8a7c41"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/chess-best-move",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T10:07:31.799907Z",
+      "finished_at": "2026-09-20T10:13:11.121225Z",
+      "phase_seconds": {
+        "environment_setup": 3.551326,
+        "agent_setup": 193.709478,
+        "agent_execution": 106.904157,
+        "verifier": 20.104241
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "4f1cd2b35771ad7a33e309fc77b420fcb7d9103d2df069ad295bc033100548b6",
+        "runner_config": "fff9d8579a602bf33ba2f8fe1bc60e601d85458642ec8cfde78581e471a19e3e",
+        "declared_job_config": "723afc3380096be0d87b07aa6c908663f5f86b25fbae97457cf546f4133da288",
+        "verifier_stdout": "416469d667801d67a0db8531cff71e65ce6e2f12b87c3d04c8aeb88d670180c8",
+        "agent_codex": "ecb1aa297851a5437ab960a1ce8b10f3b7831da2ce481aa8117b7a16dba8db80"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/code-from-image",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T10:13:12.827577Z",
+      "finished_at": "2026-09-20T10:18:34.864808Z",
+      "phase_seconds": {
+        "environment_setup": 3.615424,
+        "agent_setup": 247.172375,
+        "agent_execution": 42.104802,
+        "verifier": 14.021054
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "2b0a62cc596a52f680516b886e87de5caef5509982183029a35b7fdbc904497a",
+        "runner_config": "01678b16b593965ad81ebeb4524c062bbf1e30fa8e0ff58f0acfb67b57ade5f9",
+        "declared_job_config": "9a96765fd2bf703bf913990de82953e193978926145fa19947d25a8b20cb28a1",
+        "verifier_stdout": "ff548173a0940c4f0271a0ad1755d8d78c765d4fa2703de11fe4a121feca64d3",
+        "agent_codex": "1f85777c6253fd3856c8c35df46fb796882d57f3a701ff8998679ed5e4bde8c0"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/constraints-scheduling",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T10:18:36.536262Z",
+      "finished_at": "2026-09-20T10:26:52.949856Z",
+      "phase_seconds": {
+        "environment_setup": 3.557425,
+        "agent_setup": 228.882382,
+        "agent_execution": 227.729931,
+        "verifier": 20.710327
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "c97888d921a681a748e8049aed331ae746487b834392c5c9cb815f0e2f71c113",
+        "runner_config": "588ec63c7a849ac4b8967f959e88177763df358e235e4a19a6a517191cfa9340",
+        "declared_job_config": "d4347c7f174113bf56d9de26523b7be99abd669cae39e71d828b178e4c1f7427",
+        "verifier_stdout": "453871fb64ab05569bf98ee077674b9fc81f473be00c74d7de98f4aa4c333486",
+        "agent_codex": "2546c333a7c3940da5187f01054606e2943f691140a37e357159f121fe450fe3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/db-wal-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T10:26:54.795819Z",
+      "finished_at": "2026-09-20T10:32:23.478829Z",
+      "phase_seconds": {
+        "environment_setup": 3.543754,
+        "agent_setup": 207.796615,
+        "agent_execution": 81.537965,
+        "verifier": 20.630913
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "8b21f96749d7f9073b57f76d1ecef9283ff7db1d18f8a7686e599741ff7201bf",
+        "runner_config": "904e61d30e06b42b0e8cb17943a6624354a3ce5fc79395565ba9cef83ac93172",
+        "declared_job_config": "f435c740e7905865b5901a5ea107084a8af581e7d3fb29509f6e7df77b927990",
+        "verifier_stdout": "7fd6942c5af530cc21ae19902756082509d98e72d06b2f38bf93f742b6ccda4a",
+        "agent_codex": "c6393187930bff4c9c6ae06b7f5181a67b04429835f897b2cd175694f458c332"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/dna-insert",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T10:32:25.410433Z",
+      "finished_at": "2026-09-20T10:43:56.111210Z",
+      "phase_seconds": {
+        "environment_setup": 10.322253,
+        "agent_setup": 244.72499,
+        "agent_execution": 400.205027,
+        "verifier": 20.224079
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "b96764e1cb249958191b8a9c1a858498bea47c1cbf71193d76c42609a9a45542",
+        "runner_config": "a94c7ee7a68603ff7b839a3789cdf426b832c06ae718a73e8e6fe0be5775e531",
+        "declared_job_config": "1a8000202465683418df0995a5d488021c3a04721567282dab6d1ec6765409e5",
+        "verifier_stdout": "c324b153a2a7b9f0e30256fd4fc8607aa672c08e974d3b24d7b6fa5868583d13",
+        "agent_codex": "e16f3dc82c2b4c6f8ef17854ec3aa366ec503e0d35ac03eb9b718d9ceaed3e74"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/extract-elf",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T10:43:57.802749Z",
+      "finished_at": "2026-09-20T10:51:39.451584Z",
+      "phase_seconds": {
+        "environment_setup": 51.370021,
+        "agent_setup": 33.741209,
+        "agent_execution": 341.678239,
+        "verifier": 20.383361
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "110ddac6c6b07965a8dc385168b78f52866a5abd51bf76d3575813b812fcc99b",
+        "runner_config": "d5e8de6cc621f0576eec0180c0d59235e32dff134fe8e085bfbc988952d9da2b",
+        "declared_job_config": "d35f0ef0d87e9383e567cf60f8beb512998098a53e39f2c36f6bf1366fb1860f",
+        "verifier_stdout": "9f6d5382019895accee30ea0269aa8b33e8ddc036360bb11bbff210a2caa6c04",
+        "agent_codex": "f6caf85666d2596440376653b199b5c925a1b509eeb0915e0d20dc49cb30d708"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/gcode-to-text",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T10:51:41.147124Z",
+      "finished_at": "2026-09-20T11:11:36.305319Z",
+      "phase_seconds": {
+        "environment_setup": 12.231484,
+        "agent_setup": 253.596717,
+        "agent_execution": 900.371247,
+        "verifier": 13.765465
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "4f2945493741413bf7b9ab4426037b53e32e08fa2493707e4582933c1964614c",
+        "runner_config": "9b8110667050e216957e04d212e30b2d98edcaa2a6ee9ae1c164fa5aa5a66f12",
+        "declared_job_config": "8ce6b78980f3749e0a39b7c1c80071b6c10964b6d2a8a55eb07c8e0938be666c",
+        "verifier_stdout": "c85c31fee9d34ab4a335f8411ae746c65c92f80768cc6caf9e6230da3199d911",
+        "agent_codex": "c46a26c59a72ccdaba5f16dbf864a9526641f8a1a7f7cd59be1d68334cd2c0cb"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/git-leak-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T11:11:37.972562Z",
+      "finished_at": "2026-09-20T11:18:05.865472Z",
+      "phase_seconds": {
+        "environment_setup": 14.757369,
+        "agent_setup": 241.977423,
+        "agent_execution": 95.308231,
+        "verifier": 20.500003
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "c0fc814dd63fa3caa4481924ee5b04a2ace732b0bca6279486add97a3f1feb53",
+        "runner_config": "4dba6da2a5dd142773c487be18ffa075f62462b18708e3cc418e43430a6f9430",
+        "declared_job_config": "c0630e52befa9a1e737f549a68d660a9257e1d5579e3fc3eaf1b29f8cdc0a847",
+        "verifier_stdout": "1b4c5060da9d0030d49eb7456292397d52b49a8c54a030ea32a51d2b9fa65b96",
+        "agent_codex": "144001c158ea0baa12bcc995372a1935dbf84c3ce25dbad1dfa9fc09945549d9"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/kv-store-grpc",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T11:18:07.571210Z",
+      "finished_at": "2026-09-20T11:25:19.426354Z",
+      "phase_seconds": {
+        "environment_setup": 9.8096,
+        "agent_setup": 264.978342,
+        "agent_execution": 126.729891,
+        "verifier": 15.250336
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 5,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "61856177106b0b29a458afd62551e9671237e724604f6e2723068d479d038954",
+        "runner_config": "257c8e2617e196107dd9f3630a4b2ac8037e54e123e973d722905b9eecae9328",
+        "declared_job_config": "7b19519cb004cd5ab52eab1ca4f107aeb5e9116c1c991ee87fe7f5f7fda754f6",
+        "verifier_stdout": "2ed31e70fda629685fb41a9eeb839faf2ff5193e7fe05ef8f70e093a2f74bf55",
+        "agent_codex": "b796a58fb7d494aaa8343743d05e841e4322df750c4f2efe9e170f91a072b4f9"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/largest-eigenval",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T11:25:21.125602Z",
+      "finished_at": "2026-09-20T11:45:10.843878Z",
+      "phase_seconds": {
+        "environment_setup": 13.573855,
+        "agent_setup": 249.260453,
+        "agent_execution": 900.363546,
+        "verifier": 11.053805
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "692a02e6754771388c28f327141f63f15bab756ba96a42c2facb8c3a2653fb32",
+        "runner_config": "fd991cf556b00f8e0e2bf7121e40e246fda0d6b58715bc34aa45fcdadf3106ee",
+        "declared_job_config": "40e8b4717c55be5ada9512a4735945238f729317b4a423ed70b60ac9ec7d7700",
+        "verifier_stdout": "5e3e84b7dc15984b14c9d6622b4e98afc57456f7c3a04347e72cd3616f446586",
+        "agent_codex": "4930bf4b193c2dfd06914bf63067c9ddcab298fac6272bed34dd4e56906edf52"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/log-summary-date-ranges",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T11:45:12.664228Z",
+      "finished_at": "2026-09-20T11:51:11.416292Z",
+      "phase_seconds": {
+        "environment_setup": 11.148422,
+        "agent_setup": 250.963114,
+        "agent_execution": 61.863515,
+        "verifier": 19.777884
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "0b4b92d48707a8df822418ea23d05715adf7452cf40570db20f8f9ad90fdfb7f",
+        "runner_config": "c96eea03dc3e6322385a2919206ad93dd18f47afe7fb0d3168d8030b82b6616d",
+        "declared_job_config": "821ab4b0aa09fa5598395f1bba3194d278e092c618e49e230fe89504bb7001ca",
+        "verifier_stdout": "0a960526af08a05ea8f2c56dc72e581729abb356ae352bf18aca37ec1ca89ea2",
+        "agent_codex": "b8fa921e61b48b9bc71dabb403b277598085e2c51c2e8b45e931d21224f3ead1"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/merge-diff-arc-agi-task",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T11:51:13.095659Z",
+      "finished_at": "2026-09-20T11:58:41.242163Z",
+      "phase_seconds": {
+        "environment_setup": 10.561734,
+        "agent_setup": 244.321476,
+        "agent_execution": 157.823777,
+        "verifier": 20.05431
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "1d67cd74ea5ec35436b0913fc74d5ce26af713c6238dad796fb8f75c865db411",
+        "runner_config": "320bb1a8bb5620892293083b5f58ada96738a424bb504c88f78f919a57982c7c",
+        "declared_job_config": "5e9631ee63c60208e0de6016cc98b49d948379bf79dd1b509618d45bb975e2c9",
+        "verifier_stdout": "5a6b2a34506faa2788240135e0e4c7396bb86022a973195455498667cf0adfca",
+        "agent_codex": "d1ea845c24423262673094deafd8ce2158d54b51c6f2bc4bb096e2b6bf45bdbb"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/modernize-scientific-stack",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T11:58:42.896803Z",
+      "finished_at": "2026-09-20T12:04:22.257192Z",
+      "phase_seconds": {
+        "environment_setup": 24.474812,
+        "agent_setup": 206.025834,
+        "agent_execution": 69.329028,
+        "verifier": 24.303665
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "f1accda0a6307146f51dab928ed4bd980f67abf8ec619a9d61e1cbbd1634d653",
+        "runner_config": "47a6fd3de90d358217337c770564975dc209e677e947c29f54c748fe21da30f3",
+        "declared_job_config": "3643549eef585e570d9a637aafcaa0a859d069ebca2b5febe8f4efff4eab2ffb",
+        "verifier_stdout": "7aab4d8b8f17fc3b5947adc613ceb32a2443de30223d5cc939329ff0ccfcbe25",
+        "agent_codex": "df18c2ef63aec38a372235ddd03e74a7ee002c6bae073e6d133ce4f7c37ea63e"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/multi-source-data-merger",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:04:23.935648Z",
+      "finished_at": "2026-09-20T12:11:12.826525Z",
+      "phase_seconds": {
+        "environment_setup": 21.212422,
+        "agent_setup": 251.366466,
+        "agent_execution": 96.235622,
+        "verifier": 24.723415
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "6b02b1575002a62d03973696eeceba791e2ea784f028edd3a667513a432f5532",
+        "runner_config": "02ecd16b12f97efd1cddfae4f191ebd66af2e2b7c8e93284baee6bbfbb7e2741",
+        "declared_job_config": "9d727fdff9bde9a64282e977a76b880c59a5c53bb68d12b0fe99541cf729ee81",
+        "verifier_stdout": "570f2701a5d47971d9e89db6791e3744483e965bfcd703e3ccead33d17b8ff9b",
+        "agent_codex": "cb97be170ba3c6c29f71d9636a3ea2db8260fa536f6cd611d4c79c404d542a35"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/openssl-selfsigned-cert",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:11:14.521119Z",
+      "finished_at": "2026-09-20T12:17:26.143946Z",
+      "phase_seconds": {
+        "environment_setup": 10.288024,
+        "agent_setup": 254.560258,
+        "agent_execution": 77.130462,
+        "verifier": 13.89878
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "b82e6f7dbe1dd19be192d4d9ce2f9f03664a74146276bc714326db3f668f1d12",
+        "runner_config": "d858916e1cf170b813eb57b3d793648dde459d6a20eaeed38d9b98ff5a361ebd",
+        "declared_job_config": "de627447f88da6776ac6de768c013c5e1953c794e8a4b2f468c7c0b4ad03b3bf",
+        "verifier_stdout": "55fb923355b8598e285d67058c926483e239bbac3a99aefbd8404a9161b6d24e",
+        "agent_codex": "1d471b93bceb19badd6a671767b4107568b1af9fff226248371093ca6bee8813"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/polyglot-c-py",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:17:27.848888Z",
+      "finished_at": "2026-09-20T12:26:55.717609Z",
+      "phase_seconds": {
+        "environment_setup": 17.152274,
+        "agent_setup": 221.173169,
+        "agent_execution": 292.240938,
+        "verifier": 21.713097
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "49e74f664fee356047deea254aa35cf331d0af77bb25e67db536ec49bbd600c3",
+        "runner_config": "8435bed8bca01e5b8037f18aa0b93377394fac4b2b1b7b18ff20193b6808f1c7",
+        "declared_job_config": "1a7b6ed733b3b25a1025b415bad51b6fc02934c07066139f06fab7593dbc622a",
+        "verifier_stdout": "375ce6be2636cc868d2b1c37a4e8abbaf7f27b355566e33324db55c44b8fae79",
+        "agent_codex": "44dfa6c4a41ce7b4c61693fa07282a1ff33cdfff0a1dc2724a0306e59633484b"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/regex-log",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-19T19:08:52.754040Z",
+      "finished_at": "2026-09-19T19:21:02.501925Z",
+      "phase_seconds": {
+        "environment_setup": 3.531402,
+        "agent_setup": 244.549674,
+        "agent_execution": 447.825969,
+        "verifier": 18.586507
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "0fe1f517f6e85c35b0f90ceb42ea8bc3986da584f292bfa618f95aa47f0eb357",
+        "runner_config": "e3a52969b64affa0bde2562a1d7411e4f664fc4fda55a91c705f5670cd318e57",
+        "declared_job_config": "30916f2f64fe22358bf2d809ceb0e5463c8bc19bb2760d758e49982f2dc3f1da",
+        "verifier_stdout": "5620e4b2015e47efea41f1c46ac5cc233cc5e07e4c3ce99079e6d014e14892f9",
+        "agent_codex": "2a20bfdf517a14ffc265586b665393ff384604b637d74ebacc4a6c76fa30f7f7"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/sanitize-git-repo",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T04:16:16.334518Z",
+      "finished_at": "2026-09-20T04:35:54.352771Z",
+      "phase_seconds": {
+        "environment_setup": 3.548865,
+        "agent_setup": 245.298629,
+        "agent_execution": 900.348152,
+        "verifier": 13.203997
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "802034d6912880456394b4d6a42994a7406eefafdc6e2a8fdacac8ba334374a1",
+        "runner_config": "ca029162382783f5431b61d1b04a6bf1d53ae222cf9e85b8c932f27d009b2dca",
+        "declared_job_config": "a7adf15d33d7ad4ca1822579754025603ff5de723f81001d0d9ea589e4d1df24",
+        "verifier_stdout": "e2b6d437989c3bbb00898e48e4b9376828a417ae6d8f2af2b7bee0cdafe27aaf",
+        "agent_codex": "512b80b10f97b106c39340c977327e788829a97167a7230647d628ae89970f90"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/sqlite-db-truncate",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:26:57.393191Z",
+      "finished_at": "2026-09-20T12:35:21.402753Z",
+      "phase_seconds": {
+        "environment_setup": 10.466573,
+        "agent_setup": 252.894003,
+        "agent_execution": 209.467685,
+        "verifier": 15.504476
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "ac286134dcae27a4d30c0fde2ec4b06c08443e9c412d7eebd48f93a249a01f5a",
+        "runner_config": "303397b57ba32dc1901b18f785cd37e187028d14588e8bb08b98880ccc54825d",
+        "declared_job_config": "bd806ce1d3cdb931cd21954290a15f1c23bae05cf6e1ff218e9c24a419d59826",
+        "verifier_stdout": "7a2f12480159aaa2d9d299bd16bbf40fd74fd29ac43b7e546ed36a3a70a1b5d9",
+        "agent_codex": "93ea50279a4d04648f5c8634304cd6029e7439b2d173e91992d8cb12b016920e"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "codex",
+      "version": "0.148.0",
+      "task_id": "terminal-bench/vulnerable-secret",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:35:23.091669Z",
+      "finished_at": "2026-09-20T12:40:53.422015Z",
+      "phase_seconds": {
+        "environment_setup": 17.458418,
+        "agent_setup": 221.654485,
+        "agent_execution": 61.79744,
+        "verifier": 14.015201
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "cefe141015f7339b",
+      "local_evidence_sha256": {
+        "runner_result": "6039845709008dcdc3b7953a375b8e614ca2d900a618ba52c3b50a6a13b17291",
+        "runner_config": "0a8c16a3adba6ffe383735fd79d9535b0520eaca7b7f52785be3bbc55ea5bf2c",
+        "declared_job_config": "5854cb8f7a4c5b7a3f4c7d782868490085f1b176a028de146758c9fb31524384",
+        "verifier_stdout": "6034a025ac4fdebac69fb68d45d99b185dbc32fc81930b25215b145cd4ca5568",
+        "agent_codex": "21352afcac5e383559532a51e44f11e634782cb20a79726f76c595978ccc08e6"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/anko-typed-variable-bindings",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T03:47:13.608563Z",
+      "finished_at": "2026-09-20T04:16:14.746838Z",
+      "phase_seconds": {
+        "environment_setup": 50.522553,
+        "agent_setup": 0.0803,
+        "agent_execution": 1647.553083,
+        "verifier": 29.740361
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 9,
+        "f2p_passed": 9,
+        "p2p_total": 94,
+        "p2p_passed": 94,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 103,
+        "passed": 103,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "0c56b26cf008551ebdabb74055408a7f0f5358d4467475cf658b32444c28a85f",
+        "runner_config": "3c782eb97767ae0374d2b04ac4ceb6f98b46a9d9d36dbe90ca0abbf3e4a5a832",
+        "declared_job_config": "c81ccf0d4785941408e1b4692090fd3c6445876913b04eb39c0270c889c550af",
+        "verifier_stdout": "98becc122dd084c90433ad0adde8747e8acdf266304eff436ff5352a49ecaa9d",
+        "agent_claude-code": "470958fb64bf2cc93ed81a5639a719d23d821df18cfd1b2a4d62c282f6ed4548"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/arktype-json-schema-refs-dependencies",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T07:03:46.142417Z",
+      "finished_at": "2026-09-20T08:10:05.327388Z",
+      "phase_seconds": {
+        "environment_setup": 53.914909,
+        "agent_setup": 0.084455,
+        "agent_execution": 3851.566269,
+        "verifier": 59.331512
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 25,
+        "f2p_passed": 23,
+        "p2p_total": 1679,
+        "p2p_passed": 1679,
+        "f2p": 0.92,
+        "p2p": 1.0,
+        "partial": 0.9988262910798122
+      },
+      "verifier_reported_summary": {
+        "tests": 1704,
+        "passed": 1702,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "1f723db833bf6845dd1be7bcf1f2dfe1d1e9154ac1279be99d13da881031fa3e",
+        "runner_config": "194a24edd69d7ee67a016c4f10d1d694dc1ad810ae400e7142e48df9f71ed017",
+        "declared_job_config": "c6ba6749d6c79d848324c5d139d6f1aed8b80e6d7e55278c029ab74d77a464ef",
+        "verifier_stdout": "c9c54ca8ab0ba7c78018927ae68cc9f63d8520f4ac75d564782291d33937f6d7",
+        "agent_claude-code": "2674798c6e358910a5e15deff505aa94ebb1aa5bc58b1f4239b71eba5343f54d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/expr-try-catch-errors",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T08:10:09.676332Z",
+      "finished_at": "2026-09-20T09:13:47.231975Z",
+      "phase_seconds": {
+        "environment_setup": 51.443314,
+        "agent_setup": 0.076069,
+        "agent_execution": 3743.2772,
+        "verifier": 8.392095
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "5037eaab613d2be0bf479034e24b75d87a3d6f5169e606f27a059924ff71e3de",
+        "runner_config": "fd35b0c47693907143ce3444b1c5412e9a53f1c08a338011617281591d3ca1a0",
+        "declared_job_config": "80ed90c12890986086953c81f3dbaf1d4b6f03144ae7a337c05ea516896a6ef1",
+        "verifier_stdout": "32b15cd47c2e20870a8e6452f9a9c30bdfe2516e284c52c993b1d079e7ac8c68",
+        "agent_claude-code": "c5fb0cfa6baf39e1b49b7a9272a22776e7978e51952878d6984da9b1cdd90b34"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/fastapi-deprecation-response-headers",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T09:13:51.776797Z",
+      "finished_at": "2026-09-20T09:59:21.263146Z",
+      "phase_seconds": {
+        "environment_setup": 51.028647,
+        "agent_setup": 0.082524,
+        "agent_execution": 2602.029387,
+        "verifier": 62.640807
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 137,
+        "f2p_passed": 137,
+        "p2p_total": 3134,
+        "p2p_passed": 3134,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3271,
+        "passed": 3271,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "e4957774d2d5497eac432f12ab089fda3a47ad4fc736f01c8e46160e72073370",
+        "runner_config": "f330cae381d65b7662f62e953787876258c16c83438496ff53a732e42a77fac0",
+        "declared_job_config": "82908a58fc50ff078ec990eb06c7e659394cac8675c4a637c872aa621dfb8a00",
+        "verifier_stdout": "8ecb229bffdf0e8c1afbcd5b55bc6019787b44dd5471fe88f324efa277350a0f",
+        "agent_claude-code": "4a67195f96a5f950c3302796aaddc93131276cf614275e86a13a050186fd1b24"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/httpx-multipart-response-parsing",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T06:35:43.716230Z",
+      "finished_at": "2026-09-20T07:03:41.916690Z",
+      "phase_seconds": {
+        "environment_setup": 57.194511,
+        "agent_setup": 0.078625,
+        "agent_execution": 1600.550657,
+        "verifier": 6.445379
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "353ae96af80d2c0a7c4b461410a482bd776de5eb73e4be602ac084b29429dd74",
+        "runner_config": "3de5655cb413cbd77ecc329e71ff61016e3fbed8fae86ecec4a76076411e16e7",
+        "declared_job_config": "2055d5d8e99b36ac195537fa3ed0c5bcb53539a22e7896628e6005f144b1dc7c",
+        "verifier_stdout": "85054d9e5c90f532f8bcc78aa16e1eae1d58ce63420c0a6945d402d3dd0bb8a7",
+        "agent_claude-code": "4c9ac4f15d5ec34778a52d92a30693c5473a667330ba29f084dba7abe4734145"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/katex-multicolumn-array-spans",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T09:59:25.768549Z",
+      "finished_at": "2026-09-20T10:57:49.022585Z",
+      "phase_seconds": {
+        "environment_setup": 54.407091,
+        "agent_setup": 0.088654,
+        "agent_execution": 3416.384208,
+        "verifier": 18.782158
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 94,
+        "f2p_passed": 94,
+        "p2p_total": 599,
+        "p2p_passed": 599,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 693,
+        "passed": 693,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "9ac7865e770200dd863271756f254c490d1c6a8d794afd4410002e3ea17d84bd",
+        "runner_config": "494b580754381b3530279c8f74dca82db979972bc68e091ed038a1d324dbe58a",
+        "declared_job_config": "ebef6f2eebb3a558eb6af131e82e41db5d92a8ebdd043b157a0e4d5f7fe4f293",
+        "verifier_stdout": "912960ea0a322596e445d05eae635a23f959b4d75d8f87b8992ea62175d250a2",
+        "agent_claude-code": "45e694624cfb2ce6be9be44d197aeec4c25fad0a02dff78ba718bb8e3cdddb82"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/meriyah-explicit-resource-declarations",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T10:57:53.218463Z",
+      "finished_at": "2026-09-20T11:42:25.863856Z",
+      "phase_seconds": {
+        "environment_setup": 50.697315,
+        "agent_setup": 0.06724,
+        "agent_execution": 2551.724889,
+        "verifier": 56.113279
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 49,
+        "f2p_passed": 46,
+        "p2p_total": 51469,
+        "p2p_passed": 51469,
+        "f2p": 0.9387755102040817,
+        "p2p": 1.0,
+        "partial": 0.9999417679257735
+      },
+      "verifier_reported_summary": {
+        "tests": 51518,
+        "passed": 51515,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "e3aba7d0c3d6b6885d6c4100d364a7ade78fe5b8f21543b963d8e75cda4b6d30",
+        "runner_config": "7a604f1f6cbe26f96f3207791a907fcb34972c774627dfbf3acc834d2a054d16",
+        "declared_job_config": "2d515cd496941c7c3ac5cc2327b2028d4717dd7933d3471ca9d9f2e1d4e31037",
+        "verifier_stdout": "532c3bf07cc7c7b6c97063ba1472517e73af8816611862e919fb61b3189a4632",
+        "agent_claude-code": "d5f597382f3b8bf2f12642f220b164283c7329e991107861da99774b43e1c2ee"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/python-statemachine-state-data-scoping",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T05:15:38.581230Z",
+      "finished_at": "2026-09-20T06:21:49.264944Z",
+      "phase_seconds": {
+        "environment_setup": 52.276477,
+        "agent_setup": 0.073706,
+        "agent_execution": 3880.196727,
+        "verifier": 24.180333
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "83db429b3d717794e9396affec4b372ee86f681ad73ee305894cff37458e3e55",
+        "runner_config": "54009c4625a8236a73533736b1ac550a96bbcbb73d7b2a292c6178ed0566097c",
+        "declared_job_config": "4d4a2ac7ca525cc5cb01aa696142eb1a8f0e41b00ff933189ab8f366cab8f92a",
+        "verifier_stdout": "99dadb19a29428fc707c6e792689cde0946a371bfc119eb432ffcf2beece8b11",
+        "agent_claude-code": "d3c22f4b5e0ce64c918321aa61c6a8ef903cc0e3536cc9fb25fd19c04d5b187f"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "datacurve/scc-bounded-memory-spilling",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T11:42:30.180940Z",
+      "finished_at": "2026-09-20T12:40:53.879792Z",
+      "phase_seconds": {
+        "environment_setup": 53.680416,
+        "agent_setup": 0.080136,
+        "agent_execution": 3389.822388,
+        "verifier": 43.315547
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 31,
+        "f2p_passed": 31,
+        "p2p_total": 286,
+        "p2p_passed": 286,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 317,
+        "passed": 317,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "18e29d5bf2feeb02",
+      "local_evidence_sha256": {
+        "runner_result": "bb0e296e6725d922da7303138d7ff1bc5d8d1c44659360c07640359150c85cfd",
+        "runner_config": "dad225fdd6b98c95bcf63528e4ec90cd972b5471c77255476f9ee839ac325e4d",
+        "declared_job_config": "325e2d9ce41020acd9f5e67a81356d9b9bbbcc5cc771d02cd0e7cde762382531",
+        "verifier_stdout": "fe903bdbb3106410cdc7eb9d4d03da0d46457cbb349f3b78e78cae665d7fd900",
+        "agent_claude-code": "eeff4dab0881fa478493c57464d6c8a87bc10c19d422ecf0ff69014b045fbf39"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/build-cython-ext",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T12:40:55.560178Z",
+      "finished_at": "2026-09-20T12:59:38.754068Z",
+      "phase_seconds": {
+        "environment_setup": 3.55825,
+        "agent_setup": 191.268391,
+        "agent_execution": 904.236344,
+        "verifier": 8.962263
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 11,
+        "passed": 3,
+        "failed": 8,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "b044bd70d19f2429",
+      "local_evidence_sha256": {
+        "runner_result": "98715181094ac17d63d4a31da2b75e3d35eeefeee5c5bdd12820e4b06aaacea0",
+        "runner_config": "6d5d12b62452c4b4554a8ce520f54309657e8485316c0a9d554cb676f12048ca",
+        "declared_job_config": "8f5fbec1e066a54dcaeecc72fb1631808392e11598667c3652c893c90a98c9b7",
+        "verifier_stdout": "f6b9511856393dc41d535ed2de77c658857923a2f50d78ab927471790e2407e7",
+        "agent_claude-code": "fef1231d3c6fa34ce0192536bb2e3c37444d680a905e07a555701bbb51d43262"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/chess-best-move",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T12:59:40.446097Z",
+      "finished_at": "2026-09-20T13:18:30.815868Z",
+      "phase_seconds": {
+        "environment_setup": 3.558637,
+        "agent_setup": 197.428379,
+        "agent_execution": 897.54916,
+        "verifier": 19.367838
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "e37d5b520c8c4255ad030b2ac8658257ac2206e826eaa3779fc83856d4927ee7",
+        "runner_config": "dcf48dba64bd1af132585c23a936f91581d590aeda4d0fafb857effc24d0168f",
+        "declared_job_config": "eab54e1c964efcfa2d67a63598d68546fff82533957bd8f267d74fd1a81be4c1",
+        "verifier_stdout": "070de4c46a219084bf9f77caf7fcdc0b5b56bede3183e7b4008ea080555b773e",
+        "agent_claude-code": "7f6a7756fe9f383242aaa392c39fc3d8efe44bd80ccffec6c1841c1379844114"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/code-from-image",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:18:35.379207Z",
+      "finished_at": "2026-09-20T13:24:09.234631Z",
+      "phase_seconds": {
+        "environment_setup": 3.555586,
+        "agent_setup": 249.249183,
+        "agent_execution": 55.103498,
+        "verifier": 13.744674
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "0c2bc3018a194011bf67786b1d866ab717aa6f8eedb55e0ca76bf7a96c7c11a9",
+        "runner_config": "2cefa3c82755b203ee9a3fec3fa87a4451b1f71c13def678c40588eda45fe2e4",
+        "declared_job_config": "c49c9349ae087e8251176afa5280b0f74f1abe8590fe10068f3cfe8477af588d",
+        "verifier_stdout": "b4460b76f111481bc3657f5a13b2823e57a4fa997a5ae23bede405cf6f9fa908",
+        "agent_claude-code": "3546555ff7260d1d89408c8482238e24cc950c9b342e54b676c366d8083fd429"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/constraints-scheduling",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:24:13.884870Z",
+      "finished_at": "2026-09-20T13:30:17.822369Z",
+      "phase_seconds": {
+        "environment_setup": 3.557833,
+        "agent_setup": 233.180608,
+        "agent_execution": 92.025692,
+        "verifier": 22.880452
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "334042230df2fb114faf9070b3bcbc974d844f3f49c8511fd23806ef46ac4bb8",
+        "runner_config": "90cffdd5592d3488a4da3b23f6076b07de39224718e3d035690683643c695d08",
+        "declared_job_config": "e64e7056e1f273dd57af2b6e2b62e83d912f4a8e80e82dbfacc307b0f7e06ae2",
+        "verifier_stdout": "201d5a280a2d5acc6f738f7f8f494a8cc4c29b9f711026574abe2cf3c0edc28a",
+        "agent_claude-code": "527dc44793cc9618595324f3e9a144f7e8d46bf71b8e7814494cf8f1bd642a1c"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/db-wal-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:30:22.439480Z",
+      "finished_at": "2026-09-20T13:40:31.572207Z",
+      "phase_seconds": {
+        "environment_setup": 3.559713,
+        "agent_setup": 202.666118,
+        "agent_execution": 370.033629,
+        "verifier": 20.595947
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "ab0ccd2c89f56fdcdefdabfcbdf7f8e67adafe8222c9c23cdbf59fcb4cacdbe6",
+        "runner_config": "359a461204e9027271544a4258b426c9e73cd64c992205a42e87260ab2c687b6",
+        "declared_job_config": "22b53a284ebcc484c81f47824b12ee8193f112a2280ae83051de4a80fe43b3d9",
+        "verifier_stdout": "713e9e3d0ff04db8b4be4748fbc617bb8f4bb6f1ee65062cde7b20603c5994a1",
+        "agent_claude-code": "2af4dec70cc96a69196a9a8a2ca33e9b42175a52808aea89249a734f2642c50d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/dna-insert",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:40:36.135090Z",
+      "finished_at": "2026-09-20T13:51:53.273062Z",
+      "phase_seconds": {
+        "environment_setup": 3.521886,
+        "agent_setup": 248.04389,
+        "agent_execution": 393.248893,
+        "verifier": 19.897188
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "51ee0abfab7e2fa492afe32e9e33202e76916a3fd460ead6ef9331948d69b342",
+        "runner_config": "0f16d7bc2da5808aa0234a52acf411dcf810f12d8069ce19ffc241827d693f6c",
+        "declared_job_config": "762a32edd489723cfe9009f6531fed9303c83a9f6b0a4681a34486e3ee4d569b",
+        "verifier_stdout": "7a9838562725535dfb61cff2f09c10deac3a2918c5aacec7a5f4c68bc69c5d93",
+        "agent_claude-code": "bd3183f2c8afa8ae153547cf26af60a4650bafb5d3af5a951213e52f306ac12c"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/extract-elf",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:51:57.798935Z",
+      "finished_at": "2026-09-20T14:04:00.013082Z",
+      "phase_seconds": {
+        "environment_setup": 3.560522,
+        "agent_setup": 32.396238,
+        "agent_execution": 654.794359,
+        "verifier": 19.876843
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "42852d2358b521a57f686ef46a51d2ae8fe67af2a535790af0412991350715fa",
+        "runner_config": "ad0ee7a1f3f8971e59320fdf803b5ecf7d32e78e203e0df8362c6d46e9e40083",
+        "declared_job_config": "04076d986b8a784efd970503d6b10086b27fe86fb4b0b16e94d0994fc8d5ef64",
+        "verifier_stdout": "76c9480d23af6d7373b7136345c7a0e5304a6e55439fbab108409be732d29499",
+        "agent_claude-code": "3bba3adfa4858f1c308e5ab4dab3f3764d743d143139f1779364fdc5c150be82"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/gcode-to-text",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T14:04:04.538430Z",
+      "finished_at": "2026-09-20T14:15:54.726943Z",
+      "phase_seconds": {
+        "environment_setup": 3.551621,
+        "agent_setup": 261.229508,
+        "agent_execution": 419.465142,
+        "verifier": 13.591128
+      },
+      "agent_exception_type": "UnknownApiError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "dcb0b1a2eb81e94eab76e3c7308f95f8c59ec1d5fcfcbd213db90c8562a7d2bd",
+        "runner_config": "4ac8181e8601a54f7f1b6170ca7bf0782a77cdfbb9a05325c8de4985aa85b12d",
+        "declared_job_config": "c5137189327f9b20b35f6a96ef03b54e726508410bf4b32bee956ef502f15380",
+        "verifier_stdout": "a49c855eb063233b2c4f9d0ebaeac729dea56bc1df9f4fcfd8de5517f412adbb",
+        "agent_claude-code": "f32cd4e8ac372b9736bf29076516f27ca104157ccd949eebb77579b7988a4914"
+      },
+      "billed_cost_usd": null,
+      "exception_note": "Claude Code terminated after API HTTP 400, provider code 1210 (image input format/parsing error); counted as an end-to-end failure, not evidence of a code-implementation error."
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/git-leak-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:15:59.202956Z",
+      "finished_at": "2026-09-20T14:23:46.885328Z",
+      "phase_seconds": {
+        "environment_setup": 3.538186,
+        "agent_setup": 225.292305,
+        "agent_execution": 205.954528,
+        "verifier": 20.520614
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "b15849ade0c8229b141da621a10f6d526d6d9be52af551b025e6b16db413da8c",
+        "runner_config": "06f4fa5fa72654c8afbf1ea0e5fac1ba801a33da542635b886d3fd68a0b6b83f",
+        "declared_job_config": "d82106f2abf5c3756477abd252b4af7a7be5943311dd159300210d7b5d4871ee",
+        "verifier_stdout": "06c8fea00e02321ec3045a5963702f62564efe2a01a3d03473241686f531d27c",
+        "agent_claude-code": "4adbed4fd055e632ff410e4e7a41c91df6724f6cbaa0d3f8b40924d3793188f9"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/kv-store-grpc",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:23:51.581865Z",
+      "finished_at": "2026-09-20T14:33:40.357211Z",
+      "phase_seconds": {
+        "environment_setup": 3.636429,
+        "agent_setup": 256.683322,
+        "agent_execution": 300.88573,
+        "verifier": 15.349566
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "36adf265e2607cbeaeebfe7dd69ecb44b2b9cd740483637b79f0dd4ff3771b40",
+        "runner_config": "d6e612fbbbc670e503922778a4f7658bc6e0d2c0e1b052f656f257a0d331bfbb",
+        "declared_job_config": "e9f44b41233b954b968daf5e9eb176240256c9e0d9c7c74319796ed79113b2ca",
+        "verifier_stdout": "d50b3071a42f4817dfd86bf3dcc74b6aea627d8999ee58d5d66d734394089898",
+        "agent_claude-code": "9d7d72c07c0acfffd59c6a9613d4488ca35865c7a067262ec3f544c037b850e7"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/largest-eigenval",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T14:33:44.883642Z",
+      "finished_at": "2026-09-20T14:53:26.794666Z",
+      "phase_seconds": {
+        "environment_setup": 3.556155,
+        "agent_setup": 248.232372,
+        "agent_execution": 904.197846,
+        "verifier": 10.698354
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "b170ad72ebc046c1dcbaf772f113e605221f8d3a5949ba34ec3f06fb0745c212",
+        "runner_config": "ccac6191ae71aa23afad9d3284de666ac0fcc217e1329af39e9ff9d00d9d0085",
+        "declared_job_config": "3c71f503ece443131f5d5c89c59126f94af17d55877474f1ee35b1b201dab3dc",
+        "verifier_stdout": "9c28666f790378dddabd0d6866da5ca9bb650856c74b7e149b09e453b88a61f1",
+        "agent_claude-code": "7286011ff232cc9fa6def80fe92174b6611a0b6459b9809a4cf4c223d9a64730"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/log-summary-date-ranges",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:53:28.485619Z",
+      "finished_at": "2026-09-20T14:59:33.418186Z",
+      "phase_seconds": {
+        "environment_setup": 3.554486,
+        "agent_setup": 260.45215,
+        "agent_execution": 74.363475,
+        "verifier": 14.390075
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "3d8b3508f3754861c3b3d8d0e21f96e574351de12ebb587f02ea6aa756c6d805",
+        "runner_config": "6f8a7ff2d1b566fc065c2cdbe79769ad46f807dd615deb86cae07d2ca2a0fd5e",
+        "declared_job_config": "b021863c9143f45f9ee8a939bd4e66a26101cf906326a22bbc763ec8ff1352f8",
+        "verifier_stdout": "527f1c6b5474eefc0f4ca2487cc75e9cfd09493ac9915eef50ac4b054e0405c2",
+        "agent_claude-code": "50b4401b979f78d62af10a4a3d7f83953aa1d56c4ceaca62db1bec81e46bb781"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/merge-diff-arc-agi-task",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:59:38.233412Z",
+      "finished_at": "2026-09-20T15:10:08.465941Z",
+      "phase_seconds": {
+        "environment_setup": 3.590905,
+        "agent_setup": 262.45097,
+        "agent_execution": 330.865695,
+        "verifier": 20.935781
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "86bc46f67e5adf79e56d9b33a700cd1e546aac7e52e48e178c4f4ef68e5318ca",
+        "runner_config": "4a1656af6604392878387e54b4f555c347be814a4c349687e1b2ad05a07bca70",
+        "declared_job_config": "73f7a2c2aa7785623323e9354c7cc80acf3a45c9c44fd7e8413008aae935ea1b",
+        "verifier_stdout": "7e8fc7e8d83e6a6635d467d6bff6f76be468b4384afcb7ef773adacfd9da6d9d",
+        "agent_claude-code": "aa25205ac92b0a9384dd1aaf52a10be92c30a332e53961880df5be73f0e69755"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/modernize-scientific-stack",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T15:10:13.043513Z",
+      "finished_at": "2026-09-20T15:17:16.634490Z",
+      "phase_seconds": {
+        "environment_setup": 3.574533,
+        "agent_setup": 220.532916,
+        "agent_execution": 163.437863,
+        "verifier": 23.80426
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "87a2aa032ab7dce0b6d67808f08b75695a118353915804b320510799ee2cf2a3",
+        "runner_config": "553b75195aaf702164223c153c60dcf27e90b23920182f7e5e14fa1304c867f3",
+        "declared_job_config": "960b0e8ca85bd320400085a636dd84ade8e49a6602feac5241a4b34c285ec8a2",
+        "verifier_stdout": "7ffc26de8db6c34c6d95926c7a727a5da914219c265043096bc5e7850a724890",
+        "agent_claude-code": "9f60e1e70fc0187e255656d4a976e73e052f2304ebe0ae9ae27504f617103336"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/multi-source-data-merger",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T15:17:21.298488Z",
+      "finished_at": "2026-09-20T15:24:52.738472Z",
+      "phase_seconds": {
+        "environment_setup": 3.557014,
+        "agent_setup": 246.061974,
+        "agent_execution": 164.220838,
+        "verifier": 25.204644
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "088c9e83917a90125c5c8472228598dfc46b54f55f6c8caa02fb0aa97d9786d2",
+        "runner_config": "22a04908b6d9055f35a3b8786ae6fe0958238612116df48da688ee1872abbe6d",
+        "declared_job_config": "1c98e3d369e92ec550f2e6eee3a1e9d3ae728595e0772eaab3efcd3f37e5d873",
+        "verifier_stdout": "b80c9a675c38d3380136c1f7c7153919c9c2725b668589ebbf59af1b5de076bb",
+        "agent_claude-code": "80b7f126147a1897a441447216fa98199927ed820fda7ac252a3126641d83fa3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/openssl-selfsigned-cert",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T15:24:57.287936Z",
+      "finished_at": "2026-09-20T15:31:12.517920Z",
+      "phase_seconds": {
+        "environment_setup": 3.5452,
+        "agent_setup": 252.528876,
+        "agent_execution": 92.380245,
+        "verifier": 14.575936
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "0eff9305de42f72a86d617c1de8919ac4cbe58bed83df102175c4ce58bb3db3e",
+        "runner_config": "814d54ec29608282ce00545495648dd7299c05c71f66b36701fb8c45c1feb2ab",
+        "declared_job_config": "aa894323325b4f2b9cd89e0907b0006e425c6505e5a00c9cb72da5fb7bd6e1d3",
+        "verifier_stdout": "7a0853cd868b1fbc804a35489581f1a6cda91f81f10b9f53a1b749441738e91b",
+        "agent_claude-code": "ef8011b563d937de8fb883e3bf944a7ae1d657c65f28ab225d1cb3c64aedf1f3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/polyglot-c-py",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T15:31:17.146092Z",
+      "finished_at": "2026-09-20T15:40:55.957273Z",
+      "phase_seconds": {
+        "environment_setup": 3.549821,
+        "agent_setup": 221.112695,
+        "agent_execution": 321.770786,
+        "verifier": 20.034886
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "e63bcf29646a39782f535d570a35a4d85458776ffdfb21fb48acf7b6e451022f",
+        "runner_config": "0bf8990811299de171326a6f944c160fd1f98f5ecf20c619c81b245bf103e810",
+        "declared_job_config": "9e52ace3643be4147d980a792da4f794e83a18ff591721b9fcc40116ce4a4829",
+        "verifier_stdout": "8e7ff847294a69e86fe909253a952a866c93f5f98f686c720fcd9231c9a5e869",
+        "agent_claude-code": "27f00226c2d3e3000097c419f7bb2043ff9e58100ee4edd45f21879bd96b9faf"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/regex-log",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T03:27:35.470971Z",
+      "finished_at": "2026-09-20T03:47:06.601624Z",
+      "phase_seconds": {
+        "environment_setup": 3.542742,
+        "agent_setup": 252.67528,
+        "agent_execution": 883.4206,
+        "verifier": 19.005439
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "5a508f66d595208db197ed0b375dca3ba05ed772d79990d93812382f173dd74a",
+        "runner_config": "d64bc3771c2855651f45e1c0eef47fbd9345ded004346fc5312ccedee1be2cff",
+        "declared_job_config": "e4a28725b423d8165f0024c1086d7fd9e22c73bcfd1297a76e6ad070c9b64143",
+        "verifier_stdout": "5620e4b2015e47efea41f1c46ac5cc233cc5e07e4c3ce99079e6d014e14892f9",
+        "agent_claude-code": "719c5c6933dd7972c479a37ac56ddee1b332c3fc02d2a9cf7bfae25290515c1a"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/sanitize-git-repo",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T04:35:56.004108Z",
+      "finished_at": "2026-09-20T04:43:44.298385Z",
+      "phase_seconds": {
+        "environment_setup": 3.564248,
+        "agent_setup": 243.52991,
+        "agent_execution": 195.36964,
+        "verifier": 13.66084
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "fed3d5d93b1bcec6b05b1b4483d39c84c70b89792a63e75887a95567cc5f3d71",
+        "runner_config": "5f2fd9ce8fc92614696d096c3cc9d5a6a3e5f9e57811866de100ec810cfb9f43",
+        "declared_job_config": "909f0f6fbd4821797c8eb61092532fa4a17c4c06f7a3a28fb2ddbd9e8b9c9b6e",
+        "verifier_stdout": "cea3a72c75c45d1b6cca22cedc7dcb55c77cd5e1fb6a0a27090cd6e32c7f81ac",
+        "agent_claude-code": "07ca40b3d73f354f5108449edbe21407b7e66d2d564b1b76eec4e99f4ce4b0db"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/sqlite-db-truncate",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T15:41:00.523356Z",
+      "finished_at": "2026-09-20T15:50:29.677989Z",
+      "phase_seconds": {
+        "environment_setup": 3.597707,
+        "agent_setup": 247.517576,
+        "agent_execution": 291.463083,
+        "verifier": 14.387353
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "89a9f68abe7f59228d9b950410216c673c5c623c4502cdec157d5dc0b22f9813",
+        "runner_config": "d3c2e6d676db5a3382669ce7f420b97e6bf4f58aacac915c2adacb70e60627e2",
+        "declared_job_config": "d7c74d3b470aa022ff757371dcfbe75dc138b38369d8634510a244a5c067c9e6",
+        "verifier_stdout": "2c549f597553db54a8bc75d9b098cf4d416b06a2ddf10d6b6b5c240168f2a782",
+        "agent_claude-code": "0a9f5e4c0b61063df2556770511c8fddd5727700136f2d902a1691ede7829aac"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "claude-code",
+      "version": "2.1.237",
+      "task_id": "terminal-bench/vulnerable-secret",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T15:50:34.193581Z",
+      "finished_at": "2026-09-20T15:56:23.560572Z",
+      "phase_seconds": {
+        "environment_setup": 3.555742,
+        "agent_setup": 220.723891,
+        "agent_execution": 99.039762,
+        "verifier": 13.877188
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "8ee91ddfbfb653e2",
+      "local_evidence_sha256": {
+        "runner_result": "2a1e80c9937b175834cac866e41478d9a975eafe0c8381ce8cdec3997cc284a0",
+        "runner_config": "f5aa277f7af1292026a95d6b14e8b68e383730be040ef0f44bc89b888fdacbfd",
+        "declared_job_config": "bcaaa7b4110488e73dd6673018069f6cc0c51c6f4a90bd14a7b1a6e062be0228",
+        "verifier_stdout": "f555f54a320cdade9b1b3f3346f93067b44d1a4c60b9c97847d9386f15ce53d4",
+        "agent_claude-code": "894babb65617aaa5b44c4ba02fbc545d9bf7121189d82814b5a206539b69af3d"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/anko-typed-variable-bindings",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-19T19:56:33.118163Z",
+      "finished_at": "2026-09-19T20:17:01.950564Z",
+      "phase_seconds": {
+        "environment_setup": 45.297438,
+        "agent_setup": 0.077339,
+        "agent_execution": 1140.616401,
+        "verifier": 29.390674
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 9,
+        "f2p_passed": 7,
+        "p2p_total": 94,
+        "p2p_passed": 94,
+        "f2p": 0.7777777777777778,
+        "p2p": 1.0,
+        "partial": 0.9805825242718447
+      },
+      "verifier_reported_summary": {
+        "tests": 103,
+        "passed": 101,
+        "failed": 2,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "2efd5ee71be53e10fedf91513d2e986b347e366ab810495812374c8f320493d7",
+        "runner_config": "2717069aee3f89df0b50e15c2c780117bb3b74e4f5f6f67fbbba9c9fdb2a4554",
+        "declared_job_config": "553dd298c0fb9744196b3cad15e196328dd6441a46f64a032b3c756cb91d02b3",
+        "verifier_stdout": "58beb110a21a614efb5fbe10d4ebb343ebc3cd92810b4596b30d5749098cde8a",
+        "agent_pi": "77d249ecd7817ab5cb805a883a65d4175fb80efea0089cb723b1ef0b9411d2cb"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/arktype-json-schema-refs-dependencies",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T07:54:26.757062Z",
+      "finished_at": "2026-09-20T09:04:43.704819Z",
+      "phase_seconds": {
+        "environment_setup": 399.387092,
+        "agent_setup": 0.080824,
+        "agent_execution": 3743.124961,
+        "verifier": 60.404201
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 25,
+        "f2p_passed": 25,
+        "p2p_total": 1679,
+        "p2p_passed": 1679,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1704,
+        "passed": 1704,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "3a626de15a76dc10f0335240f7abd39a4b6210edba0f944a7f1a695811ec3608",
+        "runner_config": "75cfe86141ac95334ce7e66fb5c7cc65257ca4086510dd0e5afae4d2e334950f",
+        "declared_job_config": "4514bf189b0c021007fb413159be78b3ec3ebe2a49b2f5399cbaa105504da789",
+        "verifier_stdout": "1d355f13991f4c132f5e4414368454e34e0da6845cd09a78894e9ea7eb6e06e0",
+        "agent_pi": "d35395a17be503cb5bf708f8424f268514858e329912853f9b2b7b412346276a"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/expr-try-catch-errors",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T09:04:48.289885Z",
+      "finished_at": "2026-09-20T10:06:05.421478Z",
+      "phase_seconds": {
+        "environment_setup": 45.732611,
+        "agent_setup": 0.077041,
+        "agent_execution": 3609.431502,
+        "verifier": 8.067387
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "b2ef00fc617737b3f998038c6ed59b33b278382a9dd450900491937bd1b0cfd2",
+        "runner_config": "d725b48779a23f36aefc0de84876fb90d52eec5d85c4188355030259f350cff4",
+        "declared_job_config": "a10db92b65dfcdd4f09b38e3ca16c0fedd167df1a1b42ad4d5326500edc929dd",
+        "verifier_stdout": "75cb05ba6b1016554d9b71e6b51353185adcdcff3e5877b81a6ff1cc95f0e917",
+        "agent_pi": "b7d1cbd26972b69cb59bf4c6aaa27d3b4df2f9ad0ee08d45becc63ea2016c5f3"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/fastapi-deprecation-response-headers",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T10:06:10.094999Z",
+      "finished_at": "2026-09-20T10:33:07.308663Z",
+      "phase_seconds": {
+        "environment_setup": 45.576696,
+        "agent_setup": 0.072228,
+        "agent_execution": 1497.305835,
+        "verifier": 60.232906
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 137,
+        "f2p_passed": 137,
+        "p2p_total": 3134,
+        "p2p_passed": 3134,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3271,
+        "passed": 3271,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "b6d353f70be982abf7ca40e43bcdccbc8ac260639aea2f24782834849b9e97c7",
+        "runner_config": "24e0a93243ffe79089690018941d111f9d9c4b8a9536fd7b7c01678d455c659f",
+        "declared_job_config": "d1a4ed8a171ade2e7471742b4204d8834d398cbf3ab58c5e92453ab6852e75a0",
+        "verifier_stdout": "713466820366f3b23aca767e91f02226ca3155c45f7440453d5ec1195ca3403b",
+        "agent_pi": "05e9c514df7d1aa84c560403518c648df4f42c5aa2b0b217e500d3255d6adee9"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/httpx-multipart-response-parsing",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T07:34:05.178528Z",
+      "finished_at": "2026-09-20T07:54:22.129856Z",
+      "phase_seconds": {
+        "environment_setup": 44.383573,
+        "agent_setup": 0.080526,
+        "agent_execution": 1151.247264,
+        "verifier": 6.806267
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "86e31ce6edd20efd2eec05803a9cfcbd77b9e72e73cf469cf04e781e74a6c418",
+        "runner_config": "b3f53be35ebae1918258e44043375c44bb4a52d46f4a8c94e480f9dce49b6e39",
+        "declared_job_config": "bc4b6bce2324db95e6af7858152573d9fcca95487d56eaf557d1ea6f6f3cba69",
+        "verifier_stdout": "678e2779984848d422e932195f8361079a068dc7a685da49ff34c742ee67b88d",
+        "agent_pi": "ace326764f1e610ae2f465290be8de35fde9eac86b063a04d900555cbd2376d6"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/katex-multicolumn-array-spans",
+      "status": "success",
+      "reward": 1,
+      "started_at": "2026-09-20T10:33:11.546013Z",
+      "finished_at": "2026-09-20T11:10:15.892604Z",
+      "phase_seconds": {
+        "environment_setup": 74.108588,
+        "agent_setup": 0.081458,
+        "agent_execution": 2117.615535,
+        "verifier": 18.484132
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1,
+        "f2p_total": 94,
+        "f2p_passed": 94,
+        "p2p_total": 599,
+        "p2p_passed": 599,
+        "f2p": 1.0,
+        "p2p": 1.0,
+        "partial": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 693,
+        "passed": 693,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "4a5ef02356dea7a945a630294eb0b383bd984c7e1671e769f483a360d2c5c921",
+        "runner_config": "e9765836f1dd9c78e23a5726a0bf58762c809d06eb402a462dedba30cefc974b",
+        "declared_job_config": "39b7a1606c0a876a868777193cf061af93f0931b482a9229c04314ea841d4df2",
+        "verifier_stdout": "a30bed0cbd38a48b981786cc2c02934ce4f036c7e4fb9f65bd0d816f14b67b68",
+        "agent_pi": "bf1fc0b3b72d0e0f804a9f854463df8dee59e970edfd99b5fd8f8fc61efc0811"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/meriyah-explicit-resource-declarations",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T11:10:20.106457Z",
+      "finished_at": "2026-09-20T11:46:50.823020Z",
+      "phase_seconds": {
+        "environment_setup": 43.70633,
+        "agent_setup": 0.084711,
+        "agent_execution": 2077.095952,
+        "verifier": 56.219938
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 49,
+        "f2p_passed": 46,
+        "p2p_total": 51469,
+        "p2p_passed": 51469,
+        "f2p": 0.9387755102040817,
+        "p2p": 1.0,
+        "partial": 0.9999417679257735
+      },
+      "verifier_reported_summary": {
+        "tests": 51518,
+        "passed": 51515,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "57cafaa6158756bd70b03247e3d60be7e37029626c104794c6335a490ffea2bc",
+        "runner_config": "a6e85b3a609540e90fc5cf9184568efb046ea4e17d63200d0171b9f5daa48536",
+        "declared_job_config": "c158a0d9189735ce9a017f92954c59053f32908147b51894a18a90f6f224a920",
+        "verifier_stdout": "2639739ee5b1cfc9f1ae839c8e446848da1138bbbb95d22f1389807afc86b63e",
+        "agent_pi": "9329967ff0f0e678252d2915e4b3d14a6117bdcfabb207ae6827239a57b71d7f"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/python-statemachine-state-data-scoping",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T06:21:53.504733Z",
+      "finished_at": "2026-09-20T07:33:59.615016Z",
+      "phase_seconds": {
+        "environment_setup": 45.06951,
+        "agent_setup": 0.084509,
+        "agent_execution": 4242.410614,
+        "verifier": 24.7875
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": null,
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "59caa4eb89116c2fcee137158d5d168e6dfa2ab35be3d1460be5b7d04e93c31b",
+        "runner_config": "0125209efc39a049d2d146625a717dcacf26dd2c9134b56ee82cf1da6d52465f",
+        "declared_job_config": "f2f2c05e9a290ea4d3447a79622edcb6ad934c2211060bc87ae102e217be0b2e",
+        "verifier_stdout": "a64ae5125228aed8c81a34d7af2888ea10302fa8c02c518077a97ac517a4a42b",
+        "agent_pi": "9cdb7ab39ad061d2b8b058147b58cd80ae809e41348cb14ba40033f6461487bb"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "datacurve/scc-bounded-memory-spilling",
+      "status": "failure",
+      "reward": 0,
+      "started_at": "2026-09-20T11:46:55.024568Z",
+      "finished_at": "2026-09-20T12:35:15.327742Z",
+      "phase_seconds": {
+        "environment_setup": 43.721356,
+        "agent_setup": 0.076837,
+        "agent_execution": 2797.277649,
+        "verifier": 44.296736
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0,
+        "f2p_total": 31,
+        "f2p_passed": 28,
+        "p2p_total": 286,
+        "p2p_passed": 286,
+        "f2p": 0.9032258064516129,
+        "p2p": 1.0,
+        "partial": 0.9905362776025236
+      },
+      "verifier_reported_summary": {
+        "tests": 317,
+        "passed": 314,
+        "failed": 3,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "23cd967aba595227",
+      "local_evidence_sha256": {
+        "runner_result": "756519cab61c37f20b80a1ab7c086c70b3084d0e5a4da315a20966dc5939af8f",
+        "runner_config": "b51ad8e18fa17cbb11bd4fdfc18d3666a49ea979779ac4fc90d2a2c92bd47829",
+        "declared_job_config": "14090c60eebc095fe6ada2ac14a0a2de01afde2c191ae1b77ccd6f46b2fe4df4",
+        "verifier_stdout": "e512c2f19c3f4df41f5f74ba47413835928d8af64bfb016d0bc242f5ed2ec5e6",
+        "agent_pi": "7fb18b8e7ed7263738b4636cc33825ac614db46a7e5c17f3610da472105ce77f"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/build-cython-ext",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:35:16.991152Z",
+      "finished_at": "2026-09-20T12:45:01.272658Z",
+      "phase_seconds": {
+        "environment_setup": 3.54811,
+        "agent_setup": 31.963583,
+        "agent_execution": 527.788262,
+        "verifier": 9.086928
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "88d75e0fb84a5efb",
+      "local_evidence_sha256": {
+        "runner_result": "019fd987769de8fee547503fc173b545aefa7a74a6fb169bdda4dbc52785e43d",
+        "runner_config": "64f7a60e4e9629fed070103e9c77848761638a2e81dc46dd2a9bd5f4359f26e7",
+        "declared_job_config": "b77fbb4d21ac0f2ba7101c8bb1791ea46ea0dea90a806fc498e55ada2639b4f4",
+        "verifier_stdout": "9cb39d954da24e1a9b7b7d72641dd44e766e7c791612e38a57c325d14d018866",
+        "agent_pi": "3f7d063201b5fde28b1f1b777e29e3828057017766c47238e596a45eaddf3983"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/chess-best-move",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T12:45:05.867298Z",
+      "finished_at": "2026-09-20T12:53:38.583487Z",
+      "phase_seconds": {
+        "environment_setup": 3.548223,
+        "agent_setup": 22.543729,
+        "agent_execution": 449.62445,
+        "verifier": 25.313136
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "ed95ef5c9a55bb6b64108ffa71637331c9f3af9b3a548a0433a4f931b51d2112",
+        "runner_config": "1d47696dd72dfcf10ceeb2d3c754ed02c859b34719fed219cfa78f35ae56c1c3",
+        "declared_job_config": "624cf8580de76d146a642ad2766b3c904be5bc1ce77a9f423f88a1cdbea9f947",
+        "verifier_stdout": "1ea08912731121386c6560fd46a17c41b3ab7f9d202dfe7709ce5cff103a2c3d",
+        "agent_pi": "f9f82b2454a516bca16bbe7da0eb8073cf0baab673000afe396d0f9c6c92328e"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/code-from-image",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:53:43.144673Z",
+      "finished_at": "2026-09-20T12:55:01.497904Z",
+      "phase_seconds": {
+        "environment_setup": 3.553104,
+        "agent_setup": 35.325713,
+        "agent_execution": 13.965562,
+        "verifier": 13.837659
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "779c99eda3926d34043fd0033c6c1463aa0eec0622d89b7655fcaec68c1dc00f",
+        "runner_config": "31b72eafeba6f516a35221b944b2cf73bcb3160e0aa8aa76725264c2d2324161",
+        "declared_job_config": "d3ff04c68a30acfa6c1bdb178be8ec5a5e6e747084eb1c7201426096e604fd40",
+        "verifier_stdout": "a3a32dd69213f4f644886232d6e5e5c56939760e07f498ab32b8fbb7e5df7ef7",
+        "agent_pi": "fc74b90feca4fe9a96ec5f67c5eafe78649b2d656829df4364497eabe459f72b"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/constraints-scheduling",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:55:05.967574Z",
+      "finished_at": "2026-09-20T12:57:26.487987Z",
+      "phase_seconds": {
+        "environment_setup": 3.549698,
+        "agent_setup": 35.813979,
+        "agent_execution": 69.119191,
+        "verifier": 20.252058
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "58091ed74d2f7b4435d3784bace91e04797199c061cf20abc397a72d0c824620",
+        "runner_config": "3a6a791271e6fe99d0642047a5083d7ee8e521b90108abcbd32c563c8c046d55",
+        "declared_job_config": "8ca869131e6bd3b9c1ed7af780f5c234a6aa89c683b8d31e673b2cb95f6eb853",
+        "verifier_stdout": "00032b03f54f3aa084b3b8d32305638a29e56c0b245b62bfd2d132cfc98f7ff4",
+        "agent_pi": "4b0e984f092f939e4a800b87cbac4ba682deee700cb9dca59a051201bf092151"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/db-wal-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T12:57:31.091606Z",
+      "finished_at": "2026-09-20T13:00:19.230362Z",
+      "phase_seconds": {
+        "environment_setup": 3.546737,
+        "agent_setup": 34.970307,
+        "agent_execution": 98.312149,
+        "verifier": 19.548448
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "e62dfce40b429da1d9485aafc04a3ce869ecee6c8173adac28bb881dc30da55b",
+        "runner_config": "bda3c730a0d2c80dfb8ac5f93646c29d202a2c01ae58cbc71989288e5c4d5bb9",
+        "declared_job_config": "861bbc3810dea3f2c944325ab35ac3471d78207c41073e592722f30d9ab844e9",
+        "verifier_stdout": "701d1c6404b1bd96a48ea1a912e85f048333983beb7a6accb7d737eb263a3c70",
+        "agent_pi": "aad7b49432fe3740a76fdc86ae6dda7cbb7ffefbd794252de6ff6cf4a1979e4c"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/dna-insert",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T13:00:23.927596Z",
+      "finished_at": "2026-09-20T13:07:38.363018Z",
+      "phase_seconds": {
+        "environment_setup": 3.545671,
+        "agent_setup": 42.763109,
+        "agent_execution": 355.158011,
+        "verifier": 21.123049
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "9481b231dfd7ee8b40ceefe2e1f8c68cf7024180209da4ae4651e7271154471d",
+        "runner_config": "544a700c3d58ea2cb9ed4aa01f03bfce4d7dce8a7d09b02cef124d71ff63661a",
+        "declared_job_config": "c791559eb6775ac4c343e28a8f6477ba09548aec4a7679ad8202897dfc4c7479",
+        "verifier_stdout": "9983c88cbb5d0a435ffea97318c1ccfaf661ab24200fa5b6f381aa1730884624",
+        "agent_pi": "ecda35771e9c474aacc58db76596e527747fbd9c40d7527b8e4cc2f0c53a2ffa"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/extract-elf",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:07:42.913795Z",
+      "finished_at": "2026-09-20T13:18:25.773152Z",
+      "phase_seconds": {
+        "environment_setup": 3.565352,
+        "agent_setup": 34.893375,
+        "agent_execution": 571.88528,
+        "verifier": 20.68627
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "bd474799ec96dfc7b863e6bf2be24b04edf91242ee6e8a9daac8e78a85512073",
+        "runner_config": "2aa24a049bffe350015cc9dbdea9000b0748e0372cfd323db37c2b54b2e5f8b2",
+        "declared_job_config": "40762b229fe21c41839882828ce7f4f45db19ba95611306f405078eedd6af6b7",
+        "verifier_stdout": "e7a3943066a53abea4dc8134e3ad4781a6dcdaa8c1f00a0aded450d47fc93a9e",
+        "agent_pi": "65326bb5a659e0d96a134dca2bf6c6765db27b78e8f5a787c8697e0236a98f16"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/gcode-to-text",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T13:18:30.384045Z",
+      "finished_at": "2026-09-20T13:27:34.009020Z",
+      "phase_seconds": {
+        "environment_setup": 3.59405,
+        "agent_setup": 34.917875,
+        "agent_execution": 479.607268,
+        "verifier": 13.673424
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 1,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "1ac1ee7fcd164b353b364ab6926509e00720581ebac5fc60422f9c82bb294007",
+        "runner_config": "22bd45ca9f26abc0c630e1c9386a9224897f486a979aa08fd54bf8b68fc4e70a",
+        "declared_job_config": "bca3a8ba3e4f8a49ee78e6843f4d17070abecf01b2fb761a4271ebd1124c07fa",
+        "verifier_stdout": "8d9ae4db21d2691fc92239d8423609f1c9e11225d34a8187e6fb6c050ab605e2",
+        "agent_pi": "4f88d78aa21ec62f0cb04f15e7b736c57742939b690500cc8160d21d43ba98fa"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/git-leak-recovery",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:27:38.984287Z",
+      "finished_at": "2026-09-20T13:31:14.421645Z",
+      "phase_seconds": {
+        "environment_setup": 3.556246,
+        "agent_setup": 33.438976,
+        "agent_execution": 147.523265,
+        "verifier": 19.135821
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "6a976d677d37251543c60bbab22e84e0c1856ff61c69d99871b0b17e88956122",
+        "runner_config": "d7aa67c6b0be72a9ceecbc4465fd6d6f1b61a808a53cde8919ee718c7a807010",
+        "declared_job_config": "3b816de94d1fd96cad76f2a84c4fdeb1d4e9a1a4d0e58b15d09503b37649d6b8",
+        "verifier_stdout": "ed87ff498f2cfdd2976ac8fcdb98701c4f669bdddd9dded1978c9014ea8126ba",
+        "agent_pi": "640b901ca37ac46bdeceaf0ffbb76a1b9c079e95c100231de66a14f5570cfb33"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/kv-store-grpc",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:31:18.936877Z",
+      "finished_at": "2026-09-20T13:33:31.195506Z",
+      "phase_seconds": {
+        "environment_setup": 3.557429,
+        "agent_setup": 38.733822,
+        "agent_execution": 63.419717,
+        "verifier": 14.903505
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "18f5704bed3c3307cba817e05c1ca6e209757e8c413effac604541ba3e72769f",
+        "runner_config": "c57639084dcdb41410c1b6a0f64a5dfe3324ad939ffcc481345bc24e12522823",
+        "declared_job_config": "742fa8d86f79723036e62f6c8ff839c27a462ca0d39bab8fa17da20f0527cc0e",
+        "verifier_stdout": "1e622f644ad3c6c11f5c64cc636c57431702c9f1a15a52aa0ae4e4a95e5bfb08",
+        "agent_pi": "8e77f4642f552d965b92060f21094a573dd17fdea40e93933853d960865ee47f"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/largest-eigenval",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T13:33:35.824712Z",
+      "finished_at": "2026-09-20T13:49:36.898709Z",
+      "phase_seconds": {
+        "environment_setup": 3.56795,
+        "agent_setup": 34.981964,
+        "agent_execution": 900.10108,
+        "verifier": 10.723927
+      },
+      "agent_exception_type": "AgentTimeoutError",
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "8961edae7c3461c33fc8b2a2c8145a934a66ae5bc308a612a299112f2115dfca",
+        "runner_config": "a9713bd7dec3f051f5abf20b62f19ebd9f85fee47a8f0857026046458948306a",
+        "declared_job_config": "b2b79650487cc45841c2d9889e177335207d2d44e94b11985f434c89abe420ca",
+        "verifier_stdout": "668eec98b7ae30ec8f96a7a60dac454555f6b62d90f785d77d2120d723f8fe28",
+        "agent_pi": "352489b43af01407a1a53f1089e7e6b592c5ebfba2ca09008650aa680ff5c24a"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/log-summary-date-ranges",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:49:41.411050Z",
+      "finished_at": "2026-09-20T13:51:35.907822Z",
+      "phase_seconds": {
+        "environment_setup": 3.532278,
+        "agent_setup": 35.142239,
+        "agent_execution": 49.817803,
+        "verifier": 14.077708
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "ddef38336ea990dc13be9145a7423f111f76d1780794b9d2960e51f1c8015432",
+        "runner_config": "ec8f2b29c53c9f29883378d8de199a96024f6ee57a9fb61a71529f0a836ae8dc",
+        "declared_job_config": "d49c7c8aea5ecd6612ff3ed637c5ec1dd4a06821467e691c91d197e2cceb476b",
+        "verifier_stdout": "6f70e3bd05eb1848fa11415659cdd2c620a0b11db7889585714da76225049924",
+        "agent_pi": "fac8362afc04de9475a519ce06d120d8bbf3add4f35e122a574dfeadbf95ca9c"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/merge-diff-arc-agi-task",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:51:40.515923Z",
+      "finished_at": "2026-09-20T13:55:43.754837Z",
+      "phase_seconds": {
+        "environment_setup": 3.579843,
+        "agent_setup": 39.687618,
+        "agent_execution": 168.402193,
+        "verifier": 19.744666
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "9475acaddc52b2382936d6b04158c30d2a3a12ab9e571b1062b5c44c22b38bb7",
+        "runner_config": "f3040d891e0f584a29cfaca6d081c2e89797a78e9a35d1f910258da2faa60840",
+        "declared_job_config": "f9ccdd78bd9729251c408bd43a73c77ab964a582627a7b1fcfcb1afcb06f6525",
+        "verifier_stdout": "ca27c0588bf4d1677eb018ff637ff21bff7d7cdb34121521c00aa286baa6b90a",
+        "agent_pi": "d5b438eec454d801b81fcfaba820a32743804b1f664e42b0b4c5a2016a758485"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/modernize-scientific-stack",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T13:55:48.321402Z",
+      "finished_at": "2026-09-20T13:58:04.070005Z",
+      "phase_seconds": {
+        "environment_setup": 3.555386,
+        "agent_setup": 25.696824,
+        "agent_execution": 64.475437,
+        "verifier": 30.193767
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 2,
+        "passed": 1,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "759bbcb52f7083a77af4442b746362dfc3ebaae8bb77aee57b64eb4fa425805b",
+        "runner_config": "9b1cd3270d55e427c396b420303e8b03f1a92c9d41a87435b19d5ab2f44c50c6",
+        "declared_job_config": "f06291f8c835beeb5866bb9b5d00bd7cb9a05e125e075ff9544f0a5a65d86889",
+        "verifier_stdout": "10b79cd3b5b3802b523766043e6f4a227f81cb5342fbfe7c8bc793d309a63571",
+        "agent_pi": "d7042f17c92ed452450615a53511aa606566819d424205b0023995b7fade5233"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/multi-source-data-merger",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T13:58:08.624137Z",
+      "finished_at": "2026-09-20T14:01:13.088281Z",
+      "phase_seconds": {
+        "environment_setup": 3.557209,
+        "agent_setup": 38.765414,
+        "agent_execution": 105.035527,
+        "verifier": 25.246254
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "0f4f812724b7070810963b768ab8018d042e4eee933d4b261fb0961745d0d7aa",
+        "runner_config": "ae295cb2f17d9cd5accc338565360460f03f1fbd2035e0c1ab646ef828e15f9c",
+        "declared_job_config": "60d992be68fd150ec528f5bfb86be2a4414de517d3c36f7dcc1e6e705f60cd74",
+        "verifier_stdout": "5b6605d9d4a7a5b3f565dc2446b0bc2a64fd05a30b9302ee77c4808d1c739490",
+        "agent_pi": "915dc0bb5e5cc1b4114f7b1cf9db5a6fe9369931d3664b939f06f9ce5b34e5a6"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/openssl-selfsigned-cert",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:01:17.553233Z",
+      "finished_at": "2026-09-20T14:04:12.807287Z",
+      "phase_seconds": {
+        "environment_setup": 3.561838,
+        "agent_setup": 35.413069,
+        "agent_execution": 107.429041,
+        "verifier": 17.241938
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "4149a7213f68eed22dca7099d72e2e65028cc9019c1594a3acfac6cf0e454514",
+        "runner_config": "d3af17f33b24d5ba3d179a8e00b59853fef6a4651d38f7cfa02e6d96cb77d63f",
+        "declared_job_config": "2ab2442b24f5bd206be10192830aab5721923b55d0f217d2953b7fcd3b919e67",
+        "verifier_stdout": "02383bbb8e5ffa21b8628d7861252c68ed87608a3beaee18e5d362c70efc9e6c",
+        "agent_pi": "375d58d4ac31da7cd1941ed17f6e5a196c83b76c826c8f4a7da23841be293ce6"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/polyglot-c-py",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T14:04:17.327282Z",
+      "finished_at": "2026-09-20T14:12:07.867343Z",
+      "phase_seconds": {
+        "environment_setup": 3.548224,
+        "agent_setup": 37.119668,
+        "agent_execution": 396.99133,
+        "verifier": 21.099213
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "85f0b86ef78cb34060b6ad7d578839353f3960dda57787f9e3075637a0b2d3c8",
+        "runner_config": "48e994c1ea5d8e74ea641ec31008f4cc4fbd5dbcec9593c24cd8a2267374ce24",
+        "declared_job_config": "376d770cb72ee1d7da9a07c573eb2885e26507e9be484a37f963556927b541dd",
+        "verifier_stdout": "4b1179a75417dec18351aefedf1e95d2150f9bc09e39ecb9d5718812b8fa98c0",
+        "agent_pi": "a8b5b61a45246121b65c98f9195f2d281e69ab53687a6a7703a08a5cd5453a21"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/regex-log",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-19T19:24:59.971429Z",
+      "finished_at": "2026-09-19T19:36:33.577421Z",
+      "phase_seconds": {
+        "environment_setup": 3.537503,
+        "agent_setup": 39.100928,
+        "agent_execution": 619.654847,
+        "verifier": 19.591508
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "da5e6504e957e90947be4da2237fe58cff642f512ecc2831f09031c8160c74ac",
+        "runner_config": "837d198db398aa1f3fea84b7baee7d871d8e4a77e6cf561ee8f9f75e92375ee0",
+        "declared_job_config": "8449aa9ea432107d246564260dffc5b26a6ba5ab91facec4d2c6fec62e1aef64",
+        "verifier_stdout": "361afe003fd2b103789b6090ff5c8b366e0dc656e8b2ac6a38a9894d37d7c101",
+        "agent_pi": "8a781cee6d3a83a81e3d17292b20157890aa54ba4bebd3950e700978e38aa473"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/sanitize-git-repo",
+      "status": "failure",
+      "reward": 0.0,
+      "started_at": "2026-09-20T04:43:49.033271Z",
+      "finished_at": "2026-09-20T04:48:21.868693Z",
+      "phase_seconds": {
+        "environment_setup": 3.575202,
+        "agent_setup": 33.727262,
+        "agent_execution": 210.52089,
+        "verifier": 13.416637
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 0.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 2,
+        "failed": 1,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "d9fadd848252ef314c5aedc0b5c231db119e25575cd2628aa31217c3c01af13e",
+        "runner_config": "2c4627e6b6e9bb680063d3ecc2fc532d39657c55b1ca90c315a7827b363edb28",
+        "declared_job_config": "b0f24b245ff4a556be8ec8779ddcd41da8254bd1ef288dd61c220893c052fd1b",
+        "verifier_stdout": "49a0a78b76f2497a0c31dc727fbffb24d0459996658b3dd6b32521aadb5fbd98",
+        "agent_pi": "0c8ec557eec85e154dde99affe2f1a0b4b4f9347a2177704a795e9e7b3283f6b"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/sqlite-db-truncate",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:12:12.408786Z",
+      "finished_at": "2026-09-20T14:14:56.976013Z",
+      "phase_seconds": {
+        "environment_setup": 3.547325,
+        "agent_setup": 35.487264,
+        "agent_execution": 99.981245,
+        "verifier": 13.929078
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "136f153f03b11a03e4458bffdeb41692babb90b23f692d37a4cea0d3cfc2db88",
+        "runner_config": "4b76f9e5dc143ba0d3c6ba61eb25c6eabc9078bd2a75c311f0255f15c6302228",
+        "declared_job_config": "b972235085ac24f709dc54e5d32eda01782f4ddd654207902742db79f7df8997",
+        "verifier_stdout": "79ec9cf324dda55e7a5557f4872234d0e21b0eff122668cc507bd72e12814ab6",
+        "agent_pi": "b4a790e51388c3aa02069ce746d49c25b2902029f087d04f50583b14c8f6840e"
+      },
+      "billed_cost_usd": null
+    },
+    {
+      "harness": "pi-responses",
+      "version": "0.84.2",
+      "task_id": "terminal-bench/vulnerable-secret",
+      "status": "success",
+      "reward": 1.0,
+      "started_at": "2026-09-20T14:15:01.782708Z",
+      "finished_at": "2026-09-20T14:17:28.801881Z",
+      "phase_seconds": {
+        "environment_setup": 3.555677,
+        "agent_setup": 33.622287,
+        "agent_execution": 84.588813,
+        "verifier": 13.623166
+      },
+      "agent_exception_type": null,
+      "verifier_rewards": {
+        "reward": 1.0
+      },
+      "verifier_reported_summary": {
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "pending": 0,
+        "other": 0
+      },
+      "config_profile": "669d65054e3f3763",
+      "local_evidence_sha256": {
+        "runner_result": "558c7f178741b4fa4f4186456a6409c35e027832e62e08108bb240165b6ae6d3",
+        "runner_config": "2a9b76f537c1d8d1c92aa54fa2ceb4cfccd2c2efbee416773eb9282ee45d0add",
+        "declared_job_config": "80601bdb6ba4020061746e9c29b73e9f5a4130306dfdead19dc24d8f40eebb70",
+        "verifier_stdout": "eddba338ba187008e0b08ecd56943c0dee703cde72474e46622ba6938aca0de1",
+        "agent_pi": "41bab42368c1533cef1b58fc7077e5d6057d000e891ce86481faa2177c32a1e2"
+      },
+      "billed_cost_usd": null
+    }
+  ]
+}

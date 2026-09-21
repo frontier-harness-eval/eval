@@ -57,6 +57,13 @@ We ran the same **Kimi K3** model through nine coding-agent harnesses—12 confi
 
 The [interactive report](https://frontierharness.org) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
 
+### Supplementary experiments
+
+[GLM-5.3-Flash across four harnesses](results/supplementary/2026-09-glm-5.3-flash/README.md)
+reports 120 contributor-run trials on the same task set. It includes task-level
+comparisons and reproduction metadata, with model and runtime differences marked
+explicitly. These results are separate from the published Kimi K3 leaderboard.
+
 ## What is in this repository
 
 ```text

@@ -1,0 +1,179 @@
+{
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra"
+  ],
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "fast_mode": false,
+  "reservation_usd": {
+    "gpt-6.1-sol": 12,
+    "gpt-6-astra": 47
+  },
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 1.5,
+    "gpt-6-astra": 4
+  },
+  "seed": 20261011,
+  "replicates": 1,
+  "schema_version": 1,
+  "cohort_id": "stage2-hard-httpx",
+  "stage_ceiling_usd": 500,
+  "inclusive_token_stop": 2000000,
+  "tasks": [
+    {
+      "id": "httpx-multipart-response-parsing",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/httpx-multipart-response-parsing",
+      "hashes": {
+        "environment/Dockerfile": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+        "instruction.md": "6a9c3400a23ad61f43c6e6f5b2dfbe8f5a5af81061cc063fd9440f327c5a0fb5",
+        "solution/solution.patch": "fbe0ab61b8e523a794fcbdf30a71a6d008ffd85285a7334b82278fe9ea3e2f74",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "7ee0209ec928035b9c0ac28997c886cbef8197567429e1c0493631856fdad5e5",
+        "tests/Dockerfile": "925c9b16416aa5b8f83e243e790da6bb90df7e6f12236b1792e7ed33c85d870c",
+        "tests/config.json": "33734c0f6a77183d0c59aa5fc68f92c07fa9382846f968e284e82bba2f465b89",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "a6b6512793b4102041ea3cb835efbc8ba61cba800e07453dffd66703e123262e",
+        "tests/test.sh": "e39706afa8974f3a9949f2aa77012b37399578a647136bd065000f3273cbe719"
+      },
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/httpx-multipart-response-parsing",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh7fr6f1yw1289ye5ttsfvaqen8319dq",
+          "task_id": "httpx-multipart-response-parsing",
+          "display_title": "Add multipart response parsing to HTTPX",
+          "display_description": "Add Response iterators that parse multipart HTTP response bodies into parts.",
+          "original_title": "Multipart response parsing",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/encode/httpx",
+          "base_commit_hash": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary b5addb64f0161ff6bfe94c124ef76f6a1fba5254 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    }
+  ],
+  "authorization": "User explicitly raised cumulative cap500 and approved ONLY four HTTPX Sol/Astra ON/OFF cells, then review pause",
+  "task_selection": "Same pinned DeepSWE HTTPX multipart task from stage1 pool; explicit harder separate cohort, no silent pooling",
+  "protocol_amendments": [
+    "2m inclusive token cap",
+    "corrected driver pin pending zero-turn native sandbox preflight",
+    "500 cumulative ceiling includes all prior holds and15 new engineering hold"
+  ],
+  "frozen_before_paid_dispatch": true,
+  "driver_commit": "2c7d84bd93bb7d26698befce8f1ccbf840055ab9",
+  "created_at": "2026-10-11T21:10:09.331877+00:00",
+  "driver_directory": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/driver-2c7d84b",
+  "driver_file_sha256": {
+    "apps/desktop/eval/HEADLESS.md": "cc5c457e715abbe72e101d7ad77795f0898f4543c5931ec27900484a3bf90967",
+    "apps/desktop/eval/README.md": "5513acaec71afff75807e243669858385f6b11b196c0742de966693d28a83c2a",
+    "apps/desktop/eval/container/Dockerfile": "1562e59570cf5d428ac8084b7b3c816b1be9ca525dd22c4e33bd5acc53f209b6",
+    "apps/desktop/eval/container/write-runtime-manifest.mjs": "67445c5b12d9b7c6e9b403be4d50cc626b573d143e9ac8f30ffb7e42e896579a",
+    "apps/desktop/eval/lib/driver.ts": "6258375057af704d98cdc59fafc2f05c054cc65be360c4c7169227dcfad4c9a8",
+    "apps/desktop/eval/lib/headless-contract.mjs": "df1913461c5383cfa0c90b7916283052e4d677cde0abed29f420e05f527266c3",
+    "apps/desktop/eval/lib/headless-contract.test.mjs": "3e655e9e328aeccf96db9c7e83cfc4e0a9c957f5c5d26de57c53b444c273b1e6",
+    "apps/desktop/eval/lib/live-app.ts": "aa5f17beab327b2f8df2bdf45e47f11e7787c9b060c8196f5f84c6b92a20afb0",
+    "apps/desktop/eval/lib/ui-driver.ts": "2e06cbfbc0a94c82f12766729c4953d885373fcc9441713579ef386034cdfd04",
+    "apps/desktop/eval/pdf-fixtures/generate.py": "b8f3064afafea96de3873de5528ea5a99966aa33ff3520e99680af4f57ad0272",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-1.png": "3d765acbc292a5848bced60df057c40408011c4cebd252ca3c83d2824739afd0",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-2.png": "229db87fc77dc663cf94e4e9bea5e4d2c2e9c32f176b5d7ded85ba53660c5584",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-3.png": "b6d570c2d6bd6e74bda2ff7bc16b84494d591dd166528f40db73b0e48e802189",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette.pdf": "baafe289e66b71dc2527c1183a97ac651604895194c922831d3fb636988f8f0e",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-1.png": "5f65c08673c7335654fa544a4fe6eb5477680fa98ccd083fb1a8a3aaed393802",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-2.png": "bf18a27f51e2d13aaa92f9a7d5f3083357b85633576358c226ef0fd9c9315e46",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-3.png": "abb907dd3485991f6fd36a10a26f07d304de9adba6aa3051de6d968816bb9342",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record.pdf": "52f705399fc3090d38ca9abf1bd85e7e7ddfda8db430f56c341b470acd93794f",
+    "apps/desktop/eval/pdf.ts": "ddfd58531751927ddaf4f60ce63ca4157280bd7e4854c787cc163a4c31729fa2",
+    "apps/desktop/eval/run-headless.mjs": "699ed0d82ce01394a73477ac9aa2d3c75d15f572ccfb28ad2a18e48577d7b2ed",
+    "apps/desktop/eval/smoke.ts": "a6017f04cf622dbe087b9b03c2a8cc9d2af720d592b670c0c96e072c47c6bffd",
+    "apps/desktop/eval/tsconfig.json": "d8b34a6e56362aad4dfde37e21dec2d0b7abaeb18e03d57fa7835f47931cba62"
+  },
+  "seccomp_profile": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/eval/pwragent/chromium-seccomp.json",
+  "seccomp_profile_sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849",
+  "seccomp_source": "https://raw.githubusercontent.com/microsoft/playwright/v1.63.0/utils/docker/seccomp_profile.json",
+  "task_image": {
+    "task": "httpx-multipart-response-parsing",
+    "image": "fh-task:httpx-multipart-response-parsing-8655446",
+    "image_id": "sha256:f9ee4493bcd59c37733d2ba5cd2891ca798f1d22d0624db3056751b3f9b24778",
+    "platform": "linux/arm64",
+    "original_dockerfile_sha256": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+    "overlay_dockerfile_sha256": "ef7fe1867992a58dd6f353d2b52829005b10a24c1651df0709947d78559bb53c",
+    "payload": "fh-pwragent:8655446"
+  },
+  "frozen_at": "2026-10-11T21:17:37.922925+00:00",
+  "preflight_proof": "stage2-preflight-04: completed, no paid turn, DEBUG actual Chromium argv lacks --no-sandbox",
+  "auth_policy": "ChatGPT Pro only, individual readonly auth mount; reject API-key auth/env and endpoint overrides",
+  "source_changes_disclosed": "driver sandbox true/interrupted status/delegated usage/dispatch ambiguity/startup diagnostics; namespace seccomp profile; separate amended cohort, not silently pooled with6062 results"
+}

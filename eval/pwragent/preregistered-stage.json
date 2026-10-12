@@ -1,0 +1,782 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-11T18:59:58.455078+00:00",
+  "seed": 20261011,
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra"
+  ],
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "fast_mode": false,
+  "replicates": 1,
+  "task_selection": "resource-feasible established public task packages: 8 terminal/data/build/recovery tasks and 2 Python software issue tasks; not representative of SWE-bench Verified or a leaderboard submission",
+  "tasks": [
+    {
+      "id": "regex-log",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/regex-log",
+      "hashes": {
+        "environment/Dockerfile": "5f264ff0bf62a49aee3c6398447de5108df141e7a2ad35c6de8ef39fa62049c6",
+        "instruction.md": "4f7ac05e70cf9220ea0f1e5a052c5f908cd0fa884e847d80b0bd51bae2e96f9c",
+        "solution/solve.sh": "7e670d4f2b4bccb1e4db38f2a173e085ceda028c38167912b466b0a84fcc0999",
+        "task.toml": "cbffabfe62b495480b06a8a34dfa3b11bd5a86ff20b0c82a1406491b6f50665c",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "345c3bd09ab6f6fe8c8361a58c0a47bf0a13b3fcb38a5ac7824e44ff855e8f72"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Orfeas Menis Mastromichalakis",
+          "author_email": "menisorfeas@gmail.com",
+          "difficulty": "medium",
+          "category": "data-processing",
+          "tags": [
+            "regex",
+            "string-parsing",
+            "log-analysis"
+          ],
+          "expert_time_estimate_min": 45.0,
+          "junior_time_estimate_min": 180.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/regex-log:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "log-summary-date-ranges",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/log-summary-date-ranges",
+      "hashes": {
+        "environment/Dockerfile": "b479f6e987b63a6ec118fa1691b8bb85c437b2a6a0fe63feab5ed7154957fdfc",
+        "environment/log_generator_deterministic.py": "beb6eff59979e9aa0be63ce8a0f1b0df1178f92871f04ba9f76fa70cf8beb81c",
+        "instruction.md": "c1d4516ad4ec2238209740eaf01291df9ab48b0028a3fc5df383c6f831453484",
+        "solution/solve.sh": "9f6a8ee8947bdf1c0f31b530b6194ae998d66841a3b785fa2e246ee840350ab6",
+        "task.toml": "6d52ee3cd752b917e290d0cbbc99ae856ce7e851169b9cd9bb0c332404bc6873",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "2fc06a6ce1944ad82f84fb437395fa75ed8c0eadd385b92e375c27e5bc9cb2b4"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Orfeas Menis Mastromichalakis",
+          "author_email": "menisorfeas@gmail.com",
+          "difficulty": "medium",
+          "category": "data-processing",
+          "tags": [
+            "log-analysis",
+            "report-generation",
+            "data-processing"
+          ],
+          "expert_time_estimate_min": 75.0,
+          "junior_time_estimate_min": 150.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/log-summary-date-ranges:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "build-cython-ext",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/build-cython-ext",
+      "hashes": {
+        "environment/Dockerfile": "cb6cf421cb9b69d43bd25cd491e49bda982fbb865d47515178d017eda727194e",
+        "instruction.md": "7e52874e45f88505bd21540229719de6639a401477557d814489981d472f0e34",
+        "solution/solve.sh": "41bbdde88617070366a70e518eedca466a4ea1acd7e96899b2fb7da988e40abc",
+        "task.toml": "eb6bfabb7b75243c3f4d127a10c4c349d44e7e5b7bffb428edebd467adc43843",
+        "tests/test.sh": "0156c9c4085258b696ce424cf1ce96cba44d1263c5d73bdf54083fd80237f915",
+        "tests/test_outputs.py": "6549f1a8e04b6163ec08877e6f6b9868bf94563f3a3c72ac1fba9c512c31689e"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Zizhao Chen",
+          "author_email": "czz@cs.cornell.edu",
+          "difficulty": "medium",
+          "category": "debugging",
+          "tags": [
+            "coding",
+            "dependency",
+            "compilation"
+          ],
+          "estimated_duration_sec": 540.0,
+          "expert_time_estimate_min": 60.0,
+          "junior_time_estimate_min": 180.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/build-cython-ext:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "db-wal-recovery",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/db-wal-recovery",
+      "hashes": {
+        "environment/Dockerfile": "63a260531c62f4ae72060db17f295c0aa03cfc6321f8162c324b7aa6b3f81302",
+        "environment/main.db": "68cb288eb29e76d814b4e7ee6887b37c415675e644f88173bc191348e290d119",
+        "environment/main.db-wal.encrypted": "68753bdce26196a53194260d001544cc6bb8f9f38e2f2f6826d09798e31e6e26",
+        "instruction.md": "5a20375162921b8911c67035d1905df7fd335d1bed03044271e608b2c3c93b26",
+        "solution/solve.sh": "ed8530c94103bf19783a1d41bc63fe4db478cdd9629f22fee25c45a45699f5e8",
+        "task.toml": "2ff8fa659f95fd16932114f50d16c44229ffeb05f116c6f9e0c7b6b376e087e2",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "88dc5c2a3abba75bca0e0f9136223ae5bb585d5984b8d9eba51a7829c1d2ba49"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Xiangning Lin",
+          "author_email": "xiangnlin@alumni.cmu.edu",
+          "difficulty": "medium",
+          "category": "file-operations",
+          "tags": [
+            "database",
+            "encryption",
+            "recovery"
+          ],
+          "expert_time_estimate_min": 45.0,
+          "junior_time_estimate_min": 240.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/db-wal-recovery:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "git-leak-recovery",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/git-leak-recovery",
+      "hashes": {
+        "environment/Dockerfile": "006bf5d2e3502a059f9a87bc855a7f85d6c40c67bf8a523dd3f1e9c6f64cc112",
+        "environment/challenge-setup.sh": "a0a19652fc595b0bd06b6970e1d6a455bd4c50991c2ffdcc37fe5b66452b23e2",
+        "instruction.md": "54ac693fd26a4c003f610d62c4b2671f1d1d04ac5b1286f780605e385a9a5861",
+        "solution/solve.sh": "791a7eb23019ee7c93307b35cc77ea334469c4d3688e1171fe1e5ba6fd9a14dd",
+        "task.toml": "6c3d6204e561ae9d9757bbc6b7f5a4ed3f94db4a0ce82037d9084644e1cf0c7f",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "dc7b01c1b9dbb0c123def54b146dc1dd399a600edee5970d043a5db5eac4c775"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Yiwei Dai",
+          "author_email": "daiyiwei98@gmail.com",
+          "difficulty": "medium",
+          "category": "software-engineering",
+          "tags": [
+            "git",
+            "security"
+          ],
+          "estimated_duration_sec": 45.0,
+          "expert_time_estimate_min": 30.0,
+          "junior_time_estimate_min": 60.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/git-leak-recovery:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "kv-store-grpc",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/kv-store-grpc",
+      "hashes": {
+        "environment/Dockerfile": "47c9982789092437f950736110b2bd18899c39b8fd20f3af3c95b848e564a197",
+        "instruction.md": "f4b3facc199d5b1c78db6e603ffa29ec1b93a77ff7d291e1a92b42e6bf582bed",
+        "solution/solve.sh": "6bee2938ac9731d1156b0ca02b28c3d5793bf2cbe5f995c863d397093af01cb7",
+        "task.toml": "b93d343ae7dd483b15d3b846fd6c13f136a279143e840d83beb521772f4c208d",
+        "tests/test.sh": "c348467a076bf614d0a850e25b2263f85bbf7b4c7a8d344fbd5454a0611a0df8",
+        "tests/test_outputs.py": "115de2e964bbe689d07930527113422ef8a9e4be4eb958ad84594e3fcd2b1b0e"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Minghao Yan",
+          "author_email": "minghaoyan2@gmail.com",
+          "difficulty": "medium",
+          "category": "software-engineering",
+          "tags": [
+            "coding",
+            "file-operations",
+            "system"
+          ],
+          "expert_time_estimate_min": 15.0,
+          "junior_time_estimate_min": 120.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/kv-store-grpc:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "sqlite-db-truncate",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/sqlite-db-truncate",
+      "hashes": {
+        "environment/Dockerfile": "49ac9305c360f117c10c940b5d036a76fb4a29a0f4302e7d75e573c352db0aea",
+        "environment/trunc.db": "a7f00ee232fe621629dc014eb2619ac793131843ede1fd892f3b8b7e17332a5b",
+        "instruction.md": "465c135cd80be49023ea3ecf8f1d840c679b3a960efe425d510894e417b9d802",
+        "solution/solve.sh": "6aa341ba5e614aa5ef991cdd2d398da1c5833b80123795d7da87ea41da431a04",
+        "task.toml": "8b4c4d2abfe7dc8b7a3bac4567f60c08f7a9219b2cc65df0de7c5ee3d37721d6",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "8f5bc11018687d8c5894ebf1b4ec6fad004828e5ce442d3cc04d925ef53ef881"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Nicholas Carlini",
+          "author_email": "nicholas@carlini.com",
+          "difficulty": "medium",
+          "category": "debugging",
+          "tags": [
+            "file-operations"
+          ],
+          "expert_time_estimate_min": 60.0,
+          "junior_time_estimate_min": 240.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/sqlite-db-truncate:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "constraints-scheduling",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/constraints-scheduling",
+      "hashes": {
+        "environment/Dockerfile": "7d9aba072a4a907229728b9739c8cf821fc2c98450babd64452682caf3759c84",
+        "environment/inputs/alice_calendar.ics": "5a5d45804bffd339c2479d49e76fe817b38244d14d389afe1de583443808ecbc",
+        "environment/inputs/bob_calendar.ics": "c97e85dbcdd756758f8a80f4db5fd5c1dcacee79298e4d2262f46de5ff680b50",
+        "environment/inputs/carol_calendar.ics": "32a0f8687637df0a12b8e5c56d49c4192bc3e790856943632d70f237c7c1363b",
+        "instruction.md": "342def78177f9bc41bea4d11af679bc385a9dda2ac8a1e425be384a5b7f937b6",
+        "solution/solve.sh": "802d81ec064fad3050bbade95a2f847ac24e0b7f80fa69b0bcee0347dc92fe77",
+        "task.toml": "db3d457bcae683d1d0dab33f2a059da9ef30beaa08271d766fae09d1c0054c83",
+        "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+        "tests/test_outputs.py": "1422b345ba3aacdfc4184e962811b6379988435896c50d8cf62903e70990c5d1"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Derek Pham",
+          "author_email": "derek.pham@snorkel.ai",
+          "difficulty": "medium",
+          "category": "personal-assistant",
+          "tags": [
+            "calendar",
+            "scheduling",
+            "constraint-satisfaction",
+            "ics-parsing",
+            "temporal-reasoning"
+          ],
+          "estimated_duration_sec": 1800.0,
+          "expert_time_estimate_min": 15.0,
+          "junior_time_estimate_min": 30.0
+        },
+        "verifier": {
+          "timeout_sec": 1200.0
+        },
+        "agent": {
+          "timeout_sec": 1200.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/constraints-scheduling:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    },
+    {
+      "id": "httpx-multipart-response-parsing",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/httpx-multipart-response-parsing",
+      "hashes": {
+        "environment/Dockerfile": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+        "instruction.md": "6a9c3400a23ad61f43c6e6f5b2dfbe8f5a5af81061cc063fd9440f327c5a0fb5",
+        "solution/solution.patch": "fbe0ab61b8e523a794fcbdf30a71a6d008ffd85285a7334b82278fe9ea3e2f74",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "7ee0209ec928035b9c0ac28997c886cbef8197567429e1c0493631856fdad5e5",
+        "tests/Dockerfile": "925c9b16416aa5b8f83e243e790da6bb90df7e6f12236b1792e7ed33c85d870c",
+        "tests/config.json": "33734c0f6a77183d0c59aa5fc68f92c07fa9382846f968e284e82bba2f465b89",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "a6b6512793b4102041ea3cb835efbc8ba61cba800e07453dffd66703e123262e",
+        "tests/test.sh": "e39706afa8974f3a9949f2aa77012b37399578a647136bd065000f3273cbe719"
+      },
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/httpx-multipart-response-parsing",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh7fr6f1yw1289ye5ttsfvaqen8319dq",
+          "task_id": "httpx-multipart-response-parsing",
+          "display_title": "Add multipart response parsing to HTTPX",
+          "display_description": "Add Response iterators that parse multipart HTTP response bodies into parts.",
+          "original_title": "Multipart response parsing",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/encode/httpx",
+          "base_commit_hash": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary b5addb64f0161ff6bfe94c124ef76f6a1fba5254 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      }
+    },
+    {
+      "id": "fastapi-deprecation-response-headers",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/fastapi-deprecation-response-headers",
+      "hashes": {
+        "environment/Dockerfile": "262992aa68ad90e32aab45aadb01c777c34a4dfde10c4523da70e5a9878ed633",
+        "instruction.md": "b8e0cb43fe2850b2173c8b5e940d463345b96aed6a2b3e7c0c559deda468c568",
+        "solution/solution.patch": "e8b2366d562c6a9a026bdc0c352058437c55fc9b09bb8460b4303c6e632980ea",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "b00b517b6f66358b735c0764dfed3b92a69079e366bb3ee5c6c2a9c6bf1b75c8",
+        "tests/Dockerfile": "a719057b36e6a9695e4cf44ad89b35402b13746719e3a1564b1356caef9d9709",
+        "tests/config.json": "5efe6485b83827a1f6127ba54b36a6fbfc3f973ff352f953bf9115fb41df35d8",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "029972f1d78ec9c9e9e38f9abe4c3bcc9801b73a9e1aa83d4d1dfd2e79ecc35e",
+        "tests/test.sh": "48340b1ac95a07e08c6aff4f3ea4495d3e3265baba3262393316afe713504988"
+      },
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/fastapi-deprecation-response-headers",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh75azsnb5eqs3mf4xm0zkzha582rvcd",
+          "task_id": "fastapi-deprecation-response-headers",
+          "display_title": "Add deprecation, sunset, and successor headers to FastAPI routes",
+          "display_description": "Add runtime Deprecation, Sunset, and Link headers plus OpenAPI metadata and tracking middleware for deprecated routes.",
+          "original_title": "Deprecation & Sunset Response Headers for FastAPI Routes",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/fastapi/fastapi",
+          "base_commit_hash": "11614be9021aa4ac078d4d0693a8b5250a1010d8"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 11614be9021aa4ac078d4d0693a8b5250a1010d8 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh75azsnb5eqs3mf4xm0zkzha582rvcd-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "regex-log",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "regex-log",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "regex-log",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "regex-log",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "log-summary-date-ranges",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "log-summary-date-ranges",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "log-summary-date-ranges",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "log-summary-date-ranges",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "db-wal-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "db-wal-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "db-wal-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "db-wal-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "git-leak-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "git-leak-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "git-leak-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "git-leak-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "kv-store-grpc",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "kv-store-grpc",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "kv-store-grpc",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "kv-store-grpc",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "sqlite-db-truncate",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "sqlite-db-truncate",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "sqlite-db-truncate",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "sqlite-db-truncate",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "constraints-scheduling",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "constraints-scheduling",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "constraints-scheduling",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "constraints-scheduling",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "fastapi-deprecation-response-headers",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "fastapi-deprecation-response-headers",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "fastapi-deprecation-response-headers",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "fastapi-deprecation-response-headers",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    }
+  ],
+  "stage_ceiling_usd": 250,
+  "pilot_ceiling_usd": 50,
+  "orchestration_allowance_usd": 25,
+  "pilot_task": "regex-log",
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 1.5,
+    "gpt-6-astra": 4
+  },
+  "reservation_usd": {
+    "gpt-6.1-sol": 12,
+    "gpt-6-astra": 47
+  },
+  "budget_policy": "Serial; no paid automatic retries; unknown usage keeps reservation; maximum-output/context headroom above observed stop. Pilot first four arms, then fixed remaining order subject to ledger admission. Stop and report every attempted row; no outcome-dependent task replacement. Stop before dispatch if stage or pilot admission fails. Mandatory review pause at end.",
+  "analysis": "Pass@1 by model and arm; paired pass deltas, exact McNemar, task bootstrap95%CI for paired cost deltas. Include model failures/timeouts as task failures, infra-invalid separately and complete-pair sensitivity. Subscription model usage reported independently; API-equivalent costs estimated, billed credits not inferred.",
+  "platform": "linux/arm64 native local Docker, 2CPUs6GiB concurrency1; same image digest within pair; network local Docker standard outbound",
+  "verifier": "Original task verifier hidden from agent and invoked only after driver process exits; DeepSWE separate pristine verifier with exported patch"
+}

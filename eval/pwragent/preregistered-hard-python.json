@@ -1,0 +1,311 @@
+{
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra"
+  ],
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "fast_mode": false,
+  "reservation_usd": {
+    "gpt-6.1-sol": 12,
+    "gpt-6-astra": 47
+  },
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 1.5,
+    "gpt-6-astra": 4
+  },
+  "seed": 20261012,
+  "replicates": 1,
+  "schema_version": 1,
+  "cohort_id": "stage3-hard-python",
+  "stage_ceiling_usd": 500,
+  "inclusive_token_stop": 2000000,
+  "tasks": [
+    {
+      "id": "cattrs-partial-structuring-recovery",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/cattrs-partial-structuring-recovery",
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/cattrs-partial-structuring-recovery",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh7f7cahc5ddm1qzpxz13kpmrh8235pc",
+          "task_id": "cattrs-partial-structuring-recovery",
+          "display_title": "Add partial structuring with error recovery to cattrs",
+          "display_description": "Add `partial_structure` and `PartialResult` for recoverable, field-level structuring with nested partial results.",
+          "original_title": "Partial Structuring with Error Recovery Mode",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/python-attrs/cattrs",
+          "base_commit_hash": "6bc4708fb9b2ac52d9a18997e923da6a58916102"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 6bc4708fb9b2ac52d9a18997e923da6a58916102 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7f7cahc5ddm1qzpxz13kpmrh8235pc-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      },
+      "hashes": {
+        "environment/Dockerfile": "2bd6e8a1ded869b85334eebbad3c29588b71a2ee1486c06713648485c2b3560e",
+        "instruction.md": "13eab1ccb6c77dafa95e7e815a35fc76033aaf271076012067c3502c0c11272c",
+        "solution/solution.patch": "6050a6735eee8de72939d81ead6274658915dc4512d5d2995280a9a9fdafb1b5",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "6c4f2907ee8a96f9a054e54cfae86fa248a37c06337cf990e3a124000a32bb0b",
+        "tests/Dockerfile": "bdca07e5a8e64ab175c28a2fa0d53d2225ae439abe6f0723213cd99ffdfb5228",
+        "tests/config.json": "d32fbbb9320863afda4000a3b87efbe1a1eb36565c474fbc37eb400d6301d62c",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "50154d90fca5e57254affc3a5378082a6782cb4d7e27182a7860a5827b8afef9",
+        "tests/test.sh": "f17974eb262c2263c538fd31d62ff40597674ce4bc70084abad190885862e481"
+      }
+    },
+    {
+      "id": "httpx-streaming-json-iteration",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/httpx-streaming-json-iteration",
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/httpx-streaming-json-iteration",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh73snc7v9x3psk69rg4eqvjgs836v5a",
+          "task_id": "httpx-streaming-json-iteration",
+          "display_title": "Add streaming JSON iteration to HTTPX responses",
+          "display_description": "Add response iterators that incrementally parse JSON values from supported streaming media types.",
+          "original_title": "Add streaming JSON iteration",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/encode/httpx",
+          "base_commit_hash": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary b5addb64f0161ff6bfe94c124ef76f6a1fba5254 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh73snc7v9x3psk69rg4eqvjgs836v5a-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      },
+      "hashes": {
+        "environment/Dockerfile": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+        "instruction.md": "8b9cf46588b87c532be947e1ab102f1bf3241ad01133f5ca6c461dc7f7ecd9e6",
+        "solution/solution.patch": "e5c0c8b05b58adee89e56860a44324f9e8d325171927e56fc7ef0029f64f2438",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "4539d7eb6bc6e38c202b7b7afdf808c3f7aaa06283b58cc91f1d3aa437334e63",
+        "tests/Dockerfile": "f7c81ed884c26eadc54f108ca7950a8a1a1f60683f5db3e86c41dae7ec11195b",
+        "tests/config.json": "c3c1d983f347e37c7b131039dc97590f5160303acb26ee541b9499f906c751a1",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "bd31b5332a542e94b8ebb1fe9e749512a942db9c7649e74533030e669900e849",
+        "tests/test.sh": "fb21502b6357332d46af6c1e78e2999960e8953ccbb37bf699f62fb1dda47277"
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    }
+  ],
+  "authorization": "User requested 'Can we run more tests?' after review; explicitly resumed bounded eight-cell two-task cohort within unchanged cumulative500; pause after cohort",
+  "task_selection": "Two available Python feature tasks selected before grading based on full-repository correctness scope and native arm64 runtime compatibility: cattrs recursive partial structuring and HTTPX incremental JSON streaming. Convenience subset, not random benchmark sample or published SWE-bench Verified.",
+  "protocol_amendments": [
+    "New separate cohort: eight cells, two tasks, one replicate/model/flag; no retries/model-answer changes.",
+    "Same2m inclusive tokens/high/default and Sol1.5/Astra4 observed dollar stops; reservationsSol12/Astra47 cover post-request uncertainty.",
+    "Account-wide quota/credit movement is shared with user concurrent Codex activity and is not attributed to evaluations; task/overhead usage uses exact own thread/turn records only.",
+    "Original task source declares no-network agent; real managed provider needs network in task container. Actual workload has provider-capable network, explicit no-external-solution prompt constraint, and pristine no-network verifier. This is a disclosed benchmark configuration difference.",
+    "Primary score remains binary original task reward/pass@1. Retain original F2P/P2P and partial grade fields as secondary task-level diagnostics; no independence claim for individual checks."
+  ],
+  "frozen_before_paid_dispatch": true,
+  "driver_commit": "2c7d84bd93bb7d26698befce8f1ccbf840055ab9",
+  "created_at": "2026-10-11",
+  "driver_directory": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/driver-2c7d84b",
+  "driver_file_sha256": {
+    "apps/desktop/eval/HEADLESS.md": "cc5c457e715abbe72e101d7ad77795f0898f4543c5931ec27900484a3bf90967",
+    "apps/desktop/eval/README.md": "5513acaec71afff75807e243669858385f6b11b196c0742de966693d28a83c2a",
+    "apps/desktop/eval/container/Dockerfile": "1562e59570cf5d428ac8084b7b3c816b1be9ca525dd22c4e33bd5acc53f209b6",
+    "apps/desktop/eval/container/write-runtime-manifest.mjs": "67445c5b12d9b7c6e9b403be4d50cc626b573d143e9ac8f30ffb7e42e896579a",
+    "apps/desktop/eval/lib/driver.ts": "6258375057af704d98cdc59fafc2f05c054cc65be360c4c7169227dcfad4c9a8",
+    "apps/desktop/eval/lib/headless-contract.mjs": "df1913461c5383cfa0c90b7916283052e4d677cde0abed29f420e05f527266c3",
+    "apps/desktop/eval/lib/headless-contract.test.mjs": "3e655e9e328aeccf96db9c7e83cfc4e0a9c957f5c5d26de57c53b444c273b1e6",
+    "apps/desktop/eval/lib/live-app.ts": "aa5f17beab327b2f8df2bdf45e47f11e7787c9b060c8196f5f84c6b92a20afb0",
+    "apps/desktop/eval/lib/ui-driver.ts": "2e06cbfbc0a94c82f12766729c4953d885373fcc9441713579ef386034cdfd04",
+    "apps/desktop/eval/pdf-fixtures/generate.py": "b8f3064afafea96de3873de5528ea5a99966aa33ff3520e99680af4f57ad0272",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-1.png": "3d765acbc292a5848bced60df057c40408011c4cebd252ca3c83d2824739afd0",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-2.png": "229db87fc77dc663cf94e4e9bea5e4d2c2e9c32f176b5d7ded85ba53660c5584",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-3.png": "b6d570c2d6bd6e74bda2ff7bc16b84494d591dd166528f40db73b0e48e802189",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette.pdf": "baafe289e66b71dc2527c1183a97ac651604895194c922831d3fb636988f8f0e",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-1.png": "5f65c08673c7335654fa544a4fe6eb5477680fa98ccd083fb1a8a3aaed393802",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-2.png": "bf18a27f51e2d13aaa92f9a7d5f3083357b85633576358c226ef0fd9c9315e46",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-3.png": "abb907dd3485991f6fd36a10a26f07d304de9adba6aa3051de6d968816bb9342",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record.pdf": "52f705399fc3090d38ca9abf1bd85e7e7ddfda8db430f56c341b470acd93794f",
+    "apps/desktop/eval/pdf.ts": "ddfd58531751927ddaf4f60ce63ca4157280bd7e4854c787cc163a4c31729fa2",
+    "apps/desktop/eval/run-headless.mjs": "699ed0d82ce01394a73477ac9aa2d3c75d15f572ccfb28ad2a18e48577d7b2ed",
+    "apps/desktop/eval/smoke.ts": "a6017f04cf622dbe087b9b03c2a8cc9d2af720d592b670c0c96e072c47c6bffd",
+    "apps/desktop/eval/tsconfig.json": "d8b34a6e56362aad4dfde37e21dec2d0b7abaeb18e03d57fa7835f47931cba62"
+  },
+  "seccomp_profile": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/eval/pwragent/chromium-seccomp.json",
+  "seccomp_profile_sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849",
+  "seccomp_source": "https://raw.githubusercontent.com/microsoft/playwright/v1.63.0/utils/docker/seccomp_profile.json",
+  "task_image": {
+    "cattrs-partial-structuring-recovery": {
+      "task": "cattrs-partial-structuring-recovery",
+      "image": "fh-task:cattrs-partial-structuring-recovery-8655446",
+      "image_id": "sha256:e1a9fe17c2a1601bd8ad2c5e62649df916fa7bbbdbf7dac58673f7466bb613cb",
+      "platform": "linux/arm64",
+      "original_dockerfile_sha256": "2bd6e8a1ded869b85334eebbad3c29588b71a2ee1486c06713648485c2b3560e",
+      "overlay_dockerfile_sha256": "a05aaa25413135cd5b569c4a03a4f41e0752cfb49f97c349b75decf18f98c238",
+      "payload": "fh-pwragent:8655446"
+    },
+    "httpx-streaming-json-iteration": {
+      "task": "httpx-streaming-json-iteration",
+      "image": "fh-task:httpx-streaming-json-iteration-8655446",
+      "image_id": "sha256:f9ee4493bcd59c37733d2ba5cd2891ca798f1d22d0624db3056751b3f9b24778",
+      "platform": "linux/arm64",
+      "original_dockerfile_sha256": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+      "overlay_dockerfile_sha256": "ef7fe1867992a58dd6f353d2b52829005b10a24c1651df0709947d78559bb53c",
+      "payload": "fh-pwragent:8655446"
+    }
+  },
+  "frozen_at": "2026-10-11T22:25:08.925687+00:00",
+  "preflight_proof": {
+    "new_cattrs_image": "stage3-preflight-01",
+    "status": "completed",
+    "preflightOnly": true,
+    "dispatchIntentAt": null,
+    "effectiveTokenMiser": true,
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fastMode": false,
+    "same_httpx_base": "stage2-preflight-04",
+    "account_type": "chatgpt",
+    "plan_type": "pro",
+    "quota_note": "Current shared included quota observed29%, not evaluation-only consumption."
+  },
+  "auth_policy": "ChatGPT Pro only, individual readonly auth mount; reject API-key auth/env and endpoint overrides",
+  "source_changes_disclosed": "driver sandbox true/interrupted status/delegated usage/dispatch ambiguity/startup diagnostics; namespace seccomp profile; separate amended cohort, not silently pooled with6062 results",
+  "pre_specified_reporting": {
+    "new_cohort": "n=2taskpairs/model, task bootstrap and exact McNemar with finite small-sample uncertainty",
+    "hard_cohort_secondary": "May report pooled stage2+stage3 as a disclosed descriptive three-task convenience subset with identical model/runtime/effort/token/dollar protocol; never pool historicalstage1 changed limits/sandbox",
+    "provider_sampling_seed": null
+  }
+}

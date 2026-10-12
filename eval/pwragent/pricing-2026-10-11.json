@@ -1,0 +1,16 @@
+{
+  "fetched_date": "2026-10-11",
+  "source": "https://developers.openai.com/api/docs/pricing",
+  "tier": "standard (driver serviceTier default; fastMode false)",
+  "currency": "USD per million tokens",
+  "long_context_threshold_input_tokens": 272000,
+  "models": {
+    "gpt-6.1-sol": {"short": [2, 0.1, 2.5, 10], "long": [4, 0.2, 5, 15]},
+    "gpt-6-astra": {"short": [10, 1, 12.5, 50], "long": [20, 2, 25, 75]},
+    "gpt-6-luna": {"short": [0.1, 0.01, 0.125, 0.5], "long": [0.2, 0.02, 0.25, 0.75]},
+    "gpt-5.6-luna": {"short": [0.2, 0.02, 0.25, 1.2], "long": [0.4, 0.04, 0.5, 1.8]}
+  },
+  "rate_order": ["uncached input", "cached input", "cache writes", "output including reasoning"],
+  "billing_basis": "API-equivalent estimate for subscription execution; actual API credits spend unavailable, not assumed economic cost zero",
+  "conservative_budget_basis": "long-context cache-write rate for all noncached input plus long output rate; unknown cached split treated uncached; all helper usage included"
+}

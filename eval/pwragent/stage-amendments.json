@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "amendments": [
+    {
+      "time": "2026-10-11",
+      "reason": "Measured development overhead from both existing orchestration threads was about $20 API-equivalent before four-arm pilot completion. Hold another $25 headroom rather than treat subscription-backed engineering as free.",
+      "orchestration_reserve_usd": 50,
+      "stage_ceiling_usd": 250,
+      "task_selection_order_model_prompt_changes": false
+    },
+    {
+      "time": "2026-10-11",
+      "reason": "First completed task returned a pending parent usage label, but matching durable completed-turn event and final provider counters exactly reconciled the attributed row; finalized title helper remains separate. Original run retained with no model retry.",
+      "accounting_rule": "Pending parent labels are complete only with exact identity, attributed usage, completed event and matching final input/cache/output/reasoning counters. Missing or mismatched evidence remains fully reserved.",
+      "task_selection_order_model_prompt_changes": false
+    },
+    {
+      "time": "2026-10-11",
+      "reason": "First main task Debian bookworm cannot execute Ubuntu-built managed Codex GLIBC_2.39. No turn dispatched and zero spend settled. Isolate original Ubuntu glibc and relocate ELF interpreter/RPATH for managed binary siblings, hash all relocated files. Preserve original task base and verifier. Apply identical portable runtime to every main task/model/flag. Retain zero-dispatch invalid attempt and explicitly allow one named infrastructure retry with unique ID.",
+      "task_selection_order_model_prompt_changes": false
+    },
+    {
+      "time": "2026-10-11",
+      "reason": "Cython Astra ON hit fixed inclusive750k-token stop. Original grade0 retained. All usage model rates known, but cancellation terminal notification missing; entire47USD reservation stays charged as uncertain. Remaining fixed cells can continue only under global250USD ledger after that full quarantine; no release, no model retry, no task/order/prompt/limit changes. Unknown rates or infrastructure still stop.",
+      "task_selection_order_model_prompt_changes": false
+    },
+    {
+      "time": "2026-10-11",
+      "reason": "Engineering audit root/sibling app-equivalent24.087340USD. Charging all aggregate tokens at expensive parent long-context/cache-write rates gives53.153389USD conservative upper; cheaper helpers included at parent rates. Hold65USD overhead inclusive of stage cap with headroom.",
+      "orchestration_reserve_usd": 65,
+      "stage_ceiling_usd": 250,
+      "task_selection_order_model_prompt_changes": false
+    },
+    {
+      "time": "2026-10-11",
+      "reason": "Added exact eval-only Jarvis20 selected-turn overhead. Initial short-card1.319672USD, conservative2.605102USD. Hold8.605102USD includes5partial/futuretail,0.5unassignedhelper upper,0.5closeout. Refreshed matching audit turn using selected provider token_usage_record only and attributed20nativeLuna helpers via readonly TokenMiserStore; no unrelated/historical root usage charged.",
+      "stage_ceiling_usd": 250,
+      "task_selection_order_model_prompt_changes": false
+    }
+  ]
+}

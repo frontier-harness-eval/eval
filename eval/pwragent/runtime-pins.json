@@ -1,0 +1,55 @@
+{
+  "pwragent_production_commit": "07055d7adf7d6845721d572c663553e7dc4102d6",
+  "pwragent_driver_commit": "6062dd702c8128f488b9750bdd23caa98c9e6d81",
+  "pwragent_driver_pr": "https://github.com/pwrdrvr/PwrAgent/pull/2707",
+  "payload_image": "fh-pwragent:8655446",
+  "initial_image_sha256": "f24651e7b8a3c314e8a8fd0315f72fb511b81f5877806399833afd2373789b0b",
+  "build_change": "corepack enable pnpm; avoid dangling yarn symlink copied from node image. Driver-only later commits are mounted read only; production bundle unchanged.",
+  "managed_codex_version": "0.162.1-pwragent.1",
+  "managed_codex_source_commit": "c03dc0f3a79ee087d4de66150a39c89c4a508f9d",
+  "managed_release": "https://github.com/pwrdrvr/codex/releases/tag/pwragent-v0.162.1-pwragent.1",
+  "managed_archive_sha256": "2a0e777c8c1e858346d3bf1139b1c411e52187ef557f824ebcc04ec87a8c0047",
+  "binaries_sha256": {
+    "codex": "527978f7a2f44639d9c12a18c4ccc149fb7359d45d23e1e97be3023da8d05747",
+    "codex-app-server": "6c3a5aac9a052a4668433747b3a9dfa4646ceb21ac83432cf61b1faa0ffffa0b",
+    "codex-code-mode-host": "72489576c708e7538b81704dd1f8606fd1b88644042c4a9517c3ba6b5998c8ae"
+  },
+  "runtime": "Docker Desktop existing local daemon; Linux arm64 native on Apple Silicon; task cpus2/memory6GiB/shm512MiB/concurrency1",
+  "auth": "Existing subscription account; individual auth.json read-only bind only; host uid used as non-root execution uid, no chmod/copy of credential, no full consumer state mount",
+  "network": "Agent default Docker outbound, no Docker socket/SSH agent/Federation/messaging; hidden tests injected after Electron/App Server exits. DeepSWE pristine verifier network none. Historical network/resource/architecture mismatch disclosed.",
+  "preflight": "Successful empty-thread gate/model/settings check plus real interrupt IPC rejected semantically with JSON-RPC -32600 no active turn, without model turn",
+  "main_batch_portability": {
+    "managed_sha256": {
+      "codex": "d939525aa70b5d8fe3a3d883e4ce4f6621dee9d325c93630106f6e3e98384d3c",
+      "codex-app-server": "e1a65745b55eccfcbfc115cc3f975f1717a57f657e87ebfa064d3515bc82cff4",
+      "codex-code-mode-host": "691e2081ad6625957f7f98fa58f7675a93db79ccc43c256dfc25f69a214c6eab"
+    },
+    "operation": "patchelf 0.18.0 set-interpreter /opt/pwragent-glibc/ld-linux-aarch64.so.1 and set-rpath /opt/pwragent-glibc; no code recompilation; original managed release unchanged",
+    "library_sha256": {
+      "libc.so.6": "0f1905dc27dbc6715875c70527bc8da846a10084c9c483e9d8ff76dce8d69d0e",
+      "libresolv.so.2": "92890287859788043628489a25fa39a623119328f6c0ac8e91f9ca60ab90650e",
+      "libutil.so.1": "c2c2f3733137b0acaee7b3abb9d6ee8ce05783013bce6e20da363cd7eb986703",
+      "libm.so.6": "5e0391562de36de323fb9cb0f2c1b6bd6d034c840b1dac018499f5fe4ded1b4a",
+      "libpthread.so.0": "6f1ab9e7d7de142dc5e2feaf6d19faceff0a0f40d5e225c922899f5362b8c353",
+      "librt.so.1": "93d0d5ab643b50ac1a61c2c7baf670e8aa94973fa5a2584d13db05295d5b5a0e",
+      "libdl.so.2": "1c16b2692a155191c97d7fdc5ce937d37c242435f05745046a794a9832b16af4",
+      "ld-linux-aarch64.so.1": "390027e5f45f236bd1838bc54bf464c5ff01d260ab9f8b415ea8276641bce505"
+    },
+    "pilot_original_runtime": true,
+    "main_batch_all_arms_same_portable_runtime": true
+  },
+  "eval_driver_cython_no_token_cap_stage": {
+    "source_commit": "0886647b24aaf612afdb67bf71c10f008f173707",
+    "preflight_result_sha256": "5fcbe5ff4335db653c798ea8e72bd3724cfa039842604d8c6f11cb43cc63146c",
+    "source_changes": "Lightweight budget reads, labeled IPC deadline and nonfinal usage snapshot retention; historical driver pins unchanged"
+  },
+  "eval_driver_recursive_export_fix_future_only": {
+    "source_commit": "beec8a636f1be17e76051718422393739f3df98e",
+    "preflight_only": true,
+    "actual_turn_start_requests": 0,
+    "export_proof_sha256": "27e0c16744e5181cca411100a2a09d7d20ef9fb1a41de46435f8648f27344e29",
+    "four_trial_driver_pin_unchanged": "0886647b24aaf612afdb67bf71c10f008f173707",
+    "source_bytes_and_safe_link_preserved": true,
+    "git_internals_omitted": true
+  }
+}

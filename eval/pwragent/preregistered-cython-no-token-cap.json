@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra"
+  ],
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "fast_mode": false,
+  "platform": "linux/arm64 native local Docker, 2CPUs6GiB concurrency1; same image digest within pair; network local Docker standard outbound",
+  "verifier": "Original task verifier hidden from agent and invoked only after driver process exits; DeepSWE separate pristine verifier with exported patch",
+  "cohort_id": "stage4-cython-no-token-cap",
+  "stage_ceiling_usd": 500,
+  "inclusive_token_stop": null,
+  "reservation_usd": {
+    "gpt-6.1-sol": 20,
+    "gpt-6-astra": 65
+  },
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 11,
+    "gpt-6-astra": 24
+  },
+  "seed": 20261013,
+  "replicates": 1,
+  "task_selection": "Fresh separate Cython cohort prompted by review of historical cap-stopped trials; convenience-selected diagnostic task, not population sampling; no prior patches or verifier state accessible to agents",
+  "tasks": [
+    {
+      "id": "build-cython-ext",
+      "suite": "terminal-bench-2.0",
+      "source_commit": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/terminal-bench/build-cython-ext",
+      "hashes": {
+        "environment/Dockerfile": "cb6cf421cb9b69d43bd25cd491e49bda982fbb865d47515178d017eda727194e",
+        "instruction.md": "7e52874e45f88505bd21540229719de6639a401477557d814489981d472f0e34",
+        "solution/solve.sh": "41bbdde88617070366a70e518eedca466a4ea1acd7e96899b2fb7da988e40abc",
+        "task.toml": "eb6bfabb7b75243c3f4d127a10c4c349d44e7e5b7bffb428edebd467adc43843",
+        "tests/test.sh": "0156c9c4085258b696ce424cf1ce96cba44d1263c5d73bdf54083fd80237f915",
+        "tests/test_outputs.py": "6549f1a8e04b6163ec08877e6f6b9868bf94563f3a3c72ac1fba9c512c31689e"
+      },
+      "task_metadata": {
+        "version": "1.0",
+        "metadata": {
+          "author_name": "Zizhao Chen",
+          "author_email": "czz@cs.cornell.edu",
+          "difficulty": "medium",
+          "category": "debugging",
+          "tags": [
+            "coding",
+            "dependency",
+            "compilation"
+          ],
+          "estimated_duration_sec": 540.0,
+          "expert_time_estimate_min": 60.0,
+          "junior_time_estimate_min": 180.0
+        },
+        "verifier": {
+          "timeout_sec": 900.0
+        },
+        "agent": {
+          "timeout_sec": 900.0
+        },
+        "environment": {
+          "build_timeout_sec": 600.0,
+          "docker_image": "alexgshaw/build-cython-ext:20251031",
+          "cpus": 1,
+          "memory": "2G",
+          "storage": "10G"
+        }
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6-astra",
+      "token_miser": false
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6.1-sol",
+      "token_miser": true
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6.1-sol",
+      "token_miser": false
+    },
+    {
+      "task": "build-cython-ext",
+      "model": "gpt-6-astra",
+      "token_miser": true
+    }
+  ],
+  "execution_limits": "No cumulative input/cached/output token stop. Original benchmark900s task time, no evaluator clamp. Dollar guards protect unchanged500 cumulative ceiling; guard outcomes disclosed as budget-limited, never intrinsic model failure. Same guard within each model pair.",
+  "budget_policy": "Serial; no paid automatic retry. Readonly existing ChatGPTPro auth, no API-key fallback. All parent/helper costs included. Unknown usage retains full reservation.500 includes previous quarantine and engineering/Jarvis holds. New engineering hold10; trial reservations170; fixed4cells then pause.",
+  "published_cost_basis": {
+    "selection": "Published costs are admission-planning evidence, not matched causal controls or exact Cython prices for requested models",
+    "requested_models": {
+      "gpt-6.1-sol": {
+        "cost_per_test_usd": 1.72,
+        "reported_duration_seconds": 2712
+      },
+      "gpt-6-astra": {
+        "cost_per_test_usd": 9.58,
+        "reported_duration_seconds": 2142
+      }
+    },
+    "model_cost_source": {
+      "url": "https://www.vals.ai/benchmarks/terminal-bench-4",
+      "as_of_page": "2026-10-07",
+      "benchmark": "Terminal-Bench4.0",
+      "harness": "Mini-SWE-agent",
+      "reasoning_effort": "not established in opened cost table",
+      "not_same_as_our_task": "TB2.0 Cython fixture"
+    },
+    "cython_source": {
+      "url": "https://github.com/frontier-harness-eval/eval/blob/e837a70/results/eval-data.json",
+      "model": "KimiK3",
+      "rows": [
+        {
+          "harness": "codex",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.41905529999999996,
+          "duration_seconds": 389.341468
+        },
+        {
+          "harness": "dsh-creator",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.549537,
+          "duration_seconds": 768.176657
+        },
+        {
+          "harness": "claude-code",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 5.1758172,
+          "duration_seconds": 1287.389872
+        },
+        {
+          "harness": "pi-responses",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.5402478000000001,
+          "duration_seconds": 1022.734195
+        },
+        {
+          "harness": "dsh-ptc",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.5371368000000001,
+          "duration_seconds": 548.423624
+        },
+        {
+          "harness": "dsh-standard",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.5836676999999999,
+          "duration_seconds": 599.409531
+        },
+        {
+          "harness": "oh-my-pi",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.8500073999999999,
+          "duration_seconds": 837.100414
+        },
+        {
+          "harness": "kimi-code",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.711273,
+          "duration_seconds": 732.928995
+        },
+        {
+          "harness": "dsh-minimal",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.7855827,
+          "duration_seconds": 818.92359
+        },
+        {
+          "harness": "exo",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 1.8345993,
+          "duration_seconds": 736.118803
+        },
+        {
+          "harness": "opencode",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.6692096999999999,
+          "duration_seconds": 1081.03508
+        },
+        {
+          "harness": "hermes",
+          "task_id": "terminal-bench/build-cython-ext",
+          "success": true,
+          "cost_first_cold_usd": 0.8629613999999999,
+          "duration_seconds": 961.360162
+        }
+      ]
+    },
+    "provider_maxima": {
+      "context_tokens": 1050000,
+      "max_output_tokens": 128000,
+      "pricing_long_context_threshold_tokens": 272000,
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+        "https://developers.openai.com/api/docs/models/gpt-6-astra"
+      ]
+    },
+    "next_request_headroom": {
+      "basis": "Pessimistic full-context cache-write rate plus full maximum output at long-context rates, 10 percent margin plus1USD native-helper allowance",
+      "gpt-6.1-sol_usd": 8.887,
+      "gpt-6-astra_usd": 40.435
+    },
+    "planned_reservation_usd": {
+      "gpt-6.1-sol": 20,
+      "gpt-6-astra": 65
+    },
+    "observed_cost_guard_usd": {
+      "gpt-6.1-sol": 11,
+      "gpt-6-astra": 24
+    },
+    "token_stop": null,
+    "time_allowance": "Original TB2.0 task agent timeout900seconds; no additional evaluator time clamp",
+    "planned_trial_reservations_total_usd": 170,
+    "new_engineering_hold_usd": 10,
+    "hard_cumulative_ceiling_usd": 500,
+    "budget_guard_limitations": "Usage is post-request; reservations cover estimated next-request uncertainty, not an invoice or provider-side billing cap. Unknown usage retains full reservation.",
+    "expected_cohort_cost_using_cross_benchmark_means_usd": 22.6,
+    "planning_uncertainty": "Published Cost/Test and Duration aggregation details/effort were not established in opened table.22.60 is a four-cell planning proxy, not a promise or matched-pair expected cost."
+  },
+  "analysis": "Report binary verifier separately from completion-gated score.1freshpair/model descriptive only; do not pool historical750k cutoffs. Common2026-10-11 card, appcatalog and conservative budget distinct. All cache/reasoning/output/helper/compression/retrieval usage included; incomplete usage retains bounds/reservation.",
+  "seccomp_profile": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/eval/pwragent/chromium-seccomp.json",
+  "seccomp_profile_sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849",
+  "seccomp_source": "https://raw.githubusercontent.com/microsoft/playwright/v1.63.0/utils/docker/seccomp_profile.json",
+  "driver_commit": "0886647b24aaf612afdb67bf71c10f008f173707",
+  "driver_directory": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/driver-0886647",
+  "driver_file_sha256": {
+    "apps/desktop/eval/smoke.ts": "a6017f04cf622dbe087b9b03c2a8cc9d2af720d592b670c0c96e072c47c6bffd",
+    "apps/desktop/eval/README.md": "5513acaec71afff75807e243669858385f6b11b196c0742de966693d28a83c2a",
+    "apps/desktop/eval/pdf.ts": "ddfd58531751927ddaf4f60ce63ca4157280bd7e4854c787cc163a4c31729fa2",
+    "apps/desktop/eval/HEADLESS.md": "ee574a69b4bc458913895d43f539776435f2eab18c6d538a69bd14ea4d7af0f2",
+    "apps/desktop/eval/tsconfig.json": "d8b34a6e56362aad4dfde37e21dec2d0b7abaeb18e03d57fa7835f47931cba62",
+    "apps/desktop/eval/run-headless.mjs": "72b228b6d48f220561b4d48d54115cadb4fbb5230d8191a56bab72e4956a6758",
+    "apps/desktop/eval/container/write-runtime-manifest.mjs": "67445c5b12d9b7c6e9b403be4d50cc626b573d143e9ac8f30ffb7e42e896579a",
+    "apps/desktop/eval/container/Dockerfile": "1562e59570cf5d428ac8084b7b3c816b1be9ca525dd22c4e33bd5acc53f209b6",
+    "apps/desktop/eval/pdf-fixtures/generate.py": "b8f3064afafea96de3873de5528ea5a99966aa33ff3520e99680af4f57ad0272",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-3.png": "abb907dd3485991f6fd36a10a26f07d304de9adba6aa3051de6d968816bb9342",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-2.png": "bf18a27f51e2d13aaa92f9a7d5f3083357b85633576358c226ef0fd9c9315e46",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-1.png": "5f65c08673c7335654fa544a4fe6eb5477680fa98ccd083fb1a8a3aaed393802",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-2.png": "229db87fc77dc663cf94e4e9bea5e4d2c2e9c32f176b5d7ded85ba53660c5584",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-3.png": "b6d570c2d6bd6e74bda2ff7bc16b84494d591dd166528f40db73b0e48e802189",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-1.png": "3d765acbc292a5848bced60df057c40408011c4cebd252ca3c83d2824739afd0",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette.pdf": "baafe289e66b71dc2527c1183a97ac651604895194c922831d3fb636988f8f0e",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record.pdf": "52f705399fc3090d38ca9abf1bd85e7e7ddfda8db430f56c341b470acd93794f",
+    "apps/desktop/eval/lib/driver.ts": "6258375057af704d98cdc59fafc2f05c054cc65be360c4c7169227dcfad4c9a8",
+    "apps/desktop/eval/lib/headless-contract.test.mjs": "c7b4cd5b8d02c5c41b82b28d199c55d65668060c98b651cf9e93d5bd652d1fc3",
+    "apps/desktop/eval/lib/headless-contract.mjs": "0a9fd8ba8d509ad629d0692f4c440f7b49910263a46652eb778fd162bfc14cc5",
+    "apps/desktop/eval/lib/live-app.ts": "aa5f17beab327b2f8df2bdf45e47f11e7787c9b060c8196f5f84c6b92a20afb0",
+    "apps/desktop/eval/lib/ui-driver.ts": "2e06cbfbc0a94c82f12766729c4953d885373fcc9441713579ef386034cdfd04"
+  },
+  "frozen_before_paid_dispatch": true,
+  "source_changes_disclosed": [
+    "Newdriver fixes historypolling latency and nonfinal usage retention; productionapp unchanged07055d7",
+    "Newharness has no default token stop or newcohort evaluator time clamp; historical exactprotocolhashes preserve previoussettings forreproduction only",
+    "OriginalCython reward and snapshot-based completion scoring remain unchanged; freshcohortno pooling"
+  ],
+  "task_image": {
+    "task": "build-cython-ext",
+    "image": "fh-task:build-cython-ext-8655446",
+    "image_id": "sha256:3ee6e70c7e7e7cef5b867acbe836698da9d85a70f8083b2e0833e07b5ba1ee89",
+    "platform": "linux/arm64",
+    "original_dockerfile_sha256": "cb6cf421cb9b69d43bd25cd491e49bda982fbb865d47515178d017eda727194e",
+    "overlay_dockerfile_sha256": "3d13133e863516fba3a0db54f5d57146987956c6bdcff1fb6a407bcc0fea380a",
+    "payload": "fh-pwragent:8655446"
+  },
+  "created_at": "2026-10-12T00:22:43.962096+00:00",
+  "authorization": "User explicitly rejected750k limit and directed published-model-cost-based admission; bounded freshfour Cython cells within unchanged cumulative500USD thenreviewpause",
+  "preflight_proof": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/runs/stage4-preflight-01/output/result.json",
+  "auth_policy": "Readonly approved ~/.codex/auth.json; ChatGPTPro account route only; APIkey/endpoint override rejected; no fallback; default serviceTier andfastModefalse parent/helpers verifiedfromwire",
+  "preflight_result_sha256": "5fcbe5ff4335db653c798ea8e72bd3724cfa039842604d8c6f11cb43cc63146c",
+  "frozen_at": "2026-10-12T00:22:23.683Z"
+}

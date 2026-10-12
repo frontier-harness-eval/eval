@@ -1,0 +1,339 @@
+{
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra"
+  ],
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "fast_mode": false,
+  "stage_ceiling_usd": 500,
+  "inclusive_token_stop": 2000000,
+  "reservation_usd": {
+    "gpt-6.1-sol": 12,
+    "gpt-6-astra": 47
+  },
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 1.5,
+    "gpt-6-astra": 4
+  },
+  "cohort_id": "hard-combined-descriptive",
+  "record_cohort_ids": [
+    "stage2-hard-httpx",
+    "stage3-hard-python"
+  ],
+  "tasks": [
+    {
+      "id": "httpx-multipart-response-parsing",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/httpx-multipart-response-parsing",
+      "hashes": {
+        "environment/Dockerfile": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+        "instruction.md": "6a9c3400a23ad61f43c6e6f5b2dfbe8f5a5af81061cc063fd9440f327c5a0fb5",
+        "solution/solution.patch": "fbe0ab61b8e523a794fcbdf30a71a6d008ffd85285a7334b82278fe9ea3e2f74",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "7ee0209ec928035b9c0ac28997c886cbef8197567429e1c0493631856fdad5e5",
+        "tests/Dockerfile": "925c9b16416aa5b8f83e243e790da6bb90df7e6f12236b1792e7ed33c85d870c",
+        "tests/config.json": "33734c0f6a77183d0c59aa5fc68f92c07fa9382846f968e284e82bba2f465b89",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "a6b6512793b4102041ea3cb835efbc8ba61cba800e07453dffd66703e123262e",
+        "tests/test.sh": "e39706afa8974f3a9949f2aa77012b37399578a647136bd065000f3273cbe719"
+      },
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/httpx-multipart-response-parsing",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh7fr6f1yw1289ye5ttsfvaqen8319dq",
+          "task_id": "httpx-multipart-response-parsing",
+          "display_title": "Add multipart response parsing to HTTPX",
+          "display_description": "Add Response iterators that parse multipart HTTP response bodies into parts.",
+          "original_title": "Multipart response parsing",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/encode/httpx",
+          "base_commit_hash": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary b5addb64f0161ff6bfe94c124ef76f6a1fba5254 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      }
+    },
+    {
+      "id": "cattrs-partial-structuring-recovery",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/cattrs-partial-structuring-recovery",
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/cattrs-partial-structuring-recovery",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh7f7cahc5ddm1qzpxz13kpmrh8235pc",
+          "task_id": "cattrs-partial-structuring-recovery",
+          "display_title": "Add partial structuring with error recovery to cattrs",
+          "display_description": "Add `partial_structure` and `PartialResult` for recoverable, field-level structuring with nested partial results.",
+          "original_title": "Partial Structuring with Error Recovery Mode",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/python-attrs/cattrs",
+          "base_commit_hash": "6bc4708fb9b2ac52d9a18997e923da6a58916102"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 6bc4708fb9b2ac52d9a18997e923da6a58916102 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7f7cahc5ddm1qzpxz13kpmrh8235pc-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      },
+      "hashes": {
+        "environment/Dockerfile": "2bd6e8a1ded869b85334eebbad3c29588b71a2ee1486c06713648485c2b3560e",
+        "instruction.md": "13eab1ccb6c77dafa95e7e815a35fc76033aaf271076012067c3502c0c11272c",
+        "solution/solution.patch": "6050a6735eee8de72939d81ead6274658915dc4512d5d2995280a9a9fdafb1b5",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "6c4f2907ee8a96f9a054e54cfae86fa248a37c06337cf990e3a124000a32bb0b",
+        "tests/Dockerfile": "bdca07e5a8e64ab175c28a2fa0d53d2225ae439abe6f0723213cd99ffdfb5228",
+        "tests/config.json": "d32fbbb9320863afda4000a3b87efbe1a1eb36565c474fbc37eb400d6301d62c",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "50154d90fca5e57254affc3a5378082a6782cb4d7e27182a7860a5827b8afef9",
+        "tests/test.sh": "f17974eb262c2263c538fd31d62ff40597674ce4bc70084abad190885862e481"
+      }
+    },
+    {
+      "id": "httpx-streaming-json-iteration",
+      "suite": "deep-swe",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/httpx-streaming-json-iteration",
+      "task_metadata": {
+        "schema_version": "1.3",
+        "artifacts": [
+          "/logs/artifacts/model.patch"
+        ],
+        "task": {
+          "name": "datacurve/httpx-streaming-json-iteration",
+          "description": "",
+          "authors": [],
+          "keywords": []
+        },
+        "metadata": {
+          "ext_id": "kh73snc7v9x3psk69rg4eqvjgs836v5a",
+          "task_id": "httpx-streaming-json-iteration",
+          "display_title": "Add streaming JSON iteration to HTTPX responses",
+          "display_description": "Add response iterators that incrementally parse JSON values from supported streaming media types.",
+          "original_title": "Add streaming JSON iteration",
+          "category": "feature_request",
+          "language": "python",
+          "repository_url": "https://github.com/encode/httpx",
+          "base_commit_hash": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+        },
+        "verifier": {
+          "network_mode": "no-network",
+          "environment_mode": "separate",
+          "timeout_sec": 1800.0,
+          "env": {},
+          "environment": {
+            "build_timeout_sec": 1800.0,
+            "cpus": 2,
+            "memory_mb": 8192,
+            "storage_mb": 20480
+          },
+          "collect": [
+            {
+              "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary b5addb64f0161ff6bfe94c124ef76f6a1fba5254 HEAD > /logs/artifacts/model.patch",
+              "timeout_sec": 300.0
+            }
+          ]
+        },
+        "agent": {
+          "network_mode": "no-network",
+          "timeout_sec": 10800.0
+        },
+        "environment": {
+          "build_timeout_sec": 1800.0,
+          "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh73snc7v9x3psk69rg4eqvjgs836v5a-v1.1",
+          "os": "linux",
+          "cpus": 2,
+          "memory_mb": 8192,
+          "storage_mb": 20480,
+          "gpus": 0,
+          "mcp_servers": [],
+          "env": {}
+        },
+        "solution": {
+          "env": {}
+        }
+      },
+      "hashes": {
+        "environment/Dockerfile": "aa71466fa6f71fab7fc6df1278377549c57a1d6b74bfd270a70005ce0fede297",
+        "instruction.md": "8b9cf46588b87c532be947e1ab102f1bf3241ad01133f5ca6c461dc7f7ecd9e6",
+        "solution/solution.patch": "e5c0c8b05b58adee89e56860a44324f9e8d325171927e56fc7ef0029f64f2438",
+        "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+        "task.toml": "4539d7eb6bc6e38c202b7b7afdf808c3f7aaa06283b58cc91f1d3aa437334e63",
+        "tests/Dockerfile": "f7c81ed884c26eadc54f108ca7950a8a1a1f60683f5db3e86c41dae7ec11195b",
+        "tests/config.json": "c3c1d983f347e37c7b131039dc97590f5160303acb26ee541b9499f906c751a1",
+        "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+        "tests/test.patch": "bd31b5332a542e94b8ebb1fe9e749512a942db9c7649e74533030e669900e849",
+        "tests/test.sh": "fb21502b6357332d46af6c1e78e2999960e8953ccbb37bf699f62fb1dda47277"
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-multipart-response-parsing",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "cattrs-partial-structuring-recovery",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6.1-sol",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6-astra",
+      "token_miser": true,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6-astra",
+      "token_miser": false,
+      "replicate": 1
+    },
+    {
+      "task": "httpx-streaming-json-iteration",
+      "model": "gpt-6.1-sol",
+      "token_miser": true,
+      "replicate": 1
+    }
+  ],
+  "reporting_scope": "Secondary descriptive three-task convenience subset, disclosed in stage3 preregistration before results. Includes EVERY authorized hard cell from both cohorts; does not include historicalstage1 with differing limit/sandbox.",
+  "source_protocol_sha256": {
+    "preregistered-hard-httpx.json": "1d77c9efb7099ac2931f15f55083b931b6f92e4cd9a4d2ec650981935d22b72b",
+    "preregistered-hard-python.json": "38f942f967fd1dafaaf6fcf54335c32e3c684755206ae6ee224013e376688029"
+  },
+  "authorization": "Aggregation only, zero model calls; no dispatch authorization or runnable driver/runtime contract.",
+  "sampling_note": "Not random representative suite, no repeated trials within tasks; task bootstrap uncertainty cannot establish population effects. Per-cohort primary reports retained.",
+  "seed": 20261012
+}

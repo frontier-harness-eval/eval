@@ -1,0 +1,1443 @@
+{
+  "schema_version": 1,
+  "reasoning_effort": "high",
+  "service_tier": "default",
+  "seccomp_profile": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/eval/pwragent/chromium-seccomp.json",
+  "seccomp_profile_sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849",
+  "seccomp_source": "https://raw.githubusercontent.com/microsoft/playwright/v1.63.0/utils/docker/seccomp_profile.json",
+  "auth_policy": "Readonly approved ~/.codex/auth.json; ChatGPTPro account route only; APIkey/endpoint override rejected; no fallback; default serviceTier andfastModefalse parent/helpers verifiedfromwire",
+  "driver_commit": "beec8a636f1be17e76051718422393739f3df98e",
+  "driver_directory": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/driver-beec8a6",
+  "driver_file_sha256": {
+    "apps/desktop/eval/HEADLESS.md": "97991c65ddd8580cf7b33e9b5136a216ed4eb38eb7a38f0b912d32ab68f39259",
+    "apps/desktop/eval/README.md": "5513acaec71afff75807e243669858385f6b11b196c0742de966693d28a83c2a",
+    "apps/desktop/eval/container/Dockerfile": "1562e59570cf5d428ac8084b7b3c816b1be9ca525dd22c4e33bd5acc53f209b6",
+    "apps/desktop/eval/container/write-runtime-manifest.mjs": "67445c5b12d9b7c6e9b403be4d50cc626b573d143e9ac8f30ffb7e42e896579a",
+    "apps/desktop/eval/lib/driver.ts": "6258375057af704d98cdc59fafc2f05c054cc65be360c4c7169227dcfad4c9a8",
+    "apps/desktop/eval/lib/headless-contract.mjs": "0a9fd8ba8d509ad629d0692f4c440f7b49910263a46652eb778fd162bfc14cc5",
+    "apps/desktop/eval/lib/headless-contract.test.mjs": "c7b4cd5b8d02c5c41b82b28d199c55d65668060c98b651cf9e93d5bd652d1fc3",
+    "apps/desktop/eval/lib/live-app.ts": "aa5f17beab327b2f8df2bdf45e47f11e7787c9b060c8196f5f84c6b92a20afb0",
+    "apps/desktop/eval/lib/task-export.mjs": "8db3853fc20859cfc5ba7c74d98cd436ec868da4228a5f7461cc75ee3ec1fef7",
+    "apps/desktop/eval/lib/task-export.test.mjs": "4808869b844d4330134fa8121518a6f41c883bd67fe114b3c5946bfe832ba4d5",
+    "apps/desktop/eval/lib/ui-driver.ts": "2e06cbfbc0a94c82f12766729c4953d885373fcc9441713579ef386034cdfd04",
+    "apps/desktop/eval/pdf-fixtures/generate.py": "b8f3064afafea96de3873de5528ea5a99966aa33ff3520e99680af4f57ad0272",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-1.png": "3d765acbc292a5848bced60df057c40408011c4cebd252ca3c83d2824739afd0",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-2.png": "229db87fc77dc663cf94e4e9bea5e4d2c2e9c32f176b5d7ded85ba53660c5584",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette-page-3.png": "b6d570c2d6bd6e74bda2ff7bc16b84494d591dd166528f40db73b0e48e802189",
+    "apps/desktop/eval/pdf-fixtures/harbor-gazette.pdf": "baafe289e66b71dc2527c1183a97ac651604895194c922831d3fb636988f8f0e",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-1.png": "5f65c08673c7335654fa544a4fe6eb5477680fa98ccd083fb1a8a3aaed393802",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-2.png": "bf18a27f51e2d13aaa92f9a7d5f3083357b85633576358c226ef0fd9c9315e46",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record-page-3.png": "abb907dd3485991f6fd36a10a26f07d304de9adba6aa3051de6d968816bb9342",
+    "apps/desktop/eval/pdf-fixtures/roadster-equipment-record.pdf": "52f705399fc3090d38ca9abf1bd85e7e7ddfda8db430f56c341b470acd93794f",
+    "apps/desktop/eval/pdf.ts": "ddfd58531751927ddaf4f60ce63ca4157280bd7e4854c787cc163a4c31729fa2",
+    "apps/desktop/eval/run-headless.mjs": "ac92541d6ed6b576489e2a242bb8616f589c1ed56128d92f823428c231994124",
+    "apps/desktop/eval/smoke.ts": "a6017f04cf622dbe087b9b03c2a8cc9d2af720d592b670c0c96e072c47c6bffd",
+    "apps/desktop/eval/tsconfig.json": "d8b34a6e56362aad4dfde37e21dec2d0b7abaeb18e03d57fa7835f47931cba62"
+  },
+  "pricing_card_sha256": "7c6fad77cf5e38babd9dd713620b191c49b92ab060621f2a322bd451bef870e6",
+  "pricing_reverified_at": "2026-10-12T02:15:27.945554+00:00",
+  "pricing_sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://developers.openai.com/api/docs/models/gpt-6-astra"
+  ],
+  "overhead_snapshot_files": [
+    "stage5-engineering-overhead.json"
+  ],
+  "cohort_id": "stage5-final-sol-workflow",
+  "models": [
+    "gpt-6.1-sol"
+  ],
+  "fast_mode": false,
+  "budget_ledger": "stage5-ledger",
+  "stage_ceiling_usd": 500,
+  "authorization": "Existing NEW $500 Pro-only stage. Explicit scope clarification permits exactly one additional larger unique-feature Sol OFF/ON pair after the six-feature pair, then review pause. Same ledger; no reset or API fallback.",
+  "reservation_usd": {
+    "gpt-6.1-sol": 90
+  },
+  "observed_cost_stops_usd": {
+    "gpt-6.1-sol": 30
+  },
+  "inclusive_token_stop": null,
+  "canonical_committed_submission": true,
+  "detailed_usage_report": true,
+  "seed": 2026101201,
+  "seed_scope": "Pair order only; provider generation seed is unavailable.",
+  "created_at": "2026-10-12T07:33:51.974374+00:00",
+  "frozen_at": "2026-10-12T07:39:37.678202+00:00",
+  "frozen_before_paid_dispatch": true,
+  "budget_policy": "Exactly two serial attempts then pause. Both $90 worst-case trial envelopes fit after all existing charges, engineering/helper/closeout holds and the unreleased $90 missing-helper uncertainty hold. Each trial uses a $30 observed app-card stop with conservative next-request headroom; no cumulative-token cap or automatic retry.",
+  "tasks": [
+    {
+      "id": "twelve-feature-workflow",
+      "suite": "deep-swe-workflow",
+      "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/workflow-packages/twelve-feature-workflow",
+      "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+      "hashes": {
+        "instruction.md": "2b55ef461b5087d00d6d02072d3776081869122715b07f863752bbd08b359589",
+        "components.json": "0b95cdf2d7dcbc3f1a03fc2d563a5f1958e716f15286b66e76669e1a7e28170c"
+      },
+      "task_metadata": {
+        "metadata": {
+          "base_commit_hash": "4028eb686060c4478f9f2c85260932f84113a342"
+        },
+        "agent": {
+          "timeout_sec": 86400
+        },
+        "workflow_components": [
+          {
+            "id": "expr-try-catch-errors",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/expr-try-catch-errors",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "002841e554f06f3e77cd28673deaa7b232e2ab518cf303727a21ba6ffdd37ef5",
+              "instruction.md": "6f19f8363f75963c69072f03aa7515ffa304d6b726f85b09188760ae682e3447",
+              "solution/solution.patch": "39d5fc1a453c6cbfc9e1b3e7a84cd75694dd0af32a30250c25723e0da5fa17f6",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "1206c54353bb7982f44be6473f2bc2837fb2826cc674d1a672612648160ede54",
+              "tests/Dockerfile": "0a0e3016434f05f233f2af6215a2df509de25cdc8aa47f69d6f1625a03a92488",
+              "tests/config.json": "91d9f4547c567e798644c3ad80016ad2745db3184df82440e8b93b9b6d163fd6",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "4f3f19e8f52c0e10cf4fe194b7adbf84f59541576e2f557d0624ce9af5aa3eb7",
+              "tests/test.sh": "2340ff25d99a8ced4acdfd1fa5e11dca45990265b58c37744f0fd96afd3521af"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/expr-try-catch-errors",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh71gkadwafw4ry4r6g37era0182qpms",
+                "task_id": "expr-try-catch-errors",
+                "display_title": "Add try/catch error recovery to expr",
+                "display_description": "Add expression and block-level error recovery with try, catch, finally, throw, retry, and errtype.",
+                "original_title": "Try/Catch Error Recovery",
+                "category": "feature_request",
+                "language": "go",
+                "repository_url": "https://github.com/expr-lang/expr",
+                "base_commit_hash": "851b241a301f7c74646e65e4009c69cf290993a8"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 851b241a301f7c74646e65e4009c69cf290993a8 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71gkadwafw4ry4r6g37era0182qpms-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "expr-try-catch-errors",
+              "image": "fh-task:expr-try-catch-errors-8655446",
+              "image_id": "sha256:e5a067324e98dca901c446c42b7add56b9d8a3bbd84609b24aff63349745ed33",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "002841e554f06f3e77cd28673deaa7b232e2ab518cf303727a21ba6ffdd37ef5",
+              "overlay_dockerfile_sha256": "8b207de4f37e7b47a2d5deef25054eb8baea216275e343fc2c8c2b6a54e3ce5d",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "arktype-json-schema-refs-dependencies",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/arktype-json-schema-refs-dependencies",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "58f595eaf14a7854f339073deadc9d28fcbff9455e21ac986d6fbd908bb2e36d",
+              "instruction.md": "594fa84b95c92f69e949de2781107a3ff5b6131e889203fc4505f6f41a136ea3",
+              "solution/solution.patch": "dd724535e1d925335ee8e8b6ca2e9dc3e00de3733f907bf7b4822d996ab23ff8",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "6a91e7bd0fd5d1154f77e84c69a62d266e24552c83954dec0f18d3471b6a809c",
+              "tests/Dockerfile": "5ce0997f410a98a34ba9a4db8d7bf4e43591dd935d49a2934899933b9ce4e485",
+              "tests/config.json": "62ba14ca9fcc3b85ace2f26b1b3df885a0cb7ccdb1607d834df582be1f5c4c46",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "2d79d38da986136779eeb69658b775fd380d32eb6ba27abac5d080714f47c92c",
+              "tests/test.sh": "a529f019da4dfac1ae46dca104599c4489a52b70d71889486267a91e9df450f9"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/arktype-json-schema-refs-dependencies",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh771gpr8crkjsnt9pj81bafgs8229em",
+                "task_id": "arktype-json-schema-refs-dependencies",
+                "display_title": "Add JSON Schema refs and dependency keywords",
+                "display_description": "Add JSON Schema dependency keywords, local $defs/$ref resolution, and conditional schema handling.",
+                "original_title": "Support JSON Schema dependency keywords + local `$defs`/`$ref` resolution",
+                "category": "feature_request",
+                "language": "typescript",
+                "repository_url": "https://github.com/arktypeio/arktype",
+                "base_commit_hash": "04355e8b26d1ad5264ef62314a2bc46c4de58ed8"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 04355e8b26d1ad5264ef62314a2bc46c4de58ed8 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh771gpr8crkjsnt9pj81bafgs8229em-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "arktype-json-schema-refs-dependencies",
+              "image": "fh-task:arktype-json-schema-refs-dependencies-8655446",
+              "image_id": "sha256:247b1c74c0a0e06e463db7b83f1a95b8fe5caf4e18de518951d5980726207dc6",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "58f595eaf14a7854f339073deadc9d28fcbff9455e21ac986d6fbd908bb2e36d",
+              "overlay_dockerfile_sha256": "b626d3a0c38c93b74159143fd93dd69658b235fc01d048f8e4a6cd5dff67b31a",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "katex-multicolumn-array-spans",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/katex-multicolumn-array-spans",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "6a55c5b3d5d354503dc38b75d50bdc754b917bcd29da1a70c1552dd98745db47",
+              "instruction.md": "54e5a648f5c2151a57f895d5ea4d814f44cca52daa5e58a198877f398ace28f1",
+              "solution/solution.patch": "08d2e9b75ce492977ca2e3f3431216e932410a492001bdb21e702778831c45bf",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "cd0d93fd52c3755d8ab44b7709253aca2b31d6eedcf7a33e15f856e5a35975b6",
+              "tests/Dockerfile": "0274ff3beb685b126ae383feddc61a44601c7392a35adfd719ed585e69533058",
+              "tests/config.json": "ec1a2fd78e14224482b9d4ee6857a0a58117bb0bbf87a0dcefb6383a95e0c6c1",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "9a45f15ab7b2f1737aa4ebb05c532d85189f759a649b849fe147e9e61377de9b",
+              "tests/test.sh": "487f01bcc81d69b492c6cb6c18e3e2d078ab739b3a4c37cdaff4fb4366de93a2"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/katex-multicolumn-array-spans",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh7fkjmy67qny9z98mt6bj52m182ygdy",
+                "task_id": "katex-multicolumn-array-spans",
+                "display_title": "Add `\\multicolumn` column spans to array-like environments",
+                "display_description": "Add `\\multicolumn` parsing and rendering for array-like environments with span-aware alignment and errors.",
+                "original_title": "Add \\multicolumn support for array environments",
+                "category": "feature_request",
+                "language": "javascript",
+                "repository_url": "https://github.com/KaTeX/KaTeX",
+                "base_commit_hash": "89bede495dc2c85e1c57ba627a18526f71d57396"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 89bede495dc2c85e1c57ba627a18526f71d57396 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fkjmy67qny9z98mt6bj52m182ygdy-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "katex-multicolumn-array-spans",
+              "image": "fh-task:katex-multicolumn-array-spans-8655446",
+              "image_id": "sha256:36fe98ca0efb549f07c560b3522fd36bf4d3825324c364fc6b4019f4852b1aa0",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "6a55c5b3d5d354503dc38b75d50bdc754b917bcd29da1a70c1552dd98745db47",
+              "overlay_dockerfile_sha256": "a238535f353d1d08005eaaa9a042bc1473eb9b1c170c094a44cc31d639596eea",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "meriyah-explicit-resource-declarations",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/meriyah-explicit-resource-declarations",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "8e3dccc5e0a57da2fde8036cc6747b25f2f502bb5db9fecbbe339b2fcdbfb9b5",
+              "instruction.md": "a85dfeb98a4203f9eb7392f918543fab27d83f344a92d290454aedc145c7b5f7",
+              "solution/solution.patch": "f09c542e402f0ea4b736152abcafa4915dc47f3b8b721d146616baefd2f6d82d",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "1c245857d89c6c4f0d12922bd83d0a2eeeb56277e2d9c01094a0421daa2af905",
+              "tests/Dockerfile": "c0acd01d13712e67e8b6b29e9a777bbaf782674b263f0b438ab9a31a776c7cea",
+              "tests/config.json": "3c3f0aa5fead486cf8e4e96882db3e930c8023ef4b289eae19a923bde3638d0f",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "295fa1d4bb16409303a13b5252641b439cb4e3e19c65fade6341c01a00581395",
+              "tests/test.sh": "2541c912d82661288d00d9c396b59d766fa84876a659662d58ba7043306571c3"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/meriyah-explicit-resource-declarations",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh7398skqnxqwg9hbmdj7ncmk1822aa0",
+                "task_id": "meriyah-explicit-resource-declarations",
+                "display_title": "Add explicit resource management declarations to the parser",
+                "display_description": "Add parsing and AST support for `using` and `await using` declarations, including context-sensitive errors.",
+                "original_title": "# Explicit Resource Management Declarations",
+                "category": "feature_request",
+                "language": "typescript",
+                "repository_url": "https://github.com/meriyah/meriyah",
+                "base_commit_hash": "d141eb14a40b79c04d1b1db5c20c6afa3844c0d9"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary d141eb14a40b79c04d1b1db5c20c6afa3844c0d9 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7398skqnxqwg9hbmdj7ncmk1822aa0-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "meriyah-explicit-resource-declarations",
+              "image": "fh-task:meriyah-explicit-resource-declarations-8655446",
+              "image_id": "sha256:b2c4a64fc3f64509a6dadfc4b650a16eacf3d50a14e45e0fc3b3b3de173f8c96",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "8e3dccc5e0a57da2fde8036cc6747b25f2f502bb5db9fecbbe339b2fcdbfb9b5",
+              "overlay_dockerfile_sha256": "f11f0901d560f8386f846638a6cf2cfd758e1ecc09e07d792d149be3118b211f",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "scc-bounded-memory-spilling",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/scc-bounded-memory-spilling",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "5003fa7a006fb18f4f563edc6f0ca514a0b141497cb2c1c0ae750a2f199c32ef",
+              "instruction.md": "fc99a21974fa57940e3ff7e9eb81c31b06728cbc39177faf5500667cd51a816e",
+              "solution/solution.patch": "62b9ae1bd1cee01df711c783f796f2b3ebbd5ab9324dc9e9b53535e4907100a6",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "40df2d49f62c899ba5dd08a99ba9ee3de09cea150f6bb69aac76f48b5c0f33b5",
+              "tests/Dockerfile": "3d4c1fba85e1bc64d3a412f20eb4534cb47854d892b6786c48fd0ff63bbffeb8",
+              "tests/config.json": "b8db15513d3a79790bc28c1a8ffc76e713162613d242deddf87d9c53970495e3",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "4c945a497090002daadb33c6ceca8b5e0cdee41ec5fe93a991e172dad5cc560a",
+              "tests/test.sh": "ec3e9327826cbf84ac01c69dee5f0dbc4e622e5a3c948b92bac569da753cf723"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/scc-bounded-memory-spilling",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh71j0gr2axgn6v1f92cam6s6x82rkv6",
+                "task_id": "scc-bounded-memory-spilling",
+                "display_title": "Add bounded-memory spilling to SCC aggregation",
+                "display_description": "Add an opt-in bounded-memory mode that spills per-file aggregation results to disk without changing output.",
+                "original_title": "Bounded-memory aggregation pipeline",
+                "category": "feature_request",
+                "language": "go",
+                "repository_url": "https://github.com/boyter/scc.git",
+                "base_commit_hash": "bc2796e01998ebc2d40818323f93113aed2542ea"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary bc2796e01998ebc2d40818323f93113aed2542ea HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71j0gr2axgn6v1f92cam6s6x82rkv6-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "scc-bounded-memory-spilling",
+              "image": "fh-task:scc-bounded-memory-spilling-8655446",
+              "image_id": "sha256:564b5368f0f4ace0623ec0ad0475021f742373c11aca510c4ed0e4b2c7974dca",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "5003fa7a006fb18f4f563edc6f0ca514a0b141497cb2c1c0ae750a2f199c32ef",
+              "overlay_dockerfile_sha256": "d30a08e600332d71c39cae313b8154b7ddf7297264ea3fea78177d6c51438d8c",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "anko-typed-variable-bindings",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/anko-typed-variable-bindings",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "167c90098edde010922af29a44456c905d91e5d61be1c5411cd99e828a24419e",
+              "instruction.md": "96c0c7ad98237d6176034c8893d8bff164ec5fda45889e51780a65cf599ffcfe",
+              "solution/solution.patch": "ecd46559f072b3737590b1ab52112dafce787d5d5411f83dc7f8c16f340db880",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "10e666616cddb0b75d2db407c5c89ea4b17a3284b5ad7c499a3305cc9483bcd1",
+              "tests/Dockerfile": "e5c7d7da5f841382ec5187fefb132a804c83b3c44623c38ca9ddaf5493200cf9",
+              "tests/config.json": "0f11e7c3d5aec8fbfe3e431d246e1b7b8a0ebf2326d7feafa39f389e248ebe48",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "91aa103ce3d2a7978588a19aa33e6dbbb95f418fd5fc1e2d21bd40a376b5078a",
+              "tests/test.sh": "3c022205d73128934751dbddac8136f25e8fa6b436243557730742f5186dda01"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/anko-typed-variable-bindings",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh79betfed7ets4an20cr4j57182y9wt",
+                "task_id": "anko-typed-variable-bindings",
+                "display_title": "Add typed variable bindings to Anko",
+                "display_description": "Add typed `var` declarations in Anko and enforce declared type constraints on assignment when TypedBindings is enabled.",
+                "original_title": "Typed Variable Bindings",
+                "category": "feature_request",
+                "language": "go",
+                "repository_url": "https://github.com/mattn/anko",
+                "base_commit_hash": "3f269a72ff69398b1250c584171f32d12c0d8085"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 3f269a72ff69398b1250c584171f32d12c0d8085 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh79betfed7ets4an20cr4j57182y9wt-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "anko-typed-variable-bindings",
+              "image": "fh-task:anko-typed-variable-bindings-8655446",
+              "image_id": "sha256:0c4028d1328a436fc9b49fa59d2a635e6774be10c557e7b3690b5828e72502aa",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "167c90098edde010922af29a44456c905d91e5d61be1c5411cd99e828a24419e",
+              "overlay_dockerfile_sha256": "071fe73cc039b5d19815ac0a62c8d0aa41a9b7e7f5cb4ece7a652bf64af44b11",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "abs-module-cache-flags",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/abs-module-cache-flags",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "69f10920ca0e9d9aa53d0bdb5e2d1ddff39f7eefc0b2d29b96dba9032ddbdbd8",
+              "instruction.md": "cffcaa70386408363b090b563943fd63fdcc322ed44b8c76cc3e56cfd76b7ed8",
+              "solution/solution.patch": "dbb0bc5ce090de7c6f1c172a620f400070714846e93b54943d981b7b496fc069",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "bb44f3275fde199bbe5d6706630a5c6140cfe5beb66e49f2c391fa548bd974e6",
+              "tests/Dockerfile": "184c20de1b4d9fa4532be3345050de006670de023aaae508bcb7f0711f80fd71",
+              "tests/config.json": "18ae10bb40d545220bc46690d2ab749911b5bb12bfba870e3679ab3750684014",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "1f14443b836ad75b66975d9c8b6e735f675250136661dfc0a370d018ba4a97f9",
+              "tests/test.sh": "dfecfd863824f3d9780fb1bdb13de5415d831a7c452a41f39202dd29e4454b81"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/abs-module-cache-flags",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh75679ajj3b8dtd7se3h7z0a1833y6r",
+                "task_id": "abs-module-cache-flags",
+                "display_title": "Harden module loading, cache introspection, and script flags",
+                "display_description": "Harden ABS module resolution and caching, expose cache introspection APIs, and make module flags work correctly in script mode.",
+                "original_title": "Harden Module Loading, Cache Introspection, and CLI Module Flags",
+                "category": "enhancement",
+                "language": "go",
+                "repository_url": "https://github.com/abs-lang/abs",
+                "base_commit_hash": "cb1b3b671d0ee9fa9da9f7b02f86967953ffd10a"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary cb1b3b671d0ee9fa9da9f7b02f86967953ffd10a HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh75679ajj3b8dtd7se3h7z0a1833y6r-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "abs-module-cache-flags",
+              "image": "fh-task:abs-module-cache-flags-8655446",
+              "image_id": "sha256:56f0111cd900fa18302d905d3ff07ec915cdafd5d2601a463ec4a7d4d8241aa5",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "69f10920ca0e9d9aa53d0bdb5e2d1ddff39f7eefc0b2d29b96dba9032ddbdbd8",
+              "overlay_dockerfile_sha256": "0ebe77c6b3c3b16324242616309ee2a819cd6d86c70dd22515d09ca7b8af0d05",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "actionlint-action-pinning-lint",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/actionlint-action-pinning-lint",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "f0e0544d7c7cea38a8592bd91364110e223d0266481a65bcd564300734a228c9",
+              "instruction.md": "02472c08b7de7ca4d7d709a3b53db835fe8bcc76a887a13c18dc5aba86bd37f9",
+              "solution/solution.patch": "e5be4578ca56f7a2e63c8fae53120ca15ed30b7718d097138e2eb30d81206ad4",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "a171ddc6849f81f146c05b5fa230341fbc691e26b90edb4d3d80efd274141f66",
+              "tests/Dockerfile": "0b9bdabc3f18bafa78d129d076c3464c5a8d9d52d4b1f07ff58603c85ca3e89e",
+              "tests/config.json": "003e2833f422b8c74af29572915c0c020466255dd5125ed33e8587e7ef60cf17",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "608be125ea90894b68b06e664229b6de7911403695132fc0ff794ceefa39a856",
+              "tests/test.sh": "ad32349418c97fe12a090d09ddb5c3880b1b992500c2f69275ef702b52c6e0e3"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/actionlint-action-pinning-lint",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh79dnvkvq8j9bs22ededmsc79823akj",
+                "task_id": "actionlint-action-pinning-lint",
+                "display_title": "Add action pinning linting for actions and reusable workflows",
+                "display_description": "Add a configurable lint rule that enforces pinned versions for action and reusable workflow references.",
+                "original_title": "Action Version Pinning Lint Rule for actionlint",
+                "category": "feature_request",
+                "language": "go",
+                "repository_url": "https://github.com/rhysd/actionlint",
+                "base_commit_hash": "0bdc95715fa58f64e3fd6e63b0f89be8733cbbab"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 0bdc95715fa58f64e3fd6e63b0f89be8733cbbab HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh79dnvkvq8j9bs22ededmsc79823akj-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "actionlint-action-pinning-lint",
+              "image": "fh-task:actionlint-action-pinning-lint-8655446",
+              "image_id": "sha256:7d64e3365c2b05a171d64eb804ccf6631706189227c8ad5e27aedecd47eb83f2",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "f0e0544d7c7cea38a8592bd91364110e223d0266481a65bcd564300734a228c9",
+              "overlay_dockerfile_sha256": "d0c8e2fa8b36363b1168991c74fcc41f62226f055c1b88d44f0f1ae78b850f2a",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "awilix-async-container-initialization",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/awilix-async-container-initialization",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "4a55090bdce3abad4ab256d3676f1155b6eee8e7c2cdf21a55253da10626edb2",
+              "instruction.md": "340a292a209ce1ad90dc30ba47d0062f543805cf9e212bce662b0fb6bd5d3c66",
+              "solution/solution.patch": "7132cba436d0648a0ecc6d77078ffcf6bdae5a0d69b6cabaf52a9275ad6c2b48",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "051f78a9f7c1641dfa9a362dacf26a8ea3b4100eaade210db2a74ef23061fc3d",
+              "tests/Dockerfile": "576a380c075a65f8a4ea83f960d5996e86d45de2017fdc64157ce40911184fd1",
+              "tests/config.json": "f521bba2e5f1083b43903e3ddd2b06f9a1be7dbf8d7d888f3b80a373239a37cf",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "21387269b2484e1c89419bb04fda51bd60e220e4571bd1bbabe450fdb3c16e04",
+              "tests/test.sh": "5a0003161a27d9c944ebb3817053f338f614d157c4b52ad6f6957e4c5a40300f"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/awilix-async-container-initialization",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh70bg8gy4xks4eyh1s71ecmk9822p9c",
+                "task_id": "awilix-async-container-initialization",
+                "display_title": "Add dependency-aware async initialization to the container",
+                "display_description": "Add dependency-aware asynchronous container initialization with ordered startup, concurrency limits, and rollback on failure.",
+                "original_title": "Async Initialization with Dependency-Aware Startup Ordering",
+                "category": "feature_request",
+                "language": "typescript",
+                "repository_url": "https://github.com/jeffijoe/awilix",
+                "base_commit_hash": "82ac179c1de4c216c4e333093044fac643303f0c"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 82ac179c1de4c216c4e333093044fac643303f0c HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh70bg8gy4xks4eyh1s71ecmk9822p9c-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "awilix-async-container-initialization",
+              "image": "fh-task:awilix-async-container-initialization-8655446",
+              "image_id": "sha256:411231bee5a836f8b4800b416e4bb6ba0127a83a652298349bb5344691e81231",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "4a55090bdce3abad4ab256d3676f1155b6eee8e7c2cdf21a55253da10626edb2",
+              "overlay_dockerfile_sha256": "a604eb3ebfb4eea1525dc2efa41122496019487bffdd11d5d9034a9d3b1794c9",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "clack-async-autocomplete-options",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/clack-async-autocomplete-options",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "ee1171af0650ea7024cb26dcdf6d693721479094e425ad9ca35e5a4bb0b56e24",
+              "instruction.md": "5792630a916783910328e8d7778dc9483ed949bf713a09d00d4b8f6d4bdb6bf3",
+              "solution/solution.patch": "b9072085c48eb62b3ec18073361dd40ccc30064fbadfb5779ca409dec8c405b8",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "977c453c2c4701b1d58df42f7d11a9f9b16ae9b57c7e2522fa45c2bd14f44603",
+              "tests/Dockerfile": "f9f060804da06d2ed40954ec21c5f41a6eb3e2541f0a0e270638a4c548edbd32",
+              "tests/config.json": "68f5bdaa5ed70850c3e4f3e8f97328a86bac535f6cd325b9111207d1b0f86bed",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "bf6aaeaac58a1093d509332cd3f36562c6c8c61f41fa84178d87afcf50de9ab8",
+              "tests/test.sh": "121e16f34db26fc1799f8c28db93eb33228d3d54fcd997d13b4b85277d06e18f"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/clack-async-autocomplete-options",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh78c5dwwna57y757p2y5ktw79836dnv",
+                "task_id": "clack-async-autocomplete-options",
+                "display_title": "Add async autocomplete options and fetch lifecycle handling",
+                "display_description": "Add async option fetching with caching, retries, debouncing, and loading state to AutocompletePrompt.",
+                "original_title": "Async Options for AutocompletePrompt",
+                "category": "feature_request",
+                "language": "typescript",
+                "repository_url": "https://github.com/bombshell-dev/clack",
+                "base_commit_hash": "8a96e2dcd7f821d1250b58cf71c327679f94de25"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 8a96e2dcd7f821d1250b58cf71c327679f94de25 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh78c5dwwna57y757p2y5ktw79836dnv-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "clack-async-autocomplete-options",
+              "image": "fh-task:clack-async-autocomplete-options-8655446",
+              "image_id": "sha256:218330d1703ed1b4c6bce7558cee2111cda0fa45e377bddcfe6e5fefbac9b5f8",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "ee1171af0650ea7024cb26dcdf6d693721479094e425ad9ca35e5a4bb0b56e24",
+              "overlay_dockerfile_sha256": "e1e5ac03864b872ade64ca8cd79e3c3758397239396846487359c6ad846af75c",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "csstree-shorthand-expansion-compression",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/csstree-shorthand-expansion-compression",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "1855a58bfa42e80d0f8af5ead2f6a66662c618cbd8602121935408b18570bf86",
+              "instruction.md": "fcf3984dab65cdb6fa5255587e5f09f75231da6c8e4840f47e25a4c0303afdb7",
+              "solution/solution.patch": "fb88c5c0bf02cb56731c8712c4b1a812f6da17babacb83a81ab4ddb6b56eb1ce",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "461fbe15ef2afa084f988e225fab1bfafeb02d7f34114b55e01fefbd66ee31e6",
+              "tests/Dockerfile": "a038169d3661f0fd9bdc7cead44fad1d41d42358e9ae9f07bd7f7422421a266e",
+              "tests/config.json": "569c1c8e0db40506847f74bef946775a6f3cb777078513b6798dbb90b296d50a",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "8d7175cbea6420d5eb0511cbce41cdba865de1ea676a41aa31352e569fb4dd0a",
+              "tests/test.sh": "6e409ebeebde2c5739e7dec243c2ac70a3c9d26dd7540b4660ea972b50c534ab"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/csstree-shorthand-expansion-compression",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh72qraccnjwdet6ynagsccr4x82y65c",
+                "task_id": "csstree-shorthand-expansion-compression",
+                "display_title": "Add shorthand expansion and compression to the lexer",
+                "display_description": "Add lexer methods to expand CSS shorthands into longhands and compress longhands back into shorthand values.",
+                "original_title": "Shorthand Property Expansion & Compression Engine",
+                "category": "feature_request",
+                "language": "javascript",
+                "repository_url": "https://github.com/csstree/csstree",
+                "base_commit_hash": "88e3d965c0b1628642a30a841745b410d6835052"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 88e3d965c0b1628642a30a841745b410d6835052 HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh72qraccnjwdet6ynagsccr4x82y65c-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "csstree-shorthand-expansion-compression",
+              "image": "fh-task:csstree-shorthand-expansion-compression-8655446",
+              "image_id": "sha256:ede6fa64f3a1e80851b0207a0bd1f2c2149a04fb0977ae2b506645b569501250",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "1855a58bfa42e80d0f8af5ead2f6a66662c618cbd8602121935408b18570bf86",
+              "overlay_dockerfile_sha256": "cca277f6443a9137762576160b9dc9223f2af9bd3c282197c5b920ecbabb0efe",
+              "payload": "fh-pwragent:8655446"
+            }
+          },
+          {
+            "id": "dasel-html-document-format",
+            "suite": "deep-swe",
+            "source_path": "/Users/huntharo/.codex/worktrees/mv466puo/frontier-harness-eval/.eval/cache/deep-swe/tasks/dasel-html-document-format",
+            "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+            "hashes": {
+              "environment/Dockerfile": "eee0408cb309aa0e077c5078c32a799df61122c0ae638da0b382267a7e042619",
+              "instruction.md": "53a67fd1336d4b281f47b37e809834369ebd9d1d2178c5da2c80fd1b0e4393f8",
+              "solution/solution.patch": "d8344b7eea4b00bc021013adbda6626169750fde9d2b1a6385c0af37890acad2",
+              "solution/solve.sh": "2f111d19625d9685d00029c2c3efb7719ee2311c6ab4f0ab0ebcc37f09c35198",
+              "task.toml": "e178607fca1ac99213f24493abcdbc97c1258decbbd16ee660adc35f29538443",
+              "tests/Dockerfile": "ca38860b2a2e6b9828cdd8e7eff7b58647784023a2f41ae2d715f1f81200bbfd",
+              "tests/config.json": "e7d759b64af0e0924645964ab28c3026a43e6f6cb2ee0a90de0ef7b5ac685840",
+              "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+              "tests/test.patch": "bb1e42d866510f92b7c880bb580eff0fa14b072a7f176e85e2cc99dd4c248d40",
+              "tests/test.sh": "d01f75d8005e4acf291ddb2890b8b7a01491a39fc7f3afbd5ae11b4b0ce0d160"
+            },
+            "task_metadata": {
+              "schema_version": "1.3",
+              "artifacts": [
+                "/logs/artifacts/model.patch"
+              ],
+              "task": {
+                "name": "datacurve/dasel-html-document-format",
+                "description": "",
+                "authors": [],
+                "keywords": []
+              },
+              "metadata": {
+                "ext_id": "kh7c7rrg3zke74w7068nawak9x82t6am",
+                "task_id": "dasel-html-document-format",
+                "display_title": "Add HTML document format handling to Dasel",
+                "display_description": "Add read and write support for HTML documents with Dasel's format handling.",
+                "original_title": "Add HTML Format Support",
+                "category": "feature_request",
+                "language": "go",
+                "repository_url": "https://github.com/TomWright/dasel",
+                "base_commit_hash": "0dd6132e0c58edbd9b1a5f7ffd00dfab1e6085ad"
+              },
+              "verifier": {
+                "network_mode": "no-network",
+                "environment_mode": "separate",
+                "timeout_sec": 1800.0,
+                "env": {},
+                "environment": {
+                  "build_timeout_sec": 1800.0,
+                  "cpus": 2,
+                  "memory_mb": 8192,
+                  "storage_mb": 20480
+                },
+                "collect": [
+                  {
+                    "command": "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 0dd6132e0c58edbd9b1a5f7ffd00dfab1e6085ad HEAD > /logs/artifacts/model.patch",
+                    "timeout_sec": 300.0
+                  }
+                ]
+              },
+              "agent": {
+                "network_mode": "no-network",
+                "timeout_sec": 10800.0
+              },
+              "environment": {
+                "build_timeout_sec": 1800.0,
+                "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7c7rrg3zke74w7068nawak9x82t6am-v1.1",
+                "os": "linux",
+                "cpus": 2,
+                "memory_mb": 8192,
+                "storage_mb": 20480,
+                "gpus": 0,
+                "mcp_servers": [],
+                "env": {}
+              },
+              "solution": {
+                "env": {}
+              }
+            },
+            "image": {
+              "task": "dasel-html-document-format",
+              "image": "fh-task:dasel-html-document-format-8655446",
+              "image_id": "sha256:ce506c8d668962d54b9adb1e185fb944ec9d37e6fdbc7b27486dbfb9d9919132",
+              "platform": "linux/arm64",
+              "original_dockerfile_sha256": "eee0408cb309aa0e077c5078c32a799df61122c0ae638da0b382267a7e042619",
+              "overlay_dockerfile_sha256": "0dc7a7de1ad5889772e77eafe7f3501730a9bdebd5f62223518ae59341a897ec",
+              "payload": "fh-pwragent:8655446"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "order": [
+    {
+      "task": "twelve-feature-workflow",
+      "model": "gpt-6.1-sol",
+      "token_miser": false
+    },
+    {
+      "task": "twelve-feature-workflow",
+      "model": "gpt-6.1-sol",
+      "token_miser": true
+    }
+  ],
+  "task_image_ids": {
+    "twelve-feature-workflow": "sha256:a36cf0dd025f04124be7977485e84405acdaf9d85d8ea9af809b4919585b7e5d"
+  },
+  "conditional_selection_plan": {
+    "schema_version": 1,
+    "recorded_at": "2026-10-12T06:29:18.427630+00:00",
+    "authorization": "Existing new500USD Pro-only stage; Jarvis scope confirmation 2026-10-12 permits one additional larger unique-feature Sol OFF/ON pair, then review pause.",
+    "trigger": "Completed six-feature Sol OFF baseline $2.2225106 is below requested $3 floor. Finish current ON unchanged before any new paid admission.",
+    "selection": "Keep all original six features, including their failures. Add six distinct public features from six additional repositories, using Go/JS/TS runtimes compatible with the existing composed runtime. No repeat-until-price procedure or token padding.",
+    "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+    "component_ids": [
+      "expr-try-catch-errors",
+      "arktype-json-schema-refs-dependencies",
+      "katex-multicolumn-array-spans",
+      "meriyah-explicit-resource-declarations",
+      "scc-bounded-memory-spilling",
+      "anko-typed-variable-bindings",
+      "abs-module-cache-flags",
+      "actionlint-action-pinning-lint",
+      "awilix-async-container-initialization",
+      "clack-async-autocomplete-options",
+      "csstree-shorthand-expansion-compression",
+      "dasel-html-document-format"
+    ],
+    "new_component_ids": [
+      "abs-module-cache-flags",
+      "actionlint-action-pinning-lint",
+      "awilix-async-container-initialization",
+      "clack-async-autocomplete-options",
+      "csstree-shorthand-expansion-compression",
+      "dasel-html-document-format"
+    ],
+    "instruction_sha256": {
+      "expr-try-catch-errors": "6f19f8363f75963c69072f03aa7515ffa304d6b726f85b09188760ae682e3447",
+      "arktype-json-schema-refs-dependencies": "594fa84b95c92f69e949de2781107a3ff5b6131e889203fc4505f6f41a136ea3",
+      "katex-multicolumn-array-spans": "54e5a648f5c2151a57f895d5ea4d814f44cca52daa5e58a198877f398ace28f1",
+      "meriyah-explicit-resource-declarations": "a85dfeb98a4203f9eb7392f918543fab27d83f344a92d290454aedc145c7b5f7",
+      "scc-bounded-memory-spilling": "fc99a21974fa57940e3ff7e9eb81c31b06728cbc39177faf5500667cd51a816e",
+      "anko-typed-variable-bindings": "96c0c7ad98237d6176034c8893d8bff164ec5fda45889e51780a65cf599ffcfe",
+      "abs-module-cache-flags": "cffcaa70386408363b090b563943fd63fdcc322ed44b8c76cc3e56cfd76b7ed8",
+      "actionlint-action-pinning-lint": "02472c08b7de7ca4d7d709a3b53db835fe8bcc76a887a13c18dc5aba86bd37f9",
+      "awilix-async-container-initialization": "340a292a209ce1ad90dc30ba47d0062f543805cf9e212bce662b0fb6bd5d3c66",
+      "clack-async-autocomplete-options": "5792630a916783910328e8d7778dc9483ed949bf713a09d00d4b8f6d4bdb6bf3",
+      "csstree-shorthand-expansion-compression": "fcf3984dab65cdb6fa5255587e5f09f75231da6c8e4840f47e25a4c0303afdb7",
+      "dasel-html-document-format": "53a67fd1336d4b281f47b37e809834369ebd9d1d2178c5da2c80fd1b0e4393f8"
+    },
+    "primary_score": "Equal-weight fraction of twelve original component verifiers passed; one entire workflow pair is the statistical unit.",
+    "secondary_score": "All twelve passed and parent completed; also retain every original new/regression check count.",
+    "order": [
+      "off",
+      "on"
+    ],
+    "max_new_paid_attempts": 2,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "fast_mode": false,
+    "service_tier": "default",
+    "budget_ledger": "stage5-ledger",
+    "ceiling_usd": 500,
+    "per_attempt_reservation_usd": 90,
+    "require_remaining_after_all_existing_holds_usd": 180,
+    "max_observed_cost_usd": 30,
+    "cumulative_token_cap": null,
+    "time_allowance": "Sum the twelve original per-component agent allowances (36 hours).",
+    "pilot_cost_planning": "Rough $4.45 per arm by doubling the measured six-feature OFF cost; task difficulty, context growth and mode can change this. Not a guarantee or published model score.",
+    "gates": [
+      "Current matched ON finished and usage reconciled",
+      "All original baselines fail and reference solutions pass with pinned images",
+      "Combined twelve-component reference export and grading passes",
+      "No-turn Pro/default/fast-off/sandbox/export preflight passes",
+      "Final source/task/image/protocol hashes frozen before dispatch",
+      "Both $90 trial envelopes and all engineering/helper/closeout holds fit unchanged500 ledger"
+    ],
+    "stop_policy": "After exactly this one additional pair, report and pause for review regardless of price-band outcome. No further expansion without review."
+  },
+  "conditional_selection_plan_sha256": "b12b70755627f57db1ba75bcc17d8dd0af42235492c861d9b1d1ea6dbe4b9d7b",
+  "harness_source_commit": "5e8d82b5da1a3b74cffa0fd73976d070b21549dc",
+  "analysis": {
+    "primary_correctness": "Equal-weight fraction of twelve original component verifiers passed; one entire workflow pair is the statistical unit.",
+    "secondary_correctness": "All twelve passed and parent completed; also retain every original new/regression check count.",
+    "statistical_unit": "One whole twelve-feature workflow pair; component results are correlated.",
+    "uncertainty": "Descriptive single pair; no population CI. All attempts, failed features and costs retained.",
+    "pooling": "Separate from six-feature workflow, three-task cohort and historical attempts."
+  },
+  "target_band_analysis": {
+    "rule": "Classify by completed OFF baseline cost in[3,15] only; retain both arms and all outcomes even if outside band.",
+    "interpretation": "Requested larger Sol-thread evidence; not a published single-task leaderboard result."
+  },
+  "published_selection_basis": {
+    "source": "https://github.com/frontier-harness-eval/eval/blob/e837a70/results/eval-data.json",
+    "purpose": "Historical different-model costs informed the first six components only. Final expansion was prospectively selected using the measured six-feature Sol OFF baseline ($2.2225106); doubling implies about $4.45, not a guaranteed price or published benchmark score.",
+    "new_components": "Six distinct Go/JS/TS features, retained without result-dependent replacement; exact plan hashes frozen."
+  },
+  "runtime_deviations": {
+    "platform": "Native Linux arm64,2CPU/6GiB per task container, actual PwrAgent+managed App Server inside it.",
+    "network": "Agent network permits provider/dependency access; prompt forbids external solutions. Original hidden verifiers use separate pristine no-network containers.",
+    "layout": "Twelve pristine tracked repositories under /app/parts, one Git root; source contents verified clean, histories flattened. Original per-component committed diffs are graded separately.",
+    "time": "86400 seconds (24 hours): maximum accepted by frozen driver. Original sum of twelve feature allowances was36hours, rejected before any model dispatch; exact input now validated. No token cap; cost guard remains.",
+    "disk": "Existing Docker Desktop disk grew from56 to96GiB after zero-model preparation exhausted it. No reset or prune; CPU/RAM unchanged.",
+    "driver": "Same frozen beec8a6 driver and managed0.162.1-pwragent.1 as the completed fixed cohort."
+  },
+  "preparation_proofs": {
+    ".eval/stage5-final-workflow-preparation/validated.json": "a0c2e2fe79a40b45b9043cff13e3ef148cf1c8756256b8cd70c9af0580e79f1f",
+    ".eval/stage5-final-workflow-preparation/clean-source-proof.json": "24e0f5173a34715841cb77a9e749783cbe5e0b332e10060bfac734f23ee57f4a",
+    ".eval/stage5-final-workflow-preparation/oracle-grade.json": "278f2dad475a1a2ed851c5c336115ab5a000d48b5517e2cbaadfc2369e0e3e13",
+    ".eval/runs/stage5-preflight-twelve-feature-workflow/output/auth-tier-proof.json": "a9646c301e5e425f2fd5335d2080193dc495bd15aaf88a82b5f977ed111e11e1",
+    ".eval/stage5-final-workflow-budget-reallocation.json": "599203f7ea16c722afa3ecb004dac5590437097535b9d7c95ac1aef47e810dda",
+    ".eval/stage5-docker-disk-change.json": "bbcacd8d160f4dfb70daac9591f881f6b1b5259d8ea538a0761360e4d4086ce0",
+    ".eval/stage5-final-timeout-validation.json": "7c66863b07fac5268af0321a9d1511ebab382167d77ff7841310b0a91c7f3f2d"
+  },
+  "harness_file_sha256": {
+    "eval/pwragent/run_stage.py": "d805dc6d2cb34345ebebc4795ca025e9c093b053370592d06c0607b9b1254ccb",
+    "eval/pwragent/runtime.py": "db13ccc7295e5bfb498359b5683bdaa3cc979256eede46185fec0498d53ec29f",
+    "eval/pwragent/accounting.py": "6acc58651a4e369e547841e619c157a1e40ef3a135f72afa37019d797541e984",
+    "eval/pwragent/ledger.py": "e93b0fba97da8fd797419555874dbf12a438da691b258c701dcf444ea16c6ca1",
+    "eval/pwragent/run_limits.py": "a19331d273e52ec908e5e3629a16b4ef56e34fb50dec4baf8db368d14659b515",
+    "eval/pwragent/build_task.py": "e31f94db356845f79075993c4fac25b3a7f738228e021b24ba9e64a452501008",
+    "eval/pwragent/usage_report.py": "c687b3640525b3c0d72de7ff210673cdd19350a955b3dc423df15ef254f63bbd",
+    "eval/pwragent/workflow.py": "4632674161360fb8f88df248c2482a79f550cb6c73f77f2830bdd024a3e3097e",
+    "eval/pwragent/prepare_workflow.py": "7903658e5471a265fadcbbb28f832686d4bbe1aa2f2e5b52b71b65e43fc33690",
+    "eval/pwragent/protocol_usage_audit.py": "b724b70f6781b518e1a9c60260782b4c645bdd23ae7b640752db93aa1b511902",
+    "eval/pwragent/prepare_final_workflow.py": "f0374092b191f63b8d5e5afb7cb3ec53d7d6bba327fe55f35c5c98da3fcaa4e3",
+    ".eval/runtime-portable.json": "f9d8720b7b17a443e92f542e5fdedc3c5fad9cacaa5a01e01681ec40b2c67546"
+  },
+  "admission_budget_snapshot": {
+    "basis": "conservative API-equivalent; subscription, not credits billing",
+    "ceiling_usd": 500.0,
+    "charged_usd": 62.557515,
+    "reserved_usd": 257.0,
+    "remaining_usd": 180.442485,
+    "entries": [
+      {
+        "run_id": "stage5-engineering-and-closeout",
+        "status": "reserved",
+        "reserved_micros": 60000000,
+        "charged_micros": 0,
+        "note": "New-stage-only engineering, initial attribution gap, Jarvis coordination and closeout; unused hold is not spend",
+        "updated": "2026-10-12T01:53:23.614661+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-01-expr-try-catch-errors-sol-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1478997,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T02:30:12.903972+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-02-expr-try-catch-errors-sol-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1568700,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T02:49:01.388448+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-03-expr-try-catch-errors-astra-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 7500355,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T03:02:03.582685+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-04-expr-try-catch-errors-astra-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 7997712,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T03:16:11.062023+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-05-arktype-json-schema-refs-dependencies-astra-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 6389729,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T03:29:32.620625+00:00"
+      },
+      {
+        "run_id": "stage5-engineering-continuation",
+        "status": "reserved",
+        "reserved_micros": 40000000,
+        "charged_micros": 0,
+        "note": "Conservative reserve for continuing fixed cohort/closeout; not measured spend",
+        "updated": "2026-10-12T03:33:29.520282+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-06-arktype-json-schema-refs-dependencies-astra-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 7073869,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T03:40:32.883766+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-07-arktype-json-schema-refs-dependencies-sol-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1637372,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T03:58:44.783624+00:00"
+      },
+      {
+        "run_id": "stage5-engineering-final-cohort-tail",
+        "status": "reserved",
+        "reserved_micros": 60000000,
+        "charged_micros": 0,
+        "note": "Reserve for remaining cohort, potential separately registered larger Sol workflow and final reporting; unused hold not spend",
+        "updated": "2026-10-12T04:10:08.797207+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-08-arktype-json-schema-refs-dependencies-sol-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1208806,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T04:11:54.034534+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-09-katex-multicolumn-array-spans-astra-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 8336065,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T04:23:29.041471+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-10-katex-multicolumn-array-spans-astra-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 8203892,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T04:33:58.252304+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-11-katex-multicolumn-array-spans-sol-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1275958,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T04:47:36.558276+00:00"
+      },
+      {
+        "run_id": "stage5-long-threads-12-katex-multicolumn-array-spans-sol-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 1162353,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T05:00:22.916415+00:00"
+      },
+      {
+        "run_id": "stage5-sol-workflow-01-six-feature-workflow-sol-off",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 4434390,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T06:16:12.436798+00:00"
+      },
+      {
+        "run_id": "stage5-unreported-helper-01a12e35-ba0d-7b30-8837-a9e8bf7b2fe8",
+        "status": "reserved",
+        "reserved_micros": 90000000,
+        "charged_micros": 0,
+        "note": "New audit found one interrupted gpt-6-luna helper with no provider counters in stage5-long-threads-07. Retain an additional full original trial envelope pending proof; this is unknown exposure, not measured spend. Parent/grade unchanged.",
+        "updated": "2026-10-12T07:01:10.672511+00:00"
+      },
+      {
+        "run_id": "stage5-sol-workflow-02-six-feature-workflow-sol-on",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 4289317,
+        "note": "measured conservative token projection",
+        "updated": "2026-10-12T07:04:53.411795+00:00"
+      },
+      {
+        "run_id": "stage5-monitoring-tail",
+        "status": "settled",
+        "reserved_micros": 0,
+        "charged_micros": 0,
+        "note": "Unused future-work hold consolidated into remaining engineering holds. Not a claim of zero operator usage: exact current-turn receipts remain covered there. No unknown trial/helper hold released.",
+        "updated": "2026-10-12T07:12:28.538438+00:00"
+      },
+      {
+        "run_id": "stage5-final-preparation-and-off-monitoring",
+        "status": "reserved",
+        "reserved_micros": 7000000,
+        "charged_micros": 0,
+        "note": "Additional engineering allowance for final zero-model preparation and first final trial monitoring; known usage and next-response headroom separately tracked within total167USD engineering holds.",
+        "updated": "2026-10-12T07:12:28.538855+00:00"
+      }
+    ],
+    "reconciliations": []
+  },
+  "zero_dispatch_amendment": {
+    "prior_protocol_sha256": "7e35e672e7e0bee9eeea2409cdf8da3f721c9ba724656584a7fb4b3c4f613885",
+    "run_id": "stage5-final-sol-workflow-01-twelve-feature-workflow-sol-off",
+    "proof": {
+      "reason": "validateInput rejected timeout before claimRun, auth read, app launch or provider dispatch",
+      "driver_log_sha256": "70b30f8b065a773593a744e7b5baebd613a85f3bdb211483504aa1f74e0cce7a",
+      "validation_proof_sha256": "7c66863b07fac5268af0321a9d1511ebab382167d77ff7841310b0a91c7f3f2d",
+      "empty_profile": true,
+      "empty_output": true,
+      "empty_sessions": true,
+      "model_calls": 0
+    },
+    "change": "Both arms receive86400seconds; task selection, prompt, image, driver, scoring, budgets and modelsettings unchanged."
+  }
+}

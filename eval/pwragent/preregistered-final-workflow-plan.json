@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-12T06:29:18.427630+00:00",
+  "authorization": "Existing new500USD Pro-only stage; Jarvis scope confirmation 2026-10-12 permits one additional larger unique-feature Sol OFF/ON pair, then review pause.",
+  "trigger": "Completed six-feature Sol OFF baseline $2.2225106 is below requested $3 floor. Finish current ON unchanged before any new paid admission.",
+  "selection": "Keep all original six features, including their failures. Add six distinct public features from six additional repositories, using Go/JS/TS runtimes compatible with the existing composed runtime. No repeat-until-price procedure or token padding.",
+  "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+  "component_ids": [
+    "expr-try-catch-errors",
+    "arktype-json-schema-refs-dependencies",
+    "katex-multicolumn-array-spans",
+    "meriyah-explicit-resource-declarations",
+    "scc-bounded-memory-spilling",
+    "anko-typed-variable-bindings",
+    "abs-module-cache-flags",
+    "actionlint-action-pinning-lint",
+    "awilix-async-container-initialization",
+    "clack-async-autocomplete-options",
+    "csstree-shorthand-expansion-compression",
+    "dasel-html-document-format"
+  ],
+  "new_component_ids": [
+    "abs-module-cache-flags",
+    "actionlint-action-pinning-lint",
+    "awilix-async-container-initialization",
+    "clack-async-autocomplete-options",
+    "csstree-shorthand-expansion-compression",
+    "dasel-html-document-format"
+  ],
+  "instruction_sha256": {
+    "expr-try-catch-errors": "6f19f8363f75963c69072f03aa7515ffa304d6b726f85b09188760ae682e3447",
+    "arktype-json-schema-refs-dependencies": "594fa84b95c92f69e949de2781107a3ff5b6131e889203fc4505f6f41a136ea3",
+    "katex-multicolumn-array-spans": "54e5a648f5c2151a57f895d5ea4d814f44cca52daa5e58a198877f398ace28f1",
+    "meriyah-explicit-resource-declarations": "a85dfeb98a4203f9eb7392f918543fab27d83f344a92d290454aedc145c7b5f7",
+    "scc-bounded-memory-spilling": "fc99a21974fa57940e3ff7e9eb81c31b06728cbc39177faf5500667cd51a816e",
+    "anko-typed-variable-bindings": "96c0c7ad98237d6176034c8893d8bff164ec5fda45889e51780a65cf599ffcfe",
+    "abs-module-cache-flags": "cffcaa70386408363b090b563943fd63fdcc322ed44b8c76cc3e56cfd76b7ed8",
+    "actionlint-action-pinning-lint": "02472c08b7de7ca4d7d709a3b53db835fe8bcc76a887a13c18dc5aba86bd37f9",
+    "awilix-async-container-initialization": "340a292a209ce1ad90dc30ba47d0062f543805cf9e212bce662b0fb6bd5d3c66",
+    "clack-async-autocomplete-options": "5792630a916783910328e8d7778dc9483ed949bf713a09d00d4b8f6d4bdb6bf3",
+    "csstree-shorthand-expansion-compression": "fcf3984dab65cdb6fa5255587e5f09f75231da6c8e4840f47e25a4c0303afdb7",
+    "dasel-html-document-format": "53a67fd1336d4b281f47b37e809834369ebd9d1d2178c5da2c80fd1b0e4393f8"
+  },
+  "primary_score": "Equal-weight fraction of twelve original component verifiers passed; one entire workflow pair is the statistical unit.",
+  "secondary_score": "All twelve passed and parent completed; also retain every original new/regression check count.",
+  "order": [
+    "off",
+    "on"
+  ],
+  "max_new_paid_attempts": 2,
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "fast_mode": false,
+  "service_tier": "default",
+  "budget_ledger": "stage5-ledger",
+  "ceiling_usd": 500,
+  "per_attempt_reservation_usd": 90,
+  "require_remaining_after_all_existing_holds_usd": 180,
+  "max_observed_cost_usd": 30,
+  "cumulative_token_cap": null,
+  "time_allowance": "Sum the twelve original per-component agent allowances (36 hours).",
+  "pilot_cost_planning": "Rough $4.45 per arm by doubling the measured six-feature OFF cost; task difficulty, context growth and mode can change this. Not a guarantee or published model score.",
+  "gates": [
+    "Current matched ON finished and usage reconciled",
+    "All original baselines fail and reference solutions pass with pinned images",
+    "Combined twelve-component reference export and grading passes",
+    "No-turn Pro/default/fast-off/sandbox/export preflight passes",
+    "Final source/task/image/protocol hashes frozen before dispatch",
+    "Both $90 trial envelopes and all engineering/helper/closeout holds fit unchanged500 ledger"
+  ],
+  "stop_policy": "After exactly this one additional pair, report and pause for review regardless of price-band outcome. No further expansion without review."
+}

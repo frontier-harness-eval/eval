@@ -185,6 +185,33 @@ def _hermes(text: str) -> Detail:
     return _detail(usages)
 
 
+def _aiwork(text: str) -> Detail:
+    # agentix / dtcoder `chat --json` event stream (tee'd to dtcoder.txt, so
+    # stderr lines are interleaved; _jsonl skips them). Events are discriminated
+    # by event.name. The single stream.profiling event carries data.rounds[],
+    # one entry per model API call, each with a token_usage block. dtcoder's
+    # input_tokens is the FULL prompt (fresh + cache_read + cache_write, i.e.
+    # anthropic cache_creation), while the registry convention counts prompt
+    # excluding cache writes (see _claude_code), so element[0] =
+    # input_tokens - cache_write_tokens = fresh + cache_read.
+    usages = []
+    for event in _jsonl(text):
+        if (event.get("event") or {}).get("name") != "stream.profiling":
+            continue
+        for entry in (event.get("data") or {}).get("rounds") or []:
+            usage = entry.get("token_usage")
+            if not isinstance(usage, dict):
+                continue
+            total = int(usage.get("input_tokens") or 0)
+            cache_write = int(usage.get("cache_write_tokens") or 0)
+            cached = int(usage.get("cache_read_tokens") or 0)
+            prompt = max(total - cache_write, 0)
+            if prompt or cached or usage.get("output_tokens"):
+                usages.append((prompt, cached))
+        break  # exactly one stream.profiling event per run
+    return _detail(usages)
+
+
 def _hermes_totals(text: str) -> tuple[int, int, int, int] | None:
     fresh = cached = cache_write = output = calls = 0
     for event in _jsonl(text):
@@ -217,6 +244,7 @@ REGISTRY: dict[str, tuple[str, Any]] = {
     "dsh-creator": ("dsh-session.jsonl", _dsh),
     "kimi-code": (".kimi-code/sessions/*/*/agents/main/wire.jsonl", _kimi_code),
     "hermes": ("hermes-calls.jsonl", _hermes),
+    "aiwork-code": ("dtcoder.txt", _aiwork),
 }
 
 

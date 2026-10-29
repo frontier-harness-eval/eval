@@ -444,6 +444,7 @@ claiming leaderboard comparability. New runs remain unranked by default.
 
 ## Additional resources
 
+- AiWork.Code (agentix / dtcoder) with Kimi K3, using Harbor for Terminal-Bench and Pier for DeepSWE: [AiWork.Code profile](profiles/aiwork-code/README.md)
 - Command reference, runner templates, and troubleshooting: [reference.md](reference.md)
 - Published results and task definitions: `results/eval-data.json`, `tasks/<task>/task.toml`
 - Source evaluation: <https://frontierharness.org/>

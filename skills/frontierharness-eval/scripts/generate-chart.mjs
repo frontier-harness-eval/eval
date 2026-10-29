@@ -76,6 +76,7 @@ function marker(shape,x,y,color,size=6.5) {
   return `<polygon points="${vertices.map(([dx,dy])=>`${x+dx*size},${y+dy*size}`).join(" ")}" ${common}/>`;
 }
 const overlaps=(a,b,p=4)=>a.left<b.right+p&&a.right>b.left-p&&a.top<b.bottom+p&&a.bottom>b.top-p;
+const overlapArea=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
 const obstacles=plotted.map(point=>({left:px(point.cost)-10,right:px(point.cost)+10,top:py(point.passRate)-10,bottom:py(point.passRate)+10}));
 const placed=[];
 // Give the candidate first choice of label position and draw its marker last.
@@ -83,18 +84,27 @@ const annotations=[...plotted].sort((a,b)=>Number(b.isCandidate)-Number(a.isCand
   const x=px(point.cost), y=py(point.passRate);
   const w=Math.max(point.label.length*7.5,metric(point).length*7.2);
   const sides=point.name === "kimi-code" || point.name === "hermes" ? [-1,1] : [1,-1];
-  let selected;
-  for(const dy of [-3,-34,27,55,-62,83,-90,111,-118,139,-146]) {
+  let selected,fallback,fallbackPenalty=Infinity;
+  // The original 11 rungs come first and unchanged, so any layout that already
+  // placed cleanly is byte-for-byte identical; the extra rungs and the
+  // least-overlap fallback only engage once the ladder is exhausted (13+ plotted
+  // points, e.g. a candidate scoring >=80%), where a touching label beats
+  // throwing away the whole chart — and, downstream, the whole report.
+  for(const dy of [-3,-34,27,55,-62,83,-90,111,-118,139,-146,-18,42,-78,71,-102,99,-134,127,-158,155]) {
     for(const side of sides) {
       const lx=x+side*13;
       const rect={left:side===1?lx:lx-w,right:side===1?lx+w:lx,top:y+dy-12,bottom:y+dy+20};
       if(rect.left<plot.x+2||rect.right>plot.x+plot.width-2||rect.top<plot.y||rect.bottom>plot.y+plot.height)continue;
-      if(placed.some(other=>overlaps(rect,other))||obstacles.some(other=>overlaps(rect,other,2)))continue;
-      selected={lx,ly:y+dy,anchor:side===1?"start":"end",rect};break;
+      if(!placed.some(other=>overlaps(rect,other))&&!obstacles.some(other=>overlaps(rect,other,2))){
+        selected={lx,ly:y+dy,anchor:side===1?"start":"end",rect};break;
+      }
+      const penalty=[...placed,...obstacles].reduce((sum,other)=>sum+overlapArea(rect,other),0);
+      if(penalty<fallbackPenalty){fallbackPenalty=penalty;fallback={lx,ly:y+dy,anchor:side===1?"start":"end",rect};}
     }
     if(selected)break;
   }
-  if(!selected)throw new Error(`No collision-free label placement for ${point.label}; enlarge the plot or extend label positions`);
+  selected=selected??fallback;
+  if(!selected)throw new Error(`No in-bounds label placement for ${point.label}; enlarge the plot`);
   placed.push(selected.rect);
   const {lx,ly,anchor}=selected;
   return `<text class="point-name" x="${lx}" y="${ly}" fill="${colors[point.name]??"#bcbcbc"}" text-anchor="${anchor}"><tspan x="${lx}">${esc(point.label)}</tspan><tspan class="point-value" x="${lx}" dy="18">${metric(point)}</tspan></text>`;

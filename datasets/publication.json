@@ -1,0 +1,12 @@
+{
+  "datasets": [
+    {
+      "package": "frontier-harness-eval/frontier-harness-eval",
+      "tag": "v1.1.0",
+      "digest": "sha256:9236400fc1a6619eb72a663445c580417be9bbbab32f816c7dff76d0a96ab24a",
+      "tasks": 62,
+      "visibility": "public",
+      "url": "https://hub.harborframework.com/datasets/frontier-harness-eval/frontier-harness-eval"
+    }
+  ]
+}

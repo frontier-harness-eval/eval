@@ -90,6 +90,7 @@ const candidate = {
   label: args.label ?? run.harness,
   model: run.model,
   provider: run.provider ?? null,
+  backend: run.backend ?? (run.topology === "local-docker" ? "local-docker" : run.checkpoint ? "runta" : null),
   egress_policy: run.egress_policy ?? null,
   checkpoint: run.checkpoint,
   run_id: run.run_id,

@@ -2,6 +2,27 @@
 
 Command reference, runner templates, and troubleshooting for `frontierharness-eval`.
 
+## Local Docker
+
+Run `doctor --backend local-docker --tasks <subset>` from the benchmark workspace
+to check Docker, Compose, the selected suite runners and credentials. Choose the
+registered agent with `--harness`. To supply a model route and credential
+variable, use `--provider custom --model <route> --secret-name <variable>`.
+For Harbor, `--secret-host <host>` allows the agent to reach the inference host.
+
+The local runner uses the workspace prompt and fetches the environment and
+verifier from pinned upstream commits into `.fh-local/sources/`. Each trial
+records its inputs and their hashes. Use `--deep-swe <path>` to reuse an existing
+checkout. The runner pulls the task image before execution. Use `--no-prepull`
+for images already present on the host. The default task platform is `linux/amd64`.
+For another supported image architecture, set `FH_TASK_PLATFORM` before starting
+the run. The run records this choice and checks it on resume. A custom `--cmd`
+handles its own task preparation.
+
+Docker shares the host across trials. Suite runners create fresh task containers.
+The run records the host network policy and reports local results as observational.
+Repeating a run ID preserves valid attempts and retries infrastructure failures.
+
 ## Runta CLI commands used
 
 | Purpose | Command |
@@ -169,7 +190,7 @@ baselines.
 
 ## Running Harbor with Runta as the environment provider
 
-The skill's default topology runs Harbor and Pier *inside* one Runta runtime, which is
+The Runta checkpoint topology runs Harbor and Pier *inside* one Runta runtime, which is
 what makes a single golden checkpoint cover the whole stack. The alternative is to run
 Harbor locally and let Runta provide a fresh runtime per trial:
 

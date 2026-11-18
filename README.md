@@ -84,38 +84,56 @@ The repository intentionally contains **results, task definitions, and the evalu
 
 This repository ships a reproduction workflow for evaluating another harness on the published task set. It records environment differences from the original baseline run; a matched control run is needed to establish comparability.
 
+### Local Docker (default)
+
+Use the CLI below from a source checkout. In an installed workspace the
+equivalent command is `npx @frontierharness/eval`. Local prerequisites are
+Docker with Compose v2, Git, jq, Node 18+, Python 3.11+ and GNU timeout
+(`brew install coreutils` on macOS). Install the runners for your selected suites.
+
+```bash
+uv tool install harbor==0.22.0
+uv tool install datacurve-pier==0.3.1
+printf '%s\n' terminal-bench/regex-log datacurve/anko-typed-variable-bindings > subset.txt
+
+# Export the credential for your selected provider.
+node cli/index.mjs doctor --tasks subset.txt
+node cli/index.mjs run --harness my-harness --tasks subset.txt --run-id local-eval
+node cli/index.mjs normalize --run runs/local-eval --label "My Harness"
+node cli/index.mjs chart --run runs/local-eval
+node cli/index.mjs report --run runs/local-eval
+```
+
+Choose a harness registered in Harbor/Pier. Omit `--tasks` to evaluate the full
+set. The run directory records the backend, configuration and trial evidence.
+Resume with the same run ID and task selection. The local runner exits with 1
+when a trial is infrastructure-invalid.
+
+### Optional Runta checkpoints
+
 **Trial network access.** Agents have access to the package registries and source hosts needed by the verifiers, including Ubuntu/Debian apt mirrors, PyPI, npm, PyTorch, GitHub download hosts, and Harbor's task registry. Runta applies the allowlist to the whole runtime, including agent containers; any additional Harbor/Pier isolation still applies. Verifiers install dependencies during trials, so allowing only the model provider and uv downloads blocks valid verification. Task images are pulled before the trial policy is applied. The exact hosts are defined in [`providers.sh`](skills/frontierharness-eval/scripts/providers.sh).
 
 Each `run.json` records `egress_policy` with its mode, scope, and exact `allowed_hosts`; the same policy is used for both suites and is included in candidate data and reports. The published baselines did not record their applied allowlist, so new runs default to `methodology_comparable: false` and receive no leaderboard rank. Evaluate a control harness under the same policy and environment before claiming comparability. Resuming with a changed or unrecorded policy is refused; use a new run id for the new policy and preserve earlier evidence.
 
-[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run — freezing the golden checkpoint, running every task from an identical fresh restore, scoring the trials, and building the report.
+[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will run the selected backend, score the trials, and build the report.
 
 ## How to use the skill
 
 ### Let an agent drive it
 
-Install the evaluation skill and its [Runta companion skills](https://runta.com/docs/skills/)
-with the [Skills CLI](https://github.com/vercel-labs/skills) (Node.js and Git required).
-Run these in the project where you use your coding agent:
+Install the evaluation skill in the project where you use your coding agent:
 
 ```bash
-npx skills add https://runta.com/docs --skill runta-installer runta-cli
 npx skills add frontier-harness-eval/eval --skill frontierharness-eval
 ```
 
-`runta-installer` handles Runta tooling setup and verification; `runta-cli` provides
-runtime operation guidance. `frontierharness-eval` drives the benchmark, scoring, and
-report. If the Runta skills are already installed, only the second command is needed.
-
-Choose the same agent for both commands when prompted, or select one directly:
+If you select Runta, also install its companion skills:
 
 ```bash
-npx skills add https://runta.com/docs --skill runta-installer runta-cli --agent codex -y
-npx skills add frontier-harness-eval/eval --skill frontierharness-eval --agent codex -y
+npx skills add https://runta.com/docs --skill runta-installer runta-cli
 ```
 
-Add `--global` to both commands to make the skills available across projects. Start a new agent session
-in the project and ask:
+Start a new agent session in the project and ask:
 
 ```text
 Use the frontierharness-eval skill to evaluate https://github.com/acme/my-harness.
@@ -123,7 +141,7 @@ Start with one Terminal-Bench task and one DeepSWE task.
 ```
 
 The skill sets up a benchmark checkout for the task definitions and baseline results,
-uses the Runta skills for tooling setup, then checks prerequisites and guides the
+checks the selected backend and guides the
 evaluation. Installing skills alone does not run evaluations. For a prompt with explicit harness, commit, provider, and build
 settings, see [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md).
 
@@ -134,7 +152,7 @@ npx skills add . --skill frontierharness-eval
 ```
 
 <details>
-<summary><strong>Run it by hand instead</strong></summary>
+<summary><strong>Run a checkpoint evaluation by hand</strong></summary>
 
 The skill's scripts are the same ones an agent would call, so the run works without an agent at all. Every path is relative to the workspace root, and this repo has its own `scripts/` directory, so address the skill's scripts through a variable:
 

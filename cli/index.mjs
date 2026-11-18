@@ -8,7 +8,7 @@
 // directories coding agents read skills from, and forwards the skill's own scripts so
 // the commands in SKILL.md work unchanged from anywhere.
 
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { cp, lstat, mkdir, readFile, rm, symlink } from "node:fs/promises";
 import { homedir } from "node:os";
@@ -42,7 +42,7 @@ const SCRIPTS = {
   report: "build-report.mjs",
 };
 
-const BOOLEAN_FLAGS = new Set(["global", "force", "copy", "smoke", "help", "version"]);
+const BOOLEAN_FLAGS = new Set(["global", "force", "copy", "smoke", "help", "version", "no-prepull", "prepull-tasks", "keep-runtime", "keep-runta-runc"]);
 
 await main(process.argv.slice(2)).catch(error => die(process.env.DEBUG ? error : `${error.message}`));
 
@@ -108,14 +108,13 @@ async function install(argv) {
   console.log(`
 Next:
   ${cd ? `cd ${cd}` : "# already in the workspace"}
-  export RUNTA_TOKEN=rt_...        # Runta dashboard -> Settings -> Runta API Keys
   export FIREWORKS_API_KEY=...     # or the key for whichever --provider you use
   npx @frontierharness/eval doctor  # check prerequisites before spending anything
 
 Then either open the workspace in your agent and paste the driving prompt:
   npx @frontierharness/eval prompt --harness my-harness --repo https://github.com/acme/my-harness --commit 9f2c1ab
 or run the steps yourself:
-  npx @frontierharness/eval provision --help`);
+  npx @frontierharness/eval run --help`);
 }
 
 async function materialize(workspace, flags) {
@@ -180,34 +179,76 @@ function selectAgents(value) {
 
 // 2. Prerequisites, checked before a run rather than halfway through one.
 
+async function executionOptions(flags, workspace) {
+  let run;
+  if (flags["run-id"]) {
+    const manifest = resolve(workspace, flags.out ?? "runs", flags["run-id"], "run.json");
+    try {
+      run = JSON.parse(await readFile(manifest, "utf8"));
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
+  const previous = run?.backend ?? (run?.topology === "local-docker" ? "local-docker" : run?.checkpoint ? "runta" : undefined);
+  const backend = flags.backend ?? (flags.checkpoint ? "runta" : previous ?? "local-docker");
+  if (!["local-docker", "runta"].includes(backend)) die(`unknown backend: ${backend}`);
+  if (previous && previous !== backend) die(`run belongs to backend ${previous}; use a new --run-id for ${backend}`);
+  if (flags.checkpoint && backend !== "runta") die("--checkpoint requires --backend runta");
+  return { backend, run };
+}
+
+function selectedSuites(path, scriptsDir) {
+  const ids = execFileSync("bash", ["-c", '. "$1"; list_task_ids "$2"', "bash",
+    join(scriptsDir, "task-inputs.sh"), path], { encoding: "utf8" }).trim();
+  if (!ids) die("no tasks found in " + path);
+  return new Set(ids.split("\n").map(id => id.split("/")[0]));
+}
+
 async function doctor(argv) {
   const { flags } = parseFlags(argv);
-  const provider = flags.provider ?? "fireworks";
   const workspace = resolveWorkspace(flags);
+  const { backend, run } = await executionOptions(flags, workspace);
+  const provider = flags.provider ?? run?.provider ?? "fireworks";
   const scriptsDir = existsSync(join(workspace, SCRIPTS_DIR))
     ? join(workspace, SCRIPTS_DIR)
     : join(PKG_ROOT, SCRIPTS_DIR);
 
   const providers = await providerTable(scriptsDir);
-  if (!(provider in providers)) {
+  if (!Object.hasOwn(providers, provider)) {
     die(`unknown --provider "${provider}"; expected ${Object.keys(providers).join(", ")}`);
   }
-  const secret = providers[provider];
+  const secret = flags["secret-name"] ?? run?.secret_name ?? providers[provider];
 
   const node = Number(process.versions.node.split(".")[0]);
   const results = [
     { label: "node >= 18", ok: node >= 18, detail: process.version, hint: "install Node 18 or newer" },
     { label: "workspace", ok: isWorkspace(workspace), detail: tilde(workspace), hint: "run: npx @frontierharness/eval" },
-    await checkCommand("runta CLI", "runta", ["--version"], "brew install runta-dev/tap/runta"),
-    await checkCommand("jq", "jq", ["--version"], "brew install jq"),
-    // The same probe require_runta_auth() uses: RUNTA_TOKEN and `runta login` both
-    // count, and a token that is set but stale is caught here rather than mid-run.
-    await checkCommand("runta API reachable", "runta", ["checkpoint", "ls"],
-      "set RUNTA_TOKEN (Runta dashboard -> Settings -> Runta API Keys) or run: runta login",
-      process.env.RUNTA_TOKEN ? "authenticated by RUNTA_TOKEN" : "authenticated"),
+    await checkCommand("jq", "jq", ["--version"], "install jq"),
   ];
+  console.log(`Backend: ${backend}`);
+  if (backend === "runta") {
+    results.push(await checkCommand("Runta CLI", "runta", ["--version"], "install the Runta CLI"));
+    results.push(await checkCommand("Runta API", "runta", ["checkpoint", "ls"], "authenticate with runta login", "authenticated"));
+  } else {
+    results.push(await checkCommand("Python 3.11+", "python3", ["-c", "import tomllib; print('available')"], "install Python 3.11+"));
+    results.push(await checkCommand("Git", "git", ["--version"], "install Git"));
+    results.push(await checkCommand("Docker daemon", "docker", ["info", "--format", "{{.ServerVersion}}"], "start Docker"));
+    results.push(await checkCommand("Docker Compose", "docker", ["compose", "version"], "install Docker Compose v2"));
+    let timer = await checkCommand("GNU timeout", "timeout", ["--version"], "install GNU coreutils");
+    if (!timer.ok) timer = await checkCommand("GNU timeout", "gtimeout", ["--version"], "install GNU coreutils");
+    results.push(timer);
+    const suites = selectedSuites(resolve(workspace, flags.tasks ?? "tasks"), scriptsDir);
+    for (const [suite, tool, version, pkg] of [["terminal-bench", "harbor", "0.22.0", "harbor"], ["datacurve", "pier", "0.3.1", "datacurve-pier"]]) {
+      if (!suites.has(suite)) continue;
+      const check = await checkCommand(tool, tool, ["--version"], `uv tool install ${pkg}==${version}`);
+      check.ok = check.ok && check.detail === version;
+      results.push(check);
+    }
+  }
   if (secret) {
-    results.push(checkEnv(`${secret} (--provider ${provider})`, secret, `export ${secret}=... for ${provider}`));
+    const keyName = provider === "fireworks" && !process.env[secret] && process.env.FIREWORKS_AI_API_KEY && backend === "local-docker"
+      ? "FIREWORKS_AI_API_KEY" : secret;
+    results.push(checkEnv(`${secret} (--provider ${provider})`, keyName, `export ${secret} for ${provider}`));
   } else {
     console.log(`--provider custom: supply --model and --secret-name yourself\n`);
   }
@@ -218,7 +259,7 @@ async function doctor(argv) {
 
   const failed = results.filter(result => !result.ok);
   if (failed.length) {
-    console.error(`\n${failed.length} prerequisite(s) missing; fix them before provisioning.`);
+    console.error(`\n${failed.length} prerequisite(s) missing; fix them before running trials.`);
     process.exit(1);
   }
   console.log("\nAll prerequisites present.");
@@ -239,7 +280,7 @@ async function checkCommand(label, command, args, hint, summary) {
 
 function checkEnv(label, name, hint) {
   const value = process.env[name];
-  return { label, ok: Boolean(value), detail: value ? `${value.slice(0, 3)}...` : "", hint };
+  return { label, ok: Boolean(value), detail: value ? "configured" : "", hint };
 }
 
 // The provider table lives in providers.sh so the scripts and this CLI cannot disagree.
@@ -264,8 +305,11 @@ async function prompt(argv) {
     : join(PKG_ROOT, SKILL_DIR, "PROMPT.md");
   const text = await readFile(source, "utf8");
 
-  let body = /## The prompt\s+```text\n([\s\S]*?)```/.exec(text)?.[1];
-  if (!body) die(`could not find the prompt block in ${source}`);
+  const { backend } = await executionOptions(flags, workspace);
+  const section = backend === "local-docker" ? "Local Docker prompt" : "Runta checkpoint prompt";
+  const promptBlock = new RegExp("^## " + section + "\\s+```text\\n([\\s\\S]*?)```", "m");
+  let body = promptBlock.exec(text)?.[1];
+  if (!body) die(`could not find the ${section} in ${source}; update the workspace with install --force`);
 
   if (flags.smoke) {
     const smoke = /## Try it on two tasks first[\s\S]*?```text\n([\s\S]*?)```/.exec(text)?.[1];
@@ -302,21 +346,40 @@ async function where(argv) {
 
 // 4. Forwarding, so every command in SKILL.md runs from the workspace root.
 
-function forward(command, argv) {
+async function forward(command, argv) {
   const { flags } = parseFlags(argv);
   const workspace = resolveWorkspace(flags);
   if (!isWorkspace(workspace)) {
     die(`no workspace at ${tilde(workspace)}; run: npx @frontierharness/eval`);
   }
 
-  const script = SCRIPTS[command];
+  let script = SCRIPTS[command];
+  let passthrough = dropFlag(argv, "--dir");
+  if (command === "run" || command === "provision") {
+    const { backend, run } = await executionOptions(
+      command === "provision" ? { ...flags, backend: flags.backend ?? "runta" } : flags, workspace);
+    passthrough = dropFlag(passthrough, "--backend");
+    if (command === "provision" && backend !== "runta") die("provision creates Runta checkpoints; use run for local Docker");
+    if (backend === "local-docker") script = "run-trials-local.sh";
+    if (command === "run" && run) {
+      if (run.reuse_runtime) die("This run uses a shared Runta runtime; resume with run-trials-shared-runtime.sh");
+      for (const [flag, value] of Object.entries({harness: run.harness, provider: run.provider, model: run.model,
+        cmd: run.cmd_template, timeout: run.timeout_seconds, "secret-host": run.secret_host, "secret-name": run.secret_name})) {
+        if (flags[flag] === undefined && value) passthrough.push(`--${flag}`, String(value));
+      }
+      if (backend === "runta" && !flags.checkpoint) passthrough.push("--checkpoint", run.checkpoint);
+    }
+  }
   const path = join(workspace, SCRIPTS_DIR, script);
   if (!existsSync(path)) die(`${script} is missing from ${tilde(workspace)}; re-run: npx @frontierharness/eval --force`);
 
   // Scripts are invoked through their interpreter so a lost executable bit or a
   // noexec mount cannot break the run.
   const runner = script.endsWith(".mjs") ? [process.execPath, path] : ["bash", path];
-  const passthrough = dropFlag(argv, "--dir");
+  if (script.endsWith(".sh")) passthrough = passthrough.flatMap(arg => {
+    const match = /^(--[a-z-]+)=([\s\S]*)$/.exec(arg);
+    return match ? [match[1], match[2]] : [arg];
+  });
   const child = spawn(runner[0], [runner[1], ...passthrough], { cwd: workspace, stdio: "inherit" });
   child.on("error", error => die(`could not run ${script}: ${error.message}`));
   child.on("close", (code, signal) => process.exit(signal ? 1 : code ?? 1));
@@ -355,7 +418,10 @@ function parseFlags(argv) {
     const name = split === -1 ? raw : raw.slice(0, split);
     const inline = split === -1 ? undefined : raw.slice(split + 1);
     if (BOOLEAN_FLAGS.has(name) && inline === undefined) flags[name] = true;
-    else flags[name] = inline ?? argv[++index];
+    else if (inline !== undefined) flags[name] = inline;
+    else if (argv[index + 1] !== undefined && !argv[index + 1].startsWith("--")) flags[name] = argv[++index];
+    else if (["backend", "dir", "run-id", "tasks", "checkpoint"].includes(name)) die(`--${name} requires a value`);
+    else flags[name] = true;
   }
   return { flags };
 }
@@ -380,10 +446,10 @@ Usage: npx @frontierharness/eval [command] [options]
 
 Commands:
   install (default)  Create the benchmark workspace and install the skill for your agents
-  doctor             Check prerequisites: node, jq, runta CLI and auth, provider key
+  doctor             Check the selected backend, suites and provider credential
   prompt             Print the copy-paste prompt that drives the whole run
   provision          Freeze a golden checkpoint   (skill step 1-3)
-  run                Run trials from fresh restores (skill step 4)
+  run                Run trials on local Docker (default) or Runta
   normalize          Score the trials             (skill step 5)
   chart              Draw the comparison chart    (skill step 5)
   report             Build REPORT.md and index.html (skill step 6)
@@ -396,6 +462,10 @@ Install options:
   --global           Install the skill into ~ instead of the workspace
   --copy             Copy the skill into each agent directory rather than symlinking
   --force            Overwrite workspace files and existing skill directories
+
+Execution options:
+  --backend NAME     local-docker (default) or runta; --checkpoint selects Runta
+  --tasks PATH       Task subset used by doctor and run
 
 Prompt options:
   --harness NAME  --repo URL  --commit SHA  --provider NAME  --build "STEPS"

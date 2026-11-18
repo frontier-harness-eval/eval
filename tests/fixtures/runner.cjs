@@ -4,6 +4,10 @@ const path = require('node:path');
 const root = process.env.FAKE_RUNTA_ROOT;
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config.json')));
 const args = process.argv.slice(2);
+if (args[1] === '--version') {
+  console.log(args[0] === 'harbor' ? '0.22.0' : '0.3.1');
+  process.exit(0);
+}
 fs.appendFileSync(path.join(root, 'executions.jsonl'), JSON.stringify(args) + '\n');
 if (config.runnerCrash) process.exit(23);
 const index = args.indexOf('--jobs-dir');

@@ -5,14 +5,15 @@ the other half: a prompt you paste into any coding agent that can read files and
 shell commands, so it drives the run for you instead of you translating `SKILL.md` into
 commands by hand.
 
-Install the evaluation skill and the official [Runta skills](https://runta.com/docs/skills/)
-in the project where you use your coding agent. Skip the first command if the Runta
-skills are already installed, and select the same agent for both:
+Install the evaluation skill in the project where you use your coding agent:
 
 ```bash
-npx skills add https://runta.com/docs --skill runta-installer runta-cli
 npx skills add frontier-harness-eval/eval --skill frontierharness-eval
 ```
+
+Local Docker is the default backend. For a Runta checkpoint evaluation, also
+install the companion skills with
+`npx skills add https://runta.com/docs --skill runta-installer runta-cli`.
 
 Start a new agent session and paste the prompt below. The skill's **Workspace setup**
 step reuses or clones the benchmark data and keeps the installed scripts' absolute path
@@ -33,11 +34,28 @@ Everything else the skill decides for you. These are the only facts it cannot gu
 | `<PROVIDER>` | Who serves Kimi K3: `fireworks`, `moonshot`, `openrouter`, `together`, `custom` | `fireworks` |
 | `<BUILD_STEPS>` | How your harness is built and invoked from a clean Linux box | `npm ci && npm run build`, entrypoint `bin/my-harness` |
 
-Authenticate Runta with `runta login` or `RUNTA_TOKEN`, and configure the provider key
-for whichever `<PROVIDER>` you chose (`FIREWORKS_API_KEY` for the default), either in
-the environment or as a stored Runta secret. The agent verifies these before provisioning.
+Export the credential for your selected provider in the shell running the local CLI.
+For checkpoint evaluations, use the Runta authentication and secret setup in
+[the Runta workflow](SKILL.md#runta-prerequisites).
 
-## The prompt
+## Local Docker prompt
+
+```text
+Use frontierharness-eval. Read SKILL.md, set FH to the installed skill scripts,
+and work from the benchmark workspace. Use the local Docker backend.
+
+1. Check prerequisites for the selected backend and suites with doctor.
+2. Evaluate <HARNESS_NAME> from <REPO_URL> at <COMMIT_SHA>. The build steps
+   are <BUILD_STEPS>. Use <PROVIDER> with the selected model and record both model and harness version.
+3. Prepare the local Docker host and check that the chosen harness is registered in the suite runners.
+4. Show me the first trial's verifier evidence and model usage. Wait for my
+   go-ahead before starting a full sweep.
+5. Run the published 30 tasks. Keep valid attempts on resume and record
+   infrastructure failures separately.
+6. Normalize results, generate the chart, build the report and link the outputs.
+```
+
+## Runta checkpoint prompt
 
 ```text
 Use the frontierharness-eval skill. Read its SKILL.md and adjacent reference.md,
@@ -98,7 +116,7 @@ with different flags.
 
 ## Try it on two tasks first
 
-A full sweep is 30 tasks, each with its own restore and its own model spend. If you have
+A full sweep is 30 tasks, each with its own trial and model usage. If you have
 never run the skill before, replace step 5 with this and get a complete report end to
 end for a fraction of the cost:
 
@@ -106,7 +124,7 @@ end for a fraction of the cost:
 already applied.)
 
 ```text
-5. Run only these two tasks, one fresh restore each:
+5. Run only these two tasks using the selected backend:
      terminal-bench/regex-log
      datacurve/anko-typed-variable-bindings
    One per suite, so both the Harbor and the Pier path get exercised.

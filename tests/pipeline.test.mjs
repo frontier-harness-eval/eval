@@ -76,6 +76,22 @@ test('detached execution survives lost launch ACK and poll; verifies copies desp
   assert.ok(f.calls()[imagePull].at(-1).includes(':v1.1'), 'use the pinned corpus image');
 });
 
+test('CLI keeps checkpoint invocations and legacy Runta manifests on Runta', t => {
+  const f = fixture(t);
+  cpSync(join(repo, 'tasks'), join(f.root, 'tasks'), { recursive: true });
+  cpSync(join(repo, 'skills'), join(f.root, 'skills'), { recursive: true });
+  cpSync(join(repo, 'results'), join(f.root, 'results'), { recursive: true });
+  cpSync(join(repo, 'benchmark.json'), join(f.root, 'benchmark.json'));
+  const run = (...args) => spawnSync(process.execPath, [join(repo, 'cli/index.mjs'), 'run', '--dir', f.root,
+    '--run-id', 'control', '--tasks', f.tasks, ...args], { env: f.env, encoding: 'utf8', timeout: 30000 });
+  ok(run('--checkpoint', 'golden', '--harness', 'pi-responses'));
+  const manifest = join(f.root, 'runs/control/run.json');
+  assert.equal(JSON.parse(readFileSync(manifest)).checkpoint, 'golden');
+  ok(run());
+  assert.equal(f.executions().length, 1);
+  assert.equal(run('--backend', 'local-docker').status, 2);
+});
+
 test('incomplete evidence retains the runtime and resumes the original passing attempt', t => {
   const f = fixture(t, { copyFailure: 'always' });
   ok(f.run());

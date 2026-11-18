@@ -24,6 +24,7 @@ const observedAudit = await readJsonOrNull(join(runDir, "observed-cost-audit.jso
 const observedNote = observedAudit && Number.isFinite(observedAudit.observed_cost_usd)
   ? `Recorded model cost across ${observedAudit.tasks?.length ?? candidate.expected} canonical tasks: $${observedAudit.observed_cost_usd.toFixed(2)} at frozen benchmark token prices. Usage recorded for ${observedAudit.usage_calls}/${observedAudit.requests} requests; ${observedAudit.missing_usage} requests lack usage, so this is a lower bound. This diagnostic total uses observed tokens without first-call cold adjustment, excludes earlier attempts and runtime charges, and is not actual provider billing. For the website-aligned aggregate, complete first-cold task costs take precedence; available observed costs fill otherwise missing task totals without double counting. Missing usage and any unmeasured first-call adjustment remain unknown.` : "";
 const comparable = candidate.comparable === true;
+const localDocker = (candidate.backend ?? run.backend ?? run.topology) === "local-docker";
 const displayRank = comparable || args["display-rank"] === "true";
 const manifest = await readJsonOrNull(join(runDir, "trials", firstTrialDir(candidate), "manifest.json"));
 
@@ -133,6 +134,8 @@ const markdown = `# ${candidate.label} on FrontierHarness Eval
 
 ![Pass rate versus median cost per task, ${candidate.label} against the FrontierHarness Eval baselines](chart.svg)
 
+${rankingClause}
+
 ## Result
 
 | Metric | Value |
@@ -158,7 +161,7 @@ ${comparison}
 | Field | Value |
 | --- | --- |
 | Run id | \`${run.run_id}\` |
-| Golden checkpoint | \`${run.checkpoint}\` |
+${localDocker ? "| Execution backend | Local Docker |" : `| Golden checkpoint | \`${run.checkpoint}\` |`}
 | Model | \`${candidate.model ?? "unspecified"}\` |
 | Provider | ${candidate.provider ? `\`${candidate.provider}\`` : "unspecified"} |
 | Harness repo | ${manifest?.harness_repo ? `\`${manifest.harness_repo}\`` : "see manifest"} |
@@ -237,6 +240,7 @@ const html = `<!doctype html>
   <div class="brand">FrontierHarness Eval <span>HARNESS REPORT</span></div>
   <div class="eyebrow">CANDIDATE EVALUATION</div>
   <h1>${escapeHtml(candidate.label)} on FrontierHarness Eval</h1>
+  <p class="lede">${escapeHtml(rankingClause).replaceAll("**", "")}</p>
   <div class="chart">${chart.replace(/^<\?xml[^>]*\?>\s*/, "")}
   </div>
   <nav aria-label="Report sections"><a href="#result">Result</a><a href="#comparison">Comparison</a><a href="#tasks">Task results</a></nav>
@@ -260,7 +264,7 @@ const html = `<!doctype html>
     ${candidate.task_details.map(task => `<tr${exclusiveSolves.has(task.id) ? ' class="exclusive-solve"' : ""}><td><code>${escapeHtml(task.id)}</code></td><td>${exclusiveSolves.has(task.id) ? `<span class="solve-badge">${exclusiveBadge}</span>` : task.status}</td><td>${taskCostDisplay(task)}</td><td class="solve-time">${duration(task.duration_seconds)}</td><td>${task.turns ?? "Not recorded"}</td><td>${taskCacheDisplay(task)}</td></tr>`).join("\n    ")}
   </table>
   </div></section>
-  <footer>Baseline data and methodology: <a href="${SOURCE_EVAL}">FrontierHarness Eval</a></footer>
+  <footer>${localDocker ? "Execution backend · Local Docker<br>" : ""}Baseline data and methodology: <a href="${SOURCE_EVAL}">FrontierHarness Eval</a></footer>
 </main>
 </html>
 `;

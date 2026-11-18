@@ -18,6 +18,7 @@
   "files": [
     "cli",
     "skills",
+    "!skills/**/__pycache__/**",
     "tasks",
     "results",
     "metadata",

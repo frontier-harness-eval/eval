@@ -2,6 +2,7 @@
 
 # Local output from skills/frontierharness-eval
 runs/
+.fh-local/
 manifest-*.json
 
 # Skill links and tarballs left by `npx frontierharness-eval` inside a clone

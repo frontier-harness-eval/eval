@@ -1,13 +1,13 @@
 ---
 name: frontierharness-eval
-description: Benchmark a third-party coding-agent harness against FrontierHarness Eval using Runta runtimes. Provisions a clean runtime bound to the GitHub repo under evaluation, installs the Harbor and Pier stacks needed for Terminal-Bench and DeepSWE tasks, freezes a golden checkpoint, runs tasks from identical fresh restores while saving trajectories as evidence, generates a comparison diagram, and builds a shareable report. Use when evaluating, benchmarking, scoring, or comparing a coding agent harness, or when the user mentions FrontierHarness, DeepSWE, Terminal-Bench, Harbor, Pier, golden checkpoints, or harness trajectories.
+description: Evaluate coding-agent harnesses on Terminal-Bench and DeepSWE with local Docker or optional Runta checkpoints, then score trials and build FrontierHarness reports.
 ---
 
 # FrontierHarness Eval for a Third-Party Harness
 
-Score a harness that is not in the published FrontierHarness v1.0 set, on the same
-tasks, runtime, and cost accounting, so the result can be placed next to the twelve
-baseline configurations in `results/eval-data.json`.
+Evaluate a harness on the published tasks and use the existing cost and scoring
+pipeline. The run records its execution backend so readers can interpret the
+results alongside the published baselines.
 
 ## Workspace setup
 
@@ -39,7 +39,34 @@ new directory; do not overwrite existing work. Run the commands below from the
 benchmark workspace so data paths and `runs/` resolve there. Keep `FH` pointing to
 the installed skill's scripts, not the repository's unrelated top-level `scripts/`.
 
-## Prerequisites
+## Run locally
+
+Use local Docker by default. A checkpoint or `--backend runta` selects the [Runta workflow](#runta-prerequisites).
+Use a harness registered in the selected runners. Select a provider and model supported by that harness.
+
+```bash
+uv tool install harbor==0.22.0
+uv tool install datacurve-pier==0.3.1
+# Export the selected provider's credential in the calling shell.
+printf '%s\n' terminal-bench/regex-log datacurve/anko-typed-variable-bindings > subset.txt
+# In a repository checkout use its CLI. An npm-installed workspace uses its package CLI.
+if [ -f cli/index.mjs ]; then
+  node cli/index.mjs doctor --backend local-docker --tasks subset.txt
+else
+  npx @frontierharness/eval doctor --backend local-docker --tasks subset.txt
+fi
+bash "$FH/run-trials-local.sh" --harness my-harness --tasks subset.txt --run-id local-eval
+```
+
+The workspace CLI also exposes this runner as `run --backend local-docker`.
+Omit `--tasks` for the full published set. Check raw verifier outcomes and
+usage before scaling up. A scored failure stays canonical. Exit 1 indicates
+one or more infrastructure-invalid trials.
+Local observations stay unranked until equivalent conditions are established.
+
+Continue with [scoring and charts](#5-generate-the-diagram) and [reporting](#6-build-and-share-the-report).
+
+## Runta prerequisites
 
 Use the official [Runta skills](https://runta.com/docs/skills/) for Runta setup and
 command guidance. Install them in the same agent and scope as this skill if needed:
@@ -108,7 +135,7 @@ to fill the quota.
   wait for capacity or safely clean up this evaluation's finished runtimes, then
   recheck usage before retrying.
 
-## Workflow
+## Runta checkpoint workflow
 
 Copy this checklist into your working notes and keep it updated:
 
@@ -370,6 +397,8 @@ git add runs/<run-id> && git commit -m "add My Harness evaluation"
 ```
 
 ## Reproducibility rules
+
+Checkpoint and runtime-wide network requirements below apply to Runta runs. Record local Docker results with their host topology.
 
 A result is only comparable to the published leaderboard if all of these hold. State
 explicitly in the report which ones were relaxed.

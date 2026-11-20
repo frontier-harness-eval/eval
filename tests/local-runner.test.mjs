@@ -25,7 +25,16 @@ function fixture(t, config = {}) {
   const node = process.execPath;
   for (const name of ['harbor', 'pier']) executable(name, `#!/bin/sh\nexec ${quote(node)} ${quote(join(repo, 'tests/fixtures/runner.cjs'))} ${name} "$@"\n`);
   executable('runta', '#!/bin/sh\ntouch "$FAKE_RUNTA_ROOT/unexpected-runta"\nexit 99\n');
-  executable('docker', '#!/bin/sh\necho "pulled $*"\n');
+  executable('docker', `#!/bin/sh
+if [ "$1 $2" = "image inspect" ]; then
+  [ "$FAKE_INSPECT_FAIL" != 1 ] || exit 1
+  printf '[{"Os":"linux","Architecture":"%s","RepoDigests":["fixture@sha256:abc"]}]\\n' "\${FAKE_IMAGE_ARCH:-amd64}"
+elif [ "$1" = pull ]; then
+  echo "pulled $*"
+else
+  echo 'Docker fixture'
+fi
+`);
   executable('timeout', '#!/usr/bin/env python3\nimport json, os, sys\na = sys.argv[1:]\nif a == ["--version"]: print("GNU timeout"); sys.exit(0)\nif a[0].startswith("--kill-after"): a.pop(0)\na.pop(0)\nc = json.load(open(os.path.join(os.environ["FAKE_RUNTA_ROOT"], "config.json")))\nif c.get("runnerTimeout") and a[0] == "bash": sys.exit(124)\nos.execvp(a[0], a)\n');
   writeFileSync(join(root, 'config.json'), JSON.stringify(config));
   // A fake DeepSWE corpus at the layout the runner resolves images from.
@@ -160,4 +169,112 @@ test('the run refuses to start without the provider key in the environment', t =
   assert.equal(result.status, 2);
   assert.match(result.stderr, /FIREWORKS_API_KEY/);
   assert.equal(f.executions(), 0, 'no trial may launch without credentials');
+});
+
+test('custom adapters reach both runners by import path and are pinned to the run', t => {
+  const f = fixture(t);
+  ok(f.run(['--harbor-agent-import-path', 'my_adapter.harbor:MyAgent',
+    '--pier-agent-import-path', 'my_adapter.pier:MyAgent']));
+  const calls = readFileSync(join(f.root, 'executions.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+  const harbor = calls.find(args => args[0] === 'harbor');
+  const pier = calls.find(args => args[0] === 'pier');
+  assert.equal(harbor[harbor.indexOf('-a') + 1], 'my_adapter.harbor:MyAgent');
+  assert.equal(pier[pier.indexOf('--agent-import-path') + 1], 'my_adapter.pier:MyAgent');
+  assert.ok(!pier.includes('--agent'), 'Pier rejects unknown --agent names, so the name must not be passed');
+  const run = f.json(join(f.root, 'runs/local/run.json'));
+  assert.equal(run.harbor_agent_import_path, 'my_adapter.harbor:MyAgent');
+  assert.equal(run.pier_agent_import_path, 'my_adapter.pier:MyAgent');
+  assert.ok(run.methodology_notes.some(note => note.includes('my_adapter.pier:MyAgent')));
+  assert.equal(f.run(['--harbor-agent-import-path', 'my_adapter.harbor:MyAgent']).status, 2,
+    'a resume may not drop or change an adapter');
+  assert.equal(f.executions(), 2);
+});
+
+test('malformed import paths and import paths with --cmd are refused before any trial', t => {
+  const f = fixture(t);
+  for (const path of ['not-a-path', 'my..adapter:Agent', 'my.:Agent', 'my.1adapter:Agent']) {
+    assert.equal(f.run(['--pier-agent-import-path', path]).status, 2, path);
+  }
+  assert.equal(f.run(['--pier-agent-import-path', 'a.b:C', '--cmd', 'true']).status, 2);
+  assert.equal(f.executions(), 0);
+});
+
+test('Harbor keeps the first attempt and records input and image provenance', t => {
+  const f = fixture(t);
+  ok(f.run());
+  const harbor = readFileSync(join(f.root, 'executions.jsonl'), 'utf8').trim().split('\n').map(JSON.parse)
+    .find(args => args[0] === 'harbor');
+  assert.equal(harbor[harbor.indexOf('-r') + 1], '0');
+  const runFile = join(f.root, 'runs/local/run.json');
+  const run = f.json(runFile);
+  assert.equal(run.harbor_retries, 0);
+  for (const pattern of [/terminal-bench-2 at 69671fb/, /patch collector/, /pyknotid/]) {
+    assert.ok(run.methodology_notes.some(note => pattern.test(note)), `missing note ${pattern}`);
+  }
+  const image = f.json(join(f.trialDir('terminal-bench-regex-log'), 'image.json'));
+  assert.equal(image.resolved_platform, 'linux/amd64');
+  assert.equal(image.platform_matches, true);
+  assert.deepEqual(image.repo_digests, ['fixture@sha256:abc']);
+  // A recorded internal retry could have replaced the first valid attempt.
+  run.harbor_retries = 2;
+  writeFileSync(runFile, JSON.stringify(run));
+  assert.equal(f.run().status, 2);
+});
+
+test('a pulled image on the wrong architecture stops before the agent runs', t => {
+  const f = fixture(t);
+  const result = f.run([], { ...f.env, FAKE_IMAGE_ARCH: 'arm64' });
+  assert.equal(result.status, 1);
+  assert.equal(f.executions(), 0, 'no model spend on a mismatched image');
+  const trial = f.trial('terminal-bench-regex-log');
+  assert.equal(trial.status, 'infra_invalid');
+  assert.match(trial.error, /linux\/arm64/);
+  assert.equal(f.json(join(f.trialDir('terminal-bench-regex-log'), 'image.json')).platform_matches, false);
+  ok(f.run());
+  assert.equal(f.trial('terminal-bench-regex-log').status, 'success', 'the infra-invalid attempt is retried');
+});
+
+test('legacy manifests resume across Harbor and Pier task subsets', t => {
+  const f = fixture(t);
+  ok(f.run());
+  const file = join(f.root, 'runs/local/run.json');
+  const run = f.json(file);
+  for (const field of ['harbor_retries', 'harbor_agent_import_path', 'pier_agent_import_path']) delete run[field];
+  writeFileSync(file, JSON.stringify(run));
+  ok(f.run());
+  writeFileSync(f.tasks, 'datacurve/httpx-multipart-response-parsing\n');
+  ok(f.run());
+  run.harbor_retries = 2;
+  writeFileSync(file, JSON.stringify(run));
+  ok(f.run());
+  assert.equal(f.executions(), 2);
+});
+
+test('unavailable image metadata preserves scores without pre-pull and gates a pre-pull', t => {
+  const f = fixture(t);
+  const env = { ...f.env, FAKE_INSPECT_FAIL: '1' };
+  const slugs = ['terminal-bench-regex-log', 'datacurve-httpx-multipart-response-parsing'];
+  assert.equal(f.run([], env).status, 1);
+  for (const slug of slugs) assert.equal(f.trial(slug).status, 'infra_invalid');
+  assert.equal(f.executions(), 0);
+
+  ok(f.run(['--no-prepull'], env));
+  for (const slug of slugs) {
+    const image = f.json(join(f.trialDir(slug), 'image.json'));
+    assert.equal(image.prepulled, false);
+    assert.equal(image.resolved_platform, null);
+    assert.equal(image.platform_matches, null);
+    assert.equal(image.repo_digests, null);
+    assert.equal(f.trial(slug).status, 'success');
+  }
+  assert.equal(f.executions(), 2);
+});
+
+test('the CLI resumes a run with its recorded adapters', t => {
+  const f = fixture(t);
+  ok(f.cli('install', '--agent', 'none'));
+  ok(f.cli('run', '--run-id', 'local', '--harness', 'my-harness', '--tasks', f.tasks,
+    '--pier-agent-import-path', 'my_adapter.pier:MyAgent'));
+  ok(f.cli('run', '--run-id', 'local', '--tasks', f.tasks));
+  assert.equal(f.executions(), 2, 'resume reuses the recorded adapter and keeps valid attempts');
 });

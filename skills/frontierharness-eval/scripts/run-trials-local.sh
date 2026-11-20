@@ -29,6 +29,8 @@ PREPULL=1
 TASK_PLATFORM=${FH_TASK_PLATFORM:-linux/amd64}
 SECRET_NAME=""
 SECRET_HOST=""
+HARBOR_AGENT_IMPORT_PATH=""
+PIER_AGENT_IMPORT_PATH=""
 
 usage() {
   cat <<EOF
@@ -36,6 +38,8 @@ Usage: run-trials-local.sh --harness NAME --run-id ID
                      [--tasks PATH] [--provider NAME] [--model ID] [--out DIR]
                      [--cmd TEMPLATE] [--timeout SEC] [--deep-swe PATH]
                      [--secret-name ENV_VAR] [--no-prepull]
+                     [--harbor-agent-import-path MOD:CLASS]
+                     [--pier-agent-import-path MOD:CLASS]
 
 Run benchmark tasks locally with Docker + Harbor/Pier. No Runta dependency.
 
@@ -56,6 +60,17 @@ Run benchmark tasks locally with Docker + Harbor/Pier. No Runta dependency.
                   provider preset. The script only checks it is set and non-empty.
   --secret-host HOST  Inference host for custom Harbor routes.
   --no-prepull    Skip the per-task docker pull (Harbor/Pier pull on demand instead).
+  --harbor-agent-import-path MOD:CLASS
+                  Custom Harbor agent adapter for terminal-bench tasks, used in place
+                  of a built-in agent name. --harness stays the report label and
+                  fallback usage-parser key.
+  --pier-agent-import-path MOD:CLASS
+                  Custom Pier agent adapter for datacurve tasks. Required for any
+                  harness Pier does not ship (Pier 0.3.1 built-ins: oracle, nop,
+                  claude-code, antigravity-sdk, codex, cursor-cli, gemini-cli,
+                  mini-swe-agent, swe-agent, opencode).
+                  The adapter module must be importable by the runner, e.g.
+                  uv tool install harbor==0.22.0 --with ./my-adapter, or PYTHONPATH.
 
 Prerequisites: Docker with Compose, Git, jq, Python 3.11+, GNU timeout (brew install
 coreutils on macOS), harbor==0.22.0 for terminal-bench tasks
@@ -81,6 +96,8 @@ while [ $# -gt 0 ]; do
     --secret-name) SECRET_NAME=$2; shift 2 ;;
     --secret-host) SECRET_HOST=$2; shift 2 ;;
     --no-prepull) PREPULL=0; shift ;;
+    --harbor-agent-import-path) HARBOR_AGENT_IMPORT_PATH=$2; shift 2 ;;
+    --pier-agent-import-path) PIER_AGENT_IMPORT_PATH=$2; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "unknown option: $1" >&2; usage >&2; exit 2 ;;
   esac
@@ -135,7 +152,15 @@ else
   echo "GNU timeout not found; on macOS install it with: brew install coreutils" >&2
   exit 2
 fi
-if [ "$PROVIDER" = fireworks ]; then
+for import_path in "$HARBOR_AGENT_IMPORT_PATH" "$PIER_AGENT_IMPORT_PATH"; do
+  if [ -n "$import_path" ] && [[ ! "$import_path" =~ ^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+    echo "agent import path must look like module.path:ClassName: $import_path" >&2; exit 2
+  fi
+done
+if [ -n "$CMD_TEMPLATE" ] && [ -n "$HARBOR_AGENT_IMPORT_PATH$PIER_AGENT_IMPORT_PATH" ]; then
+  echo "--cmd replaces the runner command; put the agent import path in the template instead" >&2; exit 2
+fi
+if [ "$PROVIDER" = fireworks ] && [ -n "$SECRET_NAME" ]; then
   # The pinned adapters use the LiteLLM name for Fireworks.
   export FIREWORKS_AI_API_KEY="${!SECRET_NAME:-${FIREWORKS_AI_API_KEY:-}}"
   if [ "$SECRET_NAME" = FIREWORKS_API_KEY ]; then export FIREWORKS_API_KEY="$FIREWORKS_AI_API_KEY"; fi
@@ -191,16 +216,34 @@ mkdir -p "$RUN_DIR/trials"
 EGRESS_POLICY=$(jq -cn '{mode:"unrestricted", scope:"host", allowed_hosts:null}')
 
 catalog=$(task_catalog_digest)
+# Score each Harbor attempt before deciding whether it may be retried.
+HARBOR_RETRIES=0
+[ "$TASK_SOURCE" = repository-v1 ] || HARBOR_RETRIES=null
 if [ ! -f "$RUN_DIR/run.json" ]; then
+  # Per-task hashes are available in each trial's input-manifest.json.
+  input_notes='[]'
+  if [ "$TASK_SOURCE" = repository-v1 ]; then
+    input_notes=$(jq -cn '[
+      "Local Terminal-Bench tasks use the workspace task.toml and instruction.md with laude-institute/terminal-bench-2 at 69671fbaac6d67a7ef0dfec016cc38a64ef7a77c. Runta uses the terminal-bench@2.0 registry dataset.",
+      "Local DeepSWE tasks use the workspace instruction.md with datacurve-ai/deep-swe at 435ee89ec2f2e2289f33b0da4f992f0b7b7266b9. When the prompt omits the upstream instruction to commit, the patch collector compares the final working tree with the upstream base commit.",
+      "terminal-bench/build-cython-ext receives a read-only pyknotid 0.5.3 Git bundle (441c807dbec2ee32e1da572e24e58d52a4eb7afa) mounted at /app/pyknotid.bundle as the offline source its prompt references."
+    ]')
+  fi
   jq -n --arg run_id "$RUN_ID" --arg harness "$HARNESS" --arg model "$MODEL" --arg provider "$PROVIDER" \
     --arg cmd "$CMD_TEMPLATE" --argjson timeout "$TIMEOUT" --argjson egress_policy "$EGRESS_POLICY" \
     --arg platform "$TASK_PLATFORM" --arg task_source "$TASK_SOURCE" --arg catalog "$catalog" --arg secret_name "$SECRET_NAME" --arg secret_host "$SECRET_HOST" --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+    --arg harbor_agent "$HARBOR_AGENT_IMPORT_PATH" --arg pier_agent "$PIER_AGENT_IMPORT_PATH" \
+    --argjson harbor_retries "$HARBOR_RETRIES" --argjson input_notes "$input_notes" \
   '{run_id:$run_id, backend:"local-docker", task_platform:$platform, task_source:$task_source, task_catalog_sha256:$catalog, secret_name:$secret_name, secret_host:$secret_host, topology:"local-docker", harness:$harness,
+    harbor_agent_import_path:$harbor_agent, pier_agent_import_path:$pier_agent, harbor_retries:$harbor_retries,
     model:$model, provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout,
     started_at:$started, egress_policy:$egress_policy, methodology_comparable:false,
-    methodology_notes:["Local Docker topology (run-trials-local.sh): tasks share one Docker host and each trial creates fresh containers.",
+    methodology_notes:(["Local Docker topology (run-trials-local.sh): tasks share one Docker host and each trial creates fresh containers.",
       "The host has no Runta egress proxy. Harbor/Pier apply task-level network controls. Agent credentials come from the host environment.",
-      "The published baselines ran on fresh Runta golden-checkpoint restores with a runtime-level allowlist. A matched control run under equivalent conditions is required before claiming comparability; this result is observational."]}' \
+      "The published baselines ran on fresh Runta golden-checkpoint restores with a runtime-level allowlist. A matched control run under equivalent conditions is required before claiming comparability; this result is observational."]
+      + $input_notes
+      + (if $harbor_agent != "" or $pier_agent != "" then ["Custom agent adapters: Harbor \(if $harbor_agent == "" then "built-in" else $harbor_agent end), Pier \(if $pier_agent == "" then "built-in" else $pier_agent end). Adapter registration does not establish equivalence with the baseline container CLI agents."] else [] end)
+      + ["For a declared task image, image.json records the local Docker tag metadata available at inspection time."])}' \
   | publish_manifest "$RUN_DIR/run.json"
 fi
 jq -e --argjson policy "$EGRESS_POLICY" '.egress_policy == $policy' "$RUN_DIR/run.json" >/dev/null \
@@ -216,6 +259,13 @@ jq -e --arg source "$TASK_SOURCE" --arg catalog "$catalog" --arg secret "$SECRET
   '(.task_source // "legacy") == $source and (.task_catalog_sha256 // "") == $catalog
    and (.secret_name // $secret) == $secret and (.secret_host // $host) == $host' "$RUN_DIR/run.json" >/dev/null \
   || { echo "run inputs or provider configuration differ; use a new --run-id" >&2; exit 2; }
+# Legacy manifests used built-in agents and disabled internal Harbor retries.
+jq -e --arg harbor_agent "$HARBOR_AGENT_IMPORT_PATH" --arg pier_agent "$PIER_AGENT_IMPORT_PATH" \
+  --argjson harbor_retries "$HARBOR_RETRIES" --argjson need_harbor "$need_harbor" \
+  '(.harbor_agent_import_path // "") == $harbor_agent and (.pier_agent_import_path // "") == $pier_agent
+   and ($need_harbor == 0 or .task_source != "repository-v1" or (.harbor_retries // 0) == $harbor_retries)' \
+  "$RUN_DIR/run.json" >/dev/null \
+  || { echo "run agent adapters or Harbor retry policy differ; use a new --run-id" >&2; exit 2; }
 
 render() {
   local rendered=$1
@@ -239,15 +289,13 @@ record_infra() {
   echo "$entry: $error" >&2
 }
 
-# Pull this task's image before the timed run, so image download time and pull
-# failures stay out of the scored execution. DeepSWE's pinned corpus is
-# authoritative for its image; Terminal-Bench resolves from the task metadata.
-prepare_image() {
-  local image toml
+# Resolve the declared image from the assembled task or the custom runner's inputs.
+task_image() {
+  local toml
   if [ "$TASK_SOURCE" = repository-v1 ]; then
     toml="$input_path/task.toml"
   elif [ "$suite" = datacurve ]; then
-    toml="$DEEP_SWE_ABS/tasks/$task/task.toml"
+    toml="${DEEP_SWE_ABS:-$DEEP_SWE}/tasks/$task/task.toml"
     [ -f "$toml" ] || return 1
   else
     toml="$TASKS/$task/task.toml"
@@ -255,9 +303,23 @@ prepare_image() {
     [ -f "$toml" ] || toml="$SCRIPT_DIR/../../../tasks/$task/task.toml"
     [ -f "$toml" ] || return 0 # A custom --cmd may prepare its own environment.
   fi
-  image=$(awk -F'"' '/^docker_image *=/ { print $2; exit }' "$toml")
-  [ -n "$image" ] || return 0
-  "$TIMEOUT_BIN" 1800 docker pull --platform "$TASK_PLATFORM" "$image"
+  awk -F'"' '/^docker_image *=/ { print $2; exit }' "$toml"
+}
+
+# Inspect the local tag once so its architecture and digests come from the same snapshot.
+record_image() {
+  local metadata
+  metadata=$(docker image inspect "$image" 2>/dev/null | jq -ce '
+    .[0] | select(. != null) |
+    {resolved_platform:(if .Os and .Architecture then (.Os + "/" + .Architecture) else null end),
+     repo_digests:.RepoDigests}') || metadata='{}'
+  jq -n --arg image "$image" --arg platform "$TASK_PLATFORM" --argjson prepull "$PREPULL" \
+    --argjson metadata "$metadata" '
+    $metadata.resolved_platform as $resolved |
+    {image:$image, requested_platform:$platform, resolved_platform:$resolved,
+     platform_matches:(if $resolved == null then null else $resolved == ($platform | split("/")[:2] | join("/")) end),
+     repo_digests:$metadata.repo_digests, prepulled:($prepull == 1)}' > "$trial_dir/image.json.tmp"
+  mv "$trial_dir/image.json.tmp" "$trial_dir/image.json"
 }
 
 total=0
@@ -318,10 +380,29 @@ while IFS= read -r entry || [ -n "$entry" ]; do
     fi
   fi
 
-  if [ "$PREPULL" -eq 1 ] && ! prepare_image >"$trial_dir/pull.log" 2>&1; then
-    record_infra "task image pull failed"
-    invalid=$((invalid + 1))
-    continue
+  if ! image=$(task_image); then
+    image=""
+    # Without a pre-pull the runner resolves its own image; only a pull needs it here.
+    if [ "$PREPULL" -eq 1 ]; then
+      record_infra "task image could not be resolved"
+      invalid=$((invalid + 1))
+      continue
+    fi
+  fi
+  if [ "$PREPULL" -eq 1 ] && [ -n "$image" ]; then
+    if ! "$TIMEOUT_BIN" 1800 docker pull --platform "$TASK_PLATFORM" "$image" >"$trial_dir/pull.log" 2>&1; then
+      record_infra "task image pull failed"
+      invalid=$((invalid + 1))
+      continue
+    fi
+    # A pulled tag must match the recorded platform before any model spend.
+    record_image
+    if ! jq -e '.platform_matches' "$trial_dir/image.json" >/dev/null; then
+      pulled_platform=$(jq -r '.resolved_platform // "unknown"' "$trial_dir/image.json")
+      record_infra "task image resolved to $pulled_platform, expected $TASK_PLATFORM"
+      invalid=$((invalid + 1))
+      continue
+    fi
   fi
 
   printf '\n=== [%s] running locally: %s\n' "$entry" "$command" >&2
@@ -344,6 +425,12 @@ while IFS= read -r entry || [ -n "$entry" ]; do
     '{exit_code:$exit_code, duration_seconds:$duration, timeout_seconds:$timeout}' \
     > "$trial_dir/completion.json.tmp"
   mv "$trial_dir/completion.json.tmp" "$trial_dir/completion.json"
+  if [ "$PREPULL" -eq 0 ] && [ -n "$image" ]; then
+    record_image
+    if jq -e '.platform_matches == false' "$trial_dir/image.json" >/dev/null; then
+      echo "warning: local tag $image differs from $TASK_PLATFORM; see $trial_dir/image.json" >&2
+    fi
+  fi
 
   # Same baseline collector rules as run-trials.sh: a skeleton record, then scoring
   # from authoritative leaf result evidence by calculate-cost.py.

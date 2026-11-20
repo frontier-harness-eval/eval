@@ -364,7 +364,8 @@ async function forward(command, argv) {
     if (command === "run" && run) {
       if (run.reuse_runtime) die("This run uses a shared Runta runtime; resume with run-trials-shared-runtime.sh");
       for (const [flag, value] of Object.entries({harness: run.harness, provider: run.provider, model: run.model,
-        cmd: run.cmd_template, timeout: run.timeout_seconds, "secret-host": run.secret_host, "secret-name": run.secret_name})) {
+        cmd: run.cmd_template, timeout: run.timeout_seconds, "secret-host": run.secret_host, "secret-name": run.secret_name,
+        "harbor-agent-import-path": run.harbor_agent_import_path, "pier-agent-import-path": run.pier_agent_import_path})) {
         if (flags[flag] === undefined && value) passthrough.push(`--${flag}`, String(value));
       }
       if (backend === "runta" && !flags.checkpoint) passthrough.push("--checkpoint", run.checkpoint);
@@ -466,6 +467,8 @@ Install options:
 Execution options:
   --backend NAME     local-docker (default) or runta; --checkpoint selects Runta
   --tasks PATH       Task subset used by doctor and run
+  --harbor-agent-import-path MOD:CLASS   Local Terminal-Bench agent adapter
+  --pier-agent-import-path MOD:CLASS     Local DeepSWE agent adapter
 
 Prompt options:
   --harness NAME  --repo URL  --commit SHA  --provider NAME  --build "STEPS"

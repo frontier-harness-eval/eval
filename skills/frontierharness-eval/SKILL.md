@@ -1,6 +1,6 @@
 ---
 name: frontierharness-eval
-description: Evaluate coding-agent harnesses on Terminal-Bench and DeepSWE with local Docker or optional Runta checkpoints, then score trials and build FrontierHarness reports.
+description: Benchmark a third-party coding-agent harness against FrontierHarness Eval on local Docker (default) or Runta runtimes. Runs Terminal-Bench tasks through Harbor and DeepSWE tasks through Pier, either as local Docker trials or from fresh restores of a Runta golden checkpoint, saves trajectories as evidence, scores the trials with the published cost accounting, generates a comparison diagram, and builds a shareable report. Use when evaluating, benchmarking, scoring, or comparing a coding agent harness, or when the user mentions FrontierHarness, DeepSWE, Terminal-Bench, Harbor, Pier, local Docker evaluation, golden checkpoints, or harness trajectories.
 ---
 
 # FrontierHarness Eval for a Third-Party Harness

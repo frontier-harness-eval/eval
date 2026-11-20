@@ -10,6 +10,24 @@ registered agent with `--harness`. To supply a model route and credential
 variable, use `--provider custom --model <route> --secret-name <variable>`.
 For Harbor, `--secret-host <host>` allows the agent to reach the inference host.
 
+`--harness` must be a built-in agent of each runner in the task list, or you supply
+an adapter class. Pier 0.3.1 ships only `oracle`, `nop`, `claude-code`,
+`antigravity-sdk`, `codex`, `cursor-cli`, `gemini-cli`, `mini-swe-agent`,
+`swe-agent` and `opencode`, so most third-party harnesses need
+`--pier-agent-import-path module.path:ClassName` for DeepSWE tasks. Use
+`--harbor-agent-import-path` the same way for Terminal-Bench. The two runners have
+different agent base classes, so each needs its own adapter. Make the module
+importable by the runner, for example
+`uv tool install datacurve-pier==0.3.1 --with ./my-adapter`. `--harness` stays the
+report label. The scorer uses the agent name in the trial result and falls back
+to the harness label when selecting the usage parser. The run records
+both import paths and refuses a resume that changes them.
+
+The local runner passes `-r 0` to Harbor and records this policy in `run.json`.
+It keeps the first valid result, including a scored failure. Resuming the run
+archives infrastructure-invalid attempts before running them again. Older local
+manifests without `harbor_retries` used the same zero-retry policy.
+
 The local runner uses the workspace prompt and fetches the environment and
 verifier from pinned upstream commits into `.fh-local/sources/`. Each trial
 records its inputs and their hashes. Use `--deep-swe <path>` to reuse an existing
@@ -18,6 +36,20 @@ for images already present on the host. The default task platform is `linux/amd6
 For another supported image architecture, set `FH_TASK_PLATFORM` before starting
 the run. The run records this choice and checks it on resume. A custom `--cmd`
 handles its own task preparation.
+
+For a task with a declared image, the runner inspects the local Docker tag after
+a successful pre-pull. It records the requested platform, observed OS and
+architecture, and available registry digests in `image.json`. The pre-pull check
+requires a matching OS and architecture before launching the agent. With
+`--no-prepull` the runner inspects the tag after execution. Unavailable metadata
+appears as `null` and scoring continues. The snapshot describes the local tag
+at inspection time.
+
+`run.json` `methodology_notes` lists how the assembled inputs differ from the Runta
+workflow. These are the Terminal-Bench source, the DeepSWE patch collector
+rewrite for prompts without the commit instruction, and the offline
+`pyknotid` bundle for `build-cython-ext`. `normalize-results.mjs` carries
+the notes into `candidate.json`.
 
 Docker shares the host across trials. Suite runners create fresh task containers.
 The run records the host network policy and reports local results as observational.

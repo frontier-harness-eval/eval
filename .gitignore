@@ -15,3 +15,6 @@ node_modules/
 # Python cost accounting helpers
 __pycache__/
 install-*.sh
+
+# Harbor example job output
+examples/harbor/jobs/

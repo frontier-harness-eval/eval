@@ -27,7 +27,8 @@ repository_command() {
   local suite=$1 task_path=$2 harness=$3 model=$4 jobs=$5 mounts
   local args
   if [ "$suite" = terminal-bench ]; then
-    args=(harbor run -p "$task_path" -a "$harness" -m "$model" --jobs-dir "$jobs" -r 0 -y)
+    # Harbor's -a accepts a registered name or a module.path:ClassName import path.
+    args=(harbor run -p "$task_path" -a "${HARBOR_AGENT_IMPORT_PATH:-$harness}" -m "$model" --jobs-dir "$jobs" -r "$HARBOR_RETRIES" -y)
     local allowed host=${SECRET_HOST:-$PROVIDER_HOST}
     if [ -n "$host" ]; then
       args+=(--allow-agent-host "$host")
@@ -41,7 +42,14 @@ repository_command() {
       args+=(--mounts "$mounts")
     fi
   elif [ "$suite" = datacurve ]; then
-    args=(pier run -p "$task_path" --agent "$harness" --model "$model" --jobs-dir "$jobs" -y)
+    # Pier's --agent only accepts its built-in names; anything else needs an
+    # adapter class loaded with --agent-import-path.
+    if [ -n "${PIER_AGENT_IMPORT_PATH:-}" ]; then
+      args=(pier run -p "$task_path" --agent-import-path "$PIER_AGENT_IMPORT_PATH")
+    else
+      args=(pier run -p "$task_path" --agent "$harness")
+    fi
+    args+=(--model "$model" --jobs-dir "$jobs" -y)
   else
     echo "Unknown suite $suite; pass --cmd for a custom runner" >&2
     return 2

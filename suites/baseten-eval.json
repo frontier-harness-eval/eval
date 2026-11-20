@@ -1,0 +1,836 @@
+{
+  "job_name": "baseten-eval",
+  "n_attempts": 4,
+  "n_concurrent_trials": 256,
+  "environment_build_timeout_multiplier": 2.0,
+  "environment": {
+    "import_path": "adapters.runta_provider:ManagedProviderEnvironment",
+    "kwargs": {
+      "expected_base_url": "https://inference.baseten.co/v1",
+      "upstream_model": "{model_id}",
+      "startup_timeout_sec": 600
+    },
+    "override_storage_mb": 32768
+  },
+  "datasets": [
+    {
+      "name": "frontier-harness-eval/frontier-harness-eval",
+      "version": "v1.1.0"
+    }
+  ],
+  "agent_defaults": {
+    "model_name": "openai/{alias}",
+    "override_setup_timeout_sec": 1200,
+    "env": {
+      "OPENAI_API_KEY": "${PROVIDER_STUB_KEY}",
+      "OPENAI_BASE_URL": "http://127.0.0.1:4011/v1"
+    }
+  },
+  "snippets": {
+    "node": [
+      "export DEBIAN_FRONTEND=noninteractive",
+      "apt-get update",
+      "apt-get install -y curl xz-utils ca-certificates git",
+      "curl --retry 5 -fsSL https://nodejs.org/dist/v24.22.1/node-v24.22.1-linux-x64.tar.xz | tar -xJ -C /usr/local --strip-components=1",
+      "# Task images may put their own Node first on PATH.",
+      "export PATH=\"/usr/local/bin:$PATH\""
+    ],
+    "node-wrapper": [
+      "# Run the CLI with this Node, whatever Node a task image puts first on PATH.",
+      "entry=\"$(readlink -f \"/usr/local/bin/$CLI\")\"",
+      "rm \"/usr/local/bin/$CLI\"",
+      "printf '#!/bin/sh\\nexec /usr/local/bin/node %s \"$@\"\\n' \"$entry\" > \"/usr/local/bin/$CLI\"",
+      "chmod +x \"/usr/local/bin/$CLI\""
+    ],
+    "dsh-install": [
+      "@node",
+      "npm install -g --prefix /usr/local \"@deepseek-ai/dsh@$HARNESS_VERSION\"",
+      "CLI=dsh",
+      "@node-wrapper"
+    ],
+    "dsh-run": [
+      "export DSH_HOME=\"$STATE/dsh\" DSH_PERMISSION_MODE=danger-full-access DSH_TELEMETRY_DISABLED=1",
+      "dsh --profile headless --patch \"$STATE/profile.yml\" --patch \"$STATE/model.yml\" --json -- - <\"$INSTRUCTION_FILE\""
+    ],
+    "dsh-profile": [
+      {
+        "id": "llm-pi-ai",
+        "config": {
+          "providers": {
+            "baseten": {
+              "apiKeyEnv": "OPENAI_API_KEY",
+              "api": "openai-completions",
+              "baseURL": "http://127.0.0.1:4011/v1",
+              "models": [
+                {
+                  "id": "{alias}",
+                  "contextWindow": 1048576
+                }
+              ],
+              "retryPolicy": {
+                "mode": "normal",
+                "maxRetries": 2
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "session-persistence-jsonl",
+        "config": {
+          "root": "/logs/agent/dsh-sessions",
+          "compression": "none"
+        }
+      },
+      {
+        "id": "session-title-llm",
+        "disabled": true
+      },
+      {
+        "id": "session-telemetry-otel",
+        "disabled": true
+      },
+      {
+        "id": "web-search-deepseek",
+        "disabled": true
+      },
+      {
+        "id": "tool-web",
+        "disabled": true
+      }
+    ]
+  },
+  "agents": [
+    {
+      "name": "codex",
+      "kwargs": {
+        "version": "0.164.0",
+        "config": {
+          "model_provider": "baseten",
+          "model_providers": {
+            "baseten": {
+              "name": "Baseten via the model proxy",
+              "base_url": "http://127.0.0.1:4011/v1",
+              "env_key": "OPENAI_API_KEY",
+              "wire_api": "responses",
+              "supports_websockets": false,
+              "stream_idle_timeout_ms": 900000,
+              "stream_max_retries": 1,
+              "request_max_retries": 1
+            }
+          },
+          "web_search": "disabled",
+          "model_context_window": 1048576,
+          "tool_output_token_limit": 10000
+        }
+      }
+    },
+    {
+      "name": "pi",
+      "kwargs": {
+        "version": "1.4.0",
+        "model_api": "openai-completions"
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "model_name": "baseten/{alias}",
+      "kwargs": {
+        "harness": "opencode",
+        "version": "2.2.7",
+        "install": [
+          "# OpenCode 2 ships on npm as @opencode/cli; install its platform package, checked by digest.",
+          "case \"$HARNESS_VERSION\" in",
+          "  2.2.7) glibc=d65935464f93f07913633f977cb99723af64eeff6ae7a822722ce89bedabdd45; musl=0c4c11fc4ffa184a9ab519af9f2164dc969fe08a829d5099a4f516cb6be91440 ;;",
+          "  *) echo \"No reviewed OpenCode build for $HARNESS_VERSION\" >&2; exit 1 ;;",
+          "esac",
+          "command -v curl >/dev/null || { apt-get update && apt-get install -y curl ca-certificates; }",
+          "if [ -f /etc/alpine-release ] || ldd --version 2>&1 | grep -qi musl; then platform=linux-x64-musl sha=$musl; else platform=linux-x64 sha=$glibc; fi",
+          "curl --retry 5 -fsSL -o /tmp/opencode.tgz \"https://registry.npmjs.org/@opencode/cli-$platform/-/cli-$platform-$HARNESS_VERSION.tgz\"",
+          "echo \"$sha  /tmp/opencode.tgz\" | sha256sum -c -",
+          "mkdir -p /tmp/opencode && tar -xzf /tmp/opencode.tgz -C /tmp/opencode",
+          "install -m 755 /tmp/opencode/package/bin/opencode /usr/local/bin/opencode",
+          "rm -rf /tmp/opencode /tmp/opencode.tgz",
+          "[ \"$(opencode --version)\" = \"opencode v$HARNESS_VERSION\" ]"
+        ],
+        "files": {
+          "$HOME/.config/opencode/opencode.json": {
+            "provider": {
+              "baseten": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Baseten via the model proxy",
+                "options": {
+                  "baseURL": "http://127.0.0.1:4011/v1",
+                  "apiKey": "{env:OPENAI_API_KEY}"
+                },
+                "models": {
+                  "{alias}": {}
+                }
+              }
+            }
+          }
+        },
+        "run": [
+          "export OPENCODE_FAKE_VCS=git XDG_DATA_HOME=\"$LOGS/opencode/xdg-data\" XDG_STATE_HOME=\"$LOGS/opencode/xdg-state\"",
+          "opencode run --standalone --model=baseten/{alias} --format=json --thinking --auto -- \"$(cat \"$INSTRUCTION_FILE\")\""
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "oh-my-pi",
+        "version": "18.12.6",
+        "install": [
+          "command -v curl >/dev/null || { apt-get update && apt-get install -y curl ca-certificates; }",
+          "# Bun's installer downloads from GitHub release assets; the npm tarball carries the same binary.",
+          "curl --retry 5 -fsSL -o /tmp/bun.tgz https://registry.npmjs.org/@oven/bun-linux-x64/-/bun-linux-x64-1.4.4.tgz",
+          "echo \"93ca5a2abe45f3bcac6dd55baff8bb06c4ac824b70f89650b54e5c8b80dbef18  /tmp/bun.tgz\" | sha256sum -c -",
+          "tar -xzf /tmp/bun.tgz -C /tmp",
+          "mkdir -p /root/.bun/bin",
+          "install -m 755 /tmp/package/bin/bun /root/.bun/bin/bun",
+          "ln -sf bun /root/.bun/bin/bunx",
+          "BUN_INSTALL=/root/.bun BUN_INSTALL_BIN=/root/.bun/bin BUN_INSTALL_GLOBAL_DIR=/root/.bun/install/global \\",
+          "  /root/.bun/bin/bun install -g \"@oh-my-pi/pi-coding-agent@$HARNESS_VERSION\"",
+          "# omp's `#!/usr/bin/env bun` would pick up a task's own bun.",
+          "entry=\"$(readlink -f /root/.bun/bin/omp)\"",
+          "rm /root/.bun/bin/omp",
+          "printf '#!/bin/sh\\nexec /root/.bun/bin/bun %s \"$@\"\\n' \"$entry\" > /root/.bun/bin/omp",
+          "chmod +x /root/.bun/bin/omp",
+          "[ -e /usr/local/bin/bun ] || ln -s /root/.bun/bin/bun /usr/local/bin/bun"
+        ],
+        "files": {
+          "$HOME/.omp/agent/models.yml": {
+            "providers": {
+              "baseten": {
+                "baseUrl": "http://127.0.0.1:4011/v1",
+                "api": "openai-completions",
+                "apiKey": "${OPENAI_API_KEY}",
+                "models": [
+                  {
+                    "id": "{alias}",
+                    "name": "{alias}",
+                    "contextWindow": 1048576,
+                    "maxTokens": 131072
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "run": [
+          "/root/.bun/bin/omp --print --mode json --model {alias} --session-dir \"$LOGS/sessions\" -- \"$(cat \"$INSTRUCTION_FILE\")\""
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "override_setup_timeout_sec": 2400,
+      "kwargs": {
+        "harness": "zcode",
+        "version": "0.17.0",
+        "install": [
+          "@node",
+          "apt-get install -y build-essential python3",
+          "npm install -g --prefix /usr/local pnpm@10.33.2",
+          "mkdir -p /opt/zcode && cd /opt/zcode",
+          "git init -q",
+          "git remote add origin https://github.com/zai-org/ZCode.git 2>/dev/null || git remote set-url origin https://github.com/zai-org/ZCode.git",
+          "for attempt in 1 2 3 4 5; do",
+          "  git fetch --depth 1 origin 3c5b227649371507ddc4eb46ac5133afe6db1cab && break",
+          "  [ \"$attempt\" = 5 ] && exit 1",
+          "  sleep $((attempt * 10))",
+          "done",
+          "git checkout --force --detach FETCH_HEAD",
+          "# Build only the CLI and skip type checking; the full build is too slow for 1-vCPU tasks.",
+          "pnpm install --frozen-lockfile --filter \"@zcode/cli...\" --os=linux --cpu=x64 --libc=glibc",
+          "TSC_FAST='--noCheck --declaration false --declarationMap false --composite false --incremental false'",
+          "pnpm --filter @zcode/formal-proof build",
+          "pnpm --filter \"@zcode/cli^...\" --filter \"!@zcode/formal-proof\" --filter \"!@zcode/tui\" build $TSC_FAST",
+          "pnpm --filter @zcode/tui exec tsc $TSC_FAST",
+          "pnpm --filter @zcode/tui exec node scripts/build.mjs",
+          "pnpm --filter @zcode/cli build",
+          "printf '#!/bin/sh\\nexec /usr/local/bin/node /opt/zcode/apps/zcode-cli/packages/cli/dist/zcode.cjs \"$@\"\\n' > /usr/local/bin/zcode",
+          "chmod +x /usr/local/bin/zcode"
+        ],
+        "files": {
+          "$HOME/.zcode/cli/config.json": {
+            "provider": {
+              "baseten": {
+                "kind": "openai-compatible",
+                "source": "custom",
+                "options": {
+                  "apiKey": "${OPENAI_API_KEY}",
+                  "baseURL": "http://127.0.0.1:4011/v1"
+                },
+                "models": {
+                  "{alias}": {}
+                }
+              }
+            },
+            "model": {
+              "main": "baseten/{alias}"
+            }
+          }
+        },
+        "run": [
+          "export ZCODE_DATA_BASE_DIR=\"$STATE/zcode\"",
+          "zcode --mode yolo --output-format stream-json --prompt=\"$(cat \"$INSTRUCTION_FILE\")\""
+        ]
+      }
+    },
+    {
+      "name": "kimi-code",
+      "kwargs": {
+        "version": "2.3.1"
+      },
+      "env": {
+        "KIMI_MODEL_BASE_URL": "http://127.0.0.1:4011/v1",
+        "KIMI_MODEL_API_KEY": "${PROVIDER_STUB_KEY}"
+      }
+    },
+    {
+      "name": "opencode",
+      "model_name": "baseten/{alias}",
+      "kwargs": {
+        "version": "1.19.4",
+        "opencode_config": {
+          "provider": {
+            "baseten": {
+              "npm": "@ai-sdk/openai-compatible",
+              "name": "Baseten via the model proxy",
+              "options": {
+                "baseURL": "http://127.0.0.1:4011/v1",
+                "apiKey": "{env:OPENAI_API_KEY}"
+              },
+              "models": {
+                "{alias}": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "maka",
+        "version": "0.2.2-dev.92.20261019",
+        "install": [
+          "@node",
+          "npm install -g --prefix /usr/local \"maka-agent@$HARNESS_VERSION\"",
+          "CLI=maka",
+          "@node-wrapper"
+        ],
+        "files": {
+          "/usr/local/lib/node_modules/maka-agent/harbor-config.mjs": [
+            "import {openInteractiveRuntimePolicyStoresForWrite} from '@maka/storage/runtime-policy-stores';",
+            "import {resolveStorageRoot, tryAcquireInteractiveRootOwner} from '@maka/storage/root-authority';",
+            "import {resolveMakaWorkspaceRoot} from '@maka/storage/workspace-root';",
+            "const model = '{alias}';",
+            "const root = await resolveStorageRoot({path: resolveMakaWorkspaceRoot(), kind: 'interactive'});",
+            "const owner = await tryAcquireInteractiveRootOwner(root);",
+            "if (!owner) throw Error('No owner');",
+            "try {",
+            "  const stores = await openInteractiveRuntimePolicyStoresForWrite(owner.lease);",
+            "  const created = await stores.connectionCatalog.create({expectedCatalogRevision: 0, connection: {slug: 'baseten', name: 'Baseten', providerType: 'custom', defaultApiProtocol: 'openai-chat', baseUrl: 'http://127.0.0.1:4011/v1', enabled: true, enabledModelIds: [model]}});",
+            "  if (created.kind !== 'committed') throw Error('Connection failed');",
+            "  const connectionId = created.snapshot.connections[0].connectionId;",
+            "  const key = await stores.credentialVault.set({locator: {scope: 'connection', connectionId, kind: 'api_key'}, expected: null, secret: process.env.OPENAI_API_KEY});",
+            "  if (key.kind !== 'committed') throw Error('Key failed');",
+            "  const selected = await stores.connectionCatalog.setDefaultTarget({expectedCatalogRevision: created.snapshot.revision, target: {connectionId, modelId: model}});",
+            "  if (selected.kind !== 'committed') throw Error('Model failed');",
+            "} finally {",
+            "  await owner.close();",
+            "}"
+          ]
+        },
+        "run": [
+          "export XDG_CONFIG_HOME=\"$STATE/config\"",
+          "/usr/local/bin/node /usr/local/lib/node_modules/maka-agent/harbor-config.mjs",
+          "maka run --connection baseten --model {alias} --yolo -- \"$(cat \"$INSTRUCTION_FILE\")\""
+        ]
+      }
+    },
+    {
+      "name": "mcode",
+      "kwargs": {
+        "version": "0.6.13",
+        "api_format": "openai-completions"
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "dsh-minimal",
+        "version": "0.2.1-rc.3",
+        "install": [
+          "@dsh-install"
+        ],
+        "files": {
+          "$STATE/profile.yml": [
+            "@dsh-profile",
+            {
+              "id": "tools",
+              "config": {
+                "mode": "native"
+              }
+            },
+            {
+              "id": "tool-fs-search",
+              "disabled": true
+            },
+            {
+              "id": "tool-skill",
+              "disabled": true
+            },
+            {
+              "id": "tool-subagent-control",
+              "disabled": true
+            },
+            {
+              "id": "tool-subagent-list-agents",
+              "disabled": true
+            },
+            {
+              "id": "tool-subagent",
+              "disabled": true
+            },
+            {
+              "id": "tool-subagent-fork",
+              "disabled": true
+            },
+            {
+              "id": "tool-workflow",
+              "disabled": true
+            },
+            {
+              "id": "tool-todo",
+              "disabled": true
+            },
+            {
+              "id": "tool-goal",
+              "disabled": true
+            }
+          ],
+          "$STATE/model.yml": [
+            {
+              "id": "agent-default-model",
+              "config": {
+                "provider": "baseten",
+                "model": "{alias}"
+              }
+            }
+          ]
+        },
+        "run": [
+          "@dsh-run"
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "override_setup_timeout_sec": 2400,
+      "kwargs": {
+        "harness": "hermes",
+        "version": "0.22.5",
+        "install": [
+          "case \"$HARNESS_VERSION\" in",
+          "  0.22.5) commit=bf0203a794a07aac3ff764972ab9087baa4e4f4e ;;",
+          "  *) echo \"No reviewed Hermes commit for $HARNESS_VERSION\" >&2; exit 1 ;;",
+          "esac",
+          "export DEBIAN_FRONTEND=noninteractive",
+          "apt-get update",
+          "apt-get install -y build-essential curl git ripgrep xz-utils ca-certificates",
+          "export HERMES_HOME=/tmp/hermes",
+          "curl --retry 4 -fsSL \"https://raw.githubusercontent.com/NousResearch/hermes-agent/$commit/scripts/install.sh\" -o /tmp/install-hermes.sh",
+          "bash /tmp/install-hermes.sh --commit \"$commit\" --hermes-home /tmp/hermes --skip-setup --skip-browser --skip-computer-use --non-interactive >\"$LOGS/hermes-install.log\" 2>&1 || { tail -80 \"$LOGS/hermes-install.log\"; exit 1; }",
+          "\"$HOME/.local/bin/hermes\" --version"
+        ],
+        "files": {
+          "/tmp/hermes/config.yaml": {
+            "model": {
+              "default": "{alias}",
+              "provider": "custom",
+              "base_url": "http://127.0.0.1:4011/v1",
+              "api_key": "${OPENAI_API_KEY}"
+            },
+            "toolsets": [
+              "hermes-cli"
+            ],
+            "memory": {
+              "memory_enabled": false,
+              "user_profile_enabled": false
+            },
+            "terminal": {
+              "backend": "local",
+              "timeout": 180
+            },
+            "delegation": {
+              "max_iterations": 50
+            },
+            "checkpoints": {
+              "enabled": false
+            }
+          }
+        },
+        "run": [
+          "export PATH=\"$HOME/.local/bin:$PATH\" HERMES_HOME=/tmp/hermes TERMINAL_ENV=local",
+          "trap 'hermes sessions export \"$LOGS/hermes-session.jsonl\" --source cli || true' EXIT",
+          "# The task is read from a file so that an agent's `ps aux | grep ... | xargs kill` cannot match it.",
+          "hermes --yolo chat --query-file \"$INSTRUCTION_FILE\" -Q --provider custom --model {alias}"
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "cline-cli",
+        "version": "3.0.73",
+        "install": [
+          "@node",
+          "npm install -g --prefix /usr/local \"cline@$HARNESS_VERSION\"",
+          "CLI=cline",
+          "@node-wrapper"
+        ],
+        "files": {
+          "$HOME/.cline/data/globalState.json": {
+            "welcomeViewCompleted": true,
+            "isNewUser": false
+          }
+        },
+        "run": [
+          "# Otherwise each launch starts a background `npm i -g cline@latest`.",
+          "export CLINE_NO_AUTO_UPDATE=1",
+          "cline auth -p openai -k \"$OPENAI_API_KEY\" -m {alias} -b http://127.0.0.1:4011/v1",
+          "# The task goes on stdin so that an agent's `pkill -f` cannot match it in cline's argv.",
+          "cline -P openai -k \"$OPENAI_API_KEY\" -m {alias} --json --yolo --thinking high -- ' ' <\"$INSTRUCTION_FILE\""
+        ]
+      }
+    },
+    {
+      "name": "grok-build",
+      "kwargs": {
+        "version": "1.0.67",
+        "grok_config": {
+          "model": {
+            "{alias}": {
+              "base_url": "http://127.0.0.1:4011/v1",
+              "api_backend": "chat_completions",
+              "env_key": "OPENAI_API_KEY"
+            }
+          }
+        }
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "override_setup_timeout_sec": 2400,
+      "kwargs": {
+        "harness": "alma",
+        "version": "0.4.212",
+        "uploads": {
+          "jobs/alma-source-0.4.212.tar.gz": "/tmp/alma-source.tar.gz"
+        },
+        "install": [
+          "@node",
+          "apt-get install -y build-essential python3",
+          "npm install -g --prefix /usr/local pnpm@10.14.0",
+          "echo \"99c67953b195ef5e9fa291d2f73809163f57ad9bd95bfc9a368eca34e62bd711  /tmp/alma-source.tar.gz\" | sha256sum -c -",
+          "mkdir -p /opt/alma && cd /opt/alma",
+          "tar -xzf /tmp/alma-source.tar.gz -C /opt/alma",
+          "ELECTRON_SKIP_BINARY_DOWNLOAD=1 pnpm install --frozen-lockfile --ignore-scripts",
+          "pnpm exec patch-package",
+          "node scripts/patch-ai-clone.mjs",
+          "node scripts/patch-streamdown-block-cache.mjs",
+          "# Bound the models.dev body read; on timeout Alma takes its offline path instead of hanging.",
+          "node - <<'JS'",
+          "const fs = require('fs');",
+          "const file = 'electron/model-capabilities.ts';",
+          "const read = 'const apiData: ModelsDevApiResponse = await response.json();';",
+          "const source = fs.readFileSync(file, 'utf8');",
+          "if (!source.includes(read)) throw new Error(`${file}: models.dev body read not found`);",
+          "fs.writeFileSync(file, source.replace(read, `const apiData: ModelsDevApiResponse = await new Promise((resolve, reject) => {",
+          "            const timer = setTimeout(() => reject(new Error('models.dev body not received within 60s')), 60_000);",
+          "            response.json().then(resolve, reject).finally(() => clearTimeout(timer));",
+          "        });`));",
+          "JS",
+          "npm rebuild better-sqlite3 node-pty",
+          "pnpm build:server",
+          "chmod +x bin/alma",
+          "printf '#!/bin/sh\\nexec /usr/local/bin/node /opt/alma/bin/alma \"$@\"\\n' > /usr/local/bin/alma",
+          "printf '#!/bin/sh\\nexec /usr/local/bin/node /opt/alma/bin/server.mjs \"$@\"\\n' > /usr/local/bin/alma-server",
+          "chmod +x /usr/local/bin/alma /usr/local/bin/alma-server"
+        ],
+        "files": {
+          "$STATE/configure.py": [
+            "import json, os, urllib.request",
+            "api = os.environ['ALMA_API_URL']",
+            "",
+            "def call(path, body=None, method=None):",
+            "    data = None if body is None else json.dumps(body).encode()",
+            "    request = urllib.request.Request(api + path, data=data, method=method, headers={'Content-Type': 'application/json'})",
+            "    return json.load(urllib.request.urlopen(request))",
+            "",
+            "provider = {'id': 'baseten', 'name': 'Baseten', 'type': 'custom', 'apiKey': os.environ['OPENAI_API_KEY'],",
+            "            'baseURL': 'http://127.0.0.1:4011/v1', 'models': ['{alias}'], 'isResponseAPI': False, 'enabled': True}",
+            "assert call('/api/providers', provider)['id'] == 'baseten'",
+            "settings = call('/api/settings')",
+            "settings['toolModel'] = {'model': 'baseten:{alias}'}",
+            "# Writing a large file can leave the stream silent for minutes.",
+            "settings.setdefault('network', {})['streamIdleTimeout'] = 900000",
+            "call('/api/settings', settings, 'PUT')"
+          ],
+          "$STATE/workspace.mjs": [
+            "// Bind Alma's new threads to Harbor's task directory.",
+            "import { execFileSync } from 'node:child_process';",
+            "const response = await fetch(`${process.env.ALMA_API_URL}/api/workspaces`, {",
+            "  method: 'POST', headers: { 'Content-Type': 'application/json' },",
+            "  body: JSON.stringify({ path: process.cwd(), name: 'Harbor task', isTemporary: false }),",
+            "});",
+            "const body = await response.json();",
+            "const workspace = response.status === 409 ? body.workspace : body;",
+            "if ((!response.ok && response.status !== 409) || workspace?.path !== process.cwd()) {",
+            "  throw new Error('Could not bind Alma workspace to the task directory');",
+            "}",
+            "execFileSync('alma', ['config', 'set', 'general.defaultWorkspaceId', workspace.id], { stdio: 'inherit' });"
+          ]
+        },
+        "run": [
+          "export ALMA_DATA_DIR=\"$STATE/alma\" ALMA_API_URL=http://127.0.0.1:23001 ALMA_TOOL_APPROVAL=auto",
+          "if alma status >/dev/null 2>&1; then echo 'Alma backend already running' >&2; exit 1; fi",
+          "alma-server --port 23001 --data-dir \"$ALMA_DATA_DIR\" >\"$LOGS/server.log\" 2>&1 &",
+          "server_pid=$!",
+          "trap 'kill \"$server_pid\" 2>/dev/null || true' EXIT",
+          "for attempt in $(seq 60); do kill -0 \"$server_pid\"; alma status >/dev/null 2>&1 && break; sleep 1; done",
+          "alma status >/dev/null",
+          "python3 \"$STATE/configure.py\"",
+          "node \"$STATE/workspace.mjs\"",
+          "alma run --model baseten:{alias} --timeout 0 --verbose <\"$INSTRUCTION_FILE\""
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "dsh-creator",
+        "version": "0.2.1-rc.3",
+        "install": [
+          "@dsh-install"
+        ],
+        "files": {
+          "$STATE/profile.yml": [
+            "@dsh-profile",
+            {
+              "id": "tool-plugin-manager",
+              "disabled": false
+            }
+          ],
+          "$STATE/model.yml": [
+            {
+              "id": "agent-default-model",
+              "config": {
+                "provider": "baseten",
+                "model": "{alias}"
+              }
+            }
+          ]
+        },
+        "run": [
+          "@dsh-run"
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "dsh-standard",
+        "version": "0.2.1-rc.3",
+        "install": [
+          "@dsh-install"
+        ],
+        "files": {
+          "$STATE/profile.yml": [
+            "@dsh-profile"
+          ],
+          "$STATE/model.yml": [
+            {
+              "id": "agent-default-model",
+              "config": {
+                "provider": "baseten",
+                "model": "{alias}"
+              }
+            }
+          ]
+        },
+        "run": [
+          "@dsh-run"
+        ]
+      }
+    },
+    {
+      "name": "mini-swe-agent",
+      "kwargs": {
+        "version": "2.4.6"
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "dsh-code",
+        "version": "0.2.1-rc.3",
+        "install": [
+          "@dsh-install"
+        ],
+        "files": {
+          "$STATE/profile.yml": [
+            "@dsh-profile",
+            {
+              "id": "tools",
+              "config": {
+                "mode": "ptc"
+              }
+            }
+          ],
+          "$STATE/model.yml": [
+            {
+              "id": "agent-default-model",
+              "config": {
+                "provider": "baseten",
+                "model": "{alias}"
+              }
+            }
+          ]
+        },
+        "run": [
+          "@dsh-run"
+        ]
+      }
+    },
+    {
+      "import_path": "adapters.command_agent:CommandAgent",
+      "kwargs": {
+        "harness": "exo",
+        "version": "825318306c0e-chatargs",
+        "uploads": {
+          "jobs/exo-825318306c0e.tar.gz": "/tmp/exo-build.tar.gz"
+        },
+        "install": [
+          "export DEBIAN_FRONTEND=noninteractive",
+          "apt-get update",
+          "apt-get install -y curl xz-utils ca-certificates patch",
+          "echo \"ae994dc6b2eb409b4f21a864ce4802b2779efce61b28ed9dc0e4ff39c0716a05  /tmp/exo-build.tar.gz\" | sha256sum -c -",
+          "rm -rf /opt/exo && mkdir -p /opt/exo/node /opt/exo/runtime-bin",
+          "tar -xzf /tmp/exo-build.tar.gz -C /opt/exo && rm /tmp/exo-build.tar.gz",
+          "# Upstream's Chat Completions runtime replays earlier tool-call arguments wrapped; send them as produced.",
+          "patch -d /opt/exo -p1 --forward --batch <<'EOF'",
+          "--- a/exoharness/typescript/model-runtime/responses.ts",
+          "+++ b/exoharness/typescript/model-runtime/responses.ts",
+          "@@ -931,15 +931,31 @@",
+          "         type: \"function\",",
+          "         function: {",
+          "           name: part.tool_name,",
+          "-          arguments: JSON.stringify(",
+          "-            isRecord(part.arguments) ? part.arguments : {},",
+          "-          ),",
+          "+          arguments: toolCallArgumentsText(part.arguments),",
+          "         },",
+          "       },",
+          "     ];",
+          "   });",
+          " }",
+          " ",
+          "+// Lingua stores ToolCallArguments as {type: \"valid\", value: object} or",
+          "+// {type: \"invalid\" | \"custom\", value: string}; send the model what it produced.",
+          "+function toolCallArgumentsText(args: unknown): string {",
+          "+  if (!isRecord(args)) {",
+          "+    return \"{}\";",
+          "+  }",
+          "+  if (args.type === \"valid\" && isRecord(args.value)) {",
+          "+    return JSON.stringify(args.value);",
+          "+  }",
+          "+  if (",
+          "+    (args.type === \"invalid\" || args.type === \"custom\") &&",
+          "+    typeof args.value === \"string\"",
+          "+  ) {",
+          "+    return args.value;",
+          "+  }",
+          "+  return JSON.stringify(args);",
+          "+}",
+          "+",
+          " function assistantTextContent(content: unknown): string | null {",
+          "   if (Array.isArray(content)) {",
+          "     const text = content",
+          "EOF",
+          "echo \"aa77b6e9115379ce70404bd9b3cbe5e291adeced285acfc39693d87a6d1dfaa3  /opt/exo/exoharness/typescript/model-runtime/responses.ts\" | sha256sum -c -",
+          "# Exo's TypeScript runner is pinned to Node 22.15.0.",
+          "curl --retry 5 -fsSL -o /tmp/node.tar.xz https://nodejs.org/dist/v22.15.0/node-v22.15.0-linux-x64.tar.xz",
+          "echo \"dafe2e8f82cb97de1bd10db9e2ec4c07bbf53389b0799b1e095a918951e78fd4  /tmp/node.tar.xz\" | sha256sum -c -",
+          "tar -xJf /tmp/node.tar.xz -C /opt/exo/node --strip-components=1 && rm /tmp/node.tar.xz",
+          "ln -s /opt/exo/node/bin/node /opt/exo/runtime-bin/node",
+          "ln -sf /opt/exo/bin/exo /usr/local/bin/exo"
+        ],
+        "files": {
+          "$STATE/agent.md": [
+            "---",
+            "name: frontier-harness-exo",
+            "harness: exo",
+            "model:",
+            "  name: \"{alias}\"",
+            "  module: /opt/exo/examples/self-improving-agent/harness.ts",
+            "  credential: model",
+            "  base_url: http://127.0.0.1:4011/v1",
+            "---",
+            "",
+            "Complete the task in the user message."
+          ]
+        },
+        "run": [
+          "export EXO_HOME=\"$STATE/exo\" EXO_SECRET_BACKEND=file EXO_MASTER_KEY_PATH=\"$STATE/master.key\" EXO_PROFILE=practical",
+          "export EXO_REPO=/opt/exo EXO_SELF_MAP=/opt/exo/examples/self-improving-agent/SELF.md",
+          "head -c 32 /dev/urandom >\"$EXO_MASTER_KEY_PATH\"",
+          "exo vault secret create global model --token-env OPENAI_API_KEY --allow-origin http://127.0.0.1:4011",
+          "/opt/exo/runtime-bin/node -e 'process.stdout.write(JSON.stringify({name: \"frontier-harness-task\", provider: \"local_process\", image: \"host\", default_workdir: process.cwd()}))' >\"$STATE/environment.yaml\"",
+          "# Exo starts its TypeScript runner as `node` from PATH.",
+          "PATH=/opt/exo/runtime-bin:\"$PATH\" exo run \"$STATE/agent.md\" --environment-file \"$STATE/environment.yaml\" --prompt=\"$(cat \"$INSTRUCTION_FILE\")\""
+        ]
+      }
+    },
+    {
+      "name": "copilot-cli",
+      "kwargs": {
+        "version": "1.0.103"
+      },
+      "env": {
+        "COPILOT_PROVIDER_BASE_URL": "http://127.0.0.1:4011/v1",
+        "COPILOT_PROVIDER_TYPE": "openai",
+        "COPILOT_PROVIDER_API_KEY": "${PROVIDER_STUB_KEY}",
+        "COPILOT_MODEL": "{alias}",
+        "COPILOT_OFFLINE": "true"
+      }
+    },
+    {
+      "name": "claude-code",
+      "model_name": "anthropic/{alias}",
+      "kwargs": {
+        "version": "2.1.308"
+      },
+      "env": {
+        "ANTHROPIC_API_KEY": "${PROVIDER_STUB_KEY}",
+        "ANTHROPIC_BASE_URL": "http://127.0.0.1:4011"
+      }
+    },
+    {
+      "name": "antigravity-cli",
+      "model_name": "gemini/{alias}",
+      "kwargs": {
+        "reasoning_effort": "high"
+      },
+      "env": {
+        "GEMINI_API_KEY": "${PROVIDER_STUB_KEY}",
+        "GOOGLE_GEMINI_BASE_URL": "http://127.0.0.1:4011",
+        "HARBOR_ALLOW_INSECURE_MODEL_BASE_URL": "true"
+      }
+    }
+  ]
+}

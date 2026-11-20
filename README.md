@@ -1,262 +1,179 @@
 <h1 align="center">FrontierHarness Eval</h1>
 
 <p align="center">
-  <a href="https://frontierharness.org"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
-  <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.0-222222?style=flat-square" />
-  <img alt="Kimi K3" src="https://img.shields.io/badge/model-Kimi_K3-5019c5?style=flat-square" />
-  <img alt="9 harnesses" src="https://img.shields.io/badge/harnesses-9-1267c4?style=flat-square" />
-  <img alt="12 configurations" src="https://img.shields.io/badge/configurations-12-3979b8?style=flat-square" />
-  <img alt="30 tasks" src="https://img.shields.io/badge/tasks-30-168a7d?style=flat-square" />
-  <img alt="360 runs" src="https://img.shields.io/badge/evaluations-360-222?style=flat-square" />
+  <a href="https://frontierharness.org/leaderboard/v1.1/"><img alt="Live leaderboard" src="https://img.shields.io/badge/live-leaderboard-ff6418?style=flat-square" /></a>
+  <img alt="Benchmark version" src="https://img.shields.io/badge/benchmark-v1.1-222222?style=flat-square" />
+  <img alt="5 models on Baseten" src="https://img.shields.io/badge/models-5_on_Baseten-5019c5?style=flat-square" />
+  <img alt="22 harness configurations" src="https://img.shields.io/badge/configurations-22-3979b8?style=flat-square" />
+  <img alt="62 tasks" src="https://img.shields.io/badge/tasks-62-168a7d?style=flat-square" />
+  <img alt="27,280 trials" src="https://img.shields.io/badge/evaluations-27%2C280-222?style=flat-square" />
 </p>
 
 <p align="center">
-  <a href="https://frontierharness.org"><strong>Explore the live results →</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://runta.com/blog/introducing-frontierharness-eval/"><strong>Read the blog →</strong></a>
+  <a href="https://frontierharness.org/leaderboard/v1.1/"><strong>Explore the live results →</strong></a>
   &nbsp;·&nbsp;
   <a href="#evaluate-your-own-harness"><strong>Evaluate your own harness →</strong></a>
 </p>
 
-<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
-
 <div align="center">
-  <a href="https://frontierharness.org">
-    <img src="assets/frontier-harness-chart.svg" width="100%" alt="FrontierHarness Eval benchmark: pass rate versus median cost per task across nine harnesses and twelve configurations" />
-  </a>
-</div>
-
-<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
-
-## Similar pass rate. 17.5x cost differences.
-
-We ran the same **Kimi K3** model through nine coding-agent harnesses—12 configurations in total—on the same 30 software-engineering tasks. With the model, tasks, and runtime held constant, changing the harness changed pass rate, cost, cache behavior, and speed.
-
-<div align="center">
-  <a href="https://frontierharness.org">
-    <img src="assets/frontier-harness-leaders.svg" width="100%" alt="FrontierHarness Eval leaders: Codex for quality, Pi for balance, Exo Harness for cost, and DSH Minimal for speed" />
+  <a href="https://frontierharness.org/leaderboard/v1.1/">
+    <img src="assets/frontier-harness-v1.1-chart.png" width="100%" alt="FrontierHarness Eval v1.1: pass rate versus average cost per task for 22 harness configurations across all five models" />
   </a>
 </div>
 
 ### Full results
 
-| Harness (configuration) | Pass rate | Median cost per pass | Cache, median cell | Median time |
-| --- | --- | --- | --- | --- |
-| **Codex** | **66.7%** | $3.47 | 88.0% | 6m 43s |
-| DSH Creator | 63.3% | $3.28 | 84.3% | 6m 44s |
-| Claude Code | 63.3% | $18.34 | 67.8% | 9m 38s |
-| Pi | 60.0% | $2.43 | 79.4% | 7m 33s |
-| DSH PTC | 60.0% | $4.58 | 87.2% | 7m 44s |
-| DSH Standard | 60.0% | $3.46 | 86.5% | 6m 17s |
-| Oh My Pi | 56.7% | $4.75 | 82.2% | 6m 46s |
-| Kimi Code | 56.7% | $3.65 | 88.0% | 7m 56s |
-| DSH Minimal | 56.7% | $4.72 | 84.6% | 5m 41s |
-| Exo Harness | 53.3% | **$1.05** | 70.3% | 6m 17s |
-| OpenCode | 50.0% | $3.24 | 78.4% | 6m 27s |
-| Hermes | 50.0% | $2.90 | 85.9% | 6m 58s |
+All five models, 1,240 scored attempts per configuration, cheapest first. The [interactive report](https://frontierharness.org/leaderboard/v1.1/) shows each model and task.
 
-The [interactive report](https://frontierharness.org) includes failed runs, total cost per task, cache behavior, speed, and task-level results. For the evaluation design and analysis, read the [launch article](https://runta.com/blog/introducing-frontierharness-eval/).
+| Harness | Cost per pass | Pass rate | Cache hit rate | Time per pass | Version |
+| --- | --- | --- | --- | --- | --- |
+| **Codex CLI** | **$0.937** | 61.1% | 93.9% | 43m 48s | `0.164.0` |
+| Pi | $0.976 | 57.7% | 94.5% | 54m 01s | `1.4.0` |
+| OpenCode v2 | $0.978 | 57.3% | 94.3% | **43m 43s** | `2.2.7` |
+| Oh My Pi | $0.983 | 57.3% | 93.1% | 59m 13s | `18.12.6` |
+| ZCode | $1.06 | **61.9%** | 92.0% | 57m 08s | `0.17.0` |
+| KimiCode | $1.09 | 60.2% | 93.3% | 56m 04s | `2.3.1` |
+| OpenCode v1 | $1.12 | 57.4% | 94.6% | 1h 02m | `1.19.4` |
+| Maka | $1.13 | 57.7% | 91.5% | 57m 30s | `0.2.2-dev.92.20261019` |
+| MiniMax Code | $1.14 | 56.8% | 92.3% | 1h 00m | `0.6.13` |
+| DSH Minimal | $1.15 | 57.4% | 95.1% | 1h 03m | `0.2.1-rc.3` |
+| Hermes Agent | $1.16 | 59.9% | 93.0% | 58m 26s | `0.22.5` |
+| Cline CLI | $1.19 | 57.7% | 86.4% | 1h 01m | `3.0.73` |
+| Grok Build | $1.20 | 60.0% | 92.4% | 1h 00m | `1.0.67` |
+| Alma | $1.22 | 59.7% | 91.0% | 57m 08s | `0.4.212` |
+| DSH Creator | $1.27 | 56.1% | 95.5% | 1h 07m | `0.2.1-rc.3` |
+| DSH Standard | $1.27 | 55.0% | 94.6% | 1h 05m | `0.2.1-rc.3` |
+| mini-SWE-agent | $1.29 | 58.6% | 94.7% | 59m 32s | `2.4.6` |
+| DSH Code | $1.32 | 55.2% | 94.5% | 1h 06m | `0.2.1-rc.3` |
+| Exo | $1.36 | 50.6% | 91.1% | 1h 07m | `825318306c0e` |
+| GitHub Copilot CLI | $1.38 | 56.9% | 88.6% | 1h 04m | `1.0.103` |
+| Claude Code | $1.55 | 58.9% | 94.3% | 1h 10m | `2.1.308` |
+| Antigravity CLI | $1.63 | 55.0% | **95.6%** | 1h 06m | `1.4.6` |
 
 ## What is in this repository
 
 ```text
-.
-├── benchmark.json              # Public benchmark definition
-├── cli/index.mjs               # `npx @frontierharness/eval`: workspace + skill installer
-├── metadata/
-│   ├── difficulty.json         # Difficulty assignments and source methodology
-│   └── harness-versions.json   # Harness versions used for the run
-├── results/
-│   └── eval-data.json          # Normalized aggregate and task-level results
-├── tasks/<task>/
-│   ├── instruction.md          # Prompt shown to every harness
-│   └── task.toml               # Public task metadata and environment definition
-└── skills/frontierharness-eval/  # Agent-neutral skill, usable by hand
-    ├── SKILL.md                # Evaluation workflow for a third-party harness
-    ├── PROMPT.md               # Copy-paste prompt that points an agent at the skill
-    ├── reference.md            # Command reference, runner templates, troubleshooting
-    └── scripts/                # Provisioning, trial runner, scoring, chart, report
+datasets/  # Harbor manifest and publication record
+suites/    # Baseten suite (Harbor job config)
+adapters/  # Runta environment with the model proxy, and a command agent
+scripts/   # Suite launcher
 ```
-
-The repository intentionally contains **results, task definitions, and the evaluation workflow**. Internal infrastructure, credentials, runtime identifiers, private evidence, solutions, and deployment configuration are not included.
 
 ## Evaluate your own harness
 
-This repository ships a reproduction workflow for evaluating another harness on the published task set. It records environment differences from the original baseline run; a matched control run is needed to establish comparability.
+This procedure, from [frontierharness.org](https://frontierharness.org/leaderboard/v1.1/), runs the `oracle` agent on one task to test your setup.
 
-**Trial network access.** Agents have access to the package registries and source hosts needed by the verifiers, including Ubuntu/Debian apt mirrors, PyPI, npm, PyTorch, GitHub download hosts, and Harbor's task registry. Runta applies the allowlist to the whole runtime, including agent containers; any additional Harbor/Pier isolation still applies. Verifiers install dependencies during trials, so allowing only the model provider and uv downloads blocks valid verification. Task images are pulled before the trial policy is applied. The exact hosts are defined in [`providers.sh`](skills/frontierharness-eval/scripts/providers.sh).
+1. Install uv, Harbor and the Runta CLI:
 
-Each `run.json` records `egress_policy` with its mode, scope, and exact `allowed_hosts`; the same policy is used for both suites and is included in candidate data and reports. The published baselines did not record their applied allowlist, so new runs default to `methodology_comparable: false` and receive no leaderboard rank. Evaluate a control harness under the same policy and environment before claiming comparability. Resuming with a changed or unrecorded policy is refused; use a new run id for the new policy and preserve earlier evidence.
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv tool install "harbor[runta]"
+npm install -g @runta/runta-cli   # macOS: brew install runta-dev/tap/runta
+```
 
-[`skills/frontierharness-eval/`](skills/frontierharness-eval/) is an agent-neutral skill: point any coding agent that reads `SKILL.md` at it and it will drive the whole run — freezing the golden checkpoint, running every task from an identical fresh restore, scoring the trials, and building the report.
+2. Sign in to Runta:
 
-## How to use the skill
+```bash
+runta login
+export RUNTA_CONFIG=~/.config/runta/config.toml
+```
+
+3. Run one task:
+
+```bash
+harbor run -d frontier-harness-eval/frontier-harness-eval@v1.1.0 -a oracle -e runta -l 1 --override-storage-mb 32768
+```
+
+4. Show the results:
+
+```bash
+harbor view jobs
+```
+
+To test your harness, replace `-a oracle` with your Harbor agent. To run all 62 tasks, remove `-l 1`.
+
+## How to run it
 
 ### Let an agent drive it
 
-Install the evaluation skill and its [Runta companion skills](https://runta.com/docs/skills/)
-with the [Skills CLI](https://github.com/vercel-labs/skills) (Node.js and Git required).
-Run these in the project where you use your coding agent:
-
-```bash
-npx skills add https://runta.com/docs --skill runta-installer runta-cli
-npx skills add frontier-harness-eval/eval --skill frontierharness-eval
-```
-
-`runta-installer` handles Runta tooling setup and verification; `runta-cli` provides
-runtime operation guidance. `frontierharness-eval` drives the benchmark, scoring, and
-report. If the Runta skills are already installed, only the second command is needed.
-
-Choose the same agent for both commands when prompted, or select one directly:
-
-```bash
-npx skills add https://runta.com/docs --skill runta-installer runta-cli --agent codex -y
-npx skills add frontier-harness-eval/eval --skill frontierharness-eval --agent codex -y
-```
-
-Add `--global` to both commands to make the skills available across projects. Start a new agent session
-in the project and ask:
+Give this prompt to a coding agent:
 
 ```text
-Use the frontierharness-eval skill to evaluate https://github.com/acme/my-harness.
-Start with one Terminal-Bench task and one DeepSWE task.
-```
+Install uv, then Harbor (`uv tool install "harbor[runta]"`) and the Runta CLI (`brew install runta-dev/tap/runta` on macOS, `npm install -g @runta/runta-cli` on Linux). If `runta ps` fails, ask me to run `runta login`. Then run:
 
-The skill sets up a benchmark checkout for the task definitions and baseline results,
-uses the Runta skills for tooling setup, then checks prerequisites and guides the
-evaluation. Installing skills alone does not run evaluations. For a prompt with explicit harness, commit, provider, and build
-settings, see [`PROMPT.md`](skills/frontierharness-eval/PROMPT.md).
+export RUNTA_CONFIG=~/.config/runta/config.toml
+harbor run -d frontier-harness-eval/frontier-harness-eval@v1.1.0 -a oracle -e runta -l 1 --override-storage-mb 32768
 
-Already cloned this repository? Install the local copy from its root:
-
-```bash
-npx skills add . --skill frontierharness-eval
+Report whether the task passed and the job folder under ./jobs/.
 ```
 
 <details>
-<summary><strong>Run it by hand instead</strong></summary>
+<summary><strong>Run the Baseten suite</strong></summary>
 
-The skill's scripts are the same ones an agent would call, so the run works without an agent at all. Every path is relative to the workspace root, and this repo has its own `scripts/` directory, so address the skill's scripts through a variable:
+The suite has all 22 configurations, in the order of the results table, at the published versions.
 
-```bash
-FH=skills/frontierharness-eval/scripts
-```
+- Harbor built-in agents run 10 of them: Codex CLI, Pi, KimiCode, OpenCode v1, MiniMax Code, Grok Build, mini-SWE-agent, GitHub Copilot CLI, Claude Code and Antigravity CLI. Harbor installs the latest Antigravity CLI; it cannot pin `1.4.6`.
+- `adapters/command_agent.py` runs the other 12 from install and run scripts in the suite: OpenCode v2, Oh My Pi, ZCode, Maka, Hermes Agent, Cline CLI, Alma, Exo and the four DSH profiles.
+- Each runtime starts a LiteLLM proxy on `127.0.0.1:4011`. It accepts OpenAI, Anthropic and Gemini requests, sends them to Baseten, and sets effort `max` and 131,072 output tokens. Requests for fewer than 1,024 tokens keep their limit.
+- Alma and Exo need source archives that are not in this repository: `jobs/alma-source-0.4.212.tar.gz` and `jobs/exo-825318306c0e.tar.gz`. Without them, the launcher leaves the two configurations out and shows a warning.
 
-**1. Prerequisites.** The `runta` CLI (`brew install runta-dev/tap/runta` or `npm i -g @runta/runta-cli`) authenticated with `runta login`, plus `jq`, node >= 18, and Python >= 3.9 for token cost accounting.
+In `suites/baseten-eval.json`, `agent_defaults` applies to all agents, a list item `"@name"` inserts the snippet `name`, and `{alias}` and `{model_id}` change to the model for each job.
 
-**2. Install script.** Write a script that builds your harness on a clean Linux box. If it is not a built-in agent for Harbor or Pier, register it as a custom agent in both runner registries there, and use the registered name as `--harness`. For a service on the runtime host or an external host, set `--harness-topology runtime-service` or `external-service` when provisioning and document its resource limits and state reset.
-
-**3. Provider key.** Store it once as a [Runta secret](https://runta.com/docs/runtime/secrets-and-secret-injection/), named after the env var for your provider (`FIREWORKS_API_KEY`, `MOONSHOT_API_KEY`, `OPENROUTER_API_KEY`, or `TOGETHER_API_KEY`). The interactive prompt keeps the value out of your shell history:
-
-```bash
-runta secret set FIREWORKS_API_KEY --prompt
-```
-
-The API never hands the value back, so provisioning reuses the stored secret instead of asking for plaintext again. A `--value-env` or `--value-stdin` route works too if you already have the key in the environment.
-
-**4. Golden checkpoint.** One command creates the clean runtime, clones the harness at a pinned commit, installs the Harbor and Pier stacks, and freezes a small checkpoint. The trial runner pulls each task image after its restore:
+1. Install from the repository root:
 
 ```bash
-$FH/provision-golden-checkpoint.sh \
-  --runtime fh-build --checkpoint fh-golden-myharness-v1 \
-  --harness my-harness --provider fireworks \
-  --repo https://github.com/acme/my-harness --commit 9f2c1ab \
-  --cpus 4 --memory 8192 --disk-size-gib 50 --keep-runtime \
-  --install-script ./install-my-harness.sh
+uv sync --locked
 ```
 
-The real key stays in the egress proxy, so confirm the runtime only ever sees a stub:
+2. Set two environment variables. Runta puts your Baseten key into each model request, so the key never goes into the runtime.
 
 ```bash
-runta exec fh-build -- sh -lc 'test "$FIREWORKS_API_KEY" = runta-secret-stub'
+export RUNTA_MODEL_PROVIDER=<runta-baseten-provider-id>
+export PROVIDER_STUB_KEY=<any-non-secret-placeholder>
 ```
 
-The example keeps the build runtime for inspection. After confirming the checkpoint
-is ready, remove that build runtime with `runta rm fh-build`.
-
-**5. Trials.** Each task gets its own fresh restore, which is deleted after the full evidence archive is verified locally. With no `--tasks`, this runs the published 30-task set read from `tasks/`:
+3. Do a dry run (5,456 trials per model, or 4,960 without Alma and Exo):
 
 ```bash
-$FH/run-trials.sh \
-  --checkpoint fh-golden-myharness-v1 --harness my-harness \
-  --provider fireworks --run-id 2026-09-02-myharness --out runs
+uv run python scripts/run_baseten_eval.py --dry-run
+uv run python scripts/run_baseten_eval.py --model kimi-k3 --tasks '*/fix-git' --attempts 1 --dry-run   # smoke test
 ```
 
-Pass a file of suite-prefixed ids to `--tasks` to run a subset — worth doing first with one Terminal-Bench and one DeepSWE task to prove the plumbing before spending the full budget. Re-running the same `--run-id` resumes pending evidence collection, retries infrastructure setup failures, and preserves every valid attempt. Disconnected execution and incomplete copies retain the runtime for recovery. Use a new run id for an intentional new experiment. If a trial dies on infrastructure twice, mark it rather than scoring it as a failure:
+4. Start the run:
 
 ```bash
-trial=runs/2026-09-02-myharness/trials/terminal-bench-<task>/trial.json
-jq '.status = "infra_invalid" | .success = false' "$trial" > "$trial.tmp" && mv "$trial.tmp" "$trial"
+uv run python scripts/run_baseten_eval.py
 ```
-
-**6. Score, chart, and report.**
-
-```bash
-node $FH/normalize-results.mjs --run runs/2026-09-02-myharness --label "My Harness"
-node $FH/generate-chart.mjs    --run runs/2026-09-02-myharness
-node $FH/build-report.mjs      --run runs/2026-09-02-myharness
-```
-
-Per-step reasoning, runner templates, and troubleshooting are in [`SKILL.md`](skills/frontierharness-eval/SKILL.md) and [`reference.md`](skills/frontierharness-eval/reference.md).
 
 </details>
 
 ## Keeping a result comparable
 
-A score only belongs next to the published numbers if the run holds these invariants. The report states any that were relaxed.
-
-- **Kimi K3**, the same model every published configuration used, otherwise harness effects and model effects are inseparable. Any provider serving it is fine for pass rate; for cost, check its token prices match the ones in [`reference.md`](skills/frontierharness-eval/reference.md).
-- **One golden checkpoint, one fresh restore per task**, with identical vCPU, memory, and disk on every restore.
-- **No formal task executed before the checkpoint is frozen.** Pre-pulling images is environment prep; running a task early is warm-cache bias. The provisioning script only ever warms on `terminal-bench-sample`.
-- **Infrastructure failures marked `infra_invalid`**, not scored as task failures.
-
-Cost is compared on `effective_cost_per_pass`, which is total cost across all tasks divided by passes and is reproducible from raw per-task cost. The `*_normalized` fields in `results/eval-data.json` reprice first-turn cache reads using data that is not public, so the scoring script leaves them empty rather than inventing values.
-
-Metric definitions and the trial record contract are in [`SKILL.md`](skills/frontierharness-eval/SKILL.md). Runner templates, the alternative Harbor-with-Runta-provider topology, and troubleshooting are in [`reference.md`](skills/frontierharness-eval/reference.md).
+- Use the pinned `frontier-harness-eval/frontier-harness-eval@v1.1.0` dataset.
+- Use one of the five models on Baseten at effort `max`, with 131,072 output tokens per request at most.
+- Use a new Runta runtime per trial, with the task's vCPU, memory and timeout, and a 32 GB disk.
+- Score 4 attempts per task. Run infrastructure errors again; do not score them.
 
 ## Methodology
 
-### Tested harness configurations
-
-| Configuration | Version | Configuration | Version |
-|---|---:|---|---:|
-| Codex | `0.148.0` | DSH Creator | `0.1.0-rc.8` |
-| Claude Code | `2.1.237` | DSH Minimal | `0.1.0-rc.8` |
-| Pi | `0.84.2` | DSH PTC | `0.1.0-rc.8` |
-| DSH Standard | `0.1.0-rc.8` | Oh My Pi | `17.4.0` |
-| Kimi Code | `0.37.2` | Exo Harness | `0.1.0` |
-| OpenCode | `1.18.19` | Hermes | `0.20.4` |
-
-<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
-
-- FrontierHarness v1.0 focuses on software engineering contexts and terminal-based tasks. It may not generalize to other areas of knowledge work.
-- Evaluated on Runta agent runtimes. For each task, all harnesses and the environment defined in `task.toml` are prepared once as a golden checkpoint. Every run is a fresh restore with identical vCPU, memory, disk size, disk contents, and memory state.
-- Kimi K3 is served by [Fireworks](https://fireworks.ai/).
-
-### Benchmark scope
-
-- **30 tasks:** 21 Terminal-Bench tasks and 9 DeepSWE tasks
-- **9 harnesses:** Claude Code, Codex, DeepSeek Harness, Exo Harness, Hermes, Kimi Code, Oh My Pi, OpenCode, and Pi
-- **12 configurations:** one canonical result for every task and harness-configuration pair
-- **360 evaluations:** complete task-by-harness coverage
-- **Deterministic scoring:** verifier-based pass/fail outcomes
-- **Comparable cost:** first-turn cache reads repriced consistently across harnesses
-
-See [`benchmark.json`](benchmark.json) for the public benchmark definition and [`results/eval-data.json`](results/eval-data.json) for the complete normalized result set.
+- **Tasks:** 62 command-line tasks in one Harbor dataset.
+- **Models:** GLM-5.3, GLM-5.3-Flash, DeepSeek-V4.1-Flash-1017, Muse Spark Open and Kimi-K3 on Baseten.
+- **Trials:** 62 tasks × 22 configurations × 4 attempts × 5 models = 27,280.
+- **Runtime:** 1–4 vCPU, 2–8 GB memory, 32 GB disk, 15-minute to 8-hour agent timeout.
+- **Scoring:** pass rate is verifier passes divided by scored attempts. Timeouts get a grade. Reward hacking is a fail.
+- **Cost:** list price × reported tokens.
 
 ## Use the data
 
 ```bash
-jq '.harnesses[] | {name, successful, effective_cost_per_pass}' results/eval-data.json
+grep -A1 '^name = ' datasets/dataset.toml   # task packages and digests
 ```
 
-Every task directory contains the exact public instruction and task metadata used by the benchmark.
-
-<div align="center"><img src="assets/divider.svg" width="100%" height="1" alt="" /></div>
+To get a task definition, use `harbor download <package>@<digest>`.
 
 ## Sponsor
 
-Runta provided the isolated runtimes and Golden Checkpoint restores used across all 360 evaluations.
+Runta supplied the isolated runtimes for all 27,280 trials.
 
 <p align="center">
   <a href="https://runta.com"><img src="assets/runta-sponsor.svg" width="300" alt="Sponsored by Runta" /></a>

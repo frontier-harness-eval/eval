@@ -1,0 +1,257 @@
+[dataset]
+name = "frontier-harness-eval/frontier-harness-eval"
+version = "v1.1.0"
+description = ""
+keywords = [ "agent-evaluation", "harness-comparison",]
+[[dataset.authors]]
+name = "FrontierHarness"
+
+
+[[tasks]]
+name = "terminal-bench/mvcc-lsm-compaction"
+digest = "sha256:370406dd79cc164e50b73568de37c34eba1b0e30782d7dc03f87c38c68123137"
+
+[[tasks]]
+name = "terminal-bench/bun-sourcemap-leak"
+digest = "sha256:e55ae542f338f50f4468d940c7d7c93a45d34fd418dc6cc5883c1fedc753603a"
+
+[[tasks]]
+name = "terminal-bench/wal-recovery-ordering"
+digest = "sha256:8eb700419711e0d5eba317b8f6dec41aa3411e03e320e82b8da8070974ff3aae"
+
+[[tasks]]
+name = "terminal-bench/session-window-debug"
+digest = "sha256:f7e05e0d4c0e90d7050445fd158db514158272c50aafa1b2446ef3f68bd01182"
+
+[[tasks]]
+name = "terminal-bench/ontology-kg-querying"
+digest = "sha256:3149354c3fdc71ee698752c294cd9b020a908ab01280f7494513e69708f8833c"
+
+[[tasks]]
+name = "terminal-bench/roy-polymorph-cn"
+digest = "sha256:012e714e79b4ff4f0d36eeb8fa2b6fa3be1043a71af880af8a71f61487669dfc"
+
+[[tasks]]
+name = "terminal-bench/gsea-proteomics"
+digest = "sha256:7c0512e617cd4c0a0b595ebfb81258495d7e4a12c003cd0592c1137aa986a85d"
+
+[[tasks]]
+name = "terminal-bench/foodstuff-beta-activity"
+digest = "sha256:52adca169e97e15fe8692986470b6556f478e7348a37c58739a5bdb3f02cc45a"
+
+[[tasks]]
+name = "terminal-bench/glycan-ms2-elucidation"
+digest = "sha256:80bf0ef924d6ba9a4323172f5a13df1734609914ddd086deef2da0288e9c560d"
+
+[[tasks]]
+name = "terminal-bench/embedding-drift-monitor"
+digest = "sha256:6907ffce9ad5c8a8b41fe9c0a076a9aeb9754a2f8083c52f9aede5481a4f4c59"
+
+[[tasks]]
+name = "terminal-bench/batched-eval-parity"
+digest = "sha256:e1d54abdb0a83b6c28714fe54c5fd0cfe053132cf2a9d511a0166c6c556ea2be"
+
+[[tasks]]
+name = "terminal-bench/vpp-loss-divergence"
+digest = "sha256:6db99a33495fcd7489072a4753a365e0cb4db9ea64c2b3f85a8b44db984fd0d3"
+
+[[tasks]]
+name = "terminal-bench/cargo-flight-dispatch"
+digest = "sha256:18a1c2670ce4be0e6752f48ed6c750281d7f97db025f5e74edc6c8728f62f5b5"
+
+[[tasks]]
+name = "terminal-bench/intrastat-meldung"
+digest = "sha256:d944c51392857e886211327f38086513c0540b5c2f557b75b2b44dec209b8222"
+
+[[tasks]]
+name = "terminal-bench/freecad-impeller"
+digest = "sha256:40d322e979d30dd53c0a9330445b8799cf5c02099b0718a3b3ad15231b366dba"
+
+[[tasks]]
+name = "terminal-bench/html-js-filter"
+digest = "sha256:f211960f1f7c66ace91c3d079db073ed0f841d458db4cad1f2f943cba6cc79f3"
+
+[[tasks]]
+name = "terminal-bench/music-harmony"
+digest = "sha256:f32afbf135cbd3c622ee687ba032abe61cab85a33b5243ee5cbbde82557f3ed1"
+
+[[tasks]]
+name = "terminal-bench/log-summary-date-ranges"
+digest = "sha256:27b074a2f10fff7606e096f3abd8dced418ad8fda0f53d88acbe477f2d9ceaf6"
+
+[[tasks]]
+name = "terminal-bench/regex-log"
+digest = "sha256:802c16cfd132e6c457529cb864be5a757c1b23b6cadc57f2d01983cb0110292a"
+
+[[tasks]]
+name = "terminal-bench/sparql-university"
+digest = "sha256:02aeca67b6c5b0d2d72c91ab471beb51ded6f42f0dc3dec580e20d489f09a867"
+
+[[tasks]]
+name = "terminal-bench/hf-model-inference"
+digest = "sha256:01370f37e61286f920dfca1e471496640ebcc8d06e1cc48d874c790715dbd4ad"
+
+[[tasks]]
+name = "terminal-bench/mteb-leaderboard"
+digest = "sha256:484f6d7008a05b5b8640fc6618a384b8c9447cd76f85416c8a595028d29bff9c"
+
+[[tasks]]
+name = "terminal-bench/rstan-to-pystan"
+digest = "sha256:592f15f75751f3c4999c3d05087f2f8b2a4dbaaedbfad5a30ae54058b80b925f"
+
+[[tasks]]
+name = "terminal-bench/sam-cell-seg"
+digest = "sha256:37c182b91df18b9c2ea2dceda47430bbd585e7880c56fca2f1975907ce0df8ce"
+
+[[tasks]]
+name = "terminal-bench/merge-diff-arc-agi-task"
+digest = "sha256:6aab6511a5344ce87698293bb1ce4cc51d9a45f1ad9f0c075d2a83197b36727d"
+
+[[tasks]]
+name = "terminal-bench/sqlite-db-truncate"
+digest = "sha256:956f038b479cc3b9b493553b57a60a8ff4154526386c3914c0b99e93e1ab6e87"
+
+[[tasks]]
+name = "terminal-bench/gcode-to-text"
+digest = "sha256:7dd2af04820e71ecaba96bc493cbffa16317e96816c6c8003385c034adf6c23b"
+
+[[tasks]]
+name = "terminal-bench/large-scale-text-editing"
+digest = "sha256:1f1cddc3df15e452fe2d3c6928f6b1e5b5330a7ae67cab373a0d089ea7d334a2"
+
+[[tasks]]
+name = "terminal-bench/chess-best-move"
+digest = "sha256:9ab8e4b3674282e751edafbd9b5bd551fef995fd6601585a2cdb04fd70c520da"
+
+[[tasks]]
+name = "terminal-bench/caffe-cifar-10"
+digest = "sha256:7b0045106d7d5af724efe96b610ba64f7893f5c88528401c573c4d47e384e2bf"
+
+[[tasks]]
+name = "terminal-bench/feal-linear-cryptanalysis"
+digest = "sha256:0f3234c5fde85f9dc610d94cfefd4c892afb75c9e571f21f18fee66972b67332"
+
+[[tasks]]
+name = "terminal-bench/model-extraction-relu-logits"
+digest = "sha256:1ae5045ad68b5d34c3398b612066a07c4a08b6dc330d28868ec4021e17c94b17"
+
+[[tasks]]
+name = "terminal-bench/pytorch-model-cli"
+digest = "sha256:6f11544dcc81a380dc4611902961f5520259c462d9fceb413419d66ab9a96c79"
+
+[[tasks]]
+name = "terminal-bench/pytorch-model-recovery"
+digest = "sha256:2e628841cff93290919172398e573e794f34c95d9382b7425adde4364022decc"
+
+[[tasks]]
+name = "terminal-bench/portfolio-optimization"
+digest = "sha256:d112f8945600f18ec47bbbe76935dc05953173cc3d0a375a7aa2712b091584e4"
+
+[[tasks]]
+name = "terminal-bench/constraints-scheduling"
+digest = "sha256:91dd6f87e1ee508328d5aafbd99a6bd1ccc47bc22671b4aaa4060bda492deb53"
+
+[[tasks]]
+name = "terminal-bench/adaptive-rejection-sampler"
+digest = "sha256:bcaa2399985cd57666018025846289ab25e193ae0dd8fb7f0ffab2410c24d4de"
+
+[[tasks]]
+name = "terminal-bench/dna-assembly"
+digest = "sha256:e41a8e94d86019949b08d3b5f88a85f6d943ba0fd85d5e1d5ebb95cb8f66223f"
+
+[[tasks]]
+name = "terminal-bench/dna-insert"
+digest = "sha256:37fc023970e3464c1acc31f43e04a0b4b94758130d340788f261f00764d9e530"
+
+[[tasks]]
+name = "terminal-bench/tune-mjcf"
+digest = "sha256:7da0fd3b906624df9eff8829ccd4f19cbb1ba967411b6d64d92b85b2f3fbdfb0"
+
+[[tasks]]
+name = "terminal-bench/filter-js-from-html"
+digest = "sha256:2d1496b6fc62adeccdba7a56f4bc24e5ef265840434d2011234ed20b6c240759"
+
+[[tasks]]
+name = "terminal-bench/fix-code-vulnerability"
+digest = "sha256:d31348aa16b533a15f013420e4d9726dc529e6086adc7d6d48067d22cc18fe71"
+
+[[tasks]]
+name = "terminal-bench/openssl-selfsigned-cert"
+digest = "sha256:d4afa2bd2a9ba1420db8d6cfde42ffdb4873ae2d955c35014e8da94444c83302"
+
+[[tasks]]
+name = "terminal-bench/vulnerable-secret"
+digest = "sha256:d76dfa9e256487c5542905b892156f694137aeef784e1abf3f41e15a8c946eac"
+
+[[tasks]]
+name = "terminal-bench/cancel-async-tasks"
+digest = "sha256:a3d048d351136e48070696cda8bb79660dfd74db1fea3b6da88559f0332699c1"
+
+[[tasks]]
+name = "terminal-bench/circuit-fibsqrt"
+digest = "sha256:9bcffe1054bb33249aa578a9a2a74f3c8cca66b0cb7aa1328233f1d31822aae3"
+
+[[tasks]]
+name = "terminal-bench/code-from-image"
+digest = "sha256:ef2907bb300d9b3352410c2a75dbf831278c187c073298371870ea9c83526f78"
+
+[[tasks]]
+name = "terminal-bench/fix-git"
+digest = "sha256:16948b980df9d96de616a205f5acca1c5d395de83ff4f8ffabcafacb93226f2e"
+
+[[tasks]]
+name = "terminal-bench/fix-ocaml-gc"
+digest = "sha256:2031f3d5224b891fe443a31526b569eb756be2f88b663cb025448af9c4f97e2c"
+
+[[tasks]]
+name = "terminal-bench/kv-store-grpc"
+digest = "sha256:973c5d4c111fb61a344457936f1c36400acd2d9e44389e7b319586fe23a7a307"
+
+[[tasks]]
+name = "terminal-bench/make-doom-for-mips"
+digest = "sha256:2d83dd3dee8e0f055e09973934cf0d7e3169a9cd90704cba5c8940b170be9498"
+
+[[tasks]]
+name = "terminal-bench/path-tracing-reverse"
+digest = "sha256:035880d7ef5554b217e53a75ce5e87e43193b7a44c30ad17226a6ab10fc11a6c"
+
+[[tasks]]
+name = "terminal-bench/polyglot-c-py"
+digest = "sha256:25570ccacf63f573a252eaa2a9c62ee8b55f5aa228cc803b5beb39dd6d8afeb7"
+
+[[tasks]]
+name = "terminal-bench/polyglot-rust-c"
+digest = "sha256:a33dc72e2278d225513c0724abe2e4539653d5ee7e4c2a90ba2d676586ba9f3d"
+
+[[tasks]]
+name = "terminal-bench/prove-plus-comm"
+digest = "sha256:d5ae25720df1f7cd619ed8408cda4b87b79a3d8b0ff4f1919e2c96e9547339c2"
+
+[[tasks]]
+name = "terminal-bench/pypi-server"
+digest = "sha256:1a1e0542f58e2d3362fec17a9bbb98667717d9a4a3e9a4c8413d3150a4fa0ff1"
+
+[[tasks]]
+name = "terminal-bench/schemelike-metacircular-eval"
+digest = "sha256:58130c2166c3115276dc8592f358e326ff2d81ea852e3d88636c82fd1dff57e6"
+
+[[tasks]]
+name = "terminal-bench/install-windows-3.11"
+digest = "sha256:1f1361b0012e1ad24054e7cfc039829459e8ab0631b3573d9b93499bf6b3563e"
+
+[[tasks]]
+name = "terminal-bench/mailman"
+digest = "sha256:831b3ed00807153963c05f91599443e4839099521d1d56db811c5547ab280dbe"
+
+[[tasks]]
+name = "terminal-bench/nginx-request-logging"
+digest = "sha256:9d1b8bebd989ea0bc8080c3b159480068caf183c5fd61385868b2574b206e097"
+
+[[tasks]]
+name = "terminal-bench/sqlite-with-gcov"
+digest = "sha256:9f9bd57fbf9f4831e9031755e83aea6b9d60d2b2d54e8a12d48cff4dca3c231d"
+
+[[tasks]]
+name = "terminal-bench/video-processing"
+digest = "sha256:d3f02e177b49e5768b6ce6709fc4ae3ef2ce0cdecb63b09fc9b07f9d3ddb7203"
+

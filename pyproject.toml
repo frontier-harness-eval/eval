@@ -1,0 +1,15 @@
+[project]
+name = "frontier-harness-eval"
+version = "1.1.0"
+description = "FrontierHarness Eval v1.1 datasets, Baseten suite and Harbor adapters"
+requires-python = ">=3.14,<3.15"
+dependencies = ["harbor[runta]>=0.24.0"]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.14"]
+build-backend = "uv_build"
+
+# The editable install puts the repository root on sys.path for `uv run`.
+[tool.uv.build-backend]
+module-name = ["adapters", "scripts"]
+module-root = ""

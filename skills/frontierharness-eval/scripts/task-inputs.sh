@@ -25,16 +25,15 @@ prepare_repo_task() {
 # Build the command for the suite on the local Docker host.
 repository_command() {
   local suite=$1 task_path=$2 harness=$3 model=$4 jobs=$5 mounts
-  local args
+  local args use_dsh=0
   if [ "$suite" = terminal-bench ]; then
     # Harbor's -a accepts a registered name or a module.path:ClassName import path.
     local agent=${HARBOR_AGENT_IMPORT_PATH:-$harness}
-    if [ "$BUNDLED_DSH" = 1 ]; then agent=adapters.dsh.agent:DeepSeekHarness; fi
-    args=(harbor run -p "$task_path" -a "$agent" -m "$model" --jobs-dir "$jobs" -r "$HARBOR_RETRIES" -y)
-    if [ "$BUNDLED_DSH" = 1 ]; then
-      args+=(--agent-kwarg "base_url=$BASE_URL" --agent-kwarg "secret_name=$SECRET_NAME" --agent-kwarg "platform=$TASK_PLATFORM")
-      if [ -n "$DSH_SEARCH" ]; then args+=(--agent-kwarg "web_search_max_keywords=$DSH_SEARCH"); fi
+    if [ "$BUNDLED_DSH" = 1 ] && [ -z "$HARBOR_AGENT_IMPORT_PATH" ]; then
+      agent=adapters.dsh.agent:DeepSeekHarness
+      use_dsh=1
     fi
+    args=(harbor run -p "$task_path" -a "$agent" -m "$model" --jobs-dir "$jobs" -r "$HARBOR_RETRIES" -y)
     local allowed host=${SECRET_HOST:-$PROVIDER_HOST}
     if [ -n "$host" ]; then
       args+=(--allow-agent-host "$host")
@@ -54,6 +53,9 @@ repository_command() {
     # adapter class loaded with --agent-import-path.
     if [ -n "${PIER_AGENT_IMPORT_PATH:-}" ]; then
       args=(pier run -p "$task_path" --agent-import-path "$PIER_AGENT_IMPORT_PATH")
+    elif [ "$BUNDLED_DSH" = 1 ]; then
+      args=(pier run -p "$task_path" --agent-import-path adapters.dsh.pier_agent:DeepSeekHarness)
+      use_dsh=1
     else
       args=(pier run -p "$task_path" --agent "$harness")
     fi
@@ -62,7 +64,11 @@ repository_command() {
     echo "Unknown suite $suite; pass --cmd for a custom runner" >&2
     return 2
   fi
-  if [ -n "$SECRET_NAME" ] && { [ "$suite" = datacurve ] || [ -z "$BASE_URL" ]; }; then
+  if [ "$use_dsh" = 1 ]; then
+    args+=(--agent-kwarg "base_url=$BASE_URL" --agent-kwarg "secret_name=$SECRET_NAME" --agent-kwarg "platform=$TASK_PLATFORM"
+           --agent-kwarg "harness=$harness" --agent-kwarg "api=$DSH_API")
+    if [ -n "$DSH_SEARCH" ]; then args+=(--agent-kwarg "web_search_max_keywords=$DSH_SEARCH"); fi
+  elif [ -n "$SECRET_NAME" ] && { [ "$suite" = datacurve ] || [ -z "$BASE_URL" ] || [ "$BUNDLED_DSH" = 1 ]; }; then
     # Both runners resolve the literal reference at agent setup. Job configs and
     # process arguments contain variable names only.
     args+=(--agent-env "$SECRET_NAME=\${$SECRET_NAME}")

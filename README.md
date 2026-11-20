@@ -140,9 +140,9 @@ To reproduce the Ark hosted-search configuration, run DSH with a separate run ID
 node cli/index.mjs run "${route[@]}" --harness dsh --dsh-web-search-max-keywords 2 --run-id dsh-regex-search
 ```
 
-Standard DSH uses its native tools in the headless profile. The search option adds `{"type":"web_search","max_keyword":2}` to Responses requests and requires provider support. The runner records the option and base URL in `run.json`. Use `--base-url` to override `OPENAI_BASE_URL` and `--secret-name` to select another exported key variable.
+The `dsh` shortcut uses native tools in the headless profile. The search option adds `{"type":"web_search","max_keyword":2}` to Responses requests and requires provider support. The runner records the option and base URL in `run.json`. Use `--base-url` to override `OPENAI_BASE_URL` and `--secret-name` to select another exported key variable.
 
-The DSH adapter runs the official `@deepseek-ai/dsh@0.1.0-rc.8` npm package. On first use the runner fetches the pinned task source into `.fh-local/sources/` and Docker builds the locked Linux dependencies into `.fh-local/dsh/`. Both are rebuildable workspace caches. Codex uses Harbor's built-in adapter and installs its CLI in the trial environment when needed. The bundled DSH integration supports local Terminal-Bench tasks.
+The DSH adapter runs the official `@deepseek-ai/dsh@0.1.0-rc.8` npm package. On first use the runner fetches the pinned task source into `.fh-local/sources/` and Docker builds the locked Linux dependencies into `.fh-local/dsh/`. Both are rebuildable workspace caches. Codex uses Harbor's built-in adapter and installs its CLI in the trial environment when needed. The local DSH integration uses Harbor for Terminal-Bench and Pier for DeepSWE.
 
 For either run, inspect the verifier outcome and generate a report:
 
@@ -153,6 +153,33 @@ node cli/index.mjs normalize --run "$run"
 node cli/index.mjs chart --run "$run"
 node cli/index.mjs report --run "$run"
 ```
+
+#### Compare DSH Standard, PTC and Creator locally
+
+Use the v1.0 model route to compare the three configurations. Set `FIREWORKS_API_KEY` in your shell and run the following from the checkout with Docker and Harbor available. A task list containing DeepSWE also requires `datacurve-pier==0.3.1`.
+
+```bash
+subset=$(mktemp)
+printf '%s\n' terminal-bench/regex-log > "$subset"
+for harness in dsh-standard dsh-ptc dsh-creator; do
+  id="$harness-k3-regex"
+  node cli/index.mjs run --backend local-docker --provider fireworks \
+    --harness "$harness" --tasks "$subset" --run-id "$id" || exit 1
+  jq '{status, reward, turns, duration_seconds}' "runs/$id/trials/terminal-bench-regex-log/trial.json"
+done
+```
+
+The Fireworks preset sends Chat Completions requests for `accounts/fireworks/models/kimi-k3`. To repeat the comparison with Ark, export `OPENAI_API_KEY`, change the provider options to `--provider custom --base-url https://ark.cn-beijing.volces.com/api/v3 --model deepseek-v4-1-flash-261017` and give each run a fresh ID.
+
+DSH rc.8 ships a preset roster on its Web profile. The adapter starts that profile on container loopback with browser launch disabled, creates one session with the requested upstream preset, submits the task and waits for completion. The three preset runs set DSH permissions to `danger-full-access` inside the task container so shell calls can complete without an interactive approval. The existing `--harness dsh` selects the original headless runner.
+
+| CLI harness | Selected rc.8 preset | Tools visible to the model |
+| --- | --- | --- |
+| `dsh-standard` | `standard` | Native coding tools |
+| `dsh-ptc` | `code` | `run_code` with the tool SDK |
+| `dsh-creator` | `cordis` | Native tools plus Cordis runtime and plugin tools |
+
+The trial's `agent/dsh-preset.json` records the preset selected by DSH. Its `agent/dsh-requests.jsonl` records tool names on the wire. These are local Docker trials using the public DSH presets. FrontierHarness v1.0 published the scores and pinned version, but the original baseline adapter patches and Runta snapshots are unavailable in the public checkout.
 
 ### Optional Runta checkpoints
 

@@ -24,6 +24,7 @@ globalThis.fetch = async function (input, init) {
   });
   fs.appendFileSync('/logs/agent/dsh-requests.jsonl', JSON.stringify({
     status: response.status, model: body.model, tool_types: (body.tools ?? []).map(tool => tool.type),
+    function_names: (body.tools ?? []).map(tool => tool.name ?? tool.function?.name).filter(Boolean),
     max_keyword: maxKeywords || null, request_id: response.headers.get('x-request-id'),
   }) + '\n');
   return response;

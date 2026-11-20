@@ -32,6 +32,7 @@ SECRET_HOST=""
 BASE_URL=""
 DSH_SEARCH=""
 BUNDLED_DSH=0
+DSH_API=openai-responses
 HARBOR_AGENT_IMPORT_PATH=""
 PIER_AGENT_IMPORT_PATH=""
 
@@ -52,6 +53,9 @@ Run benchmark tasks locally with Docker + Harbor/Pier. No Runta dependency.
   --provider NAME Provider route. Default fireworks. One of: $PROVIDER_LIST
                   The provider preset's key env var (see providers.sh) must be
                   exported so Harbor/Pier adapters can reach the model.
+  --harness NAME  dsh runs headless. dsh-standard, dsh-ptc and dsh-creator select
+                  shipped DSH presets for Harbor or Pier. Use --provider fireworks
+                  for the v1.0 Kimi K3 route, or custom for a Responses endpoint.
   --model ID      Override the model route. Required with --provider custom.
   --out DIR       Root output directory (default runs)
   --cmd TEMPLATE  Override the runner command. Placeholders: {task} {suite} {harness}
@@ -62,7 +66,7 @@ Run benchmark tasks locally with Docker + Harbor/Pier. No Runta dependency.
   --secret-name NAME  Environment variable holding the provider key. Defaults to the
                   provider preset. The script only checks it is set and non-empty.
   --secret-host HOST  Inference host for custom Harbor routes.
-  --base-url URL  HTTPS Responses API base URL for local Terminal-Bench dsh/codex
+  --base-url URL  HTTPS Responses API base URL for local DSH or Terminal-Bench Codex
                   with --provider custom. Defaults to OPENAI_BASE_URL for this route.
                   The host is inferred and the default key variable is OPENAI_API_KEY.
   --dsh-web-search-max-keywords N
@@ -153,17 +157,24 @@ list_task_ids "$TASKS" > "$TASK_LIST"
 # Only the suites actually present in the list gate their runner.
 need_harbor=$(grep -c '^terminal-bench/' "$TASK_LIST" || true)
 need_pier=$(grep -c '^datacurve/' "$TASK_LIST" || true)
-if [ "$HARNESS" = dsh ] && [ -z "$CMD_TEMPLATE" ]; then
-  if [ "$need_pier" -gt 0 ] && [ -z "$PIER_AGENT_IMPORT_PATH" ]; then
-    echo "The bundled dsh adapter supports Terminal-Bench. Select terminal-bench/<id> with --tasks." >&2; exit 2
-  fi
-  if [ "$need_harbor" -gt 0 ] && [ -z "$HARBOR_AGENT_IMPORT_PATH" ]; then BUNDLED_DSH=1; fi
-fi
+case "$HARNESS" in
+  dsh|dsh-standard|dsh-ptc|dsh-creator)
+    if [ -z "$CMD_TEMPLATE" ] && {
+      { [ "$need_harbor" -gt 0 ] && [ -z "$HARBOR_AGENT_IMPORT_PATH" ]; } ||
+      { [ "$need_pier" -gt 0 ] && [ -z "$PIER_AGENT_IMPORT_PATH" ]; }
+    }; then BUNDLED_DSH=1; fi ;;
+esac
 if [ -n "$DSH_SEARCH" ] && { [ "$BUNDLED_DSH" != 1 ] || [[ ! "$DSH_SEARCH" =~ ^[1-9][0-9]*$ ]]; }; then
   echo "--dsh-web-search-max-keywords needs the bundled dsh adapter and a positive integer" >&2; exit 2
 fi
-if [ "$PROVIDER" = custom ] && [ -z "$CMD_TEMPLATE$HARBOR_AGENT_IMPORT_PATH" ] &&
-   { [ "$BUNDLED_DSH" = 1 ] || { [ "$HARNESS" = codex ] && [ "$need_pier" = 0 ]; }; }; then
+if [ "$BUNDLED_DSH" = 1 ] && [ "$PROVIDER" = fireworks ]; then
+  if [ -n "$DSH_SEARCH" ] || { [ -n "$BASE_URL" ] && [ "$BASE_URL" != "https://api.fireworks.ai/inference/v1" ]; }; then
+    echo "Fireworks DSH uses its Chat Completions endpoint. For hosted search select a custom Responses provider." >&2; exit 2
+  fi
+  BASE_URL=https://api.fireworks.ai/inference/v1
+  DSH_API=openai-completions
+elif [ "$PROVIDER" = custom ] && { [ "$BUNDLED_DSH" = 1 ] ||
+   { [ "$HARNESS" = codex ] && [ -z "$CMD_TEMPLATE$HARBOR_AGENT_IMPORT_PATH" ] && [ "$need_pier" = 0 ]; }; }; then
   BASE_URL=${BASE_URL:-${OPENAI_BASE_URL:-}}
   if [ -n "$BASE_URL" ]; then
     base_host=$(python3 - "$BASE_URL" <<'PYURL'
@@ -185,7 +196,7 @@ elif [ -n "$BASE_URL" ]; then
   echo "--base-url requires --provider custom with the local dsh or codex adapter" >&2; exit 2
 fi
 if [ "$BUNDLED_DSH" = 1 ] && [ -z "$BASE_URL" ]; then
-  echo "dsh requires --provider custom, --model and --base-url (or OPENAI_BASE_URL)" >&2; exit 2
+  echo "DSH requires --provider fireworks or --provider custom with --model and --base-url (or OPENAI_BASE_URL)" >&2; exit 2
 fi
 if [ -n "$SECRET_NAME" ] && [[ ! "$SECRET_NAME" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
   echo "invalid --secret-name" >&2; exit 2
@@ -466,7 +477,7 @@ while IFS= read -r entry || [ -n "$entry" ]; do
         unset DOCKER_DEFAULT_PLATFORM
       fi
     fi
-    if [ "$BUNDLED_DSH" = 1 ] && [ "$suite" = terminal-bench ]; then
+    if [ "$BUNDLED_DSH" = 1 ]; then
       export PYTHONPATH="$SCRIPT_DIR${PYTHONPATH:+:$PYTHONPATH}"
     elif [ "$HARNESS" = codex ] && [ -n "$BASE_URL" ]; then
       # This route explicitly selects API-key auth, even on a logged-in Codex host.

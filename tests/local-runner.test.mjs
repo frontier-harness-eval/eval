@@ -197,7 +197,6 @@ test('hosted search is opt-in and the DSH shortcut checks suite and credential s
   const f = fixture(t);
   const route = ['--harness', 'dsh', '--provider', 'custom', '--model', 'fixture'];
   const env = { ...f.env, OPENAI_API_KEY: 'test-only', OPENAI_BASE_URL: 'https://inference.test/v3' };
-  assert.match(f.run(route, env).stderr, /supports Terminal-Bench/);
   writeFileSync(f.tasks, 'terminal-bench/regex-log\n');
   assert.equal(f.run([...route, '--dsh-web-search-max-keywords', '-1'], env).status, 2);
   assert.equal(f.run([...route, '--secret-host', 'other.test'], env).status, 2);
@@ -209,6 +208,28 @@ test('hosted search is opt-in and the DSH shortcut checks suite and credential s
   assert.ok(!dsh.some(value => value.includes('web_search')));
   assert.ok(dsh.includes('secret_name=OPENAI_API_KEY'));
   assert.equal(codex[codex.indexOf('-a') + 1], 'codex');
+});
+
+test('the three DSH presets use their requested identity for Harbor and Pier on Fireworks', t => {
+  const f = fixture(t);
+  for (const harness of ['dsh-standard', 'dsh-ptc', 'dsh-creator']) {
+    ok(f.run(['--harness', harness, '--provider', 'fireworks', '--run-id', harness]));
+    const calls = readFileSync(join(f.root, 'executions.jsonl'), 'utf8').trim().split('\n').slice(-2).map(JSON.parse);
+    const harbor = calls.find(args => args[0] === 'harbor');
+    const pier = calls.find(args => args[0] === 'pier');
+    assert.equal(harbor[harbor.indexOf('-a') + 1], 'adapters.dsh.agent:DeepSeekHarness');
+    assert.equal(pier[pier.indexOf('--agent-import-path') + 1], 'adapters.dsh.pier_agent:DeepSeekHarness');
+    for (const args of calls) {
+      assert.ok(args.includes(`harness=${harness}`));
+      assert.ok(args.includes('api=openai-completions'));
+      assert.ok(args.includes('base_url=https://api.fireworks.ai/inference/v1'));
+      assert.ok(!args.includes('--agent-env'));
+    }
+    const run = f.json(join(f.root, 'runs', harness, 'run.json'));
+    assert.equal(run.harness, harness);
+    assert.equal(run.model, 'fireworks_ai/accounts/fireworks/models/kimi-k3');
+  }
+  assert.equal(f.run(['--harness', 'dsh-ptc', '--dsh-web-search-max-keywords', '2']).status, 2);
 });
 
 test('custom adapters reach both runners by import path and are pinned to the run', t => {

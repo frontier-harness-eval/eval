@@ -218,7 +218,7 @@ async function doctor(argv) {
     die(`unknown --provider "${provider}"; expected ${Object.keys(providers).join(", ")}`);
   }
   const responsesRoute = backend === "local-docker" && provider === "custom" &&
-    ["dsh", "codex"].includes(flags.harness ?? run?.harness) &&
+    ["dsh", "dsh-standard", "dsh-ptc", "dsh-creator", "codex"].includes(flags.harness ?? run?.harness) &&
     (flags["base-url"] ?? run?.base_url ?? process.env.OPENAI_BASE_URL);
   const secret = flags["secret-name"] ?? run?.secret_name ?? (responsesRoute ? "OPENAI_API_KEY" : providers[provider]);
 

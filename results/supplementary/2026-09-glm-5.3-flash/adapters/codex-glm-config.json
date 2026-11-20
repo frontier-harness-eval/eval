@@ -1,0 +1,17 @@
+{
+  "model": "glm-5.3-flash",
+  "model_provider": "zhipu-eval",
+  "model_reasoning_effort": "max",
+  "model_reasoning_summary": "none",
+  "model_context_window": 1000000,
+  "model_catalog_json": "/tmp/fh-glm-models.json",
+  "web_search": "disabled",
+  "model_providers": {
+    "zhipu-eval": {
+      "name": "Zhipu evaluation",
+      "base_url": "https://open.bigmodel.cn/api/v1",
+      "wire_api": "responses",
+      "env_key": "OPENAI_API_KEY"
+    }
+  }
+}

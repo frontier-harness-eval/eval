@@ -1,0 +1,887 @@
+[
+  {
+    "id": "datacurve/anko-typed-variable-bindings",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "e5c7d7da5f841382ec5187fefb132a804c83b3c44623c38ca9ddaf5493200cf9",
+      "tests/config.json": "0f11e7c3d5aec8fbfe3e431d246e1b7b8a0ebf2326d7feafa39f389e248ebe48",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "91aa103ce3d2a7978588a19aa33e6dbbb95f418fd5fc1e2d21bd40a376b5078a",
+      "tests/test.sh": "3c022205d73128934751dbddac8136f25e8fa6b436243557730742f5186dda01"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh79betfed7ets4an20cr4j57182y9wt-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh79betfed7ets4an20cr4j57182y9wt-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "96c0c7ad98237d6176034c8893d8bff164ec5fda45889e51780a65cf599ffcfe",
+    "task_toml_sha256": "fe4d7ac08dba587fd24eb3eb202cf794f5254ca8dff1b3ddae9fae75b5f7075b"
+  },
+  {
+    "id": "datacurve/arktype-json-schema-refs-dependencies",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "5ce0997f410a98a34ba9a4db8d7bf4e43591dd935d49a2934899933b9ce4e485",
+      "tests/config.json": "62ba14ca9fcc3b85ace2f26b1b3df885a0cb7ccdb1607d834df582be1f5c4c46",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "2d79d38da986136779eeb69658b775fd380d32eb6ba27abac5d080714f47c92c",
+      "tests/test.sh": "a529f019da4dfac1ae46dca104599c4489a52b70d71889486267a91e9df450f9"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh771gpr8crkjsnt9pj81bafgs8229em-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh771gpr8crkjsnt9pj81bafgs8229em-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "594fa84b95c92f69e949de2781107a3ff5b6131e889203fc4505f6f41a136ea3",
+    "task_toml_sha256": "4a33207a4f7616c82dc8ffc9347971b68edfd1311e5f1bdd62cdffbac1ad888c"
+  },
+  {
+    "id": "datacurve/expr-try-catch-errors",
+    "runner": "pier",
+    "verifier_revision": "c33fa70e68d11d85f9e58abcd5d78643705e916e",
+    "verifier_sha256": {
+      "tests/test.patch": "607bf6222997f60f5082fc23a4d0195530f772e5424279b49594ca4a14e21923",
+      "tests/test.sh": "41d5c306162b493c1d5af7bb0945b05eb54c83730b35d6fccd2faa2a464b30a5"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71gkadwafw4ry4r6g37era0182qpms",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71gkadwafw4ry4r6g37era0182qpms",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "d26cbabc93a8d406d6a3e5107249a2057dc8e6640889291e292448a91794dfb6",
+    "task_toml_sha256": "40d63ce7c2bd884b41db28b3e5a31d09910116d8382faccf09315a43e19359e4"
+  },
+  {
+    "id": "datacurve/fastapi-deprecation-response-headers",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "a719057b36e6a9695e4cf44ad89b35402b13746719e3a1564b1356caef9d9709",
+      "tests/config.json": "5efe6485b83827a1f6127ba54b36a6fbfc3f973ff352f953bf9115fb41df35d8",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "029972f1d78ec9c9e9e38f9abe4c3bcc9801b73a9e1aa83d4d1dfd2e79ecc35e",
+      "tests/test.sh": "48340b1ac95a07e08c6aff4f3ea4495d3e3265baba3262393316afe713504988"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh75azsnb5eqs3mf4xm0zkzha582rvcd-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh75azsnb5eqs3mf4xm0zkzha582rvcd-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "b8e0cb43fe2850b2173c8b5e940d463345b96aed6a2b3e7c0c559deda468c568",
+    "task_toml_sha256": "478b37aa51570ba2ad5f644f82cbe4ea2110ee177e9fd9f06f76cb9630900d7f"
+  },
+  {
+    "id": "datacurve/httpx-multipart-response-parsing",
+    "runner": "pier",
+    "verifier_revision": "c33fa70e68d11d85f9e58abcd5d78643705e916e",
+    "verifier_sha256": {
+      "tests/test.patch": "a6b6512793b4102041ea3cb835efbc8ba61cba800e07453dffd66703e123262e",
+      "tests/test.sh": "e10ae74c654e0fb169950a6c60b3a4db622f47910fd0e70dccc1b1629fd8ad78"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq",
+      "workdir": "/app",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "b8e39064b1374955dd3b02890034a41dd8e107a7e9da9f208d393dadde96247f",
+    "task_toml_sha256": "ef006507a07c46861949c763b972665fe54c3be321da61685decda7fd5a67e59"
+  },
+  {
+    "id": "datacurve/katex-multicolumn-array-spans",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "0274ff3beb685b126ae383feddc61a44601c7392a35adfd719ed585e69533058",
+      "tests/config.json": "ec1a2fd78e14224482b9d4ee6857a0a58117bb0bbf87a0dcefb6383a95e0c6c1",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "9a45f15ab7b2f1737aa4ebb05c532d85189f759a649b849fe147e9e61377de9b",
+      "tests/test.sh": "487f01bcc81d69b492c6cb6c18e3e2d078ab739b3a4c37cdaff4fb4366de93a2"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fkjmy67qny9z98mt6bj52m182ygdy-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fkjmy67qny9z98mt6bj52m182ygdy-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "54e5a648f5c2151a57f895d5ea4d814f44cca52daa5e58a198877f398ace28f1",
+    "task_toml_sha256": "9e54bce5f8a55bed57db89f092dd4a0eaa2230ce4fbd7b35159e61efe08a805e"
+  },
+  {
+    "id": "datacurve/meriyah-explicit-resource-declarations",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "c0acd01d13712e67e8b6b29e9a777bbaf782674b263f0b438ab9a31a776c7cea",
+      "tests/config.json": "3c3f0aa5fead486cf8e4e96882db3e930c8023ef4b289eae19a923bde3638d0f",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "295fa1d4bb16409303a13b5252641b439cb4e3e19c65fade6341c01a00581395",
+      "tests/test.sh": "2541c912d82661288d00d9c396b59d766fa84876a659662d58ba7043306571c3"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7398skqnxqwg9hbmdj7ncmk1822aa0-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7398skqnxqwg9hbmdj7ncmk1822aa0-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "a85dfeb98a4203f9eb7392f918543fab27d83f344a92d290454aedc145c7b5f7",
+    "task_toml_sha256": "13c080a34b5a8c2d423b0c31459b77d45ad8d1f4e0d0c6492e5960ed1b251b91"
+  },
+  {
+    "id": "datacurve/python-statemachine-state-data-scoping",
+    "runner": "pier",
+    "verifier_revision": "c33fa70e68d11d85f9e58abcd5d78643705e916e",
+    "verifier_sha256": {
+      "tests/test.patch": "03dde49e42768600d975afd62ed79e891a684ed4a20e6de121e4e14e33ab4113",
+      "tests/test.sh": "0eefaa0f50226de405a1178752de161a84ac85b5bf0ba42cb3cc61fd1c73ae4d"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh719np6e210pf8skawv132rw183pfyy",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh719np6e210pf8skawv132rw183pfyy",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "2690f38acd2e3ba363caf62e2324a958e175b8b555cc7a39b2fbb7dc578a958c",
+    "task_toml_sha256": "3038ae02e224ba3f2ae11f3ce39b9dca57ac429fa6b7ba0dcf26e24c041ac6d8"
+  },
+  {
+    "id": "datacurve/scc-bounded-memory-spilling",
+    "runner": "pier",
+    "verifier_revision": "435ee89ec2f2e2289f33b0da4f992f0b7b7266b9",
+    "verifier_sha256": {
+      "tests/Dockerfile": "3d4c1fba85e1bc64d3a412f20eb4534cb47854d892b6786c48fd0ff63bbffeb8",
+      "tests/config.json": "b8db15513d3a79790bc28c1a8ffc76e713162613d242deddf87d9c53970495e3",
+      "tests/grader.py": "47cc9eaadf21e636323c360ec4fa786f0733ec9fd1d21ea5a5717ff9f8c4077c",
+      "tests/test.patch": "4c945a497090002daadb33c6ceca8b5e0cdee41ec5fe93a991e172dad5cc560a",
+      "tests/test.sh": "ec3e9327826cbf84ac01c69dee5f0dbc4e622e5a3c948b92bac569da753cf723"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71j0gr2axgn6v1f92cam6s6x82rkv6-v1.1",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 5400.0,
+    "environment": {
+      "build_timeout_sec": 1800.0,
+      "docker_image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71j0gr2axgn6v1f92cam6s6x82rkv6-v1.1",
+      "os": "linux",
+      "cpus": 2,
+      "memory_mb": 8192,
+      "storage_mb": 20480,
+      "gpus": 0,
+      "mcp_servers": [],
+      "env": {}
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "fc99a21974fa57940e3ff7e9eb81c31b06728cbc39177faf5500667cd51a816e",
+    "task_toml_sha256": "ca2b6454417491bb298a26a466c8388558e883dc3ac8497aae12a002170cfa35"
+  },
+  {
+    "id": "terminal-bench/build-cython-ext",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "0156c9c4085258b696ce424cf1ce96cba44d1263c5d73bdf54083fd80237f915",
+      "tests/test_outputs.py": "6549f1a8e04b6163ec08877e6f6b9868bf94563f3a3c72ac1fba9c512c31689e"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/build-cython-ext:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/build-cython-ext:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": true,
+    "instruction_sha256": "eb6fe77a063dc8ba67874c1a5064aaf9e6cc417f24754f436d46c939721949b1",
+    "task_toml_sha256": "d30f7dcc37286dfdccd03a6857ea678862f2a98ba7e51b08cf466f1f4d157471"
+  },
+  {
+    "id": "terminal-bench/chess-best-move",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "a540714e0156fc14564badedcb48d1f7b69a4b457d876036535439b30cb8f286"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/chess-best-move:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/chess-best-move:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "6ba25be4e291a4ad04ae42b2dddefcdaef67ca45ca9d5dce661a2e517b19ce7a",
+    "task_toml_sha256": "df6791365659cecb96b82478fdd1fa5b19f184e22eb19fd18236fc0de7b59873"
+  },
+  {
+    "id": "terminal-bench/code-from-image",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "b9b7cb0033116df88a4807404bf309190f92d62a89df2ce64cdcbf732efe084a"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/code-from-image:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 1200.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/code-from-image:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "8c3af6483e409defef9786da51f318ae2ca71afe2327b94471d2f0e2e367442c",
+    "task_toml_sha256": "0774d7fddea423d9ff9da526e3c845b3aea738537753e5be0100ab135d00902c"
+  },
+  {
+    "id": "terminal-bench/constraints-scheduling",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "1422b345ba3aacdfc4184e962811b6379988435896c50d8cf62903e70990c5d1"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/constraints-scheduling:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 1200.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/constraints-scheduling:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "342def78177f9bc41bea4d11af679bc385a9dda2ac8a1e425be384a5b7f937b6",
+    "task_toml_sha256": "828d3426ce73ad154582bcadc6a9c3beb218f838adb12f9c5524d7fcda8a247f"
+  },
+  {
+    "id": "terminal-bench/db-wal-recovery",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "88dc5c2a3abba75bca0e0f9136223ae5bb585d5984b8d9eba51a7829c1d2ba49"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/db-wal-recovery:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/db-wal-recovery:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "842a776cf29bc422ee7f7d057b00f52f200ac34cdcd685e2222e6735fd72ca8e",
+    "task_toml_sha256": "b011e6694e74d393bd5596d1eb1ad559afed608a5417c6ba4e96e5bfb6a975d7"
+  },
+  {
+    "id": "terminal-bench/dna-insert",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "355c3f627ad14243da1ec683ebdb120aca7921bb52656c5cb65b281b347ba68b",
+      "tests/test_outputs.py": "5bf0651b48969968dea30956d4b0cf9e499af59d73cc6886af3ad7aa92934647"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/dna-insert:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 1800.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/dna-insert:20251031",
+      "cpus": 1,
+      "memory_mb": 4096,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "49fce0ee8b73d7ccdf4b8476c6bb87cf362689fd1d77b21a0d8737d16019a473",
+    "task_toml_sha256": "a1e7eac9053f467baf5adeb659217c4b62a207f9086ec3d07465c30b96af42aa"
+  },
+  {
+    "id": "terminal-bench/extract-elf",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "84ee50194effb4c72b9cbd0306cccaf0f855f3634227cd8359928722a53bbdaf",
+      "tests/test_outputs.py": "825569115217f1cea7b0f3c7547d60d21e6ea36f587d82cc9dfdd5dd98c04570"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/extract-elf:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/extract-elf:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "f1dd8c8fd9f01101d2ecb65665bdedc33adc868abd853b3adf556f6aa4982073",
+    "task_toml_sha256": "0f2275b98b143b8f268ddcdd53340a2027f9d06a3882f1ee56a06474aa5570dc"
+  },
+  {
+    "id": "terminal-bench/gcode-to-text",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "6b049dc626aa103b20d165552e5cb39ba02c6803b04ba06a43d79435b5f701a6"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/gcode-to-text:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/gcode-to-text:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "ee524a8f846b35f1784a7c9fb01c17f077f6b3b61c8b61d0d2f2a87c0be3166b",
+    "task_toml_sha256": "c89670510e04039769fb2705a3f22ed0193dbbe8a1a7d829061d2fac6b13b77b"
+  },
+  {
+    "id": "terminal-bench/git-leak-recovery",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "dc7b01c1b9dbb0c123def54b146dc1dd399a600edee5970d043a5db5eac4c775"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/git-leak-recovery:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/git-leak-recovery:20251031",
+      "workdir": "/app",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "77216dc95283ce77b246764c595c7c9d8b5f835a0e5d82c9f94a902a0827b4fd",
+    "task_toml_sha256": "a7b286fe1bf5a5c99e42b85a60de30548449525b2e79130e30a5dedb91517c0b"
+  },
+  {
+    "id": "terminal-bench/kv-store-grpc",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "c348467a076bf614d0a850e25b2263f85bbf7b4c7a8d344fbd5454a0611a0df8",
+      "tests/test_outputs.py": "115de2e964bbe689d07930527113422ef8a9e4be4eb958ad84594e3fcd2b1b0e"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/kv-store-grpc:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/kv-store-grpc:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "f4b3facc199d5b1c78db6e603ffa29ec1b93a77ff7d291e1a92b42e6bf582bed",
+    "task_toml_sha256": "757dd23d20eda490b4c7b38fa943e9053d92bf39e5bec7e0927fb759fcdb8d21"
+  },
+  {
+    "id": "terminal-bench/largest-eigenval",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "fc40868bee6cbcfd6e906b0522dda9a778064ea9876e64a40a377d66087a174b",
+      "tests/test_outputs.py": "cdc58e3aa0960dac2e12a12b1cfa4131237d697762a6a78ebf33f80d2eb168ce"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/largest-eigenval:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/largest-eigenval:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "6fa938389f99648508e5a9772e0d5e95d1102738c68d1ff61bd65469d76c52ab",
+    "task_toml_sha256": "2fcac2e425ea3ab73f1dd351ec63f7b43eeb0005ca7dffd554088b9d68e56a50"
+  },
+  {
+    "id": "terminal-bench/log-summary-date-ranges",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "2fc06a6ce1944ad82f84fb437395fa75ed8c0eadd385b92e375c27e5bc9cb2b4"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/log-summary-date-ranges:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/log-summary-date-ranges:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "c1d4516ad4ec2238209740eaf01291df9ab48b0028a3fc5df383c6f831453484",
+    "task_toml_sha256": "8e441e7e30b823a3f284524e2476e87b34d94fcb246c2edd123a97954465daad"
+  },
+  {
+    "id": "terminal-bench/merge-diff-arc-agi-task",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.json": "20f116a6b718bbf4874bbe203d15a5c0f85a1d88cb622e2d7529c7e4fb2d4c28",
+      "tests/test.sh": "c9052954cd6ce25c4a375a2fb48e765b1efa5b39f7991b93993cc793af8ab9d2",
+      "tests/test_outputs.py": "2754ba6c5c5f75c9db5ed2c5729d9f5d7e21cb7fdb18aa0c65abdc3e7e85c149"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/merge-diff-arc-agi-task:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/merge-diff-arc-agi-task:20251031",
+      "cpus": 1,
+      "memory_mb": 4096,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "e9195c3b8e4c450d3802f38b578c3bdcde4a31fe956a6c7d59b1011e5ebdf3ed",
+    "task_toml_sha256": "519c6c120da503273a79dbcc33adaf240a990b6dbb3d9ca455d345f8c206d33d"
+  },
+  {
+    "id": "terminal-bench/modernize-scientific-stack",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "e868c85466ebf4815e2e4efbd252bf50ad979bceb14325a9377b1bbf852f0281",
+      "tests/test_outputs.py": "0c24195ff46527764c7f8ceda9c608a189ab4a01619282942fcd27a2ea02a977"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/modernize-scientific-stack:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 600.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/modernize-scientific-stack:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "666b8ac370ae81b0e3780a36e722c91b0f986fccbdc6ed36ab3bd17e6943da0f",
+    "task_toml_sha256": "cc18623c7e9663bddd13627dfc04e876bd243dd1cbbd146a3ad106ee18ce661c"
+  },
+  {
+    "id": "terminal-bench/multi-source-data-merger",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "d5a00e64413c0e1ae452f38a1aa1a47c3ed7b4416bbfccae1a4c053025a336d1",
+      "tests/test_outputs.py": "a070888930cf829aeca039771260b1386bda990ea805f313468d381ba3608ca5"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/multi-source-data-merger:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/multi-source-data-merger:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "d1d28bb6e37f7a255a1b7f78aae8591f35c0494f33e4913392424ad954aab944",
+    "task_toml_sha256": "33497f84f50f6cf035a8b0ac2713cb43e63397f704efa492dd7598cf93c4e793"
+  },
+  {
+    "id": "terminal-bench/openssl-selfsigned-cert",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "90970bb3c372e8e7fb6bb9ac5f649ba73eb38e1a5ea2e922a9057a72b6b4192d"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/openssl-selfsigned-cert:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/openssl-selfsigned-cert:20251031",
+      "workdir": "/app",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "38054a3371f7c2c853478a2f9af0bff858437d5b28a9a07483238f06e566921f",
+    "task_toml_sha256": "47f0cc30c42f4812f9b020692c0c898691f61e2a57fe552ec8eecceddf0153ab"
+  },
+  {
+    "id": "terminal-bench/polyglot-c-py",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "b94a7a9882decd8114835bdf52b5bc42fc78e9fe67ecad9bd19050b11781ddec"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/polyglot-c-py:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/polyglot-c-py:20251031",
+      "workdir": "/app",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "a57c0c0e1232113113cd29a154ea7e0ac9ea45e4aedc16958fbc6bc753a4ef96",
+    "task_toml_sha256": "22a22d069f5de2af16cd902edd11b6816a4bed2edf8921e63355a4b90b8cb4b5"
+  },
+  {
+    "id": "terminal-bench/regex-log",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "345c3bd09ab6f6fe8c8361a58c0a47bf0a13b3fcb38a5ac7824e44ff855e8f72"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/regex-log:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 1200.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/regex-log:20251031",
+      "workdir": "/app",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "4ad88d35f9352339dd782c68269217db68fd6bc7a87d190deacb4d8f890866b3",
+    "task_toml_sha256": "c39385224ad2b3cf3e7fb5067e91d95faddc3b8f950ea2146b67d2bf9d1275c1"
+  },
+  {
+    "id": "terminal-bench/sanitize-git-repo",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/process.py": "3525f32100c994ee517ba06a355f6d2130c332857da017d921aa8d9252b7022d",
+      "tests/ray_cluster.yaml": "4827a78e929c005853df1af502f1a5aae2e2e9ce721ee0d33ab0731eefa128a5",
+      "tests/rw_v2_fasttext_openhermes_vs_rw_v2_bigram_0.1_arcade100k.json": "2d281c309cb03e9802f532931ac6c1eca129f75c4583ae48996dbb4130f57c0f",
+      "tests/test.sh": "16014722171ae4479112051d2e8af7d0c5bb231bae6aff1b80cfa19e718c814f",
+      "tests/test_outputs.py": "57e4904177acac5807b51f7c32444bde1968ba0445855fa4333d9eb73865b59e"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/sanitize-git-repo:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/sanitize-git-repo:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "a3f3b5a6fece2d7d976f9e3a866c22e58694d16761b3bf17b4fa305ea915f867",
+    "task_toml_sha256": "5e4d2c33beb58a0fd4ec2661d67a85e361097692c32083a7232594b4d4779c41"
+  },
+  {
+    "id": "terminal-bench/sqlite-db-truncate",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "4770437ea96c3cc84684b4f99d55fb148fcac09f9ea1e8ef49de487716e6c334",
+      "tests/test_outputs.py": "8f5bc11018687d8c5894ebf1b4ec6fad004828e5ce442d3cc04d925ef53ef881"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/sqlite-db-truncate:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 1200.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/sqlite-db-truncate:20251031",
+      "workdir": "/app",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "465c135cd80be49023ea3ecf8f1d840c679b3a960efe425d510894e417b9d802",
+    "task_toml_sha256": "f3d58bc0c8dd6070dbe0a206f7a559914c8fdf2aefdbca778844cae9ce8720c8"
+  },
+  {
+    "id": "terminal-bench/vulnerable-secret",
+    "runner": "harbor",
+    "verifier_revision": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+    "verifier_sha256": {
+      "tests/test.sh": "d9e46bae71e0b119bdc8aaf689de9a780db29741cb5d46bfcc9090ad8943e08e",
+      "tests/test_outputs.py": "f2b65f63ac81acd1e80e1ad4c59c1022131a0f9eb20f8ab3212c4ef8d8f0c753"
+    },
+    "prompt_and_metadata": "byte-identical to frozen benchmark",
+    "image": "alexgshaw/vulnerable-secret:20251031",
+    "image_matches_verifier_revision": true,
+    "agent_timeout_sec": 900.0,
+    "environment": {
+      "build_timeout_sec": 600.0,
+      "docker_image": "alexgshaw/vulnerable-secret:20251031",
+      "cpus": 1,
+      "memory_mb": 2048,
+      "storage_mb": 10240,
+      "gpus": 0,
+      "allow_internet": false,
+      "mcp_servers": [],
+      "env": {
+        "PATH": "/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    },
+    "requires_offline_source_bundle": false,
+    "instruction_sha256": "d43c72e6c39cdeb1141a9c8eae8357df1b0901383ee2beedacf828bf017d7a2f",
+    "task_toml_sha256": "abe56d387fd01bfe8ac2165d2d00a16c96f780649ba24495cf59df4a9a3bed70"
+  }
+]

@@ -50,6 +50,13 @@ All five models, 1,240 scored attempts per configuration, cheapest first. The [i
 | Claude Code | $1.55 | 58.9% | 94.3% | 1h 10m | `2.1.308` |
 | Antigravity CLI | $1.63 | 55.0% | **95.6%** | 1h 06m | `1.4.6` |
 
+### Supplementary experiments
+
+[GLM-5.3-Flash across four harnesses](results/supplementary/2026-09-glm-5.3-flash/README.md)
+reports 120 contributor-run trials on the same task set. It includes task-level
+comparisons and reproduction metadata, with model and runtime differences marked
+explicitly. These results are separate from the published Kimi K3 leaderboard.
+
 ## What is in this repository
 
 ```text

@@ -1,0 +1,727 @@
+{
+  "f15333e4523dc852": {
+    "agents": [
+      {
+        "name": "opencode",
+        "model_name": "zhipuai-eval/glm-5.3-flash",
+        "kwargs": {
+          "version": "1.18.19",
+          "opencode_config": {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "zhipuai-eval/glm-5.3-flash",
+            "small_model": "zhipuai-eval/glm-5.3-flash",
+            "enabled_providers": [
+              "zhipuai-eval"
+            ],
+            "autoupdate": false,
+            "share": "disabled",
+            "provider": {
+              "zhipuai-eval": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Zhipu Coding Plan (evaluation)",
+                "options": {
+                  "baseURL": "https://open.bigmodel.cn/api/coding/paas/v4",
+                  "apiKey": "{env:ZHIPU_API_KEY}"
+                },
+                "models": {
+                  "glm-5.3-flash": {
+                    "name": "GLM-5.3-Flash",
+                    "reasoning": true,
+                    "tool_call": true,
+                    "attachment": true,
+                    "temperature": true,
+                    "interleaved": {
+                      "field": "reasoning_content"
+                    },
+                    "limit": {
+                      "context": 1000000,
+                      "output": 128000
+                    },
+                    "modalities": {
+                      "input": [
+                        "text",
+                        "image"
+                      ],
+                      "output": [
+                        "text"
+                      ]
+                    },
+                    "options": {
+                      "thinking": {
+                        "type": "enabled",
+                        "clear_thinking": false
+                      },
+                      "reasoningEffort": "max",
+                      "tool_stream": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "env": {
+          "ZHIPU_API_KEY": "${ZHIPU_API_KEY}"
+        }
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true
+    },
+    "runner": "pier"
+  },
+  "7655d7670db47d27": {
+    "agents": [
+      {
+        "name": "opencode",
+        "model_name": "zhipuai-eval/glm-5.3-flash",
+        "kwargs": {
+          "version": "1.18.19",
+          "opencode_config": {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "zhipuai-eval/glm-5.3-flash",
+            "small_model": "zhipuai-eval/glm-5.3-flash",
+            "enabled_providers": [
+              "zhipuai-eval"
+            ],
+            "autoupdate": false,
+            "share": "disabled",
+            "provider": {
+              "zhipuai-eval": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Zhipu Coding Plan (evaluation)",
+                "options": {
+                  "baseURL": "https://open.bigmodel.cn/api/coding/paas/v4",
+                  "apiKey": "{env:ZHIPU_API_KEY}"
+                },
+                "models": {
+                  "glm-5.3-flash": {
+                    "name": "GLM-5.3-Flash",
+                    "reasoning": true,
+                    "tool_call": true,
+                    "attachment": true,
+                    "temperature": true,
+                    "interleaved": {
+                      "field": "reasoning_content"
+                    },
+                    "limit": {
+                      "context": 1000000,
+                      "output": 128000
+                    },
+                    "modalities": {
+                      "input": [
+                        "text",
+                        "image"
+                      ],
+                      "output": [
+                        "text"
+                      ]
+                    },
+                    "options": {
+                      "thinking": {
+                        "type": "enabled",
+                        "clear_thinking": false
+                      },
+                      "reasoningEffort": "max",
+                      "tool_stream": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "env": {
+          "ZHIPU_API_KEY": "${ZHIPU_API_KEY}"
+        },
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "${EVAL_ROOT}/pyknotid-0.5.3.bundle",
+          "target": "/app/pyknotid.bundle",
+          "read_only": true
+        }
+      ]
+    },
+    "runner": "harbor"
+  },
+  "5542eb474af406be": {
+    "agents": [
+      {
+        "name": "opencode",
+        "model_name": "zhipuai-eval/glm-5.3-flash",
+        "kwargs": {
+          "version": "1.18.19",
+          "opencode_config": {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "zhipuai-eval/glm-5.3-flash",
+            "small_model": "zhipuai-eval/glm-5.3-flash",
+            "enabled_providers": [
+              "zhipuai-eval"
+            ],
+            "autoupdate": false,
+            "share": "disabled",
+            "provider": {
+              "zhipuai-eval": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Zhipu Coding Plan (evaluation)",
+                "options": {
+                  "baseURL": "https://open.bigmodel.cn/api/coding/paas/v4",
+                  "apiKey": "{env:ZHIPU_API_KEY}"
+                },
+                "models": {
+                  "glm-5.3-flash": {
+                    "name": "GLM-5.3-Flash",
+                    "reasoning": true,
+                    "tool_call": true,
+                    "attachment": true,
+                    "temperature": true,
+                    "interleaved": {
+                      "field": "reasoning_content"
+                    },
+                    "limit": {
+                      "context": 1000000,
+                      "output": 128000
+                    },
+                    "modalities": {
+                      "input": [
+                        "text",
+                        "image"
+                      ],
+                      "output": [
+                        "text"
+                      ]
+                    },
+                    "options": {
+                      "thinking": {
+                        "type": "enabled",
+                        "clear_thinking": false
+                      },
+                      "reasoningEffort": "max",
+                      "tool_stream": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "env": {
+          "ZHIPU_API_KEY": "${ZHIPU_API_KEY}"
+        },
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ]
+    },
+    "runner": "harbor"
+  },
+  "bf51b5c73e30f4e7": {
+    "agents": [
+      {
+        "model_name": "zhipuai-eval/glm-5.3-flash",
+        "kwargs": {
+          "version": "1.18.19",
+          "opencode_config": {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "zhipuai-eval/glm-5.3-flash",
+            "small_model": "zhipuai-eval/glm-5.3-flash",
+            "enabled_providers": [
+              "zhipuai-eval"
+            ],
+            "autoupdate": false,
+            "share": "disabled",
+            "provider": {
+              "zhipuai-eval": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "Zhipu Coding Plan (evaluation)",
+                "options": {
+                  "baseURL": "https://open.bigmodel.cn/api/coding/paas/v4",
+                  "apiKey": "{env:ZHIPU_API_KEY}"
+                },
+                "models": {
+                  "glm-5.3-flash": {
+                    "name": "GLM-5.3-Flash",
+                    "reasoning": true,
+                    "tool_call": true,
+                    "attachment": true,
+                    "temperature": true,
+                    "interleaved": {
+                      "field": "reasoning_content"
+                    },
+                    "limit": {
+                      "context": 1000000,
+                      "output": 128000
+                    },
+                    "modalities": {
+                      "input": [
+                        "text",
+                        "image"
+                      ],
+                      "output": [
+                        "text"
+                      ]
+                    },
+                    "options": {
+                      "thinking": {
+                        "type": "enabled",
+                        "clear_thinking": false
+                      },
+                      "reasoningEffort": "max",
+                      "tool_stream": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "env": {
+          "ZHIPU_API_KEY": "${ZHIPU_API_KEY}"
+        },
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ],
+        "import_path": "opencode_install_adapter:OpenCodeScriptInstall"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ]
+    },
+    "runner": "harbor"
+  },
+  "9bf033c6652341d3": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.148.0",
+          "reasoning_effort": "max",
+          "reasoning_summary": "none"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "codex_glm_adapter:PierCodexGLM"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true
+    },
+    "runner": "pier"
+  },
+  "94aa3cfd6b00d624": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.148.0",
+          "reasoning_effort": "max",
+          "reasoning_summary": "none"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "codex_glm_adapter:HarborCodexGLM",
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "${EVAL_ROOT}/pyknotid-0.5.3.bundle",
+          "target": "/app/pyknotid.bundle",
+          "read_only": true
+        }
+      ]
+    },
+    "runner": "harbor"
+  },
+  "cefe141015f7339b": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.148.0",
+          "reasoning_effort": "max",
+          "reasoning_summary": "none"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "codex_glm_adapter:HarborCodexGLM",
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ]
+    },
+    "runner": "harbor"
+  },
+  "18e29d5bf2feeb02": {
+    "agents": [
+      {
+        "model_name": "glm-5.3-flash",
+        "kwargs": {
+          "version": "2.1.237",
+          "reasoning_effort": "max"
+        },
+        "env": {
+          "ANTHROPIC_API_KEY": "${ZHIPU_API_KEY}",
+          "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+          "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "32000",
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+        },
+        "import_path": "claude_npm_adapter:PierClaudeNpm"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true
+    },
+    "runner": "pier"
+  },
+  "b044bd70d19f2429": {
+    "agents": [
+      {
+        "model_name": "glm-5.3-flash",
+        "kwargs": {
+          "version": "2.1.237",
+          "reasoning_effort": "max"
+        },
+        "env": {
+          "ANTHROPIC_API_KEY": "${ZHIPU_API_KEY}",
+          "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+          "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "32000",
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+        },
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn",
+          "claude.ai",
+          "downloads.claude.ai",
+          "storage.googleapis.com",
+          "*.anthropic.com"
+        ],
+        "import_path": "claude_npm_adapter:HarborClaudeNpm"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "${EVAL_ROOT}/pyknotid-0.5.3.bundle",
+          "target": "/app/pyknotid.bundle",
+          "read_only": true
+        }
+      ]
+    },
+    "runner": "harbor"
+  },
+  "8ee91ddfbfb653e2": {
+    "agents": [
+      {
+        "model_name": "glm-5.3-flash",
+        "kwargs": {
+          "version": "2.1.237",
+          "reasoning_effort": "max"
+        },
+        "env": {
+          "ANTHROPIC_API_KEY": "${ZHIPU_API_KEY}",
+          "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+          "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "32000",
+          "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+        },
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn",
+          "claude.ai",
+          "downloads.claude.ai",
+          "storage.googleapis.com",
+          "*.anthropic.com"
+        ],
+        "import_path": "claude_npm_adapter:HarborClaudeNpm"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ]
+    },
+    "runner": "harbor"
+  },
+  "23cd967aba595227": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.84.2"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "pi_glm_adapter:PierPiResponsesGLM"
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true
+    },
+    "runner": "pier"
+  },
+  "88d75e0fb84a5efb": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.84.2",
+          "model_api": "openai-responses",
+          "thinking": "xhigh"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "pi_glm_adapter:HarborPiResponsesGLM",
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ],
+      "mounts": [
+        {
+          "type": "bind",
+          "source": "${EVAL_ROOT}/pyknotid-0.5.3.bundle",
+          "target": "/app/pyknotid.bundle",
+          "read_only": true
+        }
+      ]
+    },
+    "runner": "harbor"
+  },
+  "669d65054e3f3763": {
+    "agents": [
+      {
+        "model_name": "openai/glm-5.3-flash",
+        "kwargs": {
+          "version": "0.84.2",
+          "model_api": "openai-responses",
+          "thinking": "xhigh"
+        },
+        "env": {
+          "OPENAI_API_KEY": "${ZHIPU_API_KEY}",
+          "OPENAI_BASE_URL": "https://open.bigmodel.cn/api/v1"
+        },
+        "import_path": "pi_glm_adapter:HarborPiResponsesGLM",
+        "extra_allowed_hosts": [
+          "open.bigmodel.cn"
+        ]
+      }
+    ],
+    "environment": {
+      "type": "docker",
+      "delete": true,
+      "extra_allowed_hosts": [
+        "*.astral.sh",
+        "*.cloudfront.net",
+        "*.debian.org",
+        "*.ecr.aws",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "*.npmjs.org",
+        "*.pythonhosted.org",
+        "*.pytorch.org",
+        "*.supabase.co",
+        "*.ubuntu.com",
+        "astral.sh",
+        "github.com",
+        "open.bigmodel.cn",
+        "pypi.org",
+        "nodejs.org",
+        "*.nodejs.org"
+      ]
+    },
+    "runner": "harbor"
+  }
+}

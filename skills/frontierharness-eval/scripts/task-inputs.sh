@@ -28,10 +28,18 @@ repository_command() {
   local args
   if [ "$suite" = terminal-bench ]; then
     # Harbor's -a accepts a registered name or a module.path:ClassName import path.
-    args=(harbor run -p "$task_path" -a "${HARBOR_AGENT_IMPORT_PATH:-$harness}" -m "$model" --jobs-dir "$jobs" -r "$HARBOR_RETRIES" -y)
+    local agent=${HARBOR_AGENT_IMPORT_PATH:-$harness}
+    if [ "$BUNDLED_DSH" = 1 ]; then agent=adapters.dsh.agent:DeepSeekHarness; fi
+    args=(harbor run -p "$task_path" -a "$agent" -m "$model" --jobs-dir "$jobs" -r "$HARBOR_RETRIES" -y)
+    if [ "$BUNDLED_DSH" = 1 ]; then
+      args+=(--agent-kwarg "base_url=$BASE_URL" --agent-kwarg "secret_name=$SECRET_NAME" --agent-kwarg "platform=$TASK_PLATFORM")
+      if [ -n "$DSH_SEARCH" ]; then args+=(--agent-kwarg "web_search_max_keywords=$DSH_SEARCH"); fi
+    fi
     local allowed host=${SECRET_HOST:-$PROVIDER_HOST}
     if [ -n "$host" ]; then
       args+=(--allow-agent-host "$host")
+      # Harbor installs Codex with nvm in Debian/Ubuntu task images.
+      if [ "$agent" = codex ]; then args+=(--allow-environment-host nodejs.org); fi
       while IFS= read -r allowed; do
         [ "$allowed" = "$host" ] || args+=(--allow-environment-host "$allowed")
       done < <(provider_egress_policy "$host" | jq -r '.allowed_hosts[]')
@@ -54,7 +62,7 @@ repository_command() {
     echo "Unknown suite $suite; pass --cmd for a custom runner" >&2
     return 2
   fi
-  if [ -n "$SECRET_NAME" ]; then
+  if [ -n "$SECRET_NAME" ] && { [ "$suite" = datacurve ] || [ -z "$BASE_URL" ]; }; then
     # Both runners resolve the literal reference at agent setup. Job configs and
     # process arguments contain variable names only.
     args+=(--agent-env "$SECRET_NAME=\${$SECRET_NAME}")

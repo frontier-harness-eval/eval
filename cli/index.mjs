@@ -217,7 +217,10 @@ async function doctor(argv) {
   if (!Object.hasOwn(providers, provider)) {
     die(`unknown --provider "${provider}"; expected ${Object.keys(providers).join(", ")}`);
   }
-  const secret = flags["secret-name"] ?? run?.secret_name ?? providers[provider];
+  const responsesRoute = backend === "local-docker" && provider === "custom" &&
+    ["dsh", "codex"].includes(flags.harness ?? run?.harness) &&
+    (flags["base-url"] ?? run?.base_url ?? process.env.OPENAI_BASE_URL);
+  const secret = flags["secret-name"] ?? run?.secret_name ?? (responsesRoute ? "OPENAI_API_KEY" : providers[provider]);
 
   const node = Number(process.versions.node.split(".")[0]);
   const results = [
@@ -365,6 +368,7 @@ async function forward(command, argv) {
       if (run.reuse_runtime) die("This run uses a shared Runta runtime; resume with run-trials-shared-runtime.sh");
       for (const [flag, value] of Object.entries({harness: run.harness, provider: run.provider, model: run.model,
         cmd: run.cmd_template, timeout: run.timeout_seconds, "secret-host": run.secret_host, "secret-name": run.secret_name,
+        "base-url": run.base_url, "dsh-web-search-max-keywords": run.dsh_web_search_max_keywords,
         "harbor-agent-import-path": run.harbor_agent_import_path, "pier-agent-import-path": run.pier_agent_import_path})) {
         if (flags[flag] === undefined && value) passthrough.push(`--${flag}`, String(value));
       }
@@ -467,6 +471,8 @@ Install options:
 Execution options:
   --backend NAME     local-docker (default) or runta; --checkpoint selects Runta
   --tasks PATH       Task subset used by doctor and run
+  --base-url URL     Local custom Responses endpoint for dsh or codex
+  --dsh-web-search-max-keywords N   Enable provider-hosted web search in DSH
   --harbor-agent-import-path MOD:CLASS   Local Terminal-Bench agent adapter
   --pier-agent-import-path MOD:CLASS     Local DeepSWE agent adapter
 

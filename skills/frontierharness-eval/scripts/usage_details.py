@@ -211,6 +211,7 @@ REGISTRY: dict[str, tuple[str, Any]] = {
     "pi-responses": ("pi.txt", _pi_style),
     "oh-my-pi": ("omp.txt", _pi_style),
     "exo": ("exo-events.json", _exo),
+    "dsh": ("dsh-session.jsonl", _dsh),
     "dsh-standard": ("dsh-session.jsonl", _dsh),
     "dsh-ptc": ("dsh-session.jsonl", _dsh),
     "dsh-minimal": ("dsh-session.jsonl", _dsh),

@@ -171,6 +171,46 @@ test('the run refuses to start without the provider key in the environment', t =
   assert.equal(f.executions(), 0, 'no trial may launch without credentials');
 });
 
+test('bundled DSH resolves from an installed workspace and resumes its Responses route', t => {
+  const f = fixture(t);
+  writeFileSync(f.tasks, 'terminal-bench/regex-log\n');
+  f.env.ARK_TEST_KEY = 'test-credential-value';
+  ok(f.cli('install', '--agent', 'none'));
+  const args = ['--tasks', f.tasks, '--run-id', 'local'];
+  const route = ['--harness', 'dsh', '--provider', 'custom', '--model', 'fixture',
+    '--base-url', 'https://inference.test/v3', '--secret-name', 'ARK_TEST_KEY'];
+  ok(f.cli('run', ...route, ...args, '--dsh-web-search-max-keywords', '2'));
+  const [call] = readFileSync(join(f.root, 'executions.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+  assert.equal(call[call.indexOf('-a') + 1], 'adapters.dsh.agent:DeepSeekHarness');
+  for (const value of ['inference.test', 'web_search_max_keywords=2', 'secret_name=ARK_TEST_KEY']) {
+    assert.ok(call.includes(value));
+  }
+  assert.ok(!call.includes('--agent-env'));
+  assert.ok(!JSON.stringify(call).includes(f.env.ARK_TEST_KEY));
+  ok(f.cli('run', ...args));
+  assert.equal(f.executions(), 1);
+  assert.equal(f.cli('run', ...args, '--dsh-web-search-max-keywords', '3').status, 2);
+  assert.equal(f.cli('run', ...args, '--base-url', 'https://inference.test/v4').status, 2);
+});
+
+test('hosted search is opt-in and the DSH shortcut checks suite and credential scope', t => {
+  const f = fixture(t);
+  const route = ['--harness', 'dsh', '--provider', 'custom', '--model', 'fixture'];
+  const env = { ...f.env, OPENAI_API_KEY: 'test-only', OPENAI_BASE_URL: 'https://inference.test/v3' };
+  assert.match(f.run(route, env).stderr, /supports Terminal-Bench/);
+  writeFileSync(f.tasks, 'terminal-bench/regex-log\n');
+  assert.equal(f.run([...route, '--dsh-web-search-max-keywords', '-1'], env).status, 2);
+  assert.equal(f.run([...route, '--secret-host', 'other.test'], env).status, 2);
+  assert.equal(f.run([...route, '--harness', 'codex', '--dsh-web-search-max-keywords', '2'], env).status, 2);
+  assert.equal(f.executions(), 0);
+  ok(f.run(route, env));
+  ok(f.run([...route, '--harness', 'codex', '--run-id', 'codex-test'], env));
+  const [dsh, codex] = readFileSync(join(f.root, 'executions.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+  assert.ok(!dsh.some(value => value.includes('web_search')));
+  assert.ok(dsh.includes('secret_name=OPENAI_API_KEY'));
+  assert.equal(codex[codex.indexOf('-a') + 1], 'codex');
+});
+
 test('custom adapters reach both runners by import path and are pinned to the run', t => {
   const f = fixture(t);
   ok(f.run(['--harbor-agent-import-path', 'my_adapter.harbor:MyAgent',

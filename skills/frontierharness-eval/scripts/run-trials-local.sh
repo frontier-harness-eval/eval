@@ -29,6 +29,9 @@ PREPULL=1
 TASK_PLATFORM=${FH_TASK_PLATFORM:-linux/amd64}
 SECRET_NAME=""
 SECRET_HOST=""
+BASE_URL=""
+DSH_SEARCH=""
+BUNDLED_DSH=0
 HARBOR_AGENT_IMPORT_PATH=""
 PIER_AGENT_IMPORT_PATH=""
 
@@ -59,6 +62,12 @@ Run benchmark tasks locally with Docker + Harbor/Pier. No Runta dependency.
   --secret-name NAME  Environment variable holding the provider key. Defaults to the
                   provider preset. The script only checks it is set and non-empty.
   --secret-host HOST  Inference host for custom Harbor routes.
+  --base-url URL  HTTPS Responses API base URL for local Terminal-Bench dsh/codex
+                  with --provider custom. Defaults to OPENAI_BASE_URL for this route.
+                  The host is inferred and the default key variable is OPENAI_API_KEY.
+  --dsh-web-search-max-keywords N
+                  Add the provider's hosted web_search tool with max_keyword=N.
+                  Omit for standard DSH native tools.
   --no-prepull    Skip the per-task docker pull (Harbor/Pier pull on demand instead).
   --harbor-agent-import-path MOD:CLASS
                   Custom Harbor agent adapter for terminal-bench tasks, used in place
@@ -95,6 +104,8 @@ while [ $# -gt 0 ]; do
     --deep-swe) DEEP_SWE=$2; shift 2 ;;
     --secret-name) SECRET_NAME=$2; shift 2 ;;
     --secret-host) SECRET_HOST=$2; shift 2 ;;
+    --base-url) BASE_URL=$2; shift 2 ;;
+    --dsh-web-search-max-keywords) DSH_SEARCH=$2; shift 2 ;;
     --no-prepull) PREPULL=0; shift ;;
     --harbor-agent-import-path) HARBOR_AGENT_IMPORT_PATH=$2; shift 2 ;;
     --pier-agent-import-path) PIER_AGENT_IMPORT_PATH=$2; shift 2 ;;
@@ -128,6 +139,54 @@ fi
 MODEL=${MODEL:-$PROVIDER_MODEL}
 SECRET_NAME=${SECRET_NAME:-$PROVIDER_SECRET}
 SECRET_HOST=${SECRET_HOST:-$PROVIDER_HOST}
+# The task list is either a directory of task definitions or a plain list file,
+# identical to run-trials.sh.
+TASK_LIST=$(mktemp)
+cleanup() { rm -f "$TASK_LIST"; }
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+list_task_ids "$TASKS" > "$TASK_LIST"
+[ -s "$TASK_LIST" ] || { echo "no tasks found in $TASKS" >&2; exit 1; }
+
+# Only the suites actually present in the list gate their runner.
+need_harbor=$(grep -c '^terminal-bench/' "$TASK_LIST" || true)
+need_pier=$(grep -c '^datacurve/' "$TASK_LIST" || true)
+if [ "$HARNESS" = dsh ] && [ -z "$CMD_TEMPLATE" ]; then
+  if [ "$need_pier" -gt 0 ] && [ -z "$PIER_AGENT_IMPORT_PATH" ]; then
+    echo "The bundled dsh adapter supports Terminal-Bench. Select terminal-bench/<id> with --tasks." >&2; exit 2
+  fi
+  if [ "$need_harbor" -gt 0 ] && [ -z "$HARBOR_AGENT_IMPORT_PATH" ]; then BUNDLED_DSH=1; fi
+fi
+if [ -n "$DSH_SEARCH" ] && { [ "$BUNDLED_DSH" != 1 ] || [[ ! "$DSH_SEARCH" =~ ^[1-9][0-9]*$ ]]; }; then
+  echo "--dsh-web-search-max-keywords needs the bundled dsh adapter and a positive integer" >&2; exit 2
+fi
+if [ "$PROVIDER" = custom ] && [ -z "$CMD_TEMPLATE$HARBOR_AGENT_IMPORT_PATH" ] &&
+   { [ "$BUNDLED_DSH" = 1 ] || { [ "$HARNESS" = codex ] && [ "$need_pier" = 0 ]; }; }; then
+  BASE_URL=${BASE_URL:-${OPENAI_BASE_URL:-}}
+  if [ -n "$BASE_URL" ]; then
+    base_host=$(python3 - "$BASE_URL" <<'PYURL'
+from urllib.parse import urlsplit
+import sys
+url = urlsplit(sys.argv[1])
+if url.scheme != "https" or not url.hostname or url.username is not None or url.password is not None or url.query or url.fragment:
+    sys.exit("--base-url needs an HTTPS URL without credentials, query or fragment")
+print(url.hostname)
+PYURL
+    ) || exit 2
+    if [ -n "$SECRET_HOST" ] && [ "$SECRET_HOST" != "$base_host" ]; then
+      echo "--secret-host must match the --base-url host" >&2; exit 2
+    fi
+    SECRET_HOST=$base_host
+    SECRET_NAME=${SECRET_NAME:-OPENAI_API_KEY}
+  fi
+elif [ -n "$BASE_URL" ]; then
+  echo "--base-url requires --provider custom with the local dsh or codex adapter" >&2; exit 2
+fi
+if [ "$BUNDLED_DSH" = 1 ] && [ -z "$BASE_URL" ]; then
+  echo "dsh requires --provider custom, --model and --base-url (or OPENAI_BASE_URL)" >&2; exit 2
+fi
 if [ -n "$SECRET_NAME" ] && [[ ! "$SECRET_NAME" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
   echo "invalid --secret-name" >&2; exit 2
 fi
@@ -170,20 +229,6 @@ if [ -n "$SECRET_NAME" ] && [ -z "${!SECRET_NAME:-}" ]; then
   exit 2
 fi
 
-# The task list is either a directory of task definitions or a plain list file,
-# identical to run-trials.sh.
-TASK_LIST=$(mktemp)
-cleanup() { rm -f "$TASK_LIST"; }
-trap cleanup EXIT
-trap 'exit 130' INT
-trap 'exit 143' TERM
-
-list_task_ids "$TASKS" > "$TASK_LIST"
-[ -s "$TASK_LIST" ] || { echo "no tasks found in $TASKS" >&2; exit 1; }
-
-# Only the suites actually present in the list gate their runner.
-need_harbor=$(grep -c '^terminal-bench/' "$TASK_LIST" || true)
-need_pier=$(grep -c '^datacurve/' "$TASK_LIST" || true)
 if [ "$need_harbor" -gt 0 ]; then
   command -v harbor >/dev/null || { echo "harbor not found; install with: uv tool install harbor==0.22.0" >&2; exit 2; }
 fi
@@ -233,10 +278,11 @@ if [ ! -f "$RUN_DIR/run.json" ]; then
     --arg cmd "$CMD_TEMPLATE" --argjson timeout "$TIMEOUT" --argjson egress_policy "$EGRESS_POLICY" \
     --arg platform "$TASK_PLATFORM" --arg task_source "$TASK_SOURCE" --arg catalog "$catalog" --arg secret_name "$SECRET_NAME" --arg secret_host "$SECRET_HOST" --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     --arg harbor_agent "$HARBOR_AGENT_IMPORT_PATH" --arg pier_agent "$PIER_AGENT_IMPORT_PATH" \
+    --arg base_url "$BASE_URL" --argjson dsh_search "${DSH_SEARCH:-null}" \
     --argjson harbor_retries "$HARBOR_RETRIES" --argjson input_notes "$input_notes" \
   '{run_id:$run_id, backend:"local-docker", task_platform:$platform, task_source:$task_source, task_catalog_sha256:$catalog, secret_name:$secret_name, secret_host:$secret_host, topology:"local-docker", harness:$harness,
     harbor_agent_import_path:$harbor_agent, pier_agent_import_path:$pier_agent, harbor_retries:$harbor_retries,
-    model:$model, provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout,
+    base_url:$base_url, dsh_web_search_max_keywords:$dsh_search, model:$model, provider:$provider, cmd_template:$cmd, timeout_seconds:$timeout,
     started_at:$started, egress_policy:$egress_policy, methodology_comparable:false,
     methodology_notes:(["Local Docker topology (run-trials-local.sh): tasks share one Docker host and each trial creates fresh containers.",
       "The host has no Runta egress proxy. Harbor/Pier apply task-level network controls. Agent credentials come from the host environment.",
@@ -261,8 +307,10 @@ jq -e --arg source "$TASK_SOURCE" --arg catalog "$catalog" --arg secret "$SECRET
   || { echo "run inputs or provider configuration differ; use a new --run-id" >&2; exit 2; }
 # Legacy manifests used built-in agents and disabled internal Harbor retries.
 jq -e --arg harbor_agent "$HARBOR_AGENT_IMPORT_PATH" --arg pier_agent "$PIER_AGENT_IMPORT_PATH" \
+  --arg base_url "$BASE_URL" --argjson dsh_search "${DSH_SEARCH:-null}" \
   --argjson harbor_retries "$HARBOR_RETRIES" --argjson need_harbor "$need_harbor" \
   '(.harbor_agent_import_path // "") == $harbor_agent and (.pier_agent_import_path // "") == $pier_agent
+   and (.base_url // "") == $base_url and .dsh_web_search_max_keywords == $dsh_search
    and ($need_harbor == 0 or .task_source != "repository-v1" or (.harbor_retries // 0) == $harbor_retries)' \
   "$RUN_DIR/run.json" >/dev/null \
   || { echo "run agent adapters or Harbor retry policy differ; use a new --run-id" >&2; exit 2; }
@@ -417,6 +465,13 @@ while IFS= read -r entry || [ -n "$entry" ]; do
         # Harbor builds its egress sidecar for the native Docker daemon.
         unset DOCKER_DEFAULT_PLATFORM
       fi
+    fi
+    if [ "$BUNDLED_DSH" = 1 ] && [ "$suite" = terminal-bench ]; then
+      export PYTHONPATH="$SCRIPT_DIR${PYTHONPATH:+:$PYTHONPATH}"
+    elif [ "$HARNESS" = codex ] && [ -n "$BASE_URL" ]; then
+      # This route explicitly selects API-key auth, even on a logged-in Codex host.
+      unset CODEX_AUTH_JSON_PATH CODEX_FORCE_AUTH_JSON
+      export OPENAI_BASE_URL="$BASE_URL" OPENAI_API_KEY="${!SECRET_NAME}"
     fi
     exec "$TIMEOUT_BIN" --kill-after=30 "$TIMEOUT" bash -c "$command"
   ) </dev/null >"$trial_dir/runner.log" 2>&1 || exit_code=$?

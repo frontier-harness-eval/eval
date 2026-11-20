@@ -104,10 +104,55 @@ node cli/index.mjs chart --run runs/local-eval
 node cli/index.mjs report --run runs/local-eval
 ```
 
-Choose a harness registered in Harbor/Pier. Omit `--tasks` to evaluate the full
+Use a harness registered in Harbor/Pier or the bundled DSH adapter described below. Omit `--tasks` to evaluate the full
 set. The run directory records the backend, configuration and trial evidence.
 Resume with the same run ID and task selection. The local runner exits with 1
 when a trial is infrastructure-invalid.
+
+#### Run DeepSeek Harness or Codex from a fresh clone
+
+Start Docker and install the local prerequisites above. For this single Terminal-Bench task, install Harbor with Python 3.12 or newer. In Bash or zsh:
+
+```bash
+git clone --branch feat/local-docker-backend https://github.com/howardshaw/eval.git
+cd eval
+uv tool install --python 3.12 harbor==0.22.0
+export PATH="$HOME/.local/bin:$PATH"
+
+# Choose one task and enter the Ark key at the prompt.
+subset=$(mktemp)
+printf '%s\n' terminal-bench/regex-log > "$subset"
+printf 'Ark API key: ' >&2
+read -rs OPENAI_API_KEY
+printf '\n' >&2
+export OPENAI_API_KEY
+export OPENAI_BASE_URL=https://ark.cn-beijing.volces.com/api/v3
+route=(--backend local-docker --provider custom --model deepseek-v4-1-flash-261017 --tasks "$subset")
+
+node cli/index.mjs doctor "${route[@]}" --harness dsh
+node cli/index.mjs run "${route[@]}" --harness dsh --run-id dsh-regex
+node cli/index.mjs run "${route[@]}" --harness codex --run-id codex-regex
+```
+
+To reproduce the Ark hosted-search configuration, run DSH with a separate run ID:
+
+```bash
+node cli/index.mjs run "${route[@]}" --harness dsh --dsh-web-search-max-keywords 2 --run-id dsh-regex-search
+```
+
+Standard DSH uses its native tools in the headless profile. The search option adds `{"type":"web_search","max_keyword":2}` to Responses requests and requires provider support. The runner records the option and base URL in `run.json`. Use `--base-url` to override `OPENAI_BASE_URL` and `--secret-name` to select another exported key variable.
+
+The DSH adapter runs the official `@deepseek-ai/dsh@0.1.0-rc.8` npm package. On first use the runner fetches the pinned task source into `.fh-local/sources/` and Docker builds the locked Linux dependencies into `.fh-local/dsh/`. Both are rebuildable workspace caches. Codex uses Harbor's built-in adapter and installs its CLI in the trial environment when needed. The bundled DSH integration supports local Terminal-Bench tasks.
+
+For either run, inspect the verifier outcome and generate a report:
+
+```bash
+run=runs/dsh-regex  # or runs/codex-regex, runs/dsh-regex-search
+jq '{status, reward, input_tokens, output_tokens}' "$run/trials/terminal-bench-regex-log/trial.json"
+node cli/index.mjs normalize --run "$run"
+node cli/index.mjs chart --run "$run"
+node cli/index.mjs report --run "$run"
+```
 
 ### Optional Runta checkpoints
 

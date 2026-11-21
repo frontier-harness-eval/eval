@@ -22,15 +22,24 @@ Attempts per task: 37 tasks passed 4/4, 5 passed 3/4, 8 passed 2/4, 1 passed 1/4
 
 ## Cost
 
-An estimate from captured per-call tokens at DeepSeek's published list prices (peak and off-peak by the UTC+8 clock), not an invoice. USD figures use a fixed 7.10 CNY/USD; recompute from the CNY fields in `observed-results.json` for another rate.
+Cost follows the board's own accounting (`frontierharness.org/live`): a trial is priced from its tokens at the model card's list prices, and the aggregate is per task, not per attempt.
 
-| Split | Per attempt | Per task (4 attempts) |
-|---|---:|---:|
-| Terminal-Bench 2 (45 tasks) | CNY 0.32 / $0.045 | CNY 1.28 / $0.180 |
-| Tasks introduced in v1.1 (17 tasks) | CNY 0.93 / $0.132 | CNY 3.74 / $0.526 |
-| **All (62 tasks)** | **CNY 0.49 / $0.069** | **CNY 1.95 / $0.275** |
+```
+trial cost = uncached_input x $0.30 + cached_input x $0.007 + output x $1.20   (per million tokens)
+task cost  = mean over that task's four attempts
+cost_per_task = mean of the 62 task costs
+cost_per_pass = cost_per_task / pass_rate
+```
 
-The whole run cost CNY 121.10 ($17.06). A v1.1 task costs about 2.9x more than a Terminal-Bench 2 task because most of them run until their 8-hour budget.
+Prices are the Baseten list price for `deepseek-ai/DeepSeek-V4.1-Flash-1017` checked 2026-10-29, the model card the board uses for this model, so these figures can be read next to the published rows. The provider this run actually called was the DeepSeek official API; its own CNY prices applied to the same tokens come to CNY 121.10 for the whole run, which is the run's real spend estimate and is noted in `observed-results.json` rather than mixed into the USD figures.
+
+| Split | Trials | Pass rate | Cost / task | Cost / pass | Median task cost |
+|---|---:|---:|---:|---:|---:|
+| Terminal-Bench 2 (45 tasks) | 180 | 91.1% | $0.084 | $0.092 | $0.052 |
+| Tasks introduced in v1.1 (17 tasks) | 68 | 23.5% | $0.249 | $1.058 | $0.231 |
+| **All (62 tasks)** | **248** | **72.6%** | **$0.129** | **$0.178** | **$0.095** |
+
+Total inference cost: $31.97. There is no managed sandbox in this run (local Docker), so the sandbox component the board reports separately is 0 here.
 
 ## Configuration and deviations
 

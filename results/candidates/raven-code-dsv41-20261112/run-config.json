@@ -144,7 +144,15 @@
   "protocol": "Each of the 62 tasks has four attempts in the retained result set. Non-passing attempts were repeated in later sessions and passing attempts were not re-run, so the figures describe the retained attempt set rather than four independent samples. The score is passed attempts / attempts; a task that passed once counts 1/4.",
   "model_id": "deepseek-flash",
   "cost_conversion": {
-    "cny_per_usd": 7.1,
-    "note": "Costs in observed-results.json are estimates from captured tokens at DeepSeek list prices, CNY; USD uses this fixed rate."
+    "formula": "uncached_input * input + cached_input * cached_input + output * output, per million tokens",
+    "prices_usd_per_million": {
+      "input": 0.3,
+      "cached_input": 0.007,
+      "output": 1.2
+    },
+    "prices_source": "Baseten list price for deepseek-ai/DeepSeek-V4.1-Flash-1017, checked 2026-10-29; the model card frontierharness.org/live prices this model with",
+    "aggregation": "per-attempt from tokens; per-task = mean over attempts; cost_per_task = mean of the 62 per-task means; cost_per_pass = cost_per_task / pass_rate",
+    "sandbox": "local Docker, no managed sandbox (sandbox_usd 0)",
+    "provider_spend_cny": 121.1
   }
 }

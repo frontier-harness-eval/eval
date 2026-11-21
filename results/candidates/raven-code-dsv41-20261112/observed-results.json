@@ -5,52 +5,34 @@
    "tasks": 45,
    "attempts": 180,
    "passed_attempts": 164,
-   "tasks_with_a_pass": 43,
-   "duration_ms": 135356000,
-   "captured_calls": 6285,
-   "prompt_tokens": 5720954,
-   "cached_prompt_tokens": 431759728,
-   "completion_tokens": 8578491,
-   "captured_cost_cny": 57.56,
-   "captured_cost_usd": 8.11,
-   "cost_per_attempt_cny": 0.32,
-   "cost_per_task_cny": 1.279,
-   "cost_per_attempt_usd": 0.045,
-   "cost_per_task_usd": 0.18
+   "pass_rate": 0.9111,
+   "cost_usd_total": 15.0328,
+   "cost_usd_per_task": 0.0835,
+   "cost_usd_per_pass": 0.0917,
+   "median_task_cost_usd": 0.0519,
+   "sandbox_usd": 0.0
   },
   "v1.1-new": {
    "tasks": 17,
    "attempts": 68,
    "passed_attempts": 16,
-   "tasks_with_a_pass": 8,
-   "duration_ms": 82526000,
-   "captured_calls": 5097,
-   "prompt_tokens": 5800054,
-   "cached_prompt_tokens": 644550272,
-   "completion_tokens": 8901625,
-   "captured_cost_cny": 63.54,
-   "captured_cost_usd": 8.95,
-   "cost_per_attempt_cny": 0.934,
-   "cost_per_task_cny": 3.738,
-   "cost_per_attempt_usd": 0.132,
-   "cost_per_task_usd": 0.526
+   "pass_rate": 0.2353,
+   "cost_usd_total": 16.9338,
+   "cost_usd_per_task": 0.249,
+   "cost_usd_per_pass": 1.0584,
+   "median_task_cost_usd": 0.2313,
+   "sandbox_usd": 0.0
   },
   "all": {
    "tasks": 62,
    "attempts": 248,
    "passed_attempts": 180,
-   "tasks_with_a_pass": 51,
-   "duration_ms": 217882000,
-   "captured_calls": 11382,
-   "prompt_tokens": 11521008,
-   "cached_prompt_tokens": 1076310000,
-   "completion_tokens": 17480116,
-   "captured_cost_cny": 121.1,
-   "captured_cost_usd": 17.06,
-   "cost_per_attempt_cny": 0.488,
-   "cost_per_task_cny": 1.953,
-   "cost_per_attempt_usd": 0.069,
-   "cost_per_task_usd": 0.275
+   "pass_rate": 0.7258,
+   "cost_usd_total": 31.9666,
+   "cost_usd_per_task": 0.1289,
+   "cost_usd_per_pass": 0.1776,
+   "median_task_cost_usd": 0.095,
+   "sandbox_usd": 0.0
   }
  },
  "tasks": [
@@ -80,7 +62,8 @@
      "prompt_tokens": 7712,
      "cached_prompt_tokens": 76416,
      "completion_tokens": 100171,
-     "captured_cost_cny": 0.4099
+     "captured_cost_cny": 0.4099,
+     "cost_usd_baseten": 0.123054
     },
     {
      "trial": "adaptive-rejection-sampler__HQ29rS6",
@@ -91,7 +74,8 @@
      "prompt_tokens": 54468,
      "cached_prompt_tokens": 3849984,
      "completion_tokens": 108342,
-     "captured_cost_cny": 0.5648
+     "captured_cost_cny": 0.5648,
+     "cost_usd_baseten": 0.173301
     },
     {
      "trial": "adaptive-rejection-sampler__bmE4fYL",
@@ -102,7 +86,8 @@
      "prompt_tokens": 54964,
      "cached_prompt_tokens": 4233728,
      "completion_tokens": 131841,
-     "captured_cost_cny": 0.667
+     "captured_cost_cny": 0.667,
+     "cost_usd_baseten": 0.204334
     },
     {
      "trial": "adaptive-rejection-sampler__pRcgXqB",
@@ -113,9 +98,11 @@
      "prompt_tokens": 6601,
      "cached_prompt_tokens": 64512,
      "completion_tokens": 100215,
-     "captured_cost_cny": 0.4088
+     "captured_cost_cny": 0.4088,
+     "cost_usd_baseten": 0.12269
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.623379
   },
   {
    "index": 2,
@@ -143,7 +130,8 @@
      "prompt_tokens": 75547,
      "cached_prompt_tokens": 20169472,
      "completion_tokens": 200928,
-     "captured_cost_cny": 1.2826
+     "captured_cost_cny": 1.2826,
+     "cost_usd_baseten": 0.404964
     },
     {
      "trial": "batched-eval-parity__BsXudQf",
@@ -154,7 +142,8 @@
      "prompt_tokens": 72653,
      "cached_prompt_tokens": 12769792,
      "completion_tokens": 177676,
-     "captured_cost_cny": 1.0388
+     "captured_cost_cny": 1.0388,
+     "cost_usd_baseten": 0.324396
     },
     {
      "trial": "batched-eval-parity__V8Kdx2k",
@@ -165,7 +154,8 @@
      "prompt_tokens": 211262,
      "cached_prompt_tokens": 25384576,
      "completion_tokens": 210195,
-     "captured_cost_cny": 1.5597
+     "captured_cost_cny": 1.5597,
+     "cost_usd_baseten": 0.493305
     },
     {
      "trial": "batched-eval-parity__j73ibTB",
@@ -176,9 +166,11 @@
      "prompt_tokens": 81245,
      "cached_prompt_tokens": 15535360,
      "completion_tokens": 215062,
-     "captured_cost_cny": 1.2522
+     "captured_cost_cny": 1.2522,
+     "cost_usd_baseten": 0.391195
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.61386
   },
   {
    "index": 3,
@@ -206,7 +198,8 @@
      "prompt_tokens": 37455,
      "cached_prompt_tokens": 6249472,
      "completion_tokens": 101953,
-     "captured_cost_cny": 1.1405
+     "captured_cost_cny": 1.1405,
+     "cost_usd_baseten": 0.177326
     },
     {
      "trial": "bun-sourcemap-leak__Nhq9Zh7",
@@ -217,7 +210,8 @@
      "prompt_tokens": 54583,
      "cached_prompt_tokens": 13525120,
      "completion_tokens": 173408,
-     "captured_cost_cny": 1.0187
+     "captured_cost_cny": 1.0187,
+     "cost_usd_baseten": 0.31914
     },
     {
      "trial": "bun-sourcemap-leak__PLoRdGS",
@@ -228,7 +222,8 @@
      "prompt_tokens": 33182,
      "cached_prompt_tokens": 6280064,
      "completion_tokens": 96864,
-     "captured_cost_cny": 0.5462
+     "captured_cost_cny": 0.5462,
+     "cost_usd_baseten": 0.170152
     },
     {
      "trial": "bun-sourcemap-leak__SEAjnjs",
@@ -239,9 +234,11 @@
      "prompt_tokens": 22587,
      "cached_prompt_tokens": 2397696,
      "completion_tokens": 82045,
-     "captured_cost_cny": 0.3987
+     "captured_cost_cny": 0.3987,
+     "cost_usd_baseten": 0.122014
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.788632
   },
   {
    "index": 4,
@@ -269,7 +266,8 @@
      "prompt_tokens": 34030,
      "cached_prompt_tokens": 1970560,
      "completion_tokens": 38835,
-     "captured_cost_cny": 0.2288
+     "captured_cost_cny": 0.2288,
+     "cost_usd_baseten": 0.070605
     },
     {
      "trial": "caffe-cifar-10__YQAXZqy",
@@ -280,7 +278,8 @@
      "prompt_tokens": 44028,
      "cached_prompt_tokens": 2553344,
      "completion_tokens": 47318,
-     "captured_cost_cny": 0.2844
+     "captured_cost_cny": 0.2844,
+     "cost_usd_baseten": 0.087863
     },
     {
      "trial": "caffe-cifar-10__fkwkcFJ",
@@ -291,7 +290,8 @@
      "prompt_tokens": 38553,
      "cached_prompt_tokens": 2284032,
      "completion_tokens": 39260,
-     "captured_cost_cny": 0.2413
+     "captured_cost_cny": 0.2413,
+     "cost_usd_baseten": 0.074666
     },
     {
      "trial": "caffe-cifar-10__yiH7LmQ",
@@ -302,9 +302,11 @@
      "prompt_tokens": 32026,
      "cached_prompt_tokens": 1918464,
      "completion_tokens": 49695,
-     "captured_cost_cny": 0.2692
+     "captured_cost_cny": 0.2692,
+     "cost_usd_baseten": 0.082671
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.315805
   },
   {
    "index": 5,
@@ -332,7 +334,8 @@
      "prompt_tokens": 8079,
      "cached_prompt_tokens": 739200,
      "completion_tokens": 39739,
-     "captured_cost_cny": 0.1818
+     "captured_cost_cny": 0.1818,
+     "cost_usd_baseten": 0.055285
     },
     {
      "trial": "cancel-async-tasks__i9NJYBr",
@@ -343,7 +346,8 @@
      "prompt_tokens": 6554,
      "cached_prompt_tokens": 376576,
      "completion_tokens": 18323,
-     "captured_cost_cny": 0.0874
+     "captured_cost_cny": 0.0874,
+     "cost_usd_baseten": 0.02659
     },
     {
      "trial": "cancel-async-tasks__naZLnxv",
@@ -354,7 +358,8 @@
      "prompt_tokens": 16124,
      "cached_prompt_tokens": 1142272,
      "completion_tokens": 38765,
-     "captured_cost_cny": 0.3881
+     "captured_cost_cny": 0.3881,
+     "cost_usd_baseten": 0.059351
     },
     {
      "trial": "cancel-async-tasks__xhtuLx5",
@@ -365,9 +370,11 @@
      "prompt_tokens": 6676,
      "cached_prompt_tokens": 375808,
      "completion_tokens": 27999,
-     "captured_cost_cny": 0.1262
+     "captured_cost_cny": 0.1262,
+     "cost_usd_baseten": 0.038232
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.179458
   },
   {
    "index": 6,
@@ -395,7 +402,8 @@
      "prompt_tokens": 36384,
      "cached_prompt_tokens": 3227264,
      "completion_tokens": 107560,
-     "captured_cost_cny": 0.5312
+     "captured_cost_cny": 0.5312,
+     "cost_usd_baseten": 0.162578
     },
     {
      "trial": "cargo-flight-dispatch__nDsG8vb",
@@ -406,7 +414,8 @@
      "prompt_tokens": 44025,
      "cached_prompt_tokens": 2805760,
      "completion_tokens": 82713,
-     "captured_cost_cny": 0.431
+     "captured_cost_cny": 0.431,
+     "cost_usd_baseten": 0.132103
     },
     {
      "trial": "cargo-flight-dispatch__qWibg2y",
@@ -417,7 +426,8 @@
      "prompt_tokens": 33731,
      "cached_prompt_tokens": 4311552,
      "completion_tokens": 120126,
-     "captured_cost_cny": 0.6005
+     "captured_cost_cny": 0.6005,
+     "cost_usd_baseten": 0.184451
     },
     {
      "trial": "cargo-flight-dispatch__xCgwbz8",
@@ -428,9 +438,11 @@
      "prompt_tokens": 32418,
      "cached_prompt_tokens": 3094528,
      "completion_tokens": 116171,
-     "captured_cost_cny": 0.559
+     "captured_cost_cny": 0.559,
+     "cost_usd_baseten": 0.170792
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.649924
   },
   {
    "index": 7,
@@ -458,7 +470,8 @@
      "prompt_tokens": 40870,
      "cached_prompt_tokens": 3230720,
      "completion_tokens": 89946,
-     "captured_cost_cny": 0.4653
+     "captured_cost_cny": 0.4653,
+     "cost_usd_baseten": 0.142811
     },
     {
      "trial": "chess-best-move__NcpUzoY",
@@ -469,7 +482,8 @@
      "prompt_tokens": 35813,
      "cached_prompt_tokens": 2134784,
      "completion_tokens": 57084,
-     "captured_cost_cny": 0.3068
+     "captured_cost_cny": 0.3068,
+     "cost_usd_baseten": 0.094188
     },
     {
      "trial": "chess-best-move__ZRCyZDm",
@@ -480,7 +494,8 @@
      "prompt_tokens": 22556,
      "cached_prompt_tokens": 1323904,
      "completion_tokens": 47685,
-     "captured_cost_cny": 0.2398
+     "captured_cost_cny": 0.2398,
+     "cost_usd_baseten": 0.073256
     },
     {
      "trial": "chess-best-move__qySjejs",
@@ -491,9 +506,11 @@
      "prompt_tokens": 18999,
      "cached_prompt_tokens": 851072,
      "completion_tokens": 35367,
-     "captured_cost_cny": 0.355
+     "captured_cost_cny": 0.355,
+     "cost_usd_baseten": 0.054098
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.364353
   },
   {
    "index": 8,
@@ -521,7 +538,8 @@
      "prompt_tokens": 25115,
      "cached_prompt_tokens": 2165120,
      "completion_tokens": 76256,
-     "captured_cost_cny": 0.7469
+     "captured_cost_cny": 0.7469,
+     "cost_usd_baseten": 0.114198
     },
     {
      "trial": "circuit-fibsqrt__N5UAnLe",
@@ -532,7 +550,8 @@
      "prompt_tokens": 34296,
      "cached_prompt_tokens": 1132800,
      "completion_tokens": 119954,
-     "captured_cost_cny": 0.5368
+     "captured_cost_cny": 0.5368,
+     "cost_usd_baseten": 0.162163
     },
     {
      "trial": "circuit-fibsqrt__SBGfVdL",
@@ -543,7 +562,8 @@
      "prompt_tokens": 15281,
      "cached_prompt_tokens": 2195840,
      "completion_tokens": 71288,
-     "captured_cost_cny": 0.6887
+     "captured_cost_cny": 0.6887,
+     "cost_usd_baseten": 0.105501
     },
     {
      "trial": "circuit-fibsqrt__h8qPhHK",
@@ -554,9 +574,11 @@
      "prompt_tokens": 35344,
      "cached_prompt_tokens": 397952,
      "completion_tokens": 77912,
-     "captured_cost_cny": 0.355
+     "captured_cost_cny": 0.355,
+     "cost_usd_baseten": 0.106883
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.488745
   },
   {
    "index": 9,
@@ -584,7 +606,8 @@
      "prompt_tokens": 2729,
      "cached_prompt_tokens": 86400,
      "completion_tokens": 3079,
-     "captured_cost_cny": 0.0168
+     "captured_cost_cny": 0.0168,
+     "cost_usd_baseten": 0.005118
     },
     {
      "trial": "code-from-image__JMPHxWx",
@@ -595,7 +618,8 @@
      "prompt_tokens": 2430,
      "cached_prompt_tokens": 58240,
      "completion_tokens": 3801,
-     "captured_cost_cny": 0.0188
+     "captured_cost_cny": 0.0188,
+     "cost_usd_baseten": 0.005698
     },
     {
      "trial": "code-from-image__QjJjCZi",
@@ -606,7 +630,8 @@
      "prompt_tokens": 16173,
      "cached_prompt_tokens": 696192,
      "completion_tokens": 21236,
-     "captured_cost_cny": 0.115
+     "captured_cost_cny": 0.115,
+     "cost_usd_baseten": 0.035208
     },
     {
      "trial": "code-from-image__VLLpTMo",
@@ -617,9 +642,11 @@
      "prompt_tokens": 2847,
      "cached_prompt_tokens": 70016,
      "completion_tokens": 3390,
-     "captured_cost_cny": 0.0178
+     "captured_cost_cny": 0.0178,
+     "cost_usd_baseten": 0.005412
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.051436
   },
   {
    "index": 10,
@@ -647,7 +674,8 @@
      "prompt_tokens": 6345,
      "cached_prompt_tokens": 228992,
      "completion_tokens": 10816,
-     "captured_cost_cny": 0.0542
+     "captured_cost_cny": 0.0542,
+     "cost_usd_baseten": 0.016486
     },
     {
      "trial": "constraints-scheduling__a3RX4qE",
@@ -658,7 +686,8 @@
      "prompt_tokens": 4579,
      "cached_prompt_tokens": 96768,
      "completion_tokens": 9863,
-     "captured_cost_cny": 0.046
+     "captured_cost_cny": 0.046,
+     "cost_usd_baseten": 0.013887
     },
     {
      "trial": "constraints-scheduling__gifDY8G",
@@ -669,7 +698,8 @@
      "prompt_tokens": 4185,
      "cached_prompt_tokens": 94080,
      "completion_tokens": 7393,
-     "captured_cost_cny": 0.0356
+     "captured_cost_cny": 0.0356,
+     "cost_usd_baseten": 0.010786
     },
     {
      "trial": "constraints-scheduling__vGbdP4E",
@@ -680,9 +710,11 @@
      "prompt_tokens": 3956,
      "cached_prompt_tokens": 84096,
      "completion_tokens": 4173,
-     "captured_cost_cny": 0.0223
+     "captured_cost_cny": 0.0223,
+     "cost_usd_baseten": 0.006783
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.047942
   },
   {
    "index": 11,
@@ -710,7 +742,8 @@
      "prompt_tokens": 48929,
      "cached_prompt_tokens": 3056768,
      "completion_tokens": 130930,
-     "captured_cost_cny": 0.6338
+     "captured_cost_cny": 0.6338,
+     "cost_usd_baseten": 0.193192
     },
     {
      "trial": "dna-assembly__PZ46zuX",
@@ -721,7 +754,8 @@
      "prompt_tokens": 102783,
      "cached_prompt_tokens": 14250240,
      "completion_tokens": 209279,
-     "captured_cost_cny": 2.4498
+     "captured_cost_cny": 2.4498,
+     "cost_usd_baseten": 0.381721
     },
     {
      "trial": "dna-assembly__oGkGYKz",
@@ -732,7 +766,8 @@
      "prompt_tokens": 51702,
      "cached_prompt_tokens": 6600576,
      "completion_tokens": 166981,
-     "captured_cost_cny": 0.8516
+     "captured_cost_cny": 0.8516,
+     "cost_usd_baseten": 0.262092
     },
     {
      "trial": "dna-assembly__uRHt7TL",
@@ -743,9 +778,11 @@
      "prompt_tokens": 39269,
      "cached_prompt_tokens": 3782784,
      "completion_tokens": 119706,
-     "captured_cost_cny": 0.5937
+     "captured_cost_cny": 0.5937,
+     "cost_usd_baseten": 0.181907
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.018912
   },
   {
    "index": 12,
@@ -773,7 +810,8 @@
      "prompt_tokens": 57289,
      "cached_prompt_tokens": 4226816,
      "completion_tokens": 88540,
-     "captured_cost_cny": 0.496
+     "captured_cost_cny": 0.496,
+     "cost_usd_baseten": 0.153022
     },
     {
      "trial": "dna-insert__cF5TDPx",
@@ -784,7 +822,8 @@
      "prompt_tokens": 45963,
      "cached_prompt_tokens": 2754816,
      "completion_tokens": 74681,
-     "captured_cost_cny": 0.3998
+     "captured_cost_cny": 0.3998,
+     "cost_usd_baseten": 0.12269
     },
     {
      "trial": "dna-insert__xbefELq",
@@ -795,7 +834,8 @@
      "prompt_tokens": 49971,
      "cached_prompt_tokens": 7204608,
      "completion_tokens": 153276,
-     "captured_cost_cny": 0.8072
+     "captured_cost_cny": 0.8072,
+     "cost_usd_baseten": 0.249355
     },
     {
      "trial": "dna-insert__yWG2mMc",
@@ -806,9 +846,11 @@
      "prompt_tokens": 35881,
      "cached_prompt_tokens": 2391808,
      "completion_tokens": 116548,
-     "captured_cost_cny": 0.5499
+     "captured_cost_cny": 0.5499,
+     "cost_usd_baseten": 0.167365
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.692432
   },
   {
    "index": 13,
@@ -836,7 +878,8 @@
      "prompt_tokens": 48772,
      "cached_prompt_tokens": 12747008,
      "completion_tokens": 156785,
-     "captured_cost_cny": 0.9309
+     "captured_cost_cny": 0.9309,
+     "cost_usd_baseten": 0.292003
     },
     {
      "trial": "embedding-drift-monitor__TuF7CDj",
@@ -847,7 +890,8 @@
      "prompt_tokens": 37212,
      "cached_prompt_tokens": 4003840,
      "completion_tokens": 94807,
-     "captured_cost_cny": 0.4965
+     "captured_cost_cny": 0.4965,
+     "cost_usd_baseten": 0.152959
     },
     {
      "trial": "embedding-drift-monitor__m8ez8Mk",
@@ -858,7 +902,8 @@
      "prompt_tokens": 32582,
      "cached_prompt_tokens": 4778496,
      "completion_tokens": 103797,
-     "captured_cost_cny": 1.0867
+     "captured_cost_cny": 1.0867,
+     "cost_usd_baseten": 0.16778
     },
     {
      "trial": "embedding-drift-monitor__z77iNTq",
@@ -869,9 +914,11 @@
      "prompt_tokens": 54886,
      "cached_prompt_tokens": 6397952,
      "completion_tokens": 88617,
-     "captured_cost_cny": 0.5373
+     "captured_cost_cny": 0.5373,
+     "cost_usd_baseten": 0.167592
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.780334
   },
   {
    "index": 14,
@@ -899,7 +946,8 @@
      "prompt_tokens": 14357,
      "cached_prompt_tokens": 1065600,
      "completion_tokens": 41846,
-     "captured_cost_cny": 0.2031
+     "captured_cost_cny": 0.2031,
+     "cost_usd_baseten": 0.061982
     },
     {
      "trial": "feal-linear-cryptanalysis__NaBaro5",
@@ -910,7 +958,8 @@
      "prompt_tokens": 7993,
      "cached_prompt_tokens": 313600,
      "completion_tokens": 27732,
-     "captured_cost_cny": 0.2504
+     "captured_cost_cny": 0.2504,
+     "cost_usd_baseten": 0.037872
     },
     {
      "trial": "feal-linear-cryptanalysis__QwSm8ME",
@@ -921,7 +970,8 @@
      "prompt_tokens": 6969,
      "cached_prompt_tokens": 342400,
      "completion_tokens": 35055,
-     "captured_cost_cny": 0.154
+     "captured_cost_cny": 0.154,
+     "cost_usd_baseten": 0.046553
     },
     {
      "trial": "feal-linear-cryptanalysis__Yu8azUL",
@@ -932,9 +982,11 @@
      "prompt_tokens": 17126,
      "cached_prompt_tokens": 1466368,
      "completion_tokens": 42590,
-     "captured_cost_cny": 0.2168
+     "captured_cost_cny": 0.2168,
+     "cost_usd_baseten": 0.06651
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.212917
   },
   {
    "index": 15,
@@ -962,7 +1014,8 @@
      "prompt_tokens": 83823,
      "cached_prompt_tokens": 9864188,
      "completion_tokens": 104296,
-     "captured_cost_cny": 1.3966
+     "captured_cost_cny": 1.3966,
+     "cost_usd_baseten": 0.219351
     },
     {
      "trial": "filter-js-from-html__YaoE2bS",
@@ -973,7 +1026,8 @@
      "prompt_tokens": 84853,
      "cached_prompt_tokens": 8604156,
      "completion_tokens": 115894,
-     "captured_cost_cny": 0.7205
+     "captured_cost_cny": 0.7205,
+     "cost_usd_baseten": 0.224758
     },
     {
      "trial": "filter-js-from-html__cGULj2h",
@@ -984,7 +1038,8 @@
      "prompt_tokens": 55472,
      "cached_prompt_tokens": 17376252,
      "completion_tokens": 145928,
-     "captured_cost_cny": 0.9867
+     "captured_cost_cny": 0.9867,
+     "cost_usd_baseten": 0.313389
     },
     {
      "trial": "filter-js-from-html__sn4aEqq",
@@ -995,9 +1050,11 @@
      "prompt_tokens": 95290,
      "cached_prompt_tokens": 4232956,
      "completion_tokens": 59039,
-     "captured_cost_cny": 0.4161
+     "captured_cost_cny": 0.4161,
+     "cost_usd_baseten": 0.129064
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.886562
   },
   {
    "index": 16,
@@ -1025,7 +1082,8 @@
      "prompt_tokens": 17066,
      "cached_prompt_tokens": 404736,
      "completion_tokens": 7254,
-     "captured_cost_cny": 0.0542
+     "captured_cost_cny": 0.0542,
+     "cost_usd_baseten": 0.016658
     },
     {
      "trial": "fix-code-vulnerability__h3xPUaU",
@@ -1036,7 +1094,8 @@
      "prompt_tokens": 15542,
      "cached_prompt_tokens": 251008,
      "completion_tokens": 5804,
-     "captured_cost_cny": 0.0438
+     "captured_cost_cny": 0.0438,
+     "cost_usd_baseten": 0.013384
     },
     {
      "trial": "fix-code-vulnerability__hvLEiGs",
@@ -1047,7 +1106,8 @@
      "prompt_tokens": 15376,
      "cached_prompt_tokens": 291200,
      "completion_tokens": 6727,
-     "captured_cost_cny": 0.0481
+     "captured_cost_cny": 0.0481,
+     "cost_usd_baseten": 0.014724
     },
     {
      "trial": "fix-code-vulnerability__smCKdpk",
@@ -1058,9 +1118,11 @@
      "prompt_tokens": 23015,
      "cached_prompt_tokens": 503680,
      "completion_tokens": 9615,
-     "captured_cost_cny": 0.0715
+     "captured_cost_cny": 0.0715,
+     "cost_usd_baseten": 0.021968
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.066734
   },
   {
    "index": 17,
@@ -1088,7 +1150,8 @@
      "prompt_tokens": 8124,
      "cached_prompt_tokens": 247808,
      "completion_tokens": 15429,
-     "captured_cost_cny": 0.0748
+     "captured_cost_cny": 0.0748,
+     "cost_usd_baseten": 0.022687
     },
     {
      "trial": "fix-git__D7SCdka",
@@ -1099,7 +1162,8 @@
      "prompt_tokens": 7564,
      "cached_prompt_tokens": 203648,
      "completion_tokens": 14413,
-     "captured_cost_cny": 0.0693
+     "captured_cost_cny": 0.0693,
+     "cost_usd_baseten": 0.02099
     },
     {
      "trial": "fix-git__HEWKfLf",
@@ -1110,7 +1174,8 @@
      "prompt_tokens": 7786,
      "cached_prompt_tokens": 214528,
      "completion_tokens": 13119,
-     "captured_cost_cny": 0.0646
+     "captured_cost_cny": 0.0646,
+     "cost_usd_baseten": 0.01958
     },
     {
      "trial": "fix-git__sNvemwH",
@@ -1121,9 +1186,11 @@
      "prompt_tokens": 19757,
      "cached_prompt_tokens": 306176,
      "completion_tokens": 11003,
-     "captured_cost_cny": 0.0699
+     "captured_cost_cny": 0.0699,
+     "cost_usd_baseten": 0.021274
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.084531
   },
   {
    "index": 18,
@@ -1151,7 +1218,8 @@
      "prompt_tokens": 61404,
      "cached_prompt_tokens": 3653632,
      "completion_tokens": 33123,
-     "captured_cost_cny": 0.267
+     "captured_cost_cny": 0.267,
+     "cost_usd_baseten": 0.083744
     },
     {
      "trial": "fix-ocaml-gc__T6jVadD",
@@ -1162,7 +1230,8 @@
      "prompt_tokens": 57743,
      "cached_prompt_tokens": 2934016,
      "completion_tokens": 32284,
-     "captured_cost_cny": 0.2456
+     "captured_cost_cny": 0.2456,
+     "cost_usd_baseten": 0.076602
     },
     {
      "trial": "fix-ocaml-gc__n44aSy3",
@@ -1173,7 +1242,8 @@
      "prompt_tokens": 73859,
      "cached_prompt_tokens": 2501632,
      "completion_tokens": 19494,
-     "captured_cost_cny": 0.2019
+     "captured_cost_cny": 0.2019,
+     "cost_usd_baseten": 0.063062
     },
     {
      "trial": "fix-ocaml-gc__tazGyrn",
@@ -1184,9 +1254,11 @@
      "prompt_tokens": 71622,
      "cached_prompt_tokens": 3519360,
      "completion_tokens": 37925,
-     "captured_cost_cny": 0.2937
+     "captured_cost_cny": 0.2937,
+     "cost_usd_baseten": 0.091632
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.31504
   },
   {
    "index": 19,
@@ -1214,7 +1286,8 @@
      "prompt_tokens": 16130,
      "cached_prompt_tokens": 846336,
      "completion_tokens": 65861,
-     "captured_cost_cny": 0.2965
+     "captured_cost_cny": 0.2965,
+     "cost_usd_baseten": 0.089797
     },
     {
      "trial": "foodstuff-beta-activity__PeK9njj",
@@ -1225,7 +1298,8 @@
      "prompt_tokens": 15724,
      "cached_prompt_tokens": 1316864,
      "completion_tokens": 97608,
-     "captured_cost_cny": 0.4325
+     "captured_cost_cny": 0.4325,
+     "cost_usd_baseten": 0.131065
     },
     {
      "trial": "foodstuff-beta-activity__RDHe6vo",
@@ -1236,7 +1310,8 @@
      "prompt_tokens": 27802,
      "cached_prompt_tokens": 2208896,
      "completion_tokens": 105362,
-     "captured_cost_cny": 0.4934
+     "captured_cost_cny": 0.4934,
+     "cost_usd_baseten": 0.150237
     },
     {
      "trial": "foodstuff-beta-activity__SdQJoyW",
@@ -1247,9 +1322,11 @@
      "prompt_tokens": 16557,
      "cached_prompt_tokens": 1047936,
      "completion_tokens": 91678,
-     "captured_cost_cny": 0.4042
+     "captured_cost_cny": 0.4042,
+     "cost_usd_baseten": 0.122316
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.493415
   },
   {
    "index": 20,
@@ -1277,7 +1354,8 @@
      "prompt_tokens": 46767,
      "cached_prompt_tokens": 9447680,
      "completion_tokens": 216542,
-     "captured_cost_cny": 1.1019
+     "captured_cost_cny": 1.1019,
+     "cost_usd_baseten": 0.340014
     },
     {
      "trial": "freecad-impeller__8Gad9Ns",
@@ -1288,7 +1366,8 @@
      "prompt_tokens": 41845,
      "cached_prompt_tokens": 5667328,
      "completion_tokens": 111808,
-     "captured_cost_cny": 0.6024
+     "captured_cost_cny": 0.6024,
+     "cost_usd_baseten": 0.186394
     },
     {
      "trial": "freecad-impeller__F4FQvYa",
@@ -1299,7 +1378,8 @@
      "prompt_tokens": 56792,
      "cached_prompt_tokens": 12796160,
      "completion_tokens": 163043,
-     "captured_cost_cny": 0.9649
+     "captured_cost_cny": 0.9649,
+     "cost_usd_baseten": 0.302262
     },
     {
      "trial": "freecad-impeller__TyVq3js",
@@ -1310,9 +1390,11 @@
      "prompt_tokens": 52079,
      "cached_prompt_tokens": 12249856,
      "completion_tokens": 157590,
-     "captured_cost_cny": 1.8549
+     "captured_cost_cny": 1.8549,
+     "cost_usd_baseten": 0.290481
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.119151
   },
   {
    "index": 21,
@@ -1340,7 +1422,8 @@
      "prompt_tokens": 66195,
      "cached_prompt_tokens": 4359168,
      "completion_tokens": 75410,
-     "captured_cost_cny": 0.455
+     "captured_cost_cny": 0.455,
+     "cost_usd_baseten": 0.140865
     },
     {
      "trial": "gcode-to-text__AsC5yzh",
@@ -1351,7 +1434,8 @@
      "prompt_tokens": 98288,
      "cached_prompt_tokens": 5652608,
      "completion_tokens": 108097,
-     "captured_cost_cny": 0.6437
+     "captured_cost_cny": 0.6437,
+     "cost_usd_baseten": 0.198771
     },
     {
      "trial": "gcode-to-text__ed8he2j",
@@ -1362,7 +1446,8 @@
      "prompt_tokens": 39448,
      "cached_prompt_tokens": 3265280,
      "completion_tokens": 87177,
-     "captured_cost_cny": 0.4535
+     "captured_cost_cny": 0.4535,
+     "cost_usd_baseten": 0.139304
     },
     {
      "trial": "gcode-to-text__goNou5H",
@@ -1373,9 +1458,11 @@
      "prompt_tokens": 63873,
      "cached_prompt_tokens": 4477568,
      "completion_tokens": 82743,
-     "captured_cost_cny": 0.4844
+     "captured_cost_cny": 0.4844,
+     "cost_usd_baseten": 0.149796
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.628736
   },
   {
    "index": 22,
@@ -1403,7 +1490,8 @@
      "prompt_tokens": 26905,
      "cached_prompt_tokens": 3404544,
      "completion_tokens": 170120,
-     "captured_cost_cny": 0.7755
+     "captured_cost_cny": 0.7755,
+     "cost_usd_baseten": 0.236047
     },
     {
      "trial": "glycan-ms2-elucidation__HxKfBpD",
@@ -1414,7 +1502,8 @@
      "prompt_tokens": 22724,
      "cached_prompt_tokens": 2593536,
      "completion_tokens": 121615,
-     "captured_cost_cny": 0.5611
+     "captured_cost_cny": 0.5611,
+     "cost_usd_baseten": 0.17091
     },
     {
      "trial": "glycan-ms2-elucidation__UCJjtW4",
@@ -1425,7 +1514,8 @@
      "prompt_tokens": 39563,
      "cached_prompt_tokens": 6032896,
      "completion_tokens": 185650,
-     "captured_cost_cny": 0.9028
+     "captured_cost_cny": 0.9028,
+     "cost_usd_baseten": 0.276879
     },
     {
      "trial": "glycan-ms2-elucidation__cu8wf2K",
@@ -1436,9 +1526,11 @@
      "prompt_tokens": 34259,
      "cached_prompt_tokens": 4348160,
      "completion_tokens": 179166,
-     "captured_cost_cny": 0.8379
+     "captured_cost_cny": 0.8379,
+     "cost_usd_baseten": 0.255714
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.93955
   },
   {
    "index": 23,
@@ -1466,7 +1558,8 @@
      "prompt_tokens": 57669,
      "cached_prompt_tokens": 7881088,
      "completion_tokens": 107147,
-     "captured_cost_cny": 0.6439
+     "captured_cost_cny": 0.6439,
+     "cost_usd_baseten": 0.201045
     },
     {
      "trial": "gsea-proteomics__RzL8iq4",
@@ -1477,7 +1570,8 @@
      "prompt_tokens": 78542,
      "cached_prompt_tokens": 8688128,
      "completion_tokens": 95169,
-     "captured_cost_cny": 0.633
+     "captured_cost_cny": 0.633,
+     "cost_usd_baseten": 0.198582
     },
     {
      "trial": "gsea-proteomics__nT4zRic",
@@ -1488,7 +1582,8 @@
      "prompt_tokens": 118555,
      "cached_prompt_tokens": 17826688,
      "completion_tokens": 124296,
-     "captured_cost_cny": 0.9723
+     "captured_cost_cny": 0.9723,
+     "cost_usd_baseten": 0.309509
     },
     {
      "trial": "gsea-proteomics__oS7kifd",
@@ -1499,9 +1594,11 @@
      "prompt_tokens": 37824,
      "cached_prompt_tokens": 2513920,
      "completion_tokens": 55870,
-     "captured_cost_cny": 0.6232
+     "captured_cost_cny": 0.6232,
+     "cost_usd_baseten": 0.095989
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.805125
   },
   {
    "index": 24,
@@ -1529,7 +1626,8 @@
      "prompt_tokens": 44070,
      "cached_prompt_tokens": 2728192,
      "completion_tokens": 41871,
-     "captured_cost_cny": 0.2661
+     "captured_cost_cny": 0.2661,
+     "cost_usd_baseten": 0.082564
     },
     {
      "trial": "hf-model-inference__fb4rTUW",
@@ -1540,7 +1638,8 @@
      "prompt_tokens": 23334,
      "cached_prompt_tokens": 1216000,
      "completion_tokens": 30038,
-     "captured_cost_cny": 0.1678
+     "captured_cost_cny": 0.1678,
+     "cost_usd_baseten": 0.051558
     },
     {
      "trial": "hf-model-inference__nQnb9th",
@@ -1551,7 +1650,8 @@
      "prompt_tokens": 15604,
      "cached_prompt_tokens": 532864,
      "completion_tokens": 20448,
-     "captured_cost_cny": 0.2161
+     "captured_cost_cny": 0.2161,
+     "cost_usd_baseten": 0.032949
     },
     {
      "trial": "hf-model-inference__sa2qDAa",
@@ -1562,9 +1662,11 @@
      "prompt_tokens": 10190,
      "cached_prompt_tokens": 540672,
      "completion_tokens": 14677,
-     "captured_cost_cny": 0.1594
+     "captured_cost_cny": 0.1594,
+     "cost_usd_baseten": 0.024454
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.191525
   },
   {
    "index": 25,
@@ -1592,7 +1694,8 @@
      "prompt_tokens": 55404,
      "cached_prompt_tokens": 17169920,
      "completion_tokens": 163761,
-     "captured_cost_cny": 1.0538
+     "captured_cost_cny": 1.0538,
+     "cost_usd_baseten": 0.333324
     },
     {
      "trial": "html-js-filter__P3wCyAV",
@@ -1603,7 +1706,8 @@
      "prompt_tokens": 38418,
      "cached_prompt_tokens": 7393152,
      "completion_tokens": 115621,
-     "captured_cost_cny": 0.6488
+     "captured_cost_cny": 0.6488,
+     "cost_usd_baseten": 0.202023
     },
     {
      "trial": "html-js-filter__hFSotnX",
@@ -1614,7 +1718,8 @@
      "prompt_tokens": 150596,
      "cached_prompt_tokens": 15401856,
      "completion_tokens": 122266,
-     "captured_cost_cny": 1.8954
+     "captured_cost_cny": 1.8954,
+     "cost_usd_baseten": 0.299711
     },
     {
      "trial": "html-js-filter__kFM42Sq",
@@ -1625,9 +1730,11 @@
      "prompt_tokens": 29038,
      "cached_prompt_tokens": 5454080,
      "completion_tokens": 143792,
-     "captured_cost_cny": 0.7133
+     "captured_cost_cny": 0.7133,
+     "cost_usd_baseten": 0.21944
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.054498
   },
   {
    "index": 26,
@@ -1655,7 +1762,8 @@
      "prompt_tokens": 46909,
      "cached_prompt_tokens": 2784896,
      "completion_tokens": 51038,
-     "captured_cost_cny": 0.3068
+     "captured_cost_cny": 0.3068,
+     "cost_usd_baseten": 0.094813
     },
     {
      "trial": "install-windows-3.11__Ty8tzBt",
@@ -1666,7 +1774,8 @@
      "prompt_tokens": 43964,
      "cached_prompt_tokens": 3549568,
      "completion_tokens": 67018,
-     "captured_cost_cny": 0.383
+     "captured_cost_cny": 0.383,
+     "cost_usd_baseten": 0.118458
     },
     {
      "trial": "install-windows-3.11__rydDA6V",
@@ -1677,7 +1786,8 @@
      "prompt_tokens": 40901,
      "cached_prompt_tokens": 3196928,
      "completion_tokens": 62522,
-     "captured_cost_cny": 0.3549
+     "captured_cost_cny": 0.3549,
+     "cost_usd_baseten": 0.109675
     },
     {
      "trial": "install-windows-3.11__zaNDQtX",
@@ -1688,9 +1798,11 @@
      "prompt_tokens": 77992,
      "cached_prompt_tokens": 12308224,
      "completion_tokens": 119073,
-     "captured_cost_cny": 1.6009
+     "captured_cost_cny": 1.6009,
+     "cost_usd_baseten": 0.252443
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.575389
   },
   {
    "index": 27,
@@ -1718,7 +1830,8 @@
      "prompt_tokens": 142579,
      "cached_prompt_tokens": 7480448,
      "completion_tokens": 77757,
-     "captured_cost_cny": 0.6032
+     "captured_cost_cny": 0.6032,
+     "cost_usd_baseten": 0.188445
     },
     {
      "trial": "intrastat-meldung__SBXqVLr",
@@ -1729,7 +1842,8 @@
      "prompt_tokens": 121268,
      "cached_prompt_tokens": 9437568,
      "completion_tokens": 83407,
-     "captured_cost_cny": 0.6436
+     "captured_cost_cny": 0.6436,
+     "cost_usd_baseten": 0.202532
     },
     {
      "trial": "intrastat-meldung__eLcQJTq",
@@ -1740,7 +1854,8 @@
      "prompt_tokens": 123582,
      "cached_prompt_tokens": 12839680,
      "completion_tokens": 106457,
-     "captured_cost_cny": 1.6124
+     "captured_cost_cny": 1.6124,
+     "cost_usd_baseten": 0.254701
     },
     {
      "trial": "intrastat-meldung__jVLooPM",
@@ -1751,9 +1866,11 @@
      "prompt_tokens": 135551,
      "cached_prompt_tokens": 15769984,
      "completion_tokens": 107066,
-     "captured_cost_cny": 0.8792
+     "captured_cost_cny": 0.8792,
+     "cost_usd_baseten": 0.279534
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.925212
   },
   {
    "index": 28,
@@ -1781,7 +1898,8 @@
      "prompt_tokens": 54823,
      "cached_prompt_tokens": 728320,
      "completion_tokens": 22808,
-     "captured_cost_cny": 0.1606
+     "captured_cost_cny": 0.1606,
+     "cost_usd_baseten": 0.048915
     },
     {
      "trial": "kv-store-grpc__QfcGUND",
@@ -1792,7 +1910,8 @@
      "prompt_tokens": 5506,
      "cached_prompt_tokens": 136832,
      "completion_tokens": 8323,
-     "captured_cost_cny": 0.0415
+     "captured_cost_cny": 0.0415,
+     "cost_usd_baseten": 0.012597
     },
     {
      "trial": "kv-store-grpc__YXWeaS7",
@@ -1803,7 +1922,8 @@
      "prompt_tokens": 6539,
      "cached_prompt_tokens": 265472,
      "completion_tokens": 16993,
-     "captured_cost_cny": 0.1596
+     "captured_cost_cny": 0.1596,
+     "cost_usd_baseten": 0.024212
     },
     {
      "trial": "kv-store-grpc__rEZU7fm",
@@ -1814,9 +1934,11 @@
      "prompt_tokens": 8498,
      "cached_prompt_tokens": 375936,
      "completion_tokens": 13133,
-     "captured_cost_cny": 0.1371
+     "captured_cost_cny": 0.1371,
+     "cost_usd_baseten": 0.020941
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.106665
   },
   {
    "index": 29,
@@ -1844,7 +1966,8 @@
      "prompt_tokens": 7675,
      "cached_prompt_tokens": 414976,
      "completion_tokens": 20169,
-     "captured_cost_cny": 0.1933
+     "captured_cost_cny": 0.1933,
+     "cost_usd_baseten": 0.02941
     },
     {
      "trial": "large-scale-text-editing__BucLxW8",
@@ -1855,7 +1978,8 @@
      "prompt_tokens": 8538,
      "cached_prompt_tokens": 631040,
      "completion_tokens": 30424,
-     "captured_cost_cny": 0.1429
+     "captured_cost_cny": 0.1429,
+     "cost_usd_baseten": 0.043487
     },
     {
      "trial": "large-scale-text-editing__K3YeNkf",
@@ -1866,7 +1990,8 @@
      "prompt_tokens": 7023,
      "cached_prompt_tokens": 523264,
      "completion_tokens": 28633,
-     "captured_cost_cny": 0.132
+     "captured_cost_cny": 0.132,
+     "cost_usd_baseten": 0.040129
     },
     {
      "trial": "large-scale-text-editing__g2HQ9zn",
@@ -1877,9 +2002,11 @@
      "prompt_tokens": 8861,
      "cached_prompt_tokens": 1053952,
      "completion_tokens": 48814,
-     "captured_cost_cny": 0.2252
+     "captured_cost_cny": 0.2252,
+     "cost_usd_baseten": 0.068613
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.181639
   },
   {
    "index": 30,
@@ -1907,7 +2034,8 @@
      "prompt_tokens": 9150,
      "cached_prompt_tokens": 92160,
      "completion_tokens": 4507,
-     "captured_cost_cny": 0.029
+     "captured_cost_cny": 0.029,
+     "cost_usd_baseten": 0.008799
     },
     {
      "trial": "log-summary-date-ranges__WXpPWE3",
@@ -1918,7 +2046,8 @@
      "prompt_tokens": 7397,
      "cached_prompt_tokens": 147328,
      "completion_tokens": 8474,
-     "captured_cost_cny": 0.0442
+     "captured_cost_cny": 0.0442,
+     "cost_usd_baseten": 0.013419
     },
     {
      "trial": "log-summary-date-ranges__aRZZfKZ",
@@ -1929,7 +2058,8 @@
      "prompt_tokens": 6702,
      "cached_prompt_tokens": 127488,
      "completion_tokens": 13378,
-     "captured_cost_cny": 0.0628
+     "captured_cost_cny": 0.0628,
+     "cost_usd_baseten": 0.018957
     },
     {
      "trial": "log-summary-date-ranges__acikRuM",
@@ -1940,9 +2070,11 @@
      "prompt_tokens": 7996,
      "cached_prompt_tokens": 108672,
      "completion_tokens": 7197,
-     "captured_cost_cny": 0.0779
+     "captured_cost_cny": 0.0779,
+     "cost_usd_baseten": 0.011796
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.052971
   },
   {
    "index": 31,
@@ -1970,7 +2102,8 @@
      "prompt_tokens": 64129,
      "cached_prompt_tokens": 3420416,
      "completion_tokens": 37576,
-     "captured_cost_cny": 0.2828
+     "captured_cost_cny": 0.2828,
+     "cost_usd_baseten": 0.088273
     },
     {
      "trial": "mailman__aVhwnaH",
@@ -1981,7 +2114,8 @@
      "prompt_tokens": 64159,
      "cached_prompt_tokens": 4141568,
      "completion_tokens": 45052,
-     "captured_cost_cny": 0.3272
+     "captured_cost_cny": 0.3272,
+     "cost_usd_baseten": 0.102301
     },
     {
      "trial": "mailman__jZVugsX",
@@ -1992,7 +2126,8 @@
      "prompt_tokens": 68479,
      "cached_prompt_tokens": 5301632,
      "completion_tokens": 60172,
-     "captured_cost_cny": 0.4152
+     "captured_cost_cny": 0.4152,
+     "cost_usd_baseten": 0.129862
     },
     {
      "trial": "mailman__meUZy49",
@@ -2003,9 +2138,11 @@
      "prompt_tokens": 49814,
      "cached_prompt_tokens": 1890816,
      "completion_tokens": 39348,
-     "captured_cost_cny": 0.245
+     "captured_cost_cny": 0.245,
+     "cost_usd_baseten": 0.075398
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.395834
   },
   {
    "index": 32,
@@ -2033,7 +2170,8 @@
      "prompt_tokens": 88051,
      "cached_prompt_tokens": 11475968,
      "completion_tokens": 131380,
-     "captured_cost_cny": 0.8431
+     "captured_cost_cny": 0.8431,
+     "cost_usd_baseten": 0.264403
     },
     {
      "trial": "make-doom-for-mips__ZSvA7EC",
@@ -2044,7 +2182,8 @@
      "prompt_tokens": 89551,
      "cached_prompt_tokens": 6105600,
      "completion_tokens": 70324,
-     "captured_cost_cny": 0.493
+     "captured_cost_cny": 0.493,
+     "cost_usd_baseten": 0.153993
     },
     {
      "trial": "make-doom-for-mips__agSpFcU",
@@ -2055,7 +2194,8 @@
      "prompt_tokens": 130765,
      "cached_prompt_tokens": 16330240,
      "completion_tokens": 126706,
-     "captured_cost_cny": 0.9642
+     "captured_cost_cny": 0.9642,
+     "cost_usd_baseten": 0.305588
     },
     {
      "trial": "make-doom-for-mips__z3woAoc",
@@ -2066,9 +2206,11 @@
      "prompt_tokens": 91484,
      "cached_prompt_tokens": 8287488,
      "completion_tokens": 92069,
-     "captured_cost_cny": 0.6255
+     "captured_cost_cny": 0.6255,
+     "cost_usd_baseten": 0.19594
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.919924
   },
   {
    "index": 33,
@@ -2096,7 +2238,8 @@
      "prompt_tokens": 12950,
      "cached_prompt_tokens": 426368,
      "completion_tokens": 23987,
-     "captured_cost_cny": 0.1174
+     "captured_cost_cny": 0.1174,
+     "cost_usd_baseten": 0.035654
     },
     {
      "trial": "merge-diff-arc-agi-task__Frsiv3Y",
@@ -2107,7 +2250,8 @@
      "prompt_tokens": 13178,
      "cached_prompt_tokens": 452224,
      "completion_tokens": 31098,
-     "captured_cost_cny": 0.2932
+     "captured_cost_cny": 0.2932,
+     "cost_usd_baseten": 0.044437
     },
     {
      "trial": "merge-diff-arc-agi-task__hERwhpE",
@@ -2118,7 +2262,8 @@
      "prompt_tokens": 15212,
      "cached_prompt_tokens": 664064,
      "completion_tokens": 23830,
-     "captured_cost_cny": 0.2476
+     "captured_cost_cny": 0.2476,
+     "cost_usd_baseten": 0.037808
     },
     {
      "trial": "merge-diff-arc-agi-task__k6wqMZR",
@@ -2129,9 +2274,11 @@
      "prompt_tokens": 10704,
      "cached_prompt_tokens": 465152,
      "completion_tokens": 35530,
-     "captured_cost_cny": 0.1621
+     "captured_cost_cny": 0.1621,
+     "cost_usd_baseten": 0.049103
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.167002
   },
   {
    "index": 34,
@@ -2159,7 +2306,8 @@
      "prompt_tokens": 18364,
      "cached_prompt_tokens": 893824,
      "completion_tokens": 41856,
-     "captured_cost_cny": 0.2037
+     "captured_cost_cny": 0.2037,
+     "cost_usd_baseten": 0.061993
     },
     {
      "trial": "model-extraction-relu-logits__ieZZJyX",
@@ -2170,7 +2318,8 @@
      "prompt_tokens": 20659,
      "cached_prompt_tokens": 2713472,
      "completion_tokens": 87180,
-     "captured_cost_cny": 0.8473
+     "captured_cost_cny": 0.8473,
+     "cost_usd_baseten": 0.129808
     },
     {
      "trial": "model-extraction-relu-logits__trJH6HV",
@@ -2181,7 +2330,8 @@
      "prompt_tokens": 37745,
      "cached_prompt_tokens": 1031936,
      "completion_tokens": 122726,
-     "captured_cost_cny": 0.5493
+     "captured_cost_cny": 0.5493,
+     "cost_usd_baseten": 0.165818
     },
     {
      "trial": "model-extraction-relu-logits__w6VVmAg",
@@ -2192,9 +2342,11 @@
      "prompt_tokens": 9995,
      "cached_prompt_tokens": 908288,
      "completion_tokens": 78227,
-     "captured_cost_cny": 0.3411
+     "captured_cost_cny": 0.3411,
+     "cost_usd_baseten": 0.103229
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.460848
   },
   {
    "index": 35,
@@ -2222,7 +2374,8 @@
      "prompt_tokens": 27150,
      "cached_prompt_tokens": 985344,
      "completion_tokens": 18651,
-     "captured_cost_cny": 0.2299
+     "captured_cost_cny": 0.2299,
+     "cost_usd_baseten": 0.037424
     },
     {
      "trial": "mteb-leaderboard__KNc26Ka",
@@ -2233,7 +2386,8 @@
      "prompt_tokens": 27031,
      "cached_prompt_tokens": 627072,
      "completion_tokens": 9678,
-     "captured_cost_cny": 0.1566
+     "captured_cost_cny": 0.1566,
+     "cost_usd_baseten": 0.024112
     },
     {
      "trial": "mteb-leaderboard__NDpmZPR",
@@ -2244,7 +2398,8 @@
      "prompt_tokens": 135827,
      "cached_prompt_tokens": 14621184,
      "completion_tokens": 86863,
-     "captured_cost_cny": 0.7757
+     "captured_cost_cny": 0.7757,
+     "cost_usd_baseten": 0.247332
     },
     {
      "trial": "mteb-leaderboard__gKxtRGV",
@@ -2255,9 +2410,11 @@
      "prompt_tokens": 90535,
      "cached_prompt_tokens": 5975808,
      "completion_tokens": 40090,
-     "captured_cost_cny": 0.7408
+     "captured_cost_cny": 0.7408,
+     "cost_usd_baseten": 0.117099
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.425967
   },
   {
    "index": 36,
@@ -2285,7 +2442,8 @@
      "prompt_tokens": 89039,
      "cached_prompt_tokens": 12081408,
      "completion_tokens": 194165,
-     "captured_cost_cny": 2.2147
+     "captured_cost_cny": 2.2147,
+     "cost_usd_baseten": 0.34428
     },
     {
      "trial": "music-harmony__n66CgrR",
@@ -2296,7 +2454,8 @@
      "prompt_tokens": 100903,
      "cached_prompt_tokens": 19184640,
      "completion_tokens": 182945,
-     "captured_cost_cny": 1.2164
+     "captured_cost_cny": 1.2164,
+     "cost_usd_baseten": 0.384097
     },
     {
      "trial": "music-harmony__qm3C3ta",
@@ -2307,7 +2466,8 @@
      "prompt_tokens": 78149,
      "cached_prompt_tokens": 11466240,
      "completion_tokens": 223422,
-     "captured_cost_cny": 1.2012
+     "captured_cost_cny": 1.2012,
+     "cost_usd_baseten": 0.371815
     },
     {
      "trial": "music-harmony__uUsrjma",
@@ -2318,9 +2478,11 @@
      "prompt_tokens": 292087,
      "cached_prompt_tokens": 25001856,
      "completion_tokens": 338310,
-     "captured_cost_cny": 2.1454
+     "captured_cost_cny": 2.1454,
+     "cost_usd_baseten": 0.668611
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.768803
   },
   {
    "index": 37,
@@ -2348,7 +2510,8 @@
      "prompt_tokens": 21635,
      "cached_prompt_tokens": 1048960,
      "completion_tokens": 47524,
-     "captured_cost_cny": 0.4654
+     "captured_cost_cny": 0.4654,
+     "cost_usd_baseten": 0.070862
     },
     {
      "trial": "mvcc-lsm-compaction__PVpuqhZ",
@@ -2359,7 +2522,8 @@
      "prompt_tokens": 19176,
      "cached_prompt_tokens": 1202816,
      "completion_tokens": 60463,
-     "captured_cost_cny": 0.2851
+     "captured_cost_cny": 0.2851,
+     "cost_usd_baseten": 0.086728
     },
     {
      "trial": "mvcc-lsm-compaction__pQfiatA",
@@ -2370,7 +2534,8 @@
      "prompt_tokens": 22456,
      "cached_prompt_tokens": 2204544,
      "completion_tokens": 65228,
-     "captured_cost_cny": 0.3275
+     "captured_cost_cny": 0.3275,
+     "cost_usd_baseten": 0.100442
     },
     {
      "trial": "mvcc-lsm-compaction__zDaBDPF",
@@ -2381,9 +2546,11 @@
      "prompt_tokens": 0,
      "cached_prompt_tokens": 0,
      "completion_tokens": 0,
-     "captured_cost_cny": 0.0
+     "captured_cost_cny": 0.0,
+     "cost_usd_baseten": 0.0
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.258032
   },
   {
    "index": 38,
@@ -2411,7 +2578,8 @@
      "prompt_tokens": 5808,
      "cached_prompt_tokens": 228224,
      "completion_tokens": 8768,
-     "captured_cost_cny": 0.0454
+     "captured_cost_cny": 0.0454,
+     "cost_usd_baseten": 0.013862
     },
     {
      "trial": "nginx-request-logging__QqSKhsf",
@@ -2422,7 +2590,8 @@
      "prompt_tokens": 5926,
      "cached_prompt_tokens": 162048,
      "completion_tokens": 12670,
-     "captured_cost_cny": 0.0598
+     "captured_cost_cny": 0.0598,
+     "cost_usd_baseten": 0.018116
     },
     {
      "trial": "nginx-request-logging__SP3XVyp",
@@ -2433,7 +2602,8 @@
      "prompt_tokens": 4942,
      "cached_prompt_tokens": 145280,
      "completion_tokens": 6216,
-     "captured_cost_cny": 0.0327
+     "captured_cost_cny": 0.0327,
+     "cost_usd_baseten": 0.009959
     },
     {
      "trial": "nginx-request-logging__SwZtPvm",
@@ -2444,9 +2614,11 @@
      "prompt_tokens": 7652,
      "cached_prompt_tokens": 197376,
      "completion_tokens": 16398,
-     "captured_cost_cny": 0.0772
+     "captured_cost_cny": 0.0772,
+     "cost_usd_baseten": 0.023355
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.065292
   },
   {
    "index": 39,
@@ -2474,7 +2646,8 @@
      "prompt_tokens": 185089,
      "cached_prompt_tokens": 26471168,
      "completion_tokens": 185478,
-     "captured_cost_cny": 2.9128
+     "captured_cost_cny": 2.9128,
+     "cost_usd_baseten": 0.463398
     },
     {
      "trial": "ontology-kg-querying__KwQGMRk",
@@ -2485,7 +2658,8 @@
      "prompt_tokens": 173046,
      "cached_prompt_tokens": 29612928,
      "completion_tokens": 164968,
-     "captured_cost_cny": 1.4252
+     "captured_cost_cny": 1.4252,
+     "cost_usd_baseten": 0.457166
     },
     {
      "trial": "ontology-kg-querying__kArK7fJ",
@@ -2496,7 +2670,8 @@
      "prompt_tokens": 110138,
      "cached_prompt_tokens": 9626752,
      "completion_tokens": 136329,
-     "captured_cost_cny": 0.848
+     "captured_cost_cny": 0.848,
+     "cost_usd_baseten": 0.264023
     },
     {
      "trial": "ontology-kg-querying__oyHAXiT",
@@ -2507,9 +2682,11 @@
      "prompt_tokens": 337902,
      "cached_prompt_tokens": 16337152,
      "completion_tokens": 158999,
-     "captured_cost_cny": 1.3006
+     "captured_cost_cny": 1.3006,
+     "cost_usd_baseten": 0.406529
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.591116
   },
   {
    "index": 40,
@@ -2537,7 +2714,8 @@
      "prompt_tokens": 3678,
      "cached_prompt_tokens": 101504,
      "completion_tokens": 12013,
-     "captured_cost_cny": 0.0538
+     "captured_cost_cny": 0.0538,
+     "cost_usd_baseten": 0.01623
     },
     {
      "trial": "openssl-selfsigned-cert__QayhCdE",
@@ -2548,7 +2726,8 @@
      "prompt_tokens": 4677,
      "cached_prompt_tokens": 210816,
      "completion_tokens": 13477,
-     "captured_cost_cny": 0.0628
+     "captured_cost_cny": 0.0628,
+     "cost_usd_baseten": 0.019051
     },
     {
      "trial": "openssl-selfsigned-cert__VypGMES",
@@ -2559,7 +2738,8 @@
      "prompt_tokens": 3663,
      "cached_prompt_tokens": 143744,
      "completion_tokens": 11092,
-     "captured_cost_cny": 0.0509
+     "captured_cost_cny": 0.0509,
+     "cost_usd_baseten": 0.015416
     },
     {
      "trial": "openssl-selfsigned-cert__g3qtWCc",
@@ -2570,9 +2750,11 @@
      "prompt_tokens": 8600,
      "cached_prompt_tokens": 308480,
      "completion_tokens": 16089,
-     "captured_cost_cny": 0.1583
+     "captured_cost_cny": 0.1583,
+     "cost_usd_baseten": 0.024046
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.074743
   },
   {
    "index": 41,
@@ -2600,7 +2782,8 @@
      "prompt_tokens": 68689,
      "cached_prompt_tokens": 1991552,
      "completion_tokens": 65160,
-     "captured_cost_cny": 0.3692
+     "captured_cost_cny": 0.3692,
+     "cost_usd_baseten": 0.11274
     },
     {
      "trial": "path-tracing-reverse__TdhAvPF",
@@ -2611,7 +2794,8 @@
      "prompt_tokens": 158024,
      "cached_prompt_tokens": 4499712,
      "completion_tokens": 102286,
-     "captured_cost_cny": 1.3143
+     "captured_cost_cny": 1.3143,
+     "cost_usd_baseten": 0.201648
     },
     {
      "trial": "path-tracing-reverse__hpr5ojb",
@@ -2622,7 +2806,8 @@
      "prompt_tokens": 72174,
      "cached_prompt_tokens": 2441216,
      "completion_tokens": 91463,
-     "captured_cost_cny": 0.9737
+     "captured_cost_cny": 0.9737,
+     "cost_usd_baseten": 0.148496
     },
     {
      "trial": "path-tracing-reverse__kNEAVAt",
@@ -2633,9 +2818,11 @@
      "prompt_tokens": 66370,
      "cached_prompt_tokens": 1550080,
      "completion_tokens": 20528,
-     "captured_cost_cny": 0.1795
+     "captured_cost_cny": 0.1795,
+     "cost_usd_baseten": 0.055395
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.518279
   },
   {
    "index": 42,
@@ -2663,7 +2850,8 @@
      "prompt_tokens": 4882,
      "cached_prompt_tokens": 452864,
      "completion_tokens": 35746,
-     "captured_cost_cny": 0.1569
+     "captured_cost_cny": 0.1569,
+     "cost_usd_baseten": 0.04753
     },
     {
      "trial": "polyglot-c-py__LV9ajaL",
@@ -2674,7 +2862,8 @@
      "prompt_tokens": 7100,
      "cached_prompt_tokens": 468480,
      "completion_tokens": 23400,
-     "captured_cost_cny": 0.1101
+     "captured_cost_cny": 0.1101,
+     "cost_usd_baseten": 0.033489
     },
     {
      "trial": "polyglot-c-py__RAQ5jh7",
@@ -2685,7 +2874,8 @@
      "prompt_tokens": 5451,
      "cached_prompt_tokens": 603904,
      "completion_tokens": 27139,
-     "captured_cost_cny": 0.2522
+     "captured_cost_cny": 0.2522,
+     "cost_usd_baseten": 0.038429
     },
     {
      "trial": "polyglot-c-py__eLtuoUS",
@@ -2696,9 +2886,11 @@
      "prompt_tokens": 5376,
      "cached_prompt_tokens": 340992,
      "completion_tokens": 16195,
-     "captured_cost_cny": 0.077
+     "captured_cost_cny": 0.077,
+     "cost_usd_baseten": 0.023434
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.142882
   },
   {
    "index": 43,
@@ -2726,7 +2918,8 @@
      "prompt_tokens": 7552,
      "cached_prompt_tokens": 462336,
      "completion_tokens": 21162,
-     "captured_cost_cny": 0.1014
+     "captured_cost_cny": 0.1014,
+     "cost_usd_baseten": 0.030896
     },
     {
      "trial": "polyglot-rust-c__gZ2CEnA",
@@ -2737,7 +2930,8 @@
      "prompt_tokens": 2892,
      "cached_prompt_tokens": 253312,
      "completion_tokens": 21790,
-     "captured_cost_cny": 0.0951
+     "captured_cost_cny": 0.0951,
+     "cost_usd_baseten": 0.028789
     },
     {
      "trial": "polyglot-rust-c__hCVJrMC",
@@ -2748,7 +2942,8 @@
      "prompt_tokens": 4091,
      "cached_prompt_tokens": 285056,
      "completion_tokens": 18023,
-     "captured_cost_cny": 0.1638
+     "captured_cost_cny": 0.1638,
+     "cost_usd_baseten": 0.02485
     },
     {
      "trial": "polyglot-rust-c__qCXqxHh",
@@ -2759,9 +2954,11 @@
      "prompt_tokens": 5369,
      "cached_prompt_tokens": 348416,
      "completion_tokens": 19448,
-     "captured_cost_cny": 0.0901
+     "captured_cost_cny": 0.0901,
+     "cost_usd_baseten": 0.027387
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.111922
   },
   {
    "index": 44,
@@ -2789,7 +2986,8 @@
      "prompt_tokens": 12369,
      "cached_prompt_tokens": 731520,
      "completion_tokens": 30741,
-     "captured_cost_cny": 0.15
+     "captured_cost_cny": 0.15,
+     "cost_usd_baseten": 0.045721
     },
     {
      "trial": "portfolio-optimization__WqxdnVf",
@@ -2800,7 +2998,8 @@
      "prompt_tokens": 9826,
      "cached_prompt_tokens": 408064,
      "completion_tokens": 29673,
-     "captured_cost_cny": 0.2537
+     "captured_cost_cny": 0.2537,
+     "cost_usd_baseten": 0.041412
     },
     {
      "trial": "portfolio-optimization__gUEXigE",
@@ -2811,7 +3010,8 @@
      "prompt_tokens": 14569,
      "cached_prompt_tokens": 961280,
      "completion_tokens": 39150,
-     "captured_cost_cny": 0.1904
+     "captured_cost_cny": 0.1904,
+     "cost_usd_baseten": 0.05808
     },
     {
      "trial": "portfolio-optimization__jRkzhqH",
@@ -2822,9 +3022,11 @@
      "prompt_tokens": 15528,
      "cached_prompt_tokens": 974592,
      "completion_tokens": 39258,
-     "captured_cost_cny": 0.1921
+     "captured_cost_cny": 0.1921,
+     "cost_usd_baseten": 0.05859
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.203803
   },
   {
    "index": 45,
@@ -2852,7 +3054,8 @@
      "prompt_tokens": 3235,
      "cached_prompt_tokens": 144512,
      "completion_tokens": 8381,
-     "captured_cost_cny": 0.0793
+     "captured_cost_cny": 0.0793,
+     "cost_usd_baseten": 0.012039
     },
     {
      "trial": "prove-plus-comm__KpGqfmL",
@@ -2863,7 +3066,8 @@
      "prompt_tokens": 12262,
      "cached_prompt_tokens": 78592,
      "completion_tokens": 12511,
-     "captured_cost_cny": 0.0639
+     "captured_cost_cny": 0.0639,
+     "cost_usd_baseten": 0.019242
     },
     {
      "trial": "prove-plus-comm__Q7qLVEF",
@@ -2874,7 +3078,8 @@
      "prompt_tokens": 4628,
      "cached_prompt_tokens": 152320,
      "completion_tokens": 7865,
-     "captured_cost_cny": 0.0391
+     "captured_cost_cny": 0.0391,
+     "cost_usd_baseten": 0.011893
     },
     {
      "trial": "prove-plus-comm__X4Ff59n",
@@ -2885,9 +3090,11 @@
      "prompt_tokens": 1860,
      "cached_prompt_tokens": 56704,
      "completion_tokens": 4057,
-     "captured_cost_cny": 0.0192
+     "captured_cost_cny": 0.0192,
+     "cost_usd_baseten": 0.005823
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.048997
   },
   {
    "index": 46,
@@ -2915,7 +3122,8 @@
      "prompt_tokens": 6121,
      "cached_prompt_tokens": 300160,
      "completion_tokens": 10144,
-     "captured_cost_cny": 0.0527
+     "captured_cost_cny": 0.0527,
+     "cost_usd_baseten": 0.01611
     },
     {
      "trial": "pypi-server__Dx6CRYp",
@@ -2926,7 +3134,8 @@
      "prompt_tokens": 12964,
      "cached_prompt_tokens": 550144,
      "completion_tokens": 22672,
-     "captured_cost_cny": 0.2293
+     "captured_cost_cny": 0.2293,
+     "cost_usd_baseten": 0.034947
     },
     {
      "trial": "pypi-server__hUu9oWg",
@@ -2937,7 +3146,8 @@
      "prompt_tokens": 7693,
      "cached_prompt_tokens": 443008,
      "completion_tokens": 16011,
-     "captured_cost_cny": 0.0806
+     "captured_cost_cny": 0.0806,
+     "cost_usd_baseten": 0.024622
     },
     {
      "trial": "pypi-server__tjnwKSV",
@@ -2948,9 +3158,11 @@
      "prompt_tokens": 7386,
      "cached_prompt_tokens": 328576,
      "completion_tokens": 16870,
-     "captured_cost_cny": 0.0814
+     "captured_cost_cny": 0.0814,
+     "cost_usd_baseten": 0.02476
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.100439
   },
   {
    "index": 47,
@@ -2978,7 +3190,8 @@
      "prompt_tokens": 5780,
      "cached_prompt_tokens": 326656,
      "completion_tokens": 20614,
-     "captured_cost_cny": 0.0948
+     "captured_cost_cny": 0.0948,
+     "cost_usd_baseten": 0.028757
     },
     {
      "trial": "pytorch-model-cli__axHBytj",
@@ -2989,7 +3202,8 @@
      "prompt_tokens": 19606,
      "cached_prompt_tokens": 774400,
      "completion_tokens": 22728,
-     "captured_cost_cny": 0.252
+     "captured_cost_cny": 0.252,
+     "cost_usd_baseten": 0.038576
     },
     {
      "trial": "pytorch-model-cli__g83Kaj6",
@@ -3000,7 +3214,8 @@
      "prompt_tokens": 17077,
      "cached_prompt_tokens": 1376000,
      "completion_tokens": 57837,
-     "captured_cost_cny": 0.2759
+     "captured_cost_cny": 0.2759,
+     "cost_usd_baseten": 0.084159
     },
     {
      "trial": "pytorch-model-cli__qhwqRBr",
@@ -3011,9 +3226,11 @@
      "prompt_tokens": 13141,
      "cached_prompt_tokens": 985856,
      "completion_tokens": 37649,
-     "captured_cost_cny": 0.1835
+     "captured_cost_cny": 0.1835,
+     "cost_usd_baseten": 0.056022
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.207514
   },
   {
    "index": 48,
@@ -3041,7 +3258,8 @@
      "prompt_tokens": 19775,
      "cached_prompt_tokens": 1433216,
      "completion_tokens": 52321,
-     "captured_cost_cny": 0.5154
+     "captured_cost_cny": 0.5154,
+     "cost_usd_baseten": 0.07875
     },
     {
      "trial": "pytorch-model-recovery__eFjv3sg",
@@ -3052,7 +3270,8 @@
      "prompt_tokens": 13791,
      "cached_prompt_tokens": 871424,
      "completion_tokens": 42437,
-     "captured_cost_cny": 0.4019
+     "captured_cost_cny": 0.4019,
+     "cost_usd_baseten": 0.061162
     },
     {
      "trial": "pytorch-model-recovery__g6BCRss",
@@ -3063,7 +3282,8 @@
      "prompt_tokens": 10202,
      "cached_prompt_tokens": 633728,
      "completion_tokens": 41193,
-     "captured_cost_cny": 0.3753
+     "captured_cost_cny": 0.3753,
+     "cost_usd_baseten": 0.056928
     },
     {
      "trial": "pytorch-model-recovery__xJE3hrb",
@@ -3074,9 +3294,11 @@
      "prompt_tokens": 15291,
      "cached_prompt_tokens": 625920,
      "completion_tokens": 31620,
-     "captured_cost_cny": 0.1543
+     "captured_cost_cny": 0.1543,
+     "cost_usd_baseten": 0.046913
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.243753
   },
   {
    "index": 49,
@@ -3104,7 +3326,8 @@
      "prompt_tokens": 8402,
      "cached_prompt_tokens": 469120,
      "completion_tokens": 32138,
-     "captured_cost_cny": 0.1463
+     "captured_cost_cny": 0.1463,
+     "cost_usd_baseten": 0.04437
     },
     {
      "trial": "regex-log__JQtXUFP",
@@ -3115,7 +3338,8 @@
      "prompt_tokens": 6367,
      "cached_prompt_tokens": 320640,
      "completion_tokens": 30440,
-     "captured_cost_cny": 0.2691
+     "captured_cost_cny": 0.2691,
+     "cost_usd_baseten": 0.040683
     },
     {
      "trial": "regex-log__UKC8ytC",
@@ -3126,7 +3350,8 @@
      "prompt_tokens": 6838,
      "cached_prompt_tokens": 528768,
      "completion_tokens": 36457,
-     "captured_cost_cny": 0.1632
+     "captured_cost_cny": 0.1632,
+     "cost_usd_baseten": 0.049501
     },
     {
      "trial": "regex-log__qesTkam",
@@ -3137,9 +3362,11 @@
      "prompt_tokens": 5100,
      "cached_prompt_tokens": 374656,
      "completion_tokens": 27641,
-     "captured_cost_cny": 0.1232
+     "captured_cost_cny": 0.1232,
+     "cost_usd_baseten": 0.037322
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.171876
   },
   {
    "index": 50,
@@ -3167,7 +3394,8 @@
      "prompt_tokens": 28208,
      "cached_prompt_tokens": 4715136,
      "completion_tokens": 148932,
-     "captured_cost_cny": 0.7182
+     "captured_cost_cny": 0.7182,
+     "cost_usd_baseten": 0.220187
     },
     {
      "trial": "roy-polymorph-cn__cbQZvPf",
@@ -3178,7 +3406,8 @@
      "prompt_tokens": 22499,
      "cached_prompt_tokens": 2548096,
      "completion_tokens": 107216,
-     "captured_cost_cny": 0.5023
+     "captured_cost_cny": 0.5023,
+     "cost_usd_baseten": 0.153246
     },
     {
      "trial": "roy-polymorph-cn__d7xtHDx",
@@ -3189,7 +3418,8 @@
      "prompt_tokens": 18782,
      "cached_prompt_tokens": 2375680,
      "completion_tokens": 86241,
-     "captured_cost_cny": 0.4113
+     "captured_cost_cny": 0.4113,
+     "cost_usd_baseten": 0.125754
     },
     {
      "trial": "roy-polymorph-cn__pSDSSRi",
@@ -3200,9 +3430,11 @@
      "prompt_tokens": 19234,
      "cached_prompt_tokens": 1309440,
      "completion_tokens": 96197,
-     "captured_cost_cny": 0.8604
+     "captured_cost_cny": 0.8604,
+     "cost_usd_baseten": 0.130373
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.62956
   },
   {
    "index": 51,
@@ -3230,7 +3462,8 @@
      "prompt_tokens": 34579,
      "cached_prompt_tokens": 3047552,
      "completion_tokens": 55063,
-     "captured_cost_cny": 0.3158
+     "captured_cost_cny": 0.3158,
+     "cost_usd_baseten": 0.097782
     },
     {
      "trial": "rstan-to-pystan__pPwE9f9",
@@ -3241,7 +3474,8 @@
      "prompt_tokens": 24499,
      "cached_prompt_tokens": 970880,
      "completion_tokens": 28327,
-     "captured_cost_cny": 0.3144
+     "captured_cost_cny": 0.3144,
+     "cost_usd_baseten": 0.048138
     },
     {
      "trial": "rstan-to-pystan__tXEtXyh",
@@ -3252,7 +3486,8 @@
      "prompt_tokens": 24804,
      "cached_prompt_tokens": 1062400,
      "completion_tokens": 33164,
-     "captured_cost_cny": 0.1787
+     "captured_cost_cny": 0.1787,
+     "cost_usd_baseten": 0.054675
     },
     {
      "trial": "rstan-to-pystan__zKCF7Ae",
@@ -3263,9 +3498,11 @@
      "prompt_tokens": 34353,
      "cached_prompt_tokens": 2211968,
      "completion_tokens": 35991,
-     "captured_cost_cny": 0.2226
+     "captured_cost_cny": 0.2226,
+     "cost_usd_baseten": 0.068979
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.269574
   },
   {
    "index": 52,
@@ -3293,7 +3530,8 @@
      "prompt_tokens": 52936,
      "cached_prompt_tokens": 5105664,
      "completion_tokens": 107126,
-     "captured_cost_cny": 0.5836
+     "captured_cost_cny": 0.5836,
+     "cost_usd_baseten": 0.180172
     },
     {
      "trial": "sam-cell-seg__GQhYXnC",
@@ -3304,7 +3542,8 @@
      "prompt_tokens": 259768,
      "cached_prompt_tokens": 19520512,
      "completion_tokens": 137404,
-     "captured_cost_cny": 1.1998
+     "captured_cost_cny": 1.1998,
+     "cost_usd_baseten": 0.379459
     },
     {
      "trial": "sam-cell-seg__LPs6f7S",
@@ -3315,7 +3554,8 @@
      "prompt_tokens": 83761,
      "cached_prompt_tokens": 10438016,
      "completion_tokens": 114161,
-     "captured_cost_cny": 0.7492
+     "captured_cost_cny": 0.7492,
+     "cost_usd_baseten": 0.235188
     },
     {
      "trial": "sam-cell-seg__nKpVcDT",
@@ -3326,9 +3566,11 @@
      "prompt_tokens": 55216,
      "cached_prompt_tokens": 10733440,
      "completion_tokens": 124673,
-     "captured_cost_cny": 0.7686
+     "captured_cost_cny": 0.7686,
+     "cost_usd_baseten": 0.241306
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.036125
   },
   {
    "index": 53,
@@ -3356,7 +3598,8 @@
      "prompt_tokens": 50571,
      "cached_prompt_tokens": 3109248,
      "completion_tokens": 112050,
-     "captured_cost_cny": 0.561
+     "captured_cost_cny": 0.561,
+     "cost_usd_baseten": 0.171396
     },
     {
      "trial": "schemelike-metacircular-eval__mDVEKH7",
@@ -3367,7 +3610,8 @@
      "prompt_tokens": 40484,
      "cached_prompt_tokens": 7491712,
      "completion_tokens": 131770,
-     "captured_cost_cny": 0.7174
+     "captured_cost_cny": 0.7174,
+     "cost_usd_baseten": 0.222711
     },
     {
      "trial": "schemelike-metacircular-eval__pGhyfL4",
@@ -3378,7 +3622,8 @@
      "prompt_tokens": 33151,
      "cached_prompt_tokens": 2291200,
      "completion_tokens": 76311,
-     "captured_cost_cny": 0.7538
+     "captured_cost_cny": 0.7538,
+     "cost_usd_baseten": 0.117557
     },
     {
      "trial": "schemelike-metacircular-eval__qqTDzVL",
@@ -3389,9 +3634,11 @@
      "prompt_tokens": 40217,
      "cached_prompt_tokens": 3010176,
      "completion_tokens": 74031,
-     "captured_cost_cny": 0.3965
+     "captured_cost_cny": 0.3965,
+     "cost_usd_baseten": 0.121974
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.633638
   },
   {
    "index": 54,
@@ -3419,7 +3666,8 @@
      "prompt_tokens": 31903,
      "cached_prompt_tokens": 6919936,
      "completion_tokens": 138371,
-     "captured_cost_cny": 0.7238
+     "captured_cost_cny": 0.7238,
+     "cost_usd_baseten": 0.224056
     },
     {
      "trial": "session-window-debug__8VR4N5h",
@@ -3430,7 +3678,8 @@
      "prompt_tokens": 46159,
      "cached_prompt_tokens": 4552832,
      "completion_tokens": 180321,
-     "captured_cost_cny": 0.8585
+     "captured_cost_cny": 0.8585,
+     "cost_usd_baseten": 0.262103
     },
     {
      "trial": "session-window-debug__FqcGaTC",
@@ -3441,7 +3690,8 @@
      "prompt_tokens": 32593,
      "cached_prompt_tokens": 3786624,
      "completion_tokens": 100797,
-     "captured_cost_cny": 0.5115
+     "captured_cost_cny": 0.5115,
+     "cost_usd_baseten": 0.157241
     },
     {
      "trial": "session-window-debug__tZVh4XS",
@@ -3452,9 +3702,11 @@
      "prompt_tokens": 82414,
      "cached_prompt_tokens": 15073792,
      "completion_tokens": 216932,
-     "captured_cost_cny": 1.2516
+     "captured_cost_cny": 1.2516,
+     "cost_usd_baseten": 0.390559
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.033959
   },
   {
    "index": 55,
@@ -3482,7 +3734,8 @@
      "prompt_tokens": 10916,
      "cached_prompt_tokens": 485632,
      "completion_tokens": 18984,
-     "captured_cost_cny": 0.0966
+     "captured_cost_cny": 0.0966,
+     "cost_usd_baseten": 0.029455
     },
     {
      "trial": "sparql-university__7Xai9T4",
@@ -3493,7 +3746,8 @@
      "prompt_tokens": 16361,
      "cached_prompt_tokens": 803456,
      "completion_tokens": 26590,
-     "captured_cost_cny": 0.1388
+     "captured_cost_cny": 0.1388,
+     "cost_usd_baseten": 0.04244
     },
     {
      "trial": "sparql-university__HNYVtSt",
@@ -3504,7 +3758,8 @@
      "prompt_tokens": 9901,
      "cached_prompt_tokens": 337024,
      "completion_tokens": 19047,
-     "captured_cost_cny": 0.0928
+     "captured_cost_cny": 0.0928,
+     "cost_usd_baseten": 0.028186
     },
     {
      "trial": "sparql-university__N2hiU6V",
@@ -3515,9 +3770,11 @@
      "prompt_tokens": 11175,
      "cached_prompt_tokens": 440192,
      "completion_tokens": 21510,
-     "captured_cost_cny": 0.106
+     "captured_cost_cny": 0.106,
+     "cost_usd_baseten": 0.032246
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.132327
   },
   {
    "index": 56,
@@ -3545,7 +3802,8 @@
      "prompt_tokens": 3980,
      "cached_prompt_tokens": 155520,
      "completion_tokens": 15486,
-     "captured_cost_cny": 0.069
+     "captured_cost_cny": 0.069,
+     "cost_usd_baseten": 0.020866
     },
     {
      "trial": "sqlite-db-truncate__KeoJ7Yr",
@@ -3556,7 +3814,8 @@
      "prompt_tokens": 4636,
      "cached_prompt_tokens": 161280,
      "completion_tokens": 27904,
-     "captured_cost_cny": 0.1195
+     "captured_cost_cny": 0.1195,
+     "cost_usd_baseten": 0.036005
     },
     {
      "trial": "sqlite-db-truncate__PrQ4zyV",
@@ -3567,7 +3826,8 @@
      "prompt_tokens": 13462,
      "cached_prompt_tokens": 188416,
      "completion_tokens": 18767,
-     "captured_cost_cny": 0.0923
+     "captured_cost_cny": 0.0923,
+     "cost_usd_baseten": 0.027878
     },
     {
      "trial": "sqlite-db-truncate__xjZxUbJ",
@@ -3578,9 +3838,11 @@
      "prompt_tokens": 4757,
      "cached_prompt_tokens": 227328,
      "completion_tokens": 21376,
-     "captured_cost_cny": 0.0948
+     "captured_cost_cny": 0.0948,
+     "cost_usd_baseten": 0.02867
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.113419
   },
   {
    "index": 57,
@@ -3608,7 +3870,8 @@
      "prompt_tokens": 18147,
      "cached_prompt_tokens": 566144,
      "completion_tokens": 17069,
-     "captured_cost_cny": 0.0977
+     "captured_cost_cny": 0.0977,
+     "cost_usd_baseten": 0.02989
     },
     {
      "trial": "sqlite-with-gcov__W4FxTXD",
@@ -3619,7 +3882,8 @@
      "prompt_tokens": 12473,
      "cached_prompt_tokens": 369792,
      "completion_tokens": 16558,
-     "captured_cost_cny": 0.0861
+     "captured_cost_cny": 0.0861,
+     "cost_usd_baseten": 0.0262
     },
     {
      "trial": "sqlite-with-gcov__aW4NcPE",
@@ -3630,7 +3894,8 @@
      "prompt_tokens": 18587,
      "cached_prompt_tokens": 482048,
      "completion_tokens": 21647,
-     "captured_cost_cny": 0.1148
+     "captured_cost_cny": 0.1148,
+     "cost_usd_baseten": 0.034927
     },
     {
      "trial": "sqlite-with-gcov__mWWbmBJ",
@@ -3641,9 +3906,11 @@
      "prompt_tokens": 11690,
      "cached_prompt_tokens": 333056,
      "completion_tokens": 23002,
-     "captured_cost_cny": 0.1104
+     "captured_cost_cny": 0.1104,
+     "cost_usd_baseten": 0.033441
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.124458
   },
   {
    "index": 58,
@@ -3671,7 +3938,8 @@
      "prompt_tokens": 7635,
      "cached_prompt_tokens": 413056,
      "completion_tokens": 23887,
-     "captured_cost_cny": 0.1114
+     "captured_cost_cny": 0.1114,
+     "cost_usd_baseten": 0.033846
     },
     {
      "trial": "tune-mjcf__FfuecSA",
@@ -3682,7 +3950,8 @@
      "prompt_tokens": 11994,
      "cached_prompt_tokens": 741760,
      "completion_tokens": 27648,
-     "captured_cost_cny": 0.2256
+     "captured_cost_cny": 0.2256,
+     "cost_usd_baseten": 0.041968
     },
     {
      "trial": "tune-mjcf__JssXh8D",
@@ -3693,7 +3962,8 @@
      "prompt_tokens": 9085,
      "cached_prompt_tokens": 492800,
      "completion_tokens": 29024,
-     "captured_cost_cny": 0.135
+     "captured_cost_cny": 0.135,
+     "cost_usd_baseten": 0.041004
     },
     {
      "trial": "tune-mjcf__i52YLyR",
@@ -3704,9 +3974,11 @@
      "prompt_tokens": 30640,
      "cached_prompt_tokens": 2801664,
      "completion_tokens": 67639,
-     "captured_cost_cny": 0.3572
+     "captured_cost_cny": 0.3572,
+     "cost_usd_baseten": 0.10997
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.226788
   },
   {
    "index": 59,
@@ -3734,7 +4006,8 @@
      "prompt_tokens": 183417,
      "cached_prompt_tokens": 10501248,
      "completion_tokens": 149093,
-     "captured_cost_cny": 0.9898
+     "captured_cost_cny": 0.9898,
+     "cost_usd_baseten": 0.307445
     },
     {
      "trial": "video-processing__XwTFWAx",
@@ -3745,7 +4018,8 @@
      "prompt_tokens": 104411,
      "cached_prompt_tokens": 14428032,
      "completion_tokens": 111754,
-     "captured_cost_cny": 0.84
+     "captured_cost_cny": 0.84,
+     "cost_usd_baseten": 0.266424
     },
     {
      "trial": "video-processing__Y7hY2cd",
@@ -3756,7 +4030,8 @@
      "prompt_tokens": 84834,
      "cached_prompt_tokens": 9770752,
      "completion_tokens": 102655,
-     "captured_cost_cny": 0.6909
+     "captured_cost_cny": 0.6909,
+     "cost_usd_baseten": 0.217031
     },
     {
      "trial": "video-processing__xxEK2pQ",
@@ -3767,9 +4042,11 @@
      "prompt_tokens": 136867,
      "cached_prompt_tokens": 16322176,
      "completion_tokens": 119062,
-     "captured_cost_cny": 0.9396
+     "captured_cost_cny": 0.9396,
+     "cost_usd_baseten": 0.29819
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.08909
   },
   {
    "index": 60,
@@ -3797,7 +4074,8 @@
      "prompt_tokens": 428737,
      "cached_prompt_tokens": 25662208,
      "completion_tokens": 125782,
-     "captured_cost_cny": 1.4451
+     "captured_cost_cny": 1.4451,
+     "cost_usd_baseten": 0.459195
     },
     {
      "trial": "vpp-loss-divergence__4hQ8pmx",
@@ -3808,7 +4086,8 @@
      "prompt_tokens": 471528,
      "cached_prompt_tokens": 28438016,
      "completion_tokens": 109594,
-     "captured_cost_cny": 1.4787
+     "captured_cost_cny": 1.4787,
+     "cost_usd_baseten": 0.472037
     },
     {
      "trial": "vpp-loss-divergence__Gd3mEfi",
@@ -3819,7 +4098,8 @@
      "prompt_tokens": 285181,
      "cached_prompt_tokens": 24989312,
      "completion_tokens": 123858,
-     "captured_cost_cny": 1.2804
+     "captured_cost_cny": 1.2804,
+     "cost_usd_baseten": 0.409109
     },
     {
      "trial": "vpp-loss-divergence__N8sjurC",
@@ -3830,9 +4110,11 @@
      "prompt_tokens": 335428,
      "cached_prompt_tokens": 23605632,
      "completion_tokens": 150091,
-     "captured_cost_cny": 2.8158
+     "captured_cost_cny": 2.8158,
+     "cost_usd_baseten": 0.445977
     }
-   ]
+   ],
+   "cost_usd_baseten": 1.786318
   },
   {
    "index": 61,
@@ -3860,7 +4142,8 @@
      "prompt_tokens": 12625,
      "cached_prompt_tokens": 122496,
      "completion_tokens": 8040,
-     "captured_cost_cny": 0.0472
+     "captured_cost_cny": 0.0472,
+     "cost_usd_baseten": 0.014293
     },
     {
      "trial": "vulnerable-secret__b7zbWo2",
@@ -3871,7 +4154,8 @@
      "prompt_tokens": 10015,
      "cached_prompt_tokens": 185088,
      "completion_tokens": 4400,
-     "captured_cost_cny": 0.0313
+     "captured_cost_cny": 0.0313,
+     "cost_usd_baseten": 0.00958
     },
     {
      "trial": "vulnerable-secret__dsW73yG",
@@ -3882,7 +4166,8 @@
      "prompt_tokens": 10538,
      "cached_prompt_tokens": 235136,
      "completion_tokens": 7535,
-     "captured_cost_cny": 0.0454
+     "captured_cost_cny": 0.0454,
+     "cost_usd_baseten": 0.013849
     },
     {
      "trial": "vulnerable-secret__hvja852",
@@ -3893,9 +4178,11 @@
      "prompt_tokens": 12623,
      "cached_prompt_tokens": 224512,
      "completion_tokens": 16707,
-     "captured_cost_cny": 0.0839
+     "captured_cost_cny": 0.0839,
+     "cost_usd_baseten": 0.025407
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.063129
   },
   {
    "index": 62,
@@ -3923,7 +4210,8 @@
      "prompt_tokens": 30946,
      "cached_prompt_tokens": 3588352,
      "completion_tokens": 99901,
-     "captured_cost_cny": 0.5023
+     "captured_cost_cny": 0.5023,
+     "cost_usd_baseten": 0.154283
     },
     {
      "trial": "wal-recovery-ordering__P6qRBmS",
@@ -3934,7 +4222,8 @@
      "prompt_tokens": 29443,
      "cached_prompt_tokens": 4116992,
      "completion_tokens": 105278,
-     "captured_cost_cny": 0.5329
+     "captured_cost_cny": 0.5329,
+     "cost_usd_baseten": 0.163985
     },
     {
      "trial": "wal-recovery-ordering__XuCJHQv",
@@ -3945,7 +4234,8 @@
      "prompt_tokens": 52670,
      "cached_prompt_tokens": 1121024,
      "completion_tokens": 116348,
-     "captured_cost_cny": 1.0452
+     "captured_cost_cny": 1.0452,
+     "cost_usd_baseten": 0.163266
     },
     {
      "trial": "wal-recovery-ordering__fB72Tb9",
@@ -3956,17 +4246,27 @@
      "prompt_tokens": 60012,
      "cached_prompt_tokens": 4014080,
      "completion_tokens": 140576,
-     "captured_cost_cny": 0.7026
+     "captured_cost_cny": 0.7026,
+     "cost_usd_baseten": 0.214793
     }
-   ]
+   ],
+   "cost_usd_baseten": 0.696327
   }
  ],
  "complete": true,
  "comparable": false,
  "measurement_basis": "Captured provider usage priced at DeepSeek's published deepseek-flash CNY rates (peak/off-peak by the UTC+8 clock); an estimate from token counts, not an invoice. Duration is agent execution, not full runner wall time. Not first-call-cold normalized benchmark cost.",
  "cost_basis": {
-  "cny_per_usd": 7.1,
-  "source": "DeepSeek published list prices applied to captured token counts (peak/off-peak by the UTC+8 clock)",
-  "note": "Estimate from token counts, not an invoice. USD figures use the fixed rate above; recompute from the CNY fields for another rate."
+  "formula": "uncached_input * input + cached_input * cached_input + output * output, per million tokens",
+  "prices_usd_per_million": {
+   "input": 0.3,
+   "cached_input": 0.007,
+   "output": 1.2
+  },
+  "prices_source": "Baseten list price for deepseek-ai/DeepSeek-V4.1-Flash-1017, checked 2026-10-29 (the board's own model card at frontierharness.org/live)",
+  "aggregation": "per-attempt cost from tokens; per-task cost = mean over that task's attempts; cost_per_task = mean of the 62 per-task means; cost_per_pass = cost_per_task / pass_rate",
+  "sandbox": "local Docker, no managed sandbox: sandbox_usd is 0 and reported separately",
+  "provider_spend_cny": 121.1,
+  "provider_spend_note": "Actual estimate at DeepSeek official CNY list prices (2x peak/off-peak), the provider this run called; not comparable to the USD figures above, which use the board's prices for the same tokens."
  }
 }

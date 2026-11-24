@@ -1,0 +1,14 @@
+{
+  "dataset": "frontier-harness-eval/frontier-harness-eval@v1.1.0",
+  "harbor_version": "0.26.0",
+  "agent": "harbor_agh_agent:AgnesHarnessAgent",
+  "model": "deepseek-v4.1-flash-1017",
+  "k_attempts": 4,
+  "concurrency": 4,
+  "timeout_multiplier": 1.0,
+  "max_turns": 100,
+  "permission_mode": "full-access",
+  "main_job_id": "fhe-v11-agh-deepseek-v4.1-flash-1017-k4",
+  "infra_rerun_job_id": "fhe-v11-batched-eval-parity-rerun1",
+  "excluded_infra_error_trial": "batched-eval-parity__GwBbjmM (pre-docker-buildx RuntimeError)"
+}

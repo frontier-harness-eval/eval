@@ -1,0 +1,3368 @@
+{
+  "benchmark": "frontier-harness-eval/frontier-harness-eval@v1.1.0",
+  "harness": "agnes-harness",
+  "model": "deepseek-v4.1-flash-1017",
+  "k": 4,
+  "n_tasks": 62,
+  "n_trials": 248,
+  "passed_trials": 151,
+  "pass_rate_pct": 60.89,
+  "pass_at_4_tasks": 43,
+  "pass_at_4_pct": 69.35,
+  "all_4_passed_tasks": 30,
+  "avg_duration_sec": 596.95,
+  "total_input_tokens": 22970955,
+  "total_output_tokens": 10645587,
+  "per_task_summary": {
+    "terminal-bench/adaptive-rejection-sampler": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/batched-eval-parity": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/bun-sourcemap-leak": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/caffe-cifar-10": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/cancel-async-tasks": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/cargo-flight-dispatch": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/chess-best-move": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/circuit-fibsqrt": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/code-from-image": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/constraints-scheduling": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/dna-assembly": {
+      "passed": 2,
+      "total": 4,
+      "rewards": [
+        0.0,
+        1.0,
+        1.0,
+        0.0
+      ]
+    },
+    "terminal-bench/dna-insert": {
+      "passed": 2,
+      "total": 4,
+      "rewards": [
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    "terminal-bench/embedding-drift-monitor": {
+      "passed": 2,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/feal-linear-cryptanalysis": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/filter-js-from-html": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/fix-code-vulnerability": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/fix-git": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/fix-ocaml-gc": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/foodstuff-beta-activity": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/freecad-impeller": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/gcode-to-text": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/glycan-ms2-elucidation": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/gsea-proteomics": {
+      "passed": 1,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    "terminal-bench/hf-model-inference": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ]
+    },
+    "terminal-bench/html-js-filter": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/install-windows-3.11": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/intrastat-meldung": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/kv-store-grpc": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/large-scale-text-editing": {
+      "passed": 1,
+      "total": 4,
+      "rewards": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/log-summary-date-ranges": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/mailman": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/make-doom-for-mips": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/merge-diff-arc-agi-task": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/model-extraction-relu-logits": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/mteb-leaderboard": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/music-harmony": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/mvcc-lsm-compaction": {
+      "passed": 2,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/nginx-request-logging": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/ontology-kg-querying": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/openssl-selfsigned-cert": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/path-tracing-reverse": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/polyglot-c-py": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/polyglot-rust-c": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/portfolio-optimization": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/prove-plus-comm": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/pypi-server": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/pytorch-model-cli": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/pytorch-model-recovery": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/regex-log": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/roy-polymorph-cn": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/rstan-to-pystan": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/sam-cell-seg": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/schemelike-metacircular-eval": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/session-window-debug": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/sparql-university": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/sqlite-db-truncate": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/sqlite-with-gcov": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/tune-mjcf": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/video-processing": {
+      "passed": 3,
+      "total": 4,
+      "rewards": [
+        0.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/vpp-loss-divergence": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "terminal-bench/vulnerable-secret": {
+      "passed": 4,
+      "total": 4,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "terminal-bench/wal-recovery-ordering": {
+      "passed": 0,
+      "total": 4,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "trials": [
+    {
+      "trial_id": "adaptive-rejection-sampler__e2W2kez",
+      "task_name": "terminal-bench/adaptive-rejection-sampler",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 996.08,
+      "input_tokens": 133755,
+      "output_tokens": 74462,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "adaptive-rejection-sampler__iXzqPFd",
+      "task_name": "terminal-bench/adaptive-rejection-sampler",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 927.98,
+      "input_tokens": 118320,
+      "output_tokens": 105703,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "adaptive-rejection-sampler__pSzeBJC",
+      "task_name": "terminal-bench/adaptive-rejection-sampler",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 916.51,
+      "input_tokens": 142772,
+      "output_tokens": 117739,
+      "exception_type": null
+    },
+    {
+      "trial_id": "adaptive-rejection-sampler__vE76WD7",
+      "task_name": "terminal-bench/adaptive-rejection-sampler",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 686.61,
+      "input_tokens": 148091,
+      "output_tokens": 73496,
+      "exception_type": null
+    },
+    {
+      "trial_id": "batched-eval-parity__KMaFKVE",
+      "task_name": "terminal-bench/batched-eval-parity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1388.96,
+      "input_tokens": 175830,
+      "output_tokens": 117341,
+      "exception_type": null
+    },
+    {
+      "trial_id": "batched-eval-parity__jNmQXRG",
+      "task_name": "terminal-bench/batched-eval-parity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1632.45,
+      "input_tokens": 254883,
+      "output_tokens": 122792,
+      "exception_type": null
+    },
+    {
+      "trial_id": "batched-eval-parity__kbaNQMq",
+      "task_name": "terminal-bench/batched-eval-parity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1240.48,
+      "input_tokens": 261567,
+      "output_tokens": 85087,
+      "exception_type": null
+    },
+    {
+      "trial_id": "bun-sourcemap-leak__C2LbdxP",
+      "task_name": "terminal-bench/bun-sourcemap-leak",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 434.44,
+      "input_tokens": 74400,
+      "output_tokens": 60240,
+      "exception_type": null
+    },
+    {
+      "trial_id": "bun-sourcemap-leak__N7mMpu3",
+      "task_name": "terminal-bench/bun-sourcemap-leak",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 664.3,
+      "input_tokens": 125799,
+      "output_tokens": 69512,
+      "exception_type": null
+    },
+    {
+      "trial_id": "bun-sourcemap-leak__nAGDozt",
+      "task_name": "terminal-bench/bun-sourcemap-leak",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1559.98,
+      "input_tokens": 86038,
+      "output_tokens": 62677,
+      "exception_type": null
+    },
+    {
+      "trial_id": "bun-sourcemap-leak__nTAE7Za",
+      "task_name": "terminal-bench/bun-sourcemap-leak",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 477.53,
+      "input_tokens": 86509,
+      "output_tokens": 60844,
+      "exception_type": null
+    },
+    {
+      "trial_id": "caffe-cifar-10__YAw8XdP",
+      "task_name": "terminal-bench/caffe-cifar-10",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1481.6,
+      "input_tokens": 39596,
+      "output_tokens": 21980,
+      "exception_type": null
+    },
+    {
+      "trial_id": "caffe-cifar-10__bRVsiBD",
+      "task_name": "terminal-bench/caffe-cifar-10",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1749.09,
+      "input_tokens": 44854,
+      "output_tokens": 18653,
+      "exception_type": null
+    },
+    {
+      "trial_id": "caffe-cifar-10__drn39wW",
+      "task_name": "terminal-bench/caffe-cifar-10",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 2379.75,
+      "input_tokens": 52035,
+      "output_tokens": 15590,
+      "exception_type": null
+    },
+    {
+      "trial_id": "caffe-cifar-10__xYiVP4L",
+      "task_name": "terminal-bench/caffe-cifar-10",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1828.5,
+      "input_tokens": 49146,
+      "output_tokens": 26948,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cancel-async-tasks__Q8ybeMU",
+      "task_name": "terminal-bench/cancel-async-tasks",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 136.24,
+      "input_tokens": 14191,
+      "output_tokens": 9436,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cancel-async-tasks__ZdZRiu8",
+      "task_name": "terminal-bench/cancel-async-tasks",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 573.77,
+      "input_tokens": 140446,
+      "output_tokens": 48141,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cancel-async-tasks__d5vpWS7",
+      "task_name": "terminal-bench/cancel-async-tasks",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 460.78,
+      "input_tokens": 53322,
+      "output_tokens": 32340,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cancel-async-tasks__rWhtZhN",
+      "task_name": "terminal-bench/cancel-async-tasks",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 261.08,
+      "input_tokens": 39757,
+      "output_tokens": 26658,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cargo-flight-dispatch__4Mi6g3c",
+      "task_name": "terminal-bench/cargo-flight-dispatch",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 479.62,
+      "input_tokens": 84241,
+      "output_tokens": 61358,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cargo-flight-dispatch__6w7egjK",
+      "task_name": "terminal-bench/cargo-flight-dispatch",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 425.98,
+      "input_tokens": 87084,
+      "output_tokens": 65292,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cargo-flight-dispatch__FzDoDMS",
+      "task_name": "terminal-bench/cargo-flight-dispatch",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 706.21,
+      "input_tokens": 141652,
+      "output_tokens": 107848,
+      "exception_type": null
+    },
+    {
+      "trial_id": "cargo-flight-dispatch__VYKdrwV",
+      "task_name": "terminal-bench/cargo-flight-dispatch",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 524.1,
+      "input_tokens": 102495,
+      "output_tokens": 60976,
+      "exception_type": null
+    },
+    {
+      "trial_id": "chess-best-move__G9gbRmV",
+      "task_name": "terminal-bench/chess-best-move",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 191.42,
+      "input_tokens": 48532,
+      "output_tokens": 12714,
+      "exception_type": null
+    },
+    {
+      "trial_id": "chess-best-move__Znei5Y5",
+      "task_name": "terminal-bench/chess-best-move",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 229.32,
+      "input_tokens": 32986,
+      "output_tokens": 13787,
+      "exception_type": null
+    },
+    {
+      "trial_id": "chess-best-move__tiqbjAJ",
+      "task_name": "terminal-bench/chess-best-move",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 469.64,
+      "input_tokens": 68025,
+      "output_tokens": 23684,
+      "exception_type": null
+    },
+    {
+      "trial_id": "chess-best-move__uTJeeRb",
+      "task_name": "terminal-bench/chess-best-move",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 292.14,
+      "input_tokens": 53477,
+      "output_tokens": 14667,
+      "exception_type": null
+    },
+    {
+      "trial_id": "circuit-fibsqrt__SHY3aqP",
+      "task_name": "terminal-bench/circuit-fibsqrt",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 608.03,
+      "input_tokens": 138322,
+      "output_tokens": 62455,
+      "exception_type": null
+    },
+    {
+      "trial_id": "circuit-fibsqrt__YwmgKzR",
+      "task_name": "terminal-bench/circuit-fibsqrt",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 567.91,
+      "input_tokens": 58973,
+      "output_tokens": 47730,
+      "exception_type": null
+    },
+    {
+      "trial_id": "circuit-fibsqrt__fenaNjW",
+      "task_name": "terminal-bench/circuit-fibsqrt",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 838.97,
+      "input_tokens": 141712,
+      "output_tokens": 69205,
+      "exception_type": null
+    },
+    {
+      "trial_id": "circuit-fibsqrt__vSMeu5Q",
+      "task_name": "terminal-bench/circuit-fibsqrt",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1106.78,
+      "input_tokens": 100407,
+      "output_tokens": 64617,
+      "exception_type": null
+    },
+    {
+      "trial_id": "code-from-image__Bs7X344",
+      "task_name": "terminal-bench/code-from-image",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 57.25,
+      "input_tokens": 2583,
+      "output_tokens": 991,
+      "exception_type": null
+    },
+    {
+      "trial_id": "code-from-image__fc7QzwU",
+      "task_name": "terminal-bench/code-from-image",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 68.83,
+      "input_tokens": 6080,
+      "output_tokens": 1368,
+      "exception_type": null
+    },
+    {
+      "trial_id": "code-from-image__tM985dQ",
+      "task_name": "terminal-bench/code-from-image",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 57.87,
+      "input_tokens": 1722,
+      "output_tokens": 1035,
+      "exception_type": null
+    },
+    {
+      "trial_id": "code-from-image__uwxSggy",
+      "task_name": "terminal-bench/code-from-image",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 52.68,
+      "input_tokens": 4489,
+      "output_tokens": 974,
+      "exception_type": null
+    },
+    {
+      "trial_id": "constraints-scheduling__48Jxry9",
+      "task_name": "terminal-bench/constraints-scheduling",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 168.45,
+      "input_tokens": 9317,
+      "output_tokens": 3885,
+      "exception_type": null
+    },
+    {
+      "trial_id": "constraints-scheduling__aiZwgZy",
+      "task_name": "terminal-bench/constraints-scheduling",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 105.36,
+      "input_tokens": 19778,
+      "output_tokens": 7252,
+      "exception_type": null
+    },
+    {
+      "trial_id": "constraints-scheduling__dv9F7QU",
+      "task_name": "terminal-bench/constraints-scheduling",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 103.01,
+      "input_tokens": 13817,
+      "output_tokens": 6737,
+      "exception_type": null
+    },
+    {
+      "trial_id": "constraints-scheduling__fd2qT4J",
+      "task_name": "terminal-bench/constraints-scheduling",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 108.72,
+      "input_tokens": 17880,
+      "output_tokens": 8184,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-assembly__5wvQY2A",
+      "task_name": "terminal-bench/dna-assembly",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1111.73,
+      "input_tokens": 207318,
+      "output_tokens": 142893,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-assembly__6UttNZn",
+      "task_name": "terminal-bench/dna-assembly",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 449.85,
+      "input_tokens": 77248,
+      "output_tokens": 60413,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-assembly__iofNDFS",
+      "task_name": "terminal-bench/dna-assembly",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 2378.39,
+      "input_tokens": 54827,
+      "output_tokens": 101784,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "dna-assembly__sG74fnN",
+      "task_name": "terminal-bench/dna-assembly",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 860.79,
+      "input_tokens": 105847,
+      "output_tokens": 72320,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-insert__jTAo3XK",
+      "task_name": "terminal-bench/dna-insert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 266.32,
+      "input_tokens": 42633,
+      "output_tokens": 22713,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-insert__n3TsTgj",
+      "task_name": "terminal-bench/dna-insert",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 354.57,
+      "input_tokens": 76521,
+      "output_tokens": 21233,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-insert__qNqJmdD",
+      "task_name": "terminal-bench/dna-insert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 313.38,
+      "input_tokens": 43284,
+      "output_tokens": 30836,
+      "exception_type": null
+    },
+    {
+      "trial_id": "dna-insert__sFBHZj5",
+      "task_name": "terminal-bench/dna-insert",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1373.87,
+      "input_tokens": 86104,
+      "output_tokens": 69786,
+      "exception_type": null
+    },
+    {
+      "trial_id": "embedding-drift-monitor__KpwWX4h",
+      "task_name": "terminal-bench/embedding-drift-monitor",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 943.0,
+      "input_tokens": 135851,
+      "output_tokens": 69497,
+      "exception_type": null
+    },
+    {
+      "trial_id": "embedding-drift-monitor__WumpyPq",
+      "task_name": "terminal-bench/embedding-drift-monitor",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 809.94,
+      "input_tokens": 71487,
+      "output_tokens": 58524,
+      "exception_type": null
+    },
+    {
+      "trial_id": "embedding-drift-monitor__ZrmF7z8",
+      "task_name": "terminal-bench/embedding-drift-monitor",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 805.54,
+      "input_tokens": 100202,
+      "output_tokens": 75985,
+      "exception_type": null
+    },
+    {
+      "trial_id": "embedding-drift-monitor__ciWT2eQ",
+      "task_name": "terminal-bench/embedding-drift-monitor",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 690.63,
+      "input_tokens": 81821,
+      "output_tokens": 57072,
+      "exception_type": null
+    },
+    {
+      "trial_id": "feal-linear-cryptanalysis__Msq9HVB",
+      "task_name": "terminal-bench/feal-linear-cryptanalysis",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 403.41,
+      "input_tokens": 66123,
+      "output_tokens": 50169,
+      "exception_type": null
+    },
+    {
+      "trial_id": "feal-linear-cryptanalysis__VCtEMY7",
+      "task_name": "terminal-bench/feal-linear-cryptanalysis",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 269.31,
+      "input_tokens": 41878,
+      "output_tokens": 34612,
+      "exception_type": null
+    },
+    {
+      "trial_id": "feal-linear-cryptanalysis__rmbn9mf",
+      "task_name": "terminal-bench/feal-linear-cryptanalysis",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 297.76,
+      "input_tokens": 16723,
+      "output_tokens": 35427,
+      "exception_type": null
+    },
+    {
+      "trial_id": "feal-linear-cryptanalysis__yYgbRHC",
+      "task_name": "terminal-bench/feal-linear-cryptanalysis",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 151.2,
+      "input_tokens": 23731,
+      "output_tokens": 18477,
+      "exception_type": null
+    },
+    {
+      "trial_id": "filter-js-from-html__7pdhwRE",
+      "task_name": "terminal-bench/filter-js-from-html",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 407.48,
+      "input_tokens": 38390,
+      "output_tokens": 24302,
+      "exception_type": null
+    },
+    {
+      "trial_id": "filter-js-from-html__BVugpqW",
+      "task_name": "terminal-bench/filter-js-from-html",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1007.52,
+      "input_tokens": 144704,
+      "output_tokens": 94983,
+      "exception_type": null
+    },
+    {
+      "trial_id": "filter-js-from-html__c4QY9ZG",
+      "task_name": "terminal-bench/filter-js-from-html",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 2047.79,
+      "input_tokens": 237283,
+      "output_tokens": 135296,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "filter-js-from-html__iF84fK6",
+      "task_name": "terminal-bench/filter-js-from-html",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 894.88,
+      "input_tokens": 87258,
+      "output_tokens": 70443,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-code-vulnerability__M7ssce7",
+      "task_name": "terminal-bench/fix-code-vulnerability",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 88.55,
+      "input_tokens": 13763,
+      "output_tokens": 3099,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-code-vulnerability__RjmbUxQ",
+      "task_name": "terminal-bench/fix-code-vulnerability",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 95.39,
+      "input_tokens": 16513,
+      "output_tokens": 4578,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-code-vulnerability__Uid5xdk",
+      "task_name": "terminal-bench/fix-code-vulnerability",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 69.77,
+      "input_tokens": 11212,
+      "output_tokens": 2389,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-code-vulnerability__Z5cENxU",
+      "task_name": "terminal-bench/fix-code-vulnerability",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 249.27,
+      "input_tokens": 18353,
+      "output_tokens": 2691,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-git__7US5uZg",
+      "task_name": "terminal-bench/fix-git",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 103.8,
+      "input_tokens": 19219,
+      "output_tokens": 5907,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-git__NTtJUsG",
+      "task_name": "terminal-bench/fix-git",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 94.13,
+      "input_tokens": 14304,
+      "output_tokens": 5480,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-git__aGzEoEt",
+      "task_name": "terminal-bench/fix-git",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 89.14,
+      "input_tokens": 11194,
+      "output_tokens": 5001,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-git__ygtd7aC",
+      "task_name": "terminal-bench/fix-git",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 115.44,
+      "input_tokens": 13812,
+      "output_tokens": 2818,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-ocaml-gc__2x2oGdN",
+      "task_name": "terminal-bench/fix-ocaml-gc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1126.12,
+      "input_tokens": 60552,
+      "output_tokens": 21124,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-ocaml-gc__5Pjy9Uq",
+      "task_name": "terminal-bench/fix-ocaml-gc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1075.56,
+      "input_tokens": 93280,
+      "output_tokens": 12704,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-ocaml-gc__AykEJaQ",
+      "task_name": "terminal-bench/fix-ocaml-gc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1231.41,
+      "input_tokens": 152301,
+      "output_tokens": 20527,
+      "exception_type": null
+    },
+    {
+      "trial_id": "fix-ocaml-gc__PaBJjgg",
+      "task_name": "terminal-bench/fix-ocaml-gc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1868.58,
+      "input_tokens": 65541,
+      "output_tokens": 17285,
+      "exception_type": null
+    },
+    {
+      "trial_id": "foodstuff-beta-activity__CU9kafN",
+      "task_name": "terminal-bench/foodstuff-beta-activity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 426.58,
+      "input_tokens": 63759,
+      "output_tokens": 50233,
+      "exception_type": null
+    },
+    {
+      "trial_id": "foodstuff-beta-activity__VSRo2p9",
+      "task_name": "terminal-bench/foodstuff-beta-activity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 270.19,
+      "input_tokens": 6817,
+      "output_tokens": 28915,
+      "exception_type": null
+    },
+    {
+      "trial_id": "foodstuff-beta-activity__pCt6LsG",
+      "task_name": "terminal-bench/foodstuff-beta-activity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 526.24,
+      "input_tokens": 63713,
+      "output_tokens": 64080,
+      "exception_type": null
+    },
+    {
+      "trial_id": "foodstuff-beta-activity__wRwZnGJ",
+      "task_name": "terminal-bench/foodstuff-beta-activity",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 251.62,
+      "input_tokens": 45716,
+      "output_tokens": 32966,
+      "exception_type": null
+    },
+    {
+      "trial_id": "freecad-impeller__GNiT6bx",
+      "task_name": "terminal-bench/freecad-impeller",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1148.24,
+      "input_tokens": 143724,
+      "output_tokens": 101248,
+      "exception_type": null
+    },
+    {
+      "trial_id": "freecad-impeller__NZJDYRU",
+      "task_name": "terminal-bench/freecad-impeller",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1222.27,
+      "input_tokens": 216417,
+      "output_tokens": 109603,
+      "exception_type": null
+    },
+    {
+      "trial_id": "freecad-impeller__QzyTJ4G",
+      "task_name": "terminal-bench/freecad-impeller",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 828.19,
+      "input_tokens": 111980,
+      "output_tokens": 79381,
+      "exception_type": null
+    },
+    {
+      "trial_id": "freecad-impeller__y93FPEW",
+      "task_name": "terminal-bench/freecad-impeller",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 898.93,
+      "input_tokens": 222310,
+      "output_tokens": 87316,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gcode-to-text__Mgiykoo",
+      "task_name": "terminal-bench/gcode-to-text",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 839.53,
+      "input_tokens": 191648,
+      "output_tokens": 66493,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gcode-to-text__XunfYih",
+      "task_name": "terminal-bench/gcode-to-text",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 623.66,
+      "input_tokens": 157647,
+      "output_tokens": 56846,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gcode-to-text__vMFcKRa",
+      "task_name": "terminal-bench/gcode-to-text",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 649.53,
+      "input_tokens": 250848,
+      "output_tokens": 76065,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gcode-to-text__wALvCjc",
+      "task_name": "terminal-bench/gcode-to-text",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 413.98,
+      "input_tokens": 103485,
+      "output_tokens": 48117,
+      "exception_type": null
+    },
+    {
+      "trial_id": "glycan-ms2-elucidation__5GR5NWS",
+      "task_name": "terminal-bench/glycan-ms2-elucidation",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 482.41,
+      "input_tokens": 90714,
+      "output_tokens": 75563,
+      "exception_type": null
+    },
+    {
+      "trial_id": "glycan-ms2-elucidation__BmmGbbE",
+      "task_name": "terminal-bench/glycan-ms2-elucidation",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 515.79,
+      "input_tokens": 136281,
+      "output_tokens": 66231,
+      "exception_type": null
+    },
+    {
+      "trial_id": "glycan-ms2-elucidation__FeksBS6",
+      "task_name": "terminal-bench/glycan-ms2-elucidation",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 532.04,
+      "input_tokens": 166842,
+      "output_tokens": 52867,
+      "exception_type": null
+    },
+    {
+      "trial_id": "glycan-ms2-elucidation__tsVdxMV",
+      "task_name": "terminal-bench/glycan-ms2-elucidation",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 540.11,
+      "input_tokens": 114616,
+      "output_tokens": 58792,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gsea-proteomics__DH9pRte",
+      "task_name": "terminal-bench/gsea-proteomics",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 676.52,
+      "input_tokens": 89676,
+      "output_tokens": 54112,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gsea-proteomics__b2JrYpN",
+      "task_name": "terminal-bench/gsea-proteomics",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 356.18,
+      "input_tokens": 45870,
+      "output_tokens": 23905,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gsea-proteomics__peGH7wq",
+      "task_name": "terminal-bench/gsea-proteomics",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 293.42,
+      "input_tokens": 36241,
+      "output_tokens": 18185,
+      "exception_type": null
+    },
+    {
+      "trial_id": "gsea-proteomics__tGTHMpQ",
+      "task_name": "terminal-bench/gsea-proteomics",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 727.51,
+      "input_tokens": 182184,
+      "output_tokens": 51378,
+      "exception_type": null
+    },
+    {
+      "trial_id": "hf-model-inference__BUE9dGY",
+      "task_name": "terminal-bench/hf-model-inference",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 184.72,
+      "input_tokens": 20147,
+      "output_tokens": 9296,
+      "exception_type": null
+    },
+    {
+      "trial_id": "hf-model-inference__Hr2NXag",
+      "task_name": "terminal-bench/hf-model-inference",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 237.33,
+      "input_tokens": 20759,
+      "output_tokens": 11125,
+      "exception_type": null
+    },
+    {
+      "trial_id": "hf-model-inference__Rx3xoW2",
+      "task_name": "terminal-bench/hf-model-inference",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 170.1,
+      "input_tokens": 12482,
+      "output_tokens": 5318,
+      "exception_type": null
+    },
+    {
+      "trial_id": "hf-model-inference__iBh8XPA",
+      "task_name": "terminal-bench/hf-model-inference",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 195.19,
+      "input_tokens": 32075,
+      "output_tokens": 11670,
+      "exception_type": null
+    },
+    {
+      "trial_id": "html-js-filter__H7WbYfG",
+      "task_name": "terminal-bench/html-js-filter",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 893.96,
+      "input_tokens": 141919,
+      "output_tokens": 116102,
+      "exception_type": null
+    },
+    {
+      "trial_id": "html-js-filter__K5JK9uf",
+      "task_name": "terminal-bench/html-js-filter",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1069.75,
+      "input_tokens": 155732,
+      "output_tokens": 102997,
+      "exception_type": null
+    },
+    {
+      "trial_id": "html-js-filter__P52Q7D4",
+      "task_name": "terminal-bench/html-js-filter",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1658.69,
+      "input_tokens": 284318,
+      "output_tokens": 204075,
+      "exception_type": null
+    },
+    {
+      "trial_id": "html-js-filter__VPUyhru",
+      "task_name": "terminal-bench/html-js-filter",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 963.48,
+      "input_tokens": 140085,
+      "output_tokens": 98254,
+      "exception_type": null
+    },
+    {
+      "trial_id": "install-windows-3.11__A5fCZyt",
+      "task_name": "terminal-bench/install-windows-3.11",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1260.98,
+      "input_tokens": 292315,
+      "output_tokens": 65633,
+      "exception_type": null
+    },
+    {
+      "trial_id": "install-windows-3.11__CRoEx52",
+      "task_name": "terminal-bench/install-windows-3.11",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1060.2,
+      "input_tokens": 167005,
+      "output_tokens": 52690,
+      "exception_type": null
+    },
+    {
+      "trial_id": "install-windows-3.11__MZZWGKq",
+      "task_name": "terminal-bench/install-windows-3.11",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1215.06,
+      "input_tokens": 121548,
+      "output_tokens": 34936,
+      "exception_type": null
+    },
+    {
+      "trial_id": "install-windows-3.11__qS7vrZS",
+      "task_name": "terminal-bench/install-windows-3.11",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1383.56,
+      "input_tokens": 155524,
+      "output_tokens": 50288,
+      "exception_type": null
+    },
+    {
+      "trial_id": "intrastat-meldung__5NP8nV4",
+      "task_name": "terminal-bench/intrastat-meldung",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 449.06,
+      "input_tokens": 184673,
+      "output_tokens": 34715,
+      "exception_type": null
+    },
+    {
+      "trial_id": "intrastat-meldung__6jtfVkT",
+      "task_name": "terminal-bench/intrastat-meldung",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 527.48,
+      "input_tokens": 217216,
+      "output_tokens": 44446,
+      "exception_type": null
+    },
+    {
+      "trial_id": "intrastat-meldung__CdgpDyz",
+      "task_name": "terminal-bench/intrastat-meldung",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 412.79,
+      "input_tokens": 184635,
+      "output_tokens": 29239,
+      "exception_type": null
+    },
+    {
+      "trial_id": "intrastat-meldung__oLfKDko",
+      "task_name": "terminal-bench/intrastat-meldung",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 408.13,
+      "input_tokens": 114722,
+      "output_tokens": 33505,
+      "exception_type": null
+    },
+    {
+      "trial_id": "kv-store-grpc__KY4tWR2",
+      "task_name": "terminal-bench/kv-store-grpc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 147.61,
+      "input_tokens": 19979,
+      "output_tokens": 8272,
+      "exception_type": null
+    },
+    {
+      "trial_id": "kv-store-grpc__LJT73AG",
+      "task_name": "terminal-bench/kv-store-grpc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 122.92,
+      "input_tokens": 16092,
+      "output_tokens": 6239,
+      "exception_type": null
+    },
+    {
+      "trial_id": "kv-store-grpc__fLhJM69",
+      "task_name": "terminal-bench/kv-store-grpc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 143.92,
+      "input_tokens": 13750,
+      "output_tokens": 6975,
+      "exception_type": null
+    },
+    {
+      "trial_id": "kv-store-grpc__fcqC9Mt",
+      "task_name": "terminal-bench/kv-store-grpc",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 86.58,
+      "input_tokens": 8022,
+      "output_tokens": 4343,
+      "exception_type": null
+    },
+    {
+      "trial_id": "large-scale-text-editing__6BFJre3",
+      "task_name": "terminal-bench/large-scale-text-editing",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 223.81,
+      "input_tokens": 22765,
+      "output_tokens": 15398,
+      "exception_type": null
+    },
+    {
+      "trial_id": "large-scale-text-editing__SWx8haH",
+      "task_name": "terminal-bench/large-scale-text-editing",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 185.85,
+      "input_tokens": 6822,
+      "output_tokens": 4051,
+      "exception_type": null
+    },
+    {
+      "trial_id": "large-scale-text-editing__cQUvtr2",
+      "task_name": "terminal-bench/large-scale-text-editing",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 165.08,
+      "input_tokens": 8518,
+      "output_tokens": 5826,
+      "exception_type": null
+    },
+    {
+      "trial_id": "large-scale-text-editing__i96EgJn",
+      "task_name": "terminal-bench/large-scale-text-editing",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 357.41,
+      "input_tokens": 30787,
+      "output_tokens": 21881,
+      "exception_type": null
+    },
+    {
+      "trial_id": "log-summary-date-ranges__5HJYq6q",
+      "task_name": "terminal-bench/log-summary-date-ranges",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 81.82,
+      "input_tokens": 10982,
+      "output_tokens": 4229,
+      "exception_type": null
+    },
+    {
+      "trial_id": "log-summary-date-ranges__Y3hJgrs",
+      "task_name": "terminal-bench/log-summary-date-ranges",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 64.88,
+      "input_tokens": 10571,
+      "output_tokens": 2380,
+      "exception_type": null
+    },
+    {
+      "trial_id": "log-summary-date-ranges__c6T6Zxs",
+      "task_name": "terminal-bench/log-summary-date-ranges",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 79.95,
+      "input_tokens": 6502,
+      "output_tokens": 3437,
+      "exception_type": null
+    },
+    {
+      "trial_id": "log-summary-date-ranges__srGm3At",
+      "task_name": "terminal-bench/log-summary-date-ranges",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 70.3,
+      "input_tokens": 8571,
+      "output_tokens": 2714,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mailman__WS55xYi",
+      "task_name": "terminal-bench/mailman",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 727.71,
+      "input_tokens": 107290,
+      "output_tokens": 34201,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mailman__jaZKa56",
+      "task_name": "terminal-bench/mailman",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 715.73,
+      "input_tokens": 104026,
+      "output_tokens": 33859,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mailman__kkC2kjQ",
+      "task_name": "terminal-bench/mailman",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 707.9,
+      "input_tokens": 146417,
+      "output_tokens": 33272,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mailman__ruFoBF7",
+      "task_name": "terminal-bench/mailman",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 662.34,
+      "input_tokens": 62551,
+      "output_tokens": 27390,
+      "exception_type": null
+    },
+    {
+      "trial_id": "make-doom-for-mips__BFnRLGd",
+      "task_name": "terminal-bench/make-doom-for-mips",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 949.69,
+      "input_tokens": 229395,
+      "output_tokens": 99093,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "make-doom-for-mips__MDgqK9Q",
+      "task_name": "terminal-bench/make-doom-for-mips",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 951.86,
+      "input_tokens": 295475,
+      "output_tokens": 103819,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "make-doom-for-mips__Ywxi7jN",
+      "task_name": "terminal-bench/make-doom-for-mips",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 935.88,
+      "input_tokens": 157082,
+      "output_tokens": 83789,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "make-doom-for-mips__jGJCvGV",
+      "task_name": "terminal-bench/make-doom-for-mips",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 937.95,
+      "input_tokens": 156792,
+      "output_tokens": 95429,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "merge-diff-arc-agi-task__4HgUkA9",
+      "task_name": "terminal-bench/merge-diff-arc-agi-task",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 915.21,
+      "input_tokens": 13620,
+      "output_tokens": 3320,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "merge-diff-arc-agi-task__JhbRzho",
+      "task_name": "terminal-bench/merge-diff-arc-agi-task",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 138.01,
+      "input_tokens": 16678,
+      "output_tokens": 9543,
+      "exception_type": null
+    },
+    {
+      "trial_id": "merge-diff-arc-agi-task__agLTpzz",
+      "task_name": "terminal-bench/merge-diff-arc-agi-task",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 180.79,
+      "input_tokens": 24102,
+      "output_tokens": 16162,
+      "exception_type": null
+    },
+    {
+      "trial_id": "merge-diff-arc-agi-task__oDBeE3C",
+      "task_name": "terminal-bench/merge-diff-arc-agi-task",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 121.66,
+      "input_tokens": 12612,
+      "output_tokens": 7030,
+      "exception_type": null
+    },
+    {
+      "trial_id": "model-extraction-relu-logits__JD6q7MW",
+      "task_name": "terminal-bench/model-extraction-relu-logits",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 643.48,
+      "input_tokens": 115390,
+      "output_tokens": 83442,
+      "exception_type": null
+    },
+    {
+      "trial_id": "model-extraction-relu-logits__KVjgfCR",
+      "task_name": "terminal-bench/model-extraction-relu-logits",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 794.68,
+      "input_tokens": 126586,
+      "output_tokens": 103665,
+      "exception_type": null
+    },
+    {
+      "trial_id": "model-extraction-relu-logits__jiHyNKS",
+      "task_name": "terminal-bench/model-extraction-relu-logits",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 374.52,
+      "input_tokens": 51337,
+      "output_tokens": 26893,
+      "exception_type": null
+    },
+    {
+      "trial_id": "model-extraction-relu-logits__zLgcjqH",
+      "task_name": "terminal-bench/model-extraction-relu-logits",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 320.05,
+      "input_tokens": 52831,
+      "output_tokens": 31927,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mteb-leaderboard__HMZAqvA",
+      "task_name": "terminal-bench/mteb-leaderboard",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 549.47,
+      "input_tokens": 85088,
+      "output_tokens": 31020,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mteb-leaderboard__UKJ8wZA",
+      "task_name": "terminal-bench/mteb-leaderboard",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1797.91,
+      "input_tokens": 86714,
+      "output_tokens": 38579,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mteb-leaderboard__uWzkpTN",
+      "task_name": "terminal-bench/mteb-leaderboard",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 508.11,
+      "input_tokens": 50652,
+      "output_tokens": 33369,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mteb-leaderboard__xboanA7",
+      "task_name": "terminal-bench/mteb-leaderboard",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 892.39,
+      "input_tokens": 161413,
+      "output_tokens": 34290,
+      "exception_type": null
+    },
+    {
+      "trial_id": "music-harmony__5FNkqkB",
+      "task_name": "terminal-bench/music-harmony",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1694.93,
+      "input_tokens": 829007,
+      "output_tokens": 181702,
+      "exception_type": null
+    },
+    {
+      "trial_id": "music-harmony__9UKcARc",
+      "task_name": "terminal-bench/music-harmony",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1245.34,
+      "input_tokens": 309469,
+      "output_tokens": 202261,
+      "exception_type": null
+    },
+    {
+      "trial_id": "music-harmony__EeX3vYC",
+      "task_name": "terminal-bench/music-harmony",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1338.98,
+      "input_tokens": 367101,
+      "output_tokens": 225277,
+      "exception_type": null
+    },
+    {
+      "trial_id": "music-harmony__nfitXuV",
+      "task_name": "terminal-bench/music-harmony",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1367.84,
+      "input_tokens": 437698,
+      "output_tokens": 142922,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mvcc-lsm-compaction__JwRL5ue",
+      "task_name": "terminal-bench/mvcc-lsm-compaction",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 599.84,
+      "input_tokens": 47485,
+      "output_tokens": 21116,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mvcc-lsm-compaction__YFzVaVT",
+      "task_name": "terminal-bench/mvcc-lsm-compaction",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 581.22,
+      "input_tokens": 34090,
+      "output_tokens": 17279,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mvcc-lsm-compaction__kW5ezdV",
+      "task_name": "terminal-bench/mvcc-lsm-compaction",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 713.99,
+      "input_tokens": 41144,
+      "output_tokens": 26905,
+      "exception_type": null
+    },
+    {
+      "trial_id": "mvcc-lsm-compaction__uNYFM4h",
+      "task_name": "terminal-bench/mvcc-lsm-compaction",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 662.02,
+      "input_tokens": 66693,
+      "output_tokens": 36268,
+      "exception_type": null
+    },
+    {
+      "trial_id": "nginx-request-logging__CMGFJeF",
+      "task_name": "terminal-bench/nginx-request-logging",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 94.82,
+      "input_tokens": 8698,
+      "output_tokens": 2639,
+      "exception_type": null
+    },
+    {
+      "trial_id": "nginx-request-logging__TXEPgvr",
+      "task_name": "terminal-bench/nginx-request-logging",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 98.23,
+      "input_tokens": 8907,
+      "output_tokens": 2073,
+      "exception_type": null
+    },
+    {
+      "trial_id": "nginx-request-logging__UFeqbLe",
+      "task_name": "terminal-bench/nginx-request-logging",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 104.92,
+      "input_tokens": 12584,
+      "output_tokens": 5114,
+      "exception_type": null
+    },
+    {
+      "trial_id": "nginx-request-logging__o3Mc75x",
+      "task_name": "terminal-bench/nginx-request-logging",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 84.75,
+      "input_tokens": 8315,
+      "output_tokens": 3401,
+      "exception_type": null
+    },
+    {
+      "trial_id": "ontology-kg-querying__E9i9jtW",
+      "task_name": "terminal-bench/ontology-kg-querying",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 536.27,
+      "input_tokens": 184736,
+      "output_tokens": 67310,
+      "exception_type": null
+    },
+    {
+      "trial_id": "ontology-kg-querying__UuhHWSb",
+      "task_name": "terminal-bench/ontology-kg-querying",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 613.88,
+      "input_tokens": 236766,
+      "output_tokens": 73936,
+      "exception_type": null
+    },
+    {
+      "trial_id": "ontology-kg-querying__vKNZUb2",
+      "task_name": "terminal-bench/ontology-kg-querying",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 639.69,
+      "input_tokens": 218877,
+      "output_tokens": 76276,
+      "exception_type": null
+    },
+    {
+      "trial_id": "ontology-kg-querying__yADE4EB",
+      "task_name": "terminal-bench/ontology-kg-querying",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 668.06,
+      "input_tokens": 207494,
+      "output_tokens": 81512,
+      "exception_type": null
+    },
+    {
+      "trial_id": "openssl-selfsigned-cert__4dKSd7s",
+      "task_name": "terminal-bench/openssl-selfsigned-cert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 89.51,
+      "input_tokens": 13884,
+      "output_tokens": 5079,
+      "exception_type": null
+    },
+    {
+      "trial_id": "openssl-selfsigned-cert__KpVWHpk",
+      "task_name": "terminal-bench/openssl-selfsigned-cert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 90.99,
+      "input_tokens": 9706,
+      "output_tokens": 6715,
+      "exception_type": null
+    },
+    {
+      "trial_id": "openssl-selfsigned-cert__NBTudQe",
+      "task_name": "terminal-bench/openssl-selfsigned-cert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 114.46,
+      "input_tokens": 18592,
+      "output_tokens": 8199,
+      "exception_type": null
+    },
+    {
+      "trial_id": "openssl-selfsigned-cert__jCpDgM2",
+      "task_name": "terminal-bench/openssl-selfsigned-cert",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 98.93,
+      "input_tokens": 10550,
+      "output_tokens": 6604,
+      "exception_type": null
+    },
+    {
+      "trial_id": "path-tracing-reverse__25sHAxG",
+      "task_name": "terminal-bench/path-tracing-reverse",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 673.87,
+      "input_tokens": 255042,
+      "output_tokens": 64126,
+      "exception_type": null
+    },
+    {
+      "trial_id": "path-tracing-reverse__TBtjiiB",
+      "task_name": "terminal-bench/path-tracing-reverse",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 966.12,
+      "input_tokens": 230118,
+      "output_tokens": 91746,
+      "exception_type": null
+    },
+    {
+      "trial_id": "path-tracing-reverse__nCmv8uP",
+      "task_name": "terminal-bench/path-tracing-reverse",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 602.2,
+      "input_tokens": 223664,
+      "output_tokens": 87803,
+      "exception_type": null
+    },
+    {
+      "trial_id": "path-tracing-reverse__zMiJkhr",
+      "task_name": "terminal-bench/path-tracing-reverse",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 459.1,
+      "input_tokens": 100710,
+      "output_tokens": 55268,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-c-py__2mPkRbc",
+      "task_name": "terminal-bench/polyglot-c-py",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 392.16,
+      "input_tokens": 31759,
+      "output_tokens": 19862,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-c-py__3QujdaW",
+      "task_name": "terminal-bench/polyglot-c-py",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 171.13,
+      "input_tokens": 23694,
+      "output_tokens": 13780,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-c-py__UQHH3Lt",
+      "task_name": "terminal-bench/polyglot-c-py",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 296.18,
+      "input_tokens": 61185,
+      "output_tokens": 28635,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-c-py__ZZkwQMW",
+      "task_name": "terminal-bench/polyglot-c-py",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 188.68,
+      "input_tokens": 22838,
+      "output_tokens": 17844,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-rust-c__fPoN9Dm",
+      "task_name": "terminal-bench/polyglot-rust-c",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 199.42,
+      "input_tokens": 24664,
+      "output_tokens": 20846,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-rust-c__mKV3ubm",
+      "task_name": "terminal-bench/polyglot-rust-c",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 139.87,
+      "input_tokens": 23380,
+      "output_tokens": 14158,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-rust-c__oc6WFeF",
+      "task_name": "terminal-bench/polyglot-rust-c",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 341.89,
+      "input_tokens": 27149,
+      "output_tokens": 22146,
+      "exception_type": null
+    },
+    {
+      "trial_id": "polyglot-rust-c__ofUXjLA",
+      "task_name": "terminal-bench/polyglot-rust-c",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 153.75,
+      "input_tokens": 18048,
+      "output_tokens": 15299,
+      "exception_type": null
+    },
+    {
+      "trial_id": "portfolio-optimization__9YAictH",
+      "task_name": "terminal-bench/portfolio-optimization",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 246.54,
+      "input_tokens": 16522,
+      "output_tokens": 11701,
+      "exception_type": null
+    },
+    {
+      "trial_id": "portfolio-optimization__WZGVaRE",
+      "task_name": "terminal-bench/portfolio-optimization",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 463.51,
+      "input_tokens": 39560,
+      "output_tokens": 14931,
+      "exception_type": null
+    },
+    {
+      "trial_id": "portfolio-optimization__fcNgoAa",
+      "task_name": "terminal-bench/portfolio-optimization",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 219.74,
+      "input_tokens": 7850,
+      "output_tokens": 13290,
+      "exception_type": null
+    },
+    {
+      "trial_id": "portfolio-optimization__yfXwWrN",
+      "task_name": "terminal-bench/portfolio-optimization",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 215.55,
+      "input_tokens": 24026,
+      "output_tokens": 15878,
+      "exception_type": null
+    },
+    {
+      "trial_id": "prove-plus-comm__SYNFgzo",
+      "task_name": "terminal-bench/prove-plus-comm",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 176.71,
+      "input_tokens": 14418,
+      "output_tokens": 8032,
+      "exception_type": null
+    },
+    {
+      "trial_id": "prove-plus-comm__csLCTwT",
+      "task_name": "terminal-bench/prove-plus-comm",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 126.69,
+      "input_tokens": 6957,
+      "output_tokens": 5212,
+      "exception_type": null
+    },
+    {
+      "trial_id": "prove-plus-comm__hxUmmwr",
+      "task_name": "terminal-bench/prove-plus-comm",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 86.39,
+      "input_tokens": 7599,
+      "output_tokens": 3880,
+      "exception_type": null
+    },
+    {
+      "trial_id": "prove-plus-comm__mVgi89m",
+      "task_name": "terminal-bench/prove-plus-comm",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 88.26,
+      "input_tokens": 10676,
+      "output_tokens": 3896,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pypi-server__444EnbF",
+      "task_name": "terminal-bench/pypi-server",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 102.74,
+      "input_tokens": 11421,
+      "output_tokens": 6371,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pypi-server__NNnRSJC",
+      "task_name": "terminal-bench/pypi-server",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 97.72,
+      "input_tokens": 15551,
+      "output_tokens": 4775,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pypi-server__cm2TCoG",
+      "task_name": "terminal-bench/pypi-server",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 210.97,
+      "input_tokens": 7004,
+      "output_tokens": 16969,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pypi-server__mQcgxsM",
+      "task_name": "terminal-bench/pypi-server",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 110.6,
+      "input_tokens": 15154,
+      "output_tokens": 6938,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-cli__aA7tjGR",
+      "task_name": "terminal-bench/pytorch-model-cli",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 272.69,
+      "input_tokens": 35631,
+      "output_tokens": 19588,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-cli__aX37i6u",
+      "task_name": "terminal-bench/pytorch-model-cli",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 319.98,
+      "input_tokens": 34719,
+      "output_tokens": 24769,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-cli__oSbFxo7",
+      "task_name": "terminal-bench/pytorch-model-cli",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 221.28,
+      "input_tokens": 23975,
+      "output_tokens": 14960,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-cli__y3cXsUM",
+      "task_name": "terminal-bench/pytorch-model-cli",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 274.84,
+      "input_tokens": 28050,
+      "output_tokens": 15867,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-recovery__63ze2mW",
+      "task_name": "terminal-bench/pytorch-model-recovery",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 168.69,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-recovery__YM7rY9G",
+      "task_name": "terminal-bench/pytorch-model-recovery",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 170.39,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-recovery__fBa4PuG",
+      "task_name": "terminal-bench/pytorch-model-recovery",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 192.3,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "exception_type": null
+    },
+    {
+      "trial_id": "pytorch-model-recovery__sXP3Ux5",
+      "task_name": "terminal-bench/pytorch-model-recovery",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 170.22,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "exception_type": null
+    },
+    {
+      "trial_id": "regex-log__4qzAxwh",
+      "task_name": "terminal-bench/regex-log",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 164.05,
+      "input_tokens": 15619,
+      "output_tokens": 13072,
+      "exception_type": null
+    },
+    {
+      "trial_id": "regex-log__DUzWKK3",
+      "task_name": "terminal-bench/regex-log",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 409.63,
+      "input_tokens": 59703,
+      "output_tokens": 49611,
+      "exception_type": null
+    },
+    {
+      "trial_id": "regex-log__jVHXKQR",
+      "task_name": "terminal-bench/regex-log",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 505.28,
+      "input_tokens": 20723,
+      "output_tokens": 19161,
+      "exception_type": null
+    },
+    {
+      "trial_id": "regex-log__tpHBYN3",
+      "task_name": "terminal-bench/regex-log",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 318.39,
+      "input_tokens": 46881,
+      "output_tokens": 40871,
+      "exception_type": null
+    },
+    {
+      "trial_id": "roy-polymorph-cn__Rs7Fdwr",
+      "task_name": "terminal-bench/roy-polymorph-cn",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 267.05,
+      "input_tokens": 61301,
+      "output_tokens": 30512,
+      "exception_type": null
+    },
+    {
+      "trial_id": "roy-polymorph-cn__bSpjZEF",
+      "task_name": "terminal-bench/roy-polymorph-cn",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 341.9,
+      "input_tokens": 76338,
+      "output_tokens": 42218,
+      "exception_type": null
+    },
+    {
+      "trial_id": "roy-polymorph-cn__eqw3cxH",
+      "task_name": "terminal-bench/roy-polymorph-cn",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 350.89,
+      "input_tokens": 59405,
+      "output_tokens": 47249,
+      "exception_type": null
+    },
+    {
+      "trial_id": "roy-polymorph-cn__sFLEsZm",
+      "task_name": "terminal-bench/roy-polymorph-cn",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 258.12,
+      "input_tokens": 42394,
+      "output_tokens": 20536,
+      "exception_type": null
+    },
+    {
+      "trial_id": "rstan-to-pystan__DN7tGp2",
+      "task_name": "terminal-bench/rstan-to-pystan",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1083.37,
+      "input_tokens": 49297,
+      "output_tokens": 19250,
+      "exception_type": null
+    },
+    {
+      "trial_id": "rstan-to-pystan__GN9S3LP",
+      "task_name": "terminal-bench/rstan-to-pystan",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1134.5,
+      "input_tokens": 38544,
+      "output_tokens": 18368,
+      "exception_type": null
+    },
+    {
+      "trial_id": "rstan-to-pystan__v6tBoVt",
+      "task_name": "terminal-bench/rstan-to-pystan",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 837.38,
+      "input_tokens": 57420,
+      "output_tokens": 15084,
+      "exception_type": null
+    },
+    {
+      "trial_id": "rstan-to-pystan__yQgU7zv",
+      "task_name": "terminal-bench/rstan-to-pystan",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 833.02,
+      "input_tokens": 51658,
+      "output_tokens": 13592,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sam-cell-seg__2Shfsnr",
+      "task_name": "terminal-bench/sam-cell-seg",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1125.8,
+      "input_tokens": 279709,
+      "output_tokens": 72611,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sam-cell-seg__J97WHTE",
+      "task_name": "terminal-bench/sam-cell-seg",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 2255.41,
+      "input_tokens": 284507,
+      "output_tokens": 69246,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sam-cell-seg__QFm9W9V",
+      "task_name": "terminal-bench/sam-cell-seg",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1514.69,
+      "input_tokens": 161122,
+      "output_tokens": 65545,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sam-cell-seg__bEKoeC2",
+      "task_name": "terminal-bench/sam-cell-seg",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1757.62,
+      "input_tokens": 196704,
+      "output_tokens": 86260,
+      "exception_type": null
+    },
+    {
+      "trial_id": "schemelike-metacircular-eval__Jr8pi9A",
+      "task_name": "terminal-bench/schemelike-metacircular-eval",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1495.93,
+      "input_tokens": 177745,
+      "output_tokens": 118145,
+      "exception_type": null
+    },
+    {
+      "trial_id": "schemelike-metacircular-eval__mRjPFDS",
+      "task_name": "terminal-bench/schemelike-metacircular-eval",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 2491.67,
+      "input_tokens": 464243,
+      "output_tokens": 123935,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "schemelike-metacircular-eval__wMqCHX3",
+      "task_name": "terminal-bench/schemelike-metacircular-eval",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1354.22,
+      "input_tokens": 146985,
+      "output_tokens": 111712,
+      "exception_type": null
+    },
+    {
+      "trial_id": "schemelike-metacircular-eval__y3Jb3M7",
+      "task_name": "terminal-bench/schemelike-metacircular-eval",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 1484.38,
+      "input_tokens": 185709,
+      "output_tokens": 104716,
+      "exception_type": null
+    },
+    {
+      "trial_id": "session-window-debug__EZSsieT",
+      "task_name": "terminal-bench/session-window-debug",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 496.44,
+      "input_tokens": 94053,
+      "output_tokens": 72398,
+      "exception_type": null
+    },
+    {
+      "trial_id": "session-window-debug__PqicmP9",
+      "task_name": "terminal-bench/session-window-debug",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 504.69,
+      "input_tokens": 89022,
+      "output_tokens": 67172,
+      "exception_type": null
+    },
+    {
+      "trial_id": "session-window-debug__UngPX68",
+      "task_name": "terminal-bench/session-window-debug",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 471.34,
+      "input_tokens": 82370,
+      "output_tokens": 67632,
+      "exception_type": null
+    },
+    {
+      "trial_id": "session-window-debug__nsSExqT",
+      "task_name": "terminal-bench/session-window-debug",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 844.76,
+      "input_tokens": 134838,
+      "output_tokens": 94089,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sparql-university__5KNQMCV",
+      "task_name": "terminal-bench/sparql-university",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 314.38,
+      "input_tokens": 32716,
+      "output_tokens": 14820,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sparql-university__ae4Pd3r",
+      "task_name": "terminal-bench/sparql-university",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 140.09,
+      "input_tokens": 29208,
+      "output_tokens": 10528,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sparql-university__pdLKJgf",
+      "task_name": "terminal-bench/sparql-university",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 127.82,
+      "input_tokens": 15979,
+      "output_tokens": 7834,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sparql-university__wm9mEVd",
+      "task_name": "terminal-bench/sparql-university",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 104.5,
+      "input_tokens": 17430,
+      "output_tokens": 6690,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-db-truncate__BHBCp42",
+      "task_name": "terminal-bench/sqlite-db-truncate",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 179.37,
+      "input_tokens": 30329,
+      "output_tokens": 16562,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-db-truncate__CEKG9HJ",
+      "task_name": "terminal-bench/sqlite-db-truncate",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 124.6,
+      "input_tokens": 16113,
+      "output_tokens": 10094,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-db-truncate__ESH5mXg",
+      "task_name": "terminal-bench/sqlite-db-truncate",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 170.33,
+      "input_tokens": 38949,
+      "output_tokens": 15556,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-db-truncate__rukQqqa",
+      "task_name": "terminal-bench/sqlite-db-truncate",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 186.48,
+      "input_tokens": 30094,
+      "output_tokens": 20879,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-with-gcov__BGYFS33",
+      "task_name": "terminal-bench/sqlite-with-gcov",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 188.0,
+      "input_tokens": 14810,
+      "output_tokens": 5856,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-with-gcov__mWYpKU6",
+      "task_name": "terminal-bench/sqlite-with-gcov",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 211.9,
+      "input_tokens": 25618,
+      "output_tokens": 6919,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-with-gcov__pcsqJSy",
+      "task_name": "terminal-bench/sqlite-with-gcov",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 169.66,
+      "input_tokens": 13431,
+      "output_tokens": 6802,
+      "exception_type": null
+    },
+    {
+      "trial_id": "sqlite-with-gcov__t6DcBWD",
+      "task_name": "terminal-bench/sqlite-with-gcov",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 170.79,
+      "input_tokens": 32070,
+      "output_tokens": 9707,
+      "exception_type": null
+    },
+    {
+      "trial_id": "tune-mjcf__AYGbS2C",
+      "task_name": "terminal-bench/tune-mjcf",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 492.18,
+      "input_tokens": 69250,
+      "output_tokens": 31879,
+      "exception_type": null
+    },
+    {
+      "trial_id": "tune-mjcf__KBYnGrG",
+      "task_name": "terminal-bench/tune-mjcf",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 576.4,
+      "input_tokens": 51207,
+      "output_tokens": 35903,
+      "exception_type": null
+    },
+    {
+      "trial_id": "tune-mjcf__YrYMG9j",
+      "task_name": "terminal-bench/tune-mjcf",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 296.06,
+      "input_tokens": 26930,
+      "output_tokens": 19095,
+      "exception_type": null
+    },
+    {
+      "trial_id": "tune-mjcf__r2aMyKw",
+      "task_name": "terminal-bench/tune-mjcf",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 939.42,
+      "input_tokens": 75076,
+      "output_tokens": 44189,
+      "exception_type": "AgentTimeoutError"
+    },
+    {
+      "trial_id": "video-processing__AKjp8LT",
+      "task_name": "terminal-bench/video-processing",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1041.43,
+      "input_tokens": 356146,
+      "output_tokens": 57223,
+      "exception_type": null
+    },
+    {
+      "trial_id": "video-processing__TCte6CV",
+      "task_name": "terminal-bench/video-processing",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 740.88,
+      "input_tokens": 206497,
+      "output_tokens": 52198,
+      "exception_type": null
+    },
+    {
+      "trial_id": "video-processing__X6V4zJt",
+      "task_name": "terminal-bench/video-processing",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 946.93,
+      "input_tokens": 337967,
+      "output_tokens": 68390,
+      "exception_type": null
+    },
+    {
+      "trial_id": "video-processing__Y3sZYiG",
+      "task_name": "terminal-bench/video-processing",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 756.29,
+      "input_tokens": 255575,
+      "output_tokens": 73072,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vpp-loss-divergence__AwcPd7s",
+      "task_name": "terminal-bench/vpp-loss-divergence",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1653.26,
+      "input_tokens": 324567,
+      "output_tokens": 99602,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vpp-loss-divergence__N9WUGKd",
+      "task_name": "terminal-bench/vpp-loss-divergence",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1981.45,
+      "input_tokens": 193315,
+      "output_tokens": 99681,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vpp-loss-divergence__SDKXhGU",
+      "task_name": "terminal-bench/vpp-loss-divergence",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 1175.73,
+      "input_tokens": 242145,
+      "output_tokens": 78235,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vpp-loss-divergence__sd5PJkr",
+      "task_name": "terminal-bench/vpp-loss-divergence",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 932.2,
+      "input_tokens": 262447,
+      "output_tokens": 74926,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vulnerable-secret__YYc8HkQ",
+      "task_name": "terminal-bench/vulnerable-secret",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 73.58,
+      "input_tokens": 10689,
+      "output_tokens": 2853,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vulnerable-secret__dzWaxs3",
+      "task_name": "terminal-bench/vulnerable-secret",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 83.72,
+      "input_tokens": 24872,
+      "output_tokens": 3112,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vulnerable-secret__jLPmECz",
+      "task_name": "terminal-bench/vulnerable-secret",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 73.29,
+      "input_tokens": 13109,
+      "output_tokens": 3303,
+      "exception_type": null
+    },
+    {
+      "trial_id": "vulnerable-secret__sdJPC57",
+      "task_name": "terminal-bench/vulnerable-secret",
+      "source_job": "main",
+      "reward": 1.0,
+      "passed": true,
+      "duration_sec": 73.33,
+      "input_tokens": 9693,
+      "output_tokens": 2826,
+      "exception_type": null
+    },
+    {
+      "trial_id": "wal-recovery-ordering__93EDYhY",
+      "task_name": "terminal-bench/wal-recovery-ordering",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 241.99,
+      "input_tokens": 41109,
+      "output_tokens": 23874,
+      "exception_type": null
+    },
+    {
+      "trial_id": "wal-recovery-ordering__BCS7wpV",
+      "task_name": "terminal-bench/wal-recovery-ordering",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 661.34,
+      "input_tokens": 116090,
+      "output_tokens": 65838,
+      "exception_type": null
+    },
+    {
+      "trial_id": "wal-recovery-ordering__FPnxavw",
+      "task_name": "terminal-bench/wal-recovery-ordering",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 679.27,
+      "input_tokens": 180790,
+      "output_tokens": 46599,
+      "exception_type": null
+    },
+    {
+      "trial_id": "wal-recovery-ordering__c24sDbE",
+      "task_name": "terminal-bench/wal-recovery-ordering",
+      "source_job": "main",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 461.7,
+      "input_tokens": 77308,
+      "output_tokens": 60135,
+      "exception_type": null
+    },
+    {
+      "trial_id": "batched-eval-parity__5399ipj",
+      "task_name": "terminal-bench/batched-eval-parity",
+      "source_job": "rerun_infra_fix",
+      "reward": 0.0,
+      "passed": false,
+      "duration_sec": 945.11,
+      "input_tokens": 200761,
+      "output_tokens": 99076,
+      "exception_type": null
+    }
+  ]
+}

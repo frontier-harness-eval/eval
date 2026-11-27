@@ -27,8 +27,8 @@ mkdir -p /opt/fhe-eval/cache
   24.18.0
 
 sha256sum /opt/fhe-eval/cache/penguin-cli-0.2.18-node-24.18.0-linux-x86_64.tar.gz
-# Expected (for @prismshadow/penguin-cli@0.2.18 + node-v24.18.0-linux-x64):
-# 6b6553655fb1a02c5ab39321b5c0c9ddfb2aaeeefacbbbd30502f879fb53bd3b
+# Expected (for @prismshadow/penguin-cli@0.2.18 commit 8ffec015 + node-v24.18.0-linux-x64):
+# 352ed8979bef84ff5cb010fe919ccdcb116b8a75eaa325da0be1d3979b2fe51b
 ```
 
 ---

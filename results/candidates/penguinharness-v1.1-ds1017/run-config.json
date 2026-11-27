@@ -1,8 +1,8 @@
 {
   "id": "penguinharness-v1.1-ds1017",
   "harness": "PenguinHarness (@prismshadow/penguin-cli)",
-  "harness_version": "0.2.18",
-  "harness_commit": "e46e71c7a79654809648d7e6f715d0377c64d84d",
+  "harness_version": "0.2.18 (0.2.2-856-g8ffec015)",
+  "harness_commit": "9424ed4f39fd7fe9f0a3625abe8a51d11a90d4b5",
   "adapter_repo_commit": "bd614d4fb65e6b05c72c74df1bfeb5154a573307",
   "model": "DeepSeek-V4.1-1017",
   "model_id": "penguin-go/deepseek-1017",
@@ -46,14 +46,14 @@
   "verifier_timeout": "native task.toml verifier.timeout_sec",
   "install_bundle": {
     "filename": "penguin-cli-0.2.18-node-24.18.0-linux-x86_64.tar.gz",
-    "sha256": "6b6553655fb1a02c5ab39321b5c0c9ddfb2aaeeefacbbbd30502f879fb53bd3b",
+    "sha256": "352ed8979bef84ff5cb010fe919ccdcb116b8a75eaa325da0be1d3979b2fe51b",
     "penguin_version": "0.2.18",
     "node_version": "24.18.0",
     "install_prefix": "/opt/penguin-bench"
   },
   "offline_verifier_recovery_bundle": {
     "filename": "verifier-deps.tar.gz",
-    "sha256": "54d587e8554593e77c94bf5a90dd0d124c3568daae9be6e3084323b450340f2a",
+    "sha256": "aa1e29e6429d8b0a71e54b5ecc0c39efb089f56ef1ff24f689495fcf11404030",
     "uv_version": "0.9.5",
     "scope": [
       "filter-js-from-html",
@@ -121,10 +121,11 @@
   "evidence_archive": {
     "release_url": "https://github.com/lzh368/eval/releases/tag/penguinharness-v1.1-ds1017-evidence",
     "archive_name": "fhe-penguinharness-v1.1-ds1017-evidence.tar.gz",
-    "archive_size_bytes": 148522563,
-    "archive_sha256": "2cdad88604bdfcf55752f153d9eac124f4564c7899f55c37e2124b4963f159f2",
-    "manifest_sha256": "aacd1e16a5791b2e1491d46ebcf076b277a3c6e5afc5bf71f3e6c15e3125a35e",
-    "observed_results_sha256": "45fd98205d6495c2d6a13df20b25e7f8c360af921e8ad2497365fc9afcd6b369",
+    "archive_size_bytes": 142204248,
+    "uncompressed_size_bytes": 281239112,
+    "archive_sha256": "318fc8467a09398623a5862770bb22d64283953084a5a2aed120714bf9b0ca72",
+    "manifest_sha256": "6773c1bd42e883c3260cbced521a47ea963a2698b0555a8ca4218d49c2f7a403",
+    "observed_results_sha256": "b942efc75197a42b5e41195758dd86fdca1c8b9bce05fdf57e5d9cdac9a223d9",
     "outcomes_sha256": "d928c38654986ca33cef3cc99bf3ac95185b934dfcfbb718bc8ad931377366a8",
     "total_files": 5911
   },

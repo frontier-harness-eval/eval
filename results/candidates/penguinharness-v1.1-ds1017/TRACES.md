@@ -25,9 +25,9 @@ The complete per-trial evidence archive is published at:
 
 | Asset | Size (Bytes) | SHA-256 Digest |
 |---|---:|---|
-| `fhe-penguinharness-v1.1-ds1017-evidence.tar.gz` | `148,522,563` (141.64 MB) | `2cdad88604bdfcf55752f153d9eac124f4564c7899f55c37e2124b4963f159f2` |
-| `MANIFEST.json` | `728,539` | `aacd1e16a5791b2e1491d46ebcf076b277a3c6e5afc5bf71f3e6c15e3125a35e` |
-| `observed-results.json` (in this PR) | `204,768` | `45fd98205d6495c2d6a13df20b25e7f8c360af921e8ad2497365fc9afcd6b369` |
+| `fhe-penguinharness-v1.1-ds1017-evidence.tar.gz` | `142,204,248` (142.20 MB) | `318fc8467a09398623a5862770bb22d64283953084a5a2aed120714bf9b0ca72` |
+| `MANIFEST.json` | `1,199,749` | `6773c1bd42e883c3260cbced521a47ea963a2698b0555a8ca4218d49c2f7a403` |
+| `observed-results.json` (in this PR) | `204,024` | `b942efc75197a42b5e41195758dd86fdca1c8b9bce05fdf57e5d9cdac9a223d9` |
 | 248-trial `outcomes_sha256` | — | `d928c38654986ca33cef3cc99bf3ac95185b934dfcfbb718bc8ad931377366a8` |
 
 ### Download and Verify
@@ -41,17 +41,17 @@ curl -fLO https://github.com/lzh368/eval/releases/download/penguinharness-v1.1-d
 # Verify SHA-256 checksums
 shasum -a 256 -c SHA256SUMS
 
-# Extract the archive (extracts into trials/round-01 .. trials/round-04 and MANIFEST.json)
+# Extract the archive (extracts into trials/r1 .. trials/r4 and MANIFEST.json)
 mkdir -p evidence && tar -xzf fhe-penguinharness-v1.1-ds1017-evidence.tar.gz -C evidence
 ```
 
-Every single trial entry in `observed-results.json` (`tasks[*].attempts_detail[*].evidence_sha256`) matches the corresponding `trial_evidence_sha256` in `MANIFEST.json`, which is the SHA-256 over all sorted `<relative_path>:<file_sha256>` lines inside that trial directory.
+Every single trial entry in `observed-results.json` (`tasks[*].attempts_detail[*].evidence_sha256`) matches the corresponding `trial_evidence_sha256` in `MANIFEST.json`, which is the SHA-256 over all sorted `<file_sha256>  ./<relative_path>\n` lines inside that trial directory.
 
 ---
 
 ## 3. Per-Trial Directory Layout Inside the Archive
 
-The archive contains **248 trial directories** (`trials/round-01/<task>__<id>/` through `trials/round-04/<task>__<id>/`, **5,911 files**, **294,912,487 bytes** uncompressed). Each trial directory includes:
+The archive contains **248 trial directories** (`trials/r1/<task>__<id>/` through `trials/r4/<task>__<id>/`, **5,911 files**, **281,239,112 bytes** uncompressed). Each trial directory includes:
 
 | Relative Path | Content |
 |---|---|
@@ -70,14 +70,13 @@ The archive contains **248 trial directories** (`trials/round-01/<task>__<id>/` 
 | `agent/penguin/server.log` | Local PenguinHarness server log inside the container |
 | `agent/penguin/traces/default_agent/**/*.jsonl` | Complete, turn-by-turn JSONL trajectory of the main agent and every subagent (`run_subagent`), including system instructions, reasoning/thinking blocks, tool calls (`exec_command`, `read_file`, `edit_file`, `write_file`, etc.), tool outputs, and per-turn token usage |
 | `verifier/test-stdout.txt` / `test-stderr.txt` | Full pytest / verifier output |
-| `verifier/ctrf.json` | Structured CTRF test report (present on 244 / 248 trials; the 4 trials without CTRF are documented below) |
+| `verifier/ctrf.json` | Structured CTRF test report (present on 240 / 248 trials; the 8 trials without CTRF are documented below) |
 | `verifier/reward.txt` | Raw verifier reward (`1.0` or `0.0`) |
 | `verifier/recovery-setup.json` & `recovery-diagnostics.json` | Present on the 7 tasks using post-agent offline verifier dependency recovery (`RecoveryVerifier`) |
 
-### Note on the 4 Scored Trials Without `verifier/ctrf.json`
+### Note on the 8 Scored Trials Without `verifier/ctrf.json`
 
-- `make-doom-for-mips` (R1, R2, R3): The verifier script (`test.sh`) timed out or exited before pytest wrote `ctrf.json`; all three are scored `0.0`.
-- `filter-js-from-html` (R4): The verifier phase encountered a transient SSL connection reset before pytest produced `ctrf.json`; retained in the R4 denominator as `0.0`.
+- `freecad-impeller` (R1–R4) and `music-harmony` (R1–R4): The upstream `test.sh` for these two v1.1 tasks executes standalone Python test runners without `--ctrf`, writing full test output to `verifier/test-stdout.txt` and the final score (`1.0` or `0.0`) to `verifier/reward.txt` and `result.json`.
 
 ---
 

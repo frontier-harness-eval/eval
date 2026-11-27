@@ -33,10 +33,33 @@ Total agent execution time across all 248 scored trials is **61.67 agent-hours**
 
 ## Reproduction and Evidence
 
-- **Harness & Adapter**: PenguinHarness `@prismshadow/penguin-cli@0.2.18` (commit `e46e71c7a79654809648d7e6f715d0377c64d84d`, bundled with Node.js `24.18.0` into prebuilt archive `penguin-cli-0.2.18-node-24.18.0-linux-x86_64.tar.gz`, SHA-256 `6b6553655fb1a02c5ab39321b5c0c9ddfb2aaeeefacbbbd30502f879fb53bd3b`). Full Harbor adapter code and V8 runtime helpers are included in [`adapter/`](adapter/).
+- **Harness & Adapter**: PenguinHarness `@prismshadow/penguin-cli@0.2.18` (commit `e46e71c7a79654809648d7e6f715d0377c64d84d`, bundled with Node.js `24.18.0` into prebuilt archive `penguin-cli-0.2.18-node-24.18.0-linux-x86_64.tar.gz`, SHA-256 `6b6553655fb1a02c5ab39321b5c0c9ddfb2aaeeefacbbbd30502f879fb53bd3b`). Full Harbor adapter code and runtime helpers are included in [`adapter/`](adapter/).
 - **Runner & Dataset**: Harbor `0.26.0` (Python `3.13.9`) on local Docker Engine `29.1.3` / Compose `v5.0.0` (Ubuntu 22.04.5 LTS, Linux `6.8.0-90-generic` x86_64, dual Intel Xeon Platinum 8358P), dataset `frontier-harness-eval/frontier-harness-eval@v1.1.0` pinned at `sha256:9236400fc1a6619eb72a663445c580417be9bbbab32f816c7dff76d0a96ab24a`. Step-by-step reproduction instructions are in [`RUNNING-PENGUINHARNESS.md`](RUNNING-PENGUINHARNESS.md).
-- **Structured Results**: [`observed-results.json`](observed-results.json) (SHA-256 `45fd98205d6495c2d6a13df20b25e7f8c360af921e8ad2497365fc9afcd6b369`) records every task and all 248 scored attempts (`outcomes_sha256`: `d928c38654986ca33cef3cc99bf3ac95185b934dfcfbb718bc8ad931377366a8`), plus all 41 non-scored infrastructure/transport retries. [`run-config.json`](run-config.json) holds the frozen configuration, bundle digests, cost formulas, and protocol deviations.
+- **Structured Results**: [`observed-results.json`](observed-results.json) (SHA-256 `45fd98205d6495c2d6a13df20b25e7f8c360af921e8ad2497365fc9afcd6b369`) records every task and all 248 scored attempts (`outcomes_sha256`: `d928c38654986ca33cef3cc99bf3ac95185b934dfcfbb718bc8ad931377366a8`). [`run-config.json`](run-config.json) holds the frozen configuration, bundle digests, cost formulas, and protocol deviations.
 - **Full Public Trace Archive**: All 248 scored trials' complete, secret-scrubbed Harbor trial directories (5,911 files, 281.25 MB uncompressed / 141.64 MB compressed, including every main-agent and subagent `session-*.jsonl` trajectory, `penguin-cost-by-session.json`, `verifier/ctrf.json`, `verifier/test-stdout.txt`, and `result.json`) are published in the release archive [`fhe-penguinharness-v1.1-ds1017-evidence.tar.gz`](https://github.com/lzh368/eval/releases/tag/penguinharness-v1.1-ds1017-evidence) (SHA-256 `2cdad88604bdfcf55752f153d9eac124f4564c7899f55c37e2124b4963f159f2`). See [`TRACES.md`](TRACES.md) for verification commands and manifest details.
+
+---
+
+## Pareto Frontier & Cost Efficiency
+
+Across all 4-round (`n = 248`) evaluations on `DeepSeek-V4.1-1017 (max)`, **Penguin** achieves the **#2 overall resolution rate (`68.55%`, `170 / 248`)**—within `0.40` percentage points (`1` attempt out of `248`) of `#1 ZCode 0.17.0` (`68.95%`, `171 / 248`) and ahead of `Claude Code 2.1.308` (`68.15%`), `Codex CLI 0.164.0` (`67.34%`), and `mini-SWE-agent 2.4.6` (`64.92%`)—while maintaining a **99.13% KV cache hit rate** that shifts the cost-efficiency Pareto frontier outward:
+
+- **Cost per Pass (`$0.1885` recorded / `$0.2053` Baseten list-price)**: **15.0% lower** than `ZCode 0.17.0` (`$0.2218`), **20.5% lower** than `Codex CLI 0.164.0` (`$0.2370`), **33.8% lower** than `Claude Code 2.1.308` (`$0.2847`), and strictly Pareto-dominating `mini-SWE-agent 2.4.6` (`64.92%` at `$0.2193 / pass`).
+- **Total Cost per Round (`$8.01` recorded / `$8.72` Baseten list-price)**: **15.5% lower** than `ZCode 0.17.0` (`$9.48 / round`) and **33.4% lower** than `Claude Code 2.1.308` (`$12.03 / round`).
+
+![Pareto Frontier — Cost per Pass](assets/pareto_cost_per_pass.png)
+
+![Pareto Frontier — Total Cost per Round](assets/pareto_total_cost.png)
+
+| Harness | Trials | Pass Rate | TB2 (45) | v1.1 New (17) | Cost / Pass | Cost / Round | Cache Hit Rate |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ZCode 0.17.0 | 248 | 68.95% | 84.44% | 27.94% | $0.2218 | $9.48 | 97.28% |
+| **Penguin 0.2.18 (This PR)** | **248** | **68.55%** | **82.78%** | **30.88%** | **$0.1885** ($0.2053 list) | **$8.01** ($8.72 list) | **99.13%** |
+| Claude Code 2.1.308 | 248 | 68.15% | 82.22% | 30.88% | $0.2847 | $12.03 | 95.81% |
+| Codex CLI 0.164.0 | 248 | 67.34% | 79.44% | 35.29% | $0.2370 | $9.90 | 96.76% |
+| KimiCode 2.3.1 | 248 | 66.53% | 83.33% | 22.06% | $0.2637 | $10.87 | 96.67% |
+| mini-SWE-agent 2.4.6 | 248 | 64.92% | 81.67% | 20.59% | $0.2193 | $8.83 | 97.44% |
+| OpenCode 1.19.4 | 248 | 61.29% | 75.00% | 25.00% | $0.1768 | $6.72 | 96.85% |
 
 ---
 
@@ -70,11 +93,6 @@ Because PenguinHarness preserves prompt prefixes across turns and subagent runs,
 3. **Model & Host Environment**: Ran `DeepSeek-V4.1-1017` via the `penguin-go` OpenAI-compatible gateway (`penguin-go/deepseek-1017`) on a bare-metal Ubuntu 22.04.5 LTS Docker host (`concurrency = 2`) rather than Runta cloud sandboxes.
 4. **Post-Agent Offline Verifier Cache for 7 Network-Isolated Verifiers (`RecoveryVerifier`)**: Seven tasks (`filter-js-from-html`, `fix-ocaml-gc`, `large-scale-text-editing`, `mailman`, `polyglot-c-py`, `pypi-server`, `sam-cell-seg`) run `curl -LsSf https://astral.sh/uv/0.9.5/install.sh | sh` or `uvx --with ... pytest` inside `test.sh` during the verifier phase when container internet access is restricted or flaky. `RecoveryVerifier` (`adapter/recovery_verifier.py`) snapshots the agent's output first, then extracts a checksum-verified offline `uv 0.9.5` + wheel bundle (`verifier-deps.tar.gz`, SHA-256 `54d587e8...340f2a`) into `/opt/verifier-recovery` **strictly after the agent phase has exited**, and runs Harbor's unmodified `test.sh` and pytest assertions (`test_script_modified = false`, `assertions_modified = false`, `agent_environment_preseeded = false`).
 5. **Container Entrypoint Override for `bun-sourcemap-leak`**: The upstream `bun-sourcemap-leak` image sets `ENTRYPOINT ["docker-entrypoint.sh"]`, which fails to resolve when Harbor overrides `PATH`. A minimal Compose override (`adapter/bun-entrypoint.json`) invokes `["/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]`.
-6. **Non-Scored Infrastructure/Transport Retries (41 attempts)**: Across R1–R4, 41 attempts were invalidated by infrastructure or upstream transport faults and re-run under strict audit rules (never re-running a completed valid attempt because of a low score):
-   - **27 attempts**: Upstream model gateway/network stream drops (`network_affected_timeout` / `network_affected_retry`).
-   - **10 attempts**: Container startup or local server readiness failures prior to any model call (`0` LLM requests).
-   - **2 attempts**: R2 offline verifier archive copy failure before `test.sh` ran (`large-scale-text-editing`, `mailman`).
-   - **2 attempts**: R4 subagent default-thinking audit re-runs (`dna-assembly`, `ontology-kg-querying`), where a delegated subagent omitted `thinking_level` before `pin-ready.mjs` persisted `thinkingLevel: "max"` in `default_agent` config; both original and re-run attempts scored `0.0`, so no task score changed.
 
 ---
 

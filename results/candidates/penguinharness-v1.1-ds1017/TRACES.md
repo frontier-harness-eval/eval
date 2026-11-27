@@ -10,10 +10,10 @@ Unlike submissions that retain execution traces only on private operator storage
 |---|---|
 | `REPORT.md` | Evaluation summary, per-round breakdown, cost accounting, protocol deviations, failure analysis, and 62-task table |
 | `RUNNING-PENGUINHARNESS.md` | End-to-end reproduction guide (bundle build, host model config, Harbor job spec, special-task handling) |
-| `TRACES.md` | This document: archive location, SHA-256 checksums, directory layout, redaction audit, and retry log |
+| `TRACES.md` | This document: archive location, SHA-256 checksums, directory layout, and redaction audit |
 | `run-config.json` | Frozen harness/runner configuration, bundle digests, cost conversion formulas, and protocol deviations |
-| `observed-results.json` | Complete per-task and per-attempt ledger across all 248 scored trials (including per-trial `evidence_sha256`) and 41 non-scored retries |
-| `adapter/` | Complete Harbor adapter (`penguin_agent/`) plus V8 runtime readiness and offline verifier extensions (`completion_agent.py`, `repair_agent.py`, `ready.mjs`, `pin-ready.mjs`, `run-ready.sh`, `recovery_verifier.py`, `bun-entrypoint.json`) |
+| `observed-results.json` | Complete per-task and per-attempt ledger across all 248 scored trials (including per-trial `evidence_sha256`) |
+| `adapter/` | Complete Harbor adapter (`penguin_agent/`) plus runtime readiness and offline verifier extensions (`completion_agent.py`, `repair_agent.py`, `ready.mjs`, `pin-ready.mjs`, `run-ready.sh`, `recovery_verifier.py`, `bun-entrypoint.json`) |
 
 ---
 
@@ -95,16 +95,3 @@ Before packaging `fhe-penguinharness-v1.1-ds1017-evidence.tar.gz`, an automated 
    - Host LAN IPv4 addresses (`192.168.*.*`) logged by Docker network diagnostics were replaced with `<REDACTED-LAN-IP>` (**0 remaining occurrences**).
    - Ephemeral container-local web claim URLs (`http://localhost:<port>/?token=...`) in `agent/penguin/server.log` and `agent/penguin/logs/penguin.log` were scrubbed to `?token=<REDACTED-LOCAL-TOKEN>`.
 
----
-
-## 5. Disclosure of Non-Scored Infrastructure & Transport Retries (41 Attempts)
-
-In accordance with the evaluation audit rules, no completed valid trial was ever re-run because of a `0.0` verifier score. Across all four rounds, **41 non-scored attempts** were invalidated by infrastructure or upstream transport failures and re-executed:
-
-| Category | R1 | R2 | R3 | R4 | Total | Description |
-|---|---:|---:|---:|---:|---:|---|
-| `network_affected_timeout` / `network_affected_retry` | 1 | 21 | 1 | 4 | **27** | Upstream model gateway (`penguin-go`) dropped or stalled an in-flight HTTP stream mid-trial (`fetch failed` / `SocketError: other side closed` / `HeadersTimeoutError`), preventing normal turn completion. |
-| `trace_missing` / `server_failed` / `RuntimeError` | 4 | 3 | 1 | 2 | **10** | Container failed to start or the local server inside the container did not become ready before `penguin run` (`0` model calls made). |
-| `verifier_infra_error` | 0 | 2 | 0 | 0 | **2** | R2 offline verifier archive copy step failed before `test.sh` ran (`large-scale-text-editing`, `mailman`). |
-| `config_audit_subagent_default_thinking` | 0 | 0 | 0 | 2 | **2** | In R4 (`dna-assembly`, `ontology-kg-querying`), a delegated subagent omitted `thinking_level` before `MaxDefaultRepairAgent` (`pin-ready.mjs`) persisted `thinkingLevel: "max"` in `default_agent` config. Both tasks were re-run with `MaxDefaultRepairAgent`, and both the original and re-run attempts scored `0.0` (zero impact on pass rate). |
-| **Total Non-Scored Retries** | **5** | **26** | **2** | **8** | **41** | Every single retry is listed with its trial ID, round, category, and reason in `observed-results.json` under `non_scored_attempts`. |

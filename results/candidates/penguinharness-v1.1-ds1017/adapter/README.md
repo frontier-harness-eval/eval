@@ -89,7 +89,7 @@ GDPevo group training does not use this multi-step path. It is one invocation wi
 five tasks available, so there is no between-question reset or conversation restart.
 The method controls its own training process within that continuing session.
 
-## V8 Runtime Readiness & Offline Verifier Extensions
+## Runtime Readiness & Offline Verifier Extensions
 
 In addition to the stock `penguin_agent/` package, this directory includes the non-capability runtime extensions used during the v1.1 evaluation on `deepseek/deepseek-1017`:
 
